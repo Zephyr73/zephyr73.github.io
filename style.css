@@ -36,7 +36,12 @@ h2, h3 {
 }
 
 p, a, td, li {
+    font-size: 16px;
     font-weight: 300;
+}
+
+th {
+    font-size: 16px;
 }
 
 hr {
