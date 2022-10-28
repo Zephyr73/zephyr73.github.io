@@ -1,0 +1,40 @@
+table, th, td {
+    border: 2px solid black;
+    border-collapse: collapse;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px
+  }
+
+@font-face {
+    font-family: Iosevka Webfont;
+    font-style: normal;
+    font-weight: 100;
+    src: url(iosevka-regular.woff2);
+}
+
+@font-face {
+    font-family: Iosevka Webfont;
+    font-style: normal;
+    font-weight: bolder;
+    src: url(iosevka-ss08-bold.woff2);
+}
+
+p, td, ul {
+    font-family: Iosevka Webfont;
+    font-weight: 300;
+}
+
+h1, h2, h3, th {
+    font-family: Iosevka Webfont;
+    font-weight: bolder;
+}
+
+body {
+    background-color: grey;
+}
+
+img {
+    border: 10px solid black;
+}
