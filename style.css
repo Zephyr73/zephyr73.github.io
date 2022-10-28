@@ -11,14 +11,14 @@ table, th, td {
     font-family: Iosevka Webfont;
     font-style: normal;
     font-weight: 100;
-    src: url(/woff2/iosevka-regular.woff2);
+    src: url(woff2/iosevka-regular.woff2);
 }
 
 @font-face {
     font-family: Iosevka Webfont;
     font-style: normal;
     font-weight: bolder;
-    src: url(/woff2/iosevka-ss08-bold.woff2);
+    src: url(woff2/iosevka-ss08-bold.woff2);
 }
 
 p, td, ul {
