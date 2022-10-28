@@ -31,10 +31,14 @@ h1, h2, h3, th {
     font-weight: bolder;
 }
 
+hr {
+    border-color: black;
+}
+
 body {
     background-color: silver;
 }
 
-img {
+#profile {
     border: 10px solid black;
 }
