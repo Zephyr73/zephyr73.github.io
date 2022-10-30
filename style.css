@@ -1,17 +1,17 @@
-* {
-    background-color: silver;
-    color: black;
-    font-family: Iosevka Webfont;
+html {
+  overflow-y: scroll;
 }
 
-table, th, td {
-    border: 2px solid black;
-    border-collapse: collapse;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px
-  }
+body {
+  padding-bottom: 15px;
+  color: #0f0f0f;
+  background: linear-gradient(
+    #0f0f0f 0px,
+    #0f0f0f 100px,
+    #cacaca 100px,
+    #cacaca 100%
+  );
+}
 
 @font-face {
     font-family: Iosevka Webfont;
@@ -27,36 +27,97 @@ table, th, td {
     src: url(woff2/iosevka-ss08-bold.woff2);
 }
 
-h1, h2, h3 *{
-    font-weight: bolder;
+#profile {
+  border: 5px solid black;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  top: 25px;
+  width: 50%;
+  position: relative;
 }
 
-h2, h3 {
-    font-style: italic;
+h1, h2, h3 {
+  font-family: Iosevka Webfont;
+  color: #0f0f0f;
+  text-align: center;
 }
 
-p, a, td, li {
-    font-size: 16px;
-    font-weight: 300;
+p {
+  font-family: Iosevka Webfont;
+  text-align: center;
+  padding-left: 10%;
+  padding-right: 10%;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.container {
+  text-align: center;
+}
+ul {
+  display: inline-block;
+  text-align: left;
+  font-family: Iosevka Webfont;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+td {
+  font-family: Iosevka Webfont;
+  font-size: 16px;
+  font-weight: 300;
 }
 
 th {
-    font-size: 16px;
+  font-family: Iosevka Webfont;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+table, th, td {
+    border: 2px solid #0f0f0f;
+    border-collapse: collapse;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px
+  }
+
+table {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 hr {
-    border-color: black;
+  border-color: #0f0f0f;
+  width: 50%;
 }
 
-#separator, a {
-    display: inline;
-}
-
-
-#profile {
-    border: 10px solid black;
+#signature-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #info *{
-    font-size: 14px;
+  font-size: 14px;
+}
+
+#separator {
+  display: inline;
+  padding-left: 0%;
+  padding-right: 0%;
+}
+
+a {
+  font-family: Iosevka Webfont;
+  font-weight: 300;
+  display: inline;
+  color: #0f0f0f;
+}
+
+.links {
+  text-align: center;
 }
