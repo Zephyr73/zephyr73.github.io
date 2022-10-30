@@ -28,7 +28,7 @@ body {
 }
 
 #profile {
-  border: 5px solid black;
+  border: 5px solid #0f0f0f;
   border-radius: 50%;
   display: block;
   margin-left: auto;
