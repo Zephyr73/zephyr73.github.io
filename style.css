@@ -1,43 +1,113 @@
+/* General Styles */
 html {
   overflow-y: scroll;
+  width: 100%;
 }
 
 body {
-  padding-bottom: 15px;
   color: #0f0f0f;
-  background: linear-gradient(
-    #0f0f0f 0px,
-    #0f0f0f 100px,
-    #cacaca 100px,
-    #cacaca 100%
-  );
+  background-color: #0f0f0f;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 0;
 }
 
-@font-face {
-    font-family: Iosevka Webfont;
-    font-style: normal;
-    font-weight: 100;
-    src: url(woff2/iosevka-regular.woff2);
+/* Navbar Styles */
+.navbar {
+  width: 100%;
+  max-width: 800px;
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 36px;
 }
 
-@font-face {
-    font-family: Iosevka Webfont;
-    font-style: normal;
-    font-weight: bolder;
-    src: url(woff2/iosevka-ss08-bold.woff2);
+.navbar-left {
+  white-space: nowrap;
+  color: #cacaca;
+  font-family: Iosevka Webfont;
+  font-weight: bold;
 }
 
+.navbar-left p {
+  margin: 0;
+  padding-left: 15px; /* Adjust padding if needed */
+  padding-right: 15px;
+}
+
+.navbar-left a {
+  color: #cacaca;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar-right {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.navbar-right ul {
+  display: inline-block;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-right li {
+  display: inline-block;
+  margin: 0 5px; /* Add spacing between items if needed */
+}
+
+.navbar-right a {
+  font-family: Iosevka Webfont;
+  color: #cacaca;
+  text-decoration: none;
+}
+
+.navbar-right a:hover {
+  text-decoration: underline;
+}
+
+/* Container Styles */
+.container {
+  background-color: #cacaca;
+  border-radius: 0;
+  box-sizing: border-box;
+  padding: 20px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+  margin-top: 100px;
+}
+
+.hobbies-container {
+  text-align: center;
+}
+
+/* Profile Styles */
 #profile {
   border: 5px solid #0f0f0f;
   border-radius: 50%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  top: 25px;
-  width: 50%;
-  position: relative;
+  width: 128px;
+  height: 128px;
+  position: absolute;
+  top: -64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
 }
 
+/* Text Styles */
 h1, h2, h3 {
   font-family: Iosevka Webfont;
   color: #0f0f0f;
@@ -47,49 +117,47 @@ h1, h2, h3 {
 p {
   font-family: Iosevka Webfont;
   text-align: center;
-  padding-left: 10%;
-  padding-right: 10%;
+  padding: 0 10%;
   font-size: 16px;
   font-weight: 300;
 }
 
-.container {
-  text-align: center;
-}
 ul {
   display: inline-block;
-  text-align: left;
+  text-align: center;
   font-family: Iosevka Webfont;
   font-size: 16px;
   font-weight: 300;
+  margin: 0;
+  padding: 0;
 }
 
-td {
+li {
+  margin: 5px 0;
+}
+
+/* Table Styles */
+table, th, td {
   font-family: Iosevka Webfont;
-  font-size: 16px;
-  font-weight: 300;
+  border: 2px solid #0f0f0f;
+  border-collapse: collapse;
+  padding: 6px 12px;
+}
+
+table {
+  margin: 0 auto;
+  text-align: center;
 }
 
 th {
-  font-family: Iosevka Webfont;
-  font-size: 16px;
   font-weight: bold;
 }
 
-table, th, td {
-    border: 2px solid #0f0f0f;
-    border-collapse: collapse;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 6px;
-    padding-bottom: 6px
-  }
-
-table {
-  margin-left: auto;
-  margin-right: auto;
+td {
+  font-weight: 300;
 }
 
+/* Miscellaneous */
 hr {
   border-color: #0f0f0f;
   width: 50%;
@@ -97,27 +165,103 @@ hr {
 
 #signature-img {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
-#info *{
+#info * {
   font-size: 14px;
+  text-align: center;
 }
 
 #separator {
   display: inline;
-  padding-left: 0%;
-  padding-right: 0%;
 }
 
 a {
   font-family: Iosevka Webfont;
   font-weight: 300;
-  display: inline;
   color: #0f0f0f;
+  text-decoration: none;
 }
 
 .links {
   text-align: center;
+}
+
+.links a {
+  font-family: Iosevka Webfont;
+  font-weight: 300;
+  color: #0f0f0f;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+/* Font Faces */
+@font-face {
+  font-family: 'Iosevka Webfont';
+  font-style: normal;
+  font-weight: 100;
+  src: url('woff2/iosevka-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Iosevka Webfont';
+  font-style: normal;
+  font-weight: bold;
+  src: url('woff2/iosevka-ss08-bold.woff2') format('woff2');
+}
+
+/* Image Container Styles */
+.image-container {
+  padding-top: 35px;
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+.image {
+  width: 45%;
+}
+
+.image img {
+  display: flex;
+  position: relative;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.image-description, .image-description-right {
+  gap: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: relative;
+}
+
+.image-description h2, .image-description-right h2 {
+  text-align: left;
+  height: auto;
+  margin: 0;
+  padding-left: 10px;
+}
+
+.image-description p, .image-description-right p {
+  margin: 0;
+  padding: 0;
+  padding-left: 10px;
+  text-align: left;
+}
+
+.image-container-right {
+  padding-top: 35px;
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+.image-container-right .image {
+  margin-left: auto;
 }

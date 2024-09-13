@@ -2,7 +2,6 @@
 <html>
 
 <head>
-  
   <link rel="preload" href="woff2/iosevka-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="woff2/iosevka-ss08-bold.woff2" as="font" type="font/woff2" crossorigin>
   <meta charset="utf-8">
@@ -12,50 +11,45 @@
 </head>
 
 <body>
-  <img id="profile" src="/img/profile.png" style="width:128px;height:128px"><br>
-  <h1>YASEEN AAR RAHMAN</h1>
-  <h2 style="margin-bottom: 10px;">ABOUT ME</h2>
-  <p style="margin-top: 0;">I am Yaseen Aar Rahman, a student of BRAC University located in Bangladesh. I have completed my O and A levels from HURDCO International School. I have interests in new technologies, software development and game development</p>
-  <h2 style="margin-bottom: 10px;">HOBBIES</h2>
+  <nav class="navbar">
+    <div class="navbar-left">
+        <p><a href="index.html">MY PORTFOLIO</a></p>
+    </div>
+    <div class="navbar-right">
+        <ul>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+    </div>
+  </nav>
+
   <div class="container">
-    <ul style="margin-top: 0;">
-      <li>Coding</li>
-      <li>Gaming</li>
-      <li>Photography</li>
-    </ul>
-  </div>
-  <h2 style="margin-bottom: 10px;">EDUCATIONAL QUALIFICATIONS</h2>
-  <table style="margin-top: 0;">
-    <tr>
-      <th>Degree Name</th>
-      <th>Board/University</th>
-      <th>GPA</th>
-    </tr>
-    <tr>
-      <td>O levels</td>
-      <td>Cambridge University</td>
-      <td>4.14</td>
-    </tr>
-    <tr>
-      <td>A levels</td>
-      <td>Cambridge University</td>
-      <td>5.0</td>
-    </tr>
-  </table><br><br>
-  <p style="margin-bottom: 10px;">SIGNATURE</p>
-  <hr style="margin-top: 0;">
-  <img id="signature-img" src="/img/signature_transparent.png" width="128px" height="72px">
-  <div id="info">
-    <p style="margin-bottom: 0;">YASEEN AAR RAHMAN</p>
-    <p style="margin: 0;">Undergraduate student || Computer Science || BRAC University</p>
-    <div class="links">
-      <a href="https://www.github.com/zephyr73">Github</a>
-      <p id="separator"> | </p>
-      <a href="https://www.facebook.com/tasrif.zephyr73">Facebook</a>
-      <p id="separator"> | </p>
-      <a href="https://www.twitter.com/Zephyr73_">Twitter</a>
+    <h1>Welcome to my portfolio!</h1>
+    <p>This is where I showcase all my Photography, Ai Generations and random projects I make for fun</p>
+    <p>The website is still under development and will be updated. If you have suggestions please let me know on how to improve</p>
+    <div class="image-container">
+      <div class="image">
+        <img src="assets/photo.jpg">
+      </div>
+      <div class="image-description">
+        <h2> Photography</h2>
+        <p> Here, you'll find a curated collection of my favorite landscape and cityscape images. Each photo captures the essence of my travels and the beauty I see in everyday life.  </p>
+        <p>I’m not a professional, but I enjoy capturing the moments that catch my eye. Thanks for checking out my gallery! I hope you like these pictures as much as I enjoyed taking them.</p>
+        <p>I use my smartphone (Samsung Galaxy S22 Ultra) to take these photos and I use Adobe Lightroom to edit these pictures. I am still learning a lot about Photography and Photo editing</p>
+      </div>
+    </div>
+    <div class="image-container-right">
+      <div class="image-description-right">
+        <h2> AI Generations</h2>
+        <p> Here, you'll find a collection of my favorite AI generations.  </p>
+        <p>I love creating art using Stable diffusion 1.5, and I'm always looking for new ways to express my creativity.  </p>
+        <p>Here are some of my favorite AI generations. I hope you enjoy these creations as much as I enjoyed making them.</p>
+        <p> I am still learning a lot about AI and Stable diffusion and how to use plugins like OpenPose, ControlNet etc. </p>
+      </div>
+      <div class="image">
+        <img src="assets/ai.jpg">
+      </div>
     </div>
   </div>
 </body>
-
-</html>
