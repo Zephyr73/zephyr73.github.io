@@ -5,6 +5,10 @@
   --clr-navbar-bg: #0f0f0f;
   --clr-navbar-text: #cacaca;
   --clr-container-bg: #cacaca;
+  --clr-hamburger-bg: #cacaca;
+  --clr-off-screen-menu-txt: #cacaca;
+  --font-regular: JetBrains Mono;
+  --font-bold: JetBrains Mono Bold;
 }
 
 .dark {
@@ -13,6 +17,8 @@
   --clr-navbar-bg: #0f0f0f;
   --clr-navbar-text: #cacaca;
   --clr-container-bg: #cacaca;
+  --clr-hamburger-bg: #cacaca;
+  --clr-off-screen-menu-txt: #cacaca;
 }
 
 .midnight {
@@ -21,6 +27,8 @@
   --clr-navbar-bg: #0f0f0f;
   --clr-navbar-text: #cacaca;
   --clr-container-bg: #1B1B1B;
+  --clr-hamburger-bg: #cacaca;
+  --clr-off-screen-menu-txt: #cacaca;
 }
 
 .light {
@@ -29,6 +37,8 @@
   --clr-navbar-bg: #cacaca;
   --clr-navbar-text: #0f0f0f;
   --clr-container-bg: #cacaca;
+  --clr-hamburger-bg: #0f0f0f;
+  --clr-off-screen-menu-txt: #0f0f0f;
 }
 
 .catppuccin-dark {
@@ -37,6 +47,8 @@
   --clr-navbar-bg: #0f0f0f;
   --clr-navbar-text: #cdd6f4;
   --clr-container-bg: #1e1e2e;
+  --clr-hamburger-bg: #cdd6f4;
+  --clr-off-screen-menu-txt: #cdd6f4;
 } 
 
 html {
@@ -78,7 +90,7 @@ body {
 
 .navbar-left {
   white-space: nowrap;
-  font-family: Iosevka Webfont;
+  font-family: var(--font-regular);
   font-weight: bold;
 }
 
@@ -91,13 +103,13 @@ body {
 .navbar-left a, .navbar-right a, .dropdown-content a {
   color: var(--clr-navbar-text);
   text-decoration: none;
-  font-family: Iosevka Webfont;
+  font-family: var(--font-regular);
 }
 
 .navbar-left a{
   color: var(--clr-navbar-text);
   text-decoration: none;
-  font-family: Iosevka Webfont Bold;
+  font-family: var(--font-bold);
 }
 
 .navbar-right {
@@ -181,6 +193,7 @@ body {
 /* Container Styles */
 .container {
   background-color: var(--clr-container-bg);
+  outline: 1px solid var(--clr-navbar-text);
   border-radius: 0;
   box-sizing: border-box;
   padding: 20px;
@@ -217,13 +230,13 @@ body {
 
 /* Text Styles */
 h1, h2, h3 {
-  font-family: Iosevka Webfont Bold;
+  font-family: var(--font-bold);
   color: var(--clr-body-text);
   text-align: center;
 }
 
 p {
-  font-family: Iosevka Webfont;
+  font-family: var(--font-regular);
   text-align: center;
   padding: 0 10%;
   font-size: 16px;
@@ -233,7 +246,7 @@ p {
 ul {
   display: inline-block;
   text-align: center;
-  font-family: Iosevka Webfont;
+  font-family: var(--font-regular);
   font-size: 16px;
   font-weight: 300;
   margin: 0;
@@ -242,7 +255,7 @@ ul {
 
 /* Table Styles */
 table, th, td {
-  font-family: Iosevka Webfont;
+  font-family: var(--font-regular);
   border: 2px solid var(--clr-body-text);
   border-collapse: collapse;
   padding: 6px 12px;
@@ -282,7 +295,7 @@ hr {
 }
 
 a {
-  font-family: Iosevka Webfont;
+  font-family: var(--font-regular);
   font-weight: 300;
   text-decoration: none;
 }
@@ -292,7 +305,7 @@ a {
 }
 
 .links a {
-  font-family: Iosevka Webfont;
+  font-family: var(--font-regular);
   font-weight: 300;
   color: var(--clr-body-text);
   text-decoration: none;
@@ -318,6 +331,13 @@ a {
   font-style: normal;
   font-weight: normal;
   src: url(woff2/JetBrainsMono-Regular.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: JetBrains Mono Bold;
+  font-style: normal;
+  font-weight: bold;
+  src: url(woff2/JetBrainsMono-Bold.woff2) format('woff2');
 }
 
 /* Image Container Styles */
@@ -362,6 +382,7 @@ a {
   margin: 0;
   padding: 0;
   padding-left: 10px;
+  padding-right : 10px;
   text-align: left;
 }
 
@@ -393,14 +414,16 @@ a {
   margin: 5px auto;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
-  background-color: var(--clr-body-text);
+  background-color: var(--clr-hamburger-bg);
 }
 
 .theme-selector > fieldset{
   border: 0;
 }
 
+/* General Layout for Mobile */
 @media(max-width: 768px) {
+
   .hamburger {
     display: block;
   }
@@ -419,15 +442,15 @@ a {
   }
   .nav-item {
     opacity: 1;
-    transition: opacity 0.5s ease;
   }
+
   .off-screen-menu ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
   .off-screen-menu a{
-    color: var(--clr-body-text);
+    color: var(--clr-off-screen-menu-txt);
   }
   .off-screen-menu {
     z-index: 2;
@@ -451,6 +474,7 @@ a {
   .off-screen-menu.active {
     right: 0;
     margin: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
 
   .off-screen-menu li {
@@ -459,20 +483,17 @@ a {
 
 
   .theme-options {
+    position: relative;
     display: flex;
     flex-direction: column;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    pointer-events: none; /* Prevent interactions when hidden */
   }
 
   li.theme-options {
     margin: 0;
   }
 
-  .theme-options.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
   .hidden {
     opacity: 0;
     pointer-events: none;

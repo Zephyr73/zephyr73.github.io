@@ -1,6 +1,13 @@
+// Constants
 const hamMenu = document.querySelector(".hamburger");
 const offScreenMenu = document.querySelector(".off-screen-menu");
 const dropdown = document.querySelector("#theme-menu.dropdown-content");
+const themeOptions = document.querySelectorAll(".dropdown-content a");
+const themeSwitchHam = document.getElementById("theme-switch-ham");
+const navItems = document.querySelectorAll(".nav-item");  // Select all nav items
+const themeOptionsHam = document.querySelector(".theme-options");  // Theme options container
+
+let themeVisible = false;
 
 // Toggle hamburger menu
 hamMenu.addEventListener("click", () => {
@@ -20,9 +27,6 @@ window.addEventListener("click", function(event) {
     }
 });
 
-// Theme switching for the dropdown
-const themeOptions = document.querySelectorAll(".dropdown-content a");
-
 // Load saved theme from localStorage
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme) {
@@ -41,12 +45,6 @@ themeOptions.forEach(option => {
 });
 
 // Toggle between showing nav items and theme options in hamburger menu (for mobile)
-const themeSwitchHam = document.getElementById("theme-switch-ham");
-const navItems = document.querySelectorAll(".nav-item");  // Select all nav items
-const themeOptionsHam = document.querySelector(".theme-options");  // Theme options container
-
-let themeVisible = false;
-
 themeSwitchHam.addEventListener("click", function() {
     if (themeVisible) {
         // Show navigation buttons and hide theme options
@@ -57,7 +55,28 @@ themeSwitchHam.addEventListener("click", function() {
         navItems.forEach(item => item.style.display = "none");
         themeOptionsHam.style.display = "block";
         themeOptionsHam.style.opacity = "1";
+        themeOptionsHam.style.pointerEvents = "auto";
     }
-
     themeVisible = !themeVisible;
+});
+
+// Apply the selected theme from hamburger menu
+const themeOptionsHamLinks = document.querySelectorAll(".theme-options a");
+themeOptionsHamLinks.forEach(option => {
+    option.addEventListener("click", function(event) {
+        const selectedTheme = event.target.getAttribute("data-theme");
+
+        if (selectedTheme) {
+            document.body.className = selectedTheme; // Set the body class to the selected theme
+            // Save the selected theme in localStorage
+            localStorage.setItem('theme', selectedTheme);
+
+            // Hide the theme options in hamburger menu
+            themeOptionsHam.style.display = "none";
+            themeVisible = false; // Update visibility state
+            navItems.forEach(item => item.style.display = "block"); // Show nav items
+        } else {
+            console.error("No theme found in data-theme attribute.");
+        }
+    });
 });
