@@ -229,6 +229,10 @@ body {
 }
 
 /* Text Styles */
+.warning {
+  color: #ff0000;
+}
+
 h1, h2, h3 {
   font-family: var(--font-bold);
   color: var(--clr-body-text);
