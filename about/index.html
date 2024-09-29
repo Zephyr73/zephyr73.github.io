@@ -7,10 +7,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>My Profile</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="/style.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body id = "home" class="">
+<body id = "about" class="">
   <div class="off-screen-menu">
     <ul>
       <li class="nav-item"><a href="/index.html">Home</a></li>
@@ -62,34 +62,51 @@
   </nav>
 
   <div class="container">
-    <h1>Welcome to my portfolio!</h1>
-    <p>This is where I showcase all my Photography, Ai Generations and random projects I make for fun</p>
-    <p class="warning">The website is still under development and will be updated. If you have suggestions please let me know on how to improve</p>
-    <div class="image-container">
-      <div class="image">
-        <img src="assets/photo.jpg">
-      </div>
-      <div class="image-description">
-        <h2> Photography</h2>
-        <p> Here, you'll find a curated collection of my favorite landscape and cityscape images. Each photo captures the essence of my travels and the beauty I see in everyday life.  </p>
-        <p>I’m not a professional, but I enjoy capturing the moments that catch my eye. Thanks for checking out my gallery! I hope you like these pictures as much as I enjoyed taking them.</p>
-        <p>I use my smartphone (Samsung Galaxy S22 Ultra) to take these photos and I use Adobe Lightroom to edit these pictures. I am still learning a lot about Photography and Photo editing</p>
-      </div>
+    <img id="profile" src="/img/profile.png" alt="Profile Picture"><br>
+    <div style="height: 25px;"></div>
+    <h1>Zephyr</h1>
+    <h3 style="margin-bottom: 10px;">ABOUT ME</h2>
+    <p style="margin-top: 0;">I am Zephyr, a student of Laguardia Community College. I have completed my O and A levels which was taken by Cambridge University. I have interests in new technologies, software development and game development</p>
+    <h3 style="margin-bottom: 10px;">HOBBIES</h2>
+    <div class="hobbies-container">
+      <ul style="margin-top: 0;">
+        <li>Coding</li>
+        <li>Gaming</li>
+        <li>Photography</li>
+      </ul>
     </div>
-    <div class="image-container-right">
-      <div class="image-description-right">
-        <h2> AI Generations</h2>
-        <p> Here, you'll find a collection of my favorite AI generations.  </p>
-        <p>I love creating art using Stable diffusion 1.5, and I'm always looking for new ways to express my creativity.  </p>
-        <p> I am still learning a lot about AI and Stable diffusion and how to use plugins like OpenPose, ControlNet etc. </p>
-        <p> I hope you like these images as much as I enjoyed making them. </p>
-      </div>
-      <div class="image">
-        <img src="assets/ai.jpg">
-      </div>
+    <h3 style="margin-bottom: 10px;">EDUCATIONAL QUALIFICATIONS</h2>
+    <table style="margin-top: 0;">
+      <tr>
+        <th>Degree Name</th>
+        <th>Board/University</th>
+        <th>GPA</th>
+      </tr>
+      <tr>
+        <td>O levels</td>
+        <td>Cambridge University</td>
+        <td>4.14</td>
+      </tr>
+      <tr>
+        <td>A levels</td>
+        <td>Cambridge University</td>
+        <td>5.0</td>
+      </tr>
+    </table><br><br>
+    <p style="margin-bottom: 10px;">SIGNATURE</p>
+    <hr style="margin-top: 0;">
+    <img id="signature-img" src="/img/signature_transparent.png" alt="Signature" width="128px" height="72px">
+    <div id="info">
+      <div class="links">
+        <a href="https://www.github.com/zephyr73">Github</a>
+        <span id="separator"> | </span>
+        <a href="https://www.twitter.com/Zephyr73_">Twitter</a>
+        <span id="separator"> | </span>
+        <a href="https://www.pixiv.net/en/users/28541154">Pixiv</a>
+      </div>      
     </div>
   </div>
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
 </body>
 
 </html>

@@ -52,6 +52,7 @@
 } 
 
 html {
+  scroll-behavior: smooth;
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
@@ -284,6 +285,10 @@ hr {
   width: 50%;
 }
 
+#about h3 {
+  text-align: center;
+}
+
 #signature-img {
   display: block;
   margin: 0 auto;
@@ -299,9 +304,10 @@ hr {
 }
 
 a {
+  color: var(--clr-body-text);
   font-family: var(--font-regular);
   font-weight: 300;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .links {
@@ -315,6 +321,48 @@ a {
   text-decoration: none;
   margin: 0 10px;
 }
+
+#projects p{
+  text-align: left;
+  padding: 0 5%;
+}
+
+#projects h1 {
+  text-align: left;
+  padding: 0 5%;
+}
+
+#wallpapersync h1, h2, h3, p {
+  text-align: left;
+}
+
+#wallpapersync p {
+  text-indent: 40px;
+  padding: 0;
+  line-height: 30px;
+}
+
+#wallpapersync .code-snippet {
+  position: relative;
+  outline: var(--clr-body-text) 1px solid;
+}
+
+#wallpapersync code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  outline: var(--clr-body-text) 1px solid;
+  padding: 3px 10px;
+}
+
+#wallpapersync .code-snippet code {
+  outline: none;
+}
+
+#wallpapersync .code-snippet pre {
+  padding: 10px 20px; 
+  line-height: 1.75;
+}  
+
 
 /* Font Faces */
 @font-face {
@@ -345,6 +393,17 @@ a {
 }
 
 /* Image Container Styles */
+#wallpapersync img{
+  margin-top: 50px;
+  margin-bottom: 50px;
+  outline: 1px solid var(--clr-body-text);
+  display: block;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 0 20px #00000s04d;
+}
+
 .image-container {
   padding-top: 35px;
   display: flex;

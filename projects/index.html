@@ -7,16 +7,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>My Profile</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link href="/style.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="">
+<body id = "projects" class="">
   <div class="off-screen-menu">
     <ul>
-      <li class="nav-item"><a href="index.html">Home</a></li>
-      <li class="nav-item"><a href="gallery.html">Gallery</a></li>
-      <li class="nav-item"><a href="projects.html">Projects</a></li>
-      <li class="nav-item"><a href="about.html">About</a></li>
+      <li class="nav-item"><a href="/index.html">Home</a></li>
+      <li class="nav-item"><a href="/gallery">Gallery</a></li>
+      <li class="nav-item"><a href="/projects">Projects</a></li>
+      <li class="nav-item"><a href="/about">About</a></li>
       <li class="theme-options" style="display: none;">
         <ul>
           <li><a href="#" data-theme="light">Light</a></li>
@@ -35,14 +35,14 @@
 
   <nav class="navbar">
     <div class="navbar-left">
-        <p><a href="index.html">MY PORTFOLIO</a></p>
+        <p><a href="/index.html">MY PORTFOLIO</a></p>
     </div>
     <div class="navbar-right">
         <div class="nav-links">
           <ul>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/about">About</a></li>
           </ul>
           <button id="theme-switch"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/></svg>
           </button>
@@ -62,51 +62,13 @@
   </nav>
 
   <div class="container">
-    <img id="profile" src="/img/profile.png" alt="Profile Picture"><br>
-    <div style="height: 25px;"></div>
-    <h1>Zephyr</h1>
-    <h3 style="margin-bottom: 10px;">ABOUT ME</h2>
-    <p style="margin-top: 0;">I am Zephyr, a student of Laguardia Community College. I have completed my O and A levels which was taken by Cambridge University. I have interests in new technologies, software development and game development</p>
-    <h3 style="margin-bottom: 10px;">HOBBIES</h2>
-    <div class="hobbies-container">
-      <ul style="margin-top: 0;">
-        <li>Coding</li>
-        <li>Gaming</li>
-        <li>Photography</li>
-      </ul>
-    </div>
-    <h3 style="margin-bottom: 10px;">EDUCATIONAL QUALIFICATIONS</h2>
-    <table style="margin-top: 0;">
-      <tr>
-        <th>Degree Name</th>
-        <th>Board/University</th>
-        <th>GPA</th>
-      </tr>
-      <tr>
-        <td>O levels</td>
-        <td>Cambridge University</td>
-        <td>4.14</td>
-      </tr>
-      <tr>
-        <td>A levels</td>
-        <td>Cambridge University</td>
-        <td>5.0</td>
-      </tr>
-    </table><br><br>
-    <p style="margin-bottom: 10px;">SIGNATURE</p>
-    <hr style="margin-top: 0;">
-    <img id="signature-img" src="/img/signature_transparent.png" alt="Signature" width="128px" height="72px">
-    <div id="info">
-      <div class="links">
-        <a href="https://www.github.com/zephyr73">Github</a>
-        <span id="separator"> | </span>
-        <a href="https://www.twitter.com/Zephyr73_">Twitter</a>
-        <span id="separator"> | </span>
-        <a href="https://www.pixiv.net/en/users/28541154">Pixiv</a>
-      </div>      
-    </div>
+    <h1><a href="/projects/wallpapersync/">WallpaperSync:</a> </h1>
+    <p style="text-align: left;"> WallpaperSync is a Python script that dynamically adjusts the color of connected RGB LED devices based on your desktop wallpaper using OpenRGB. The script continuously monitors the system wallpaper for changes and updates the LED colors to match the most prominent color in the wallpaper. This ensures a visually cohesive environment that aligns with your desktop's aesthetics.
+    </p>
+    <p>This is my second big project which I gave a lot of time working on (first project is private for now). I made it free to use for people and hopefully it will be useful to you guys. If there is any problems or recommedations, please let me know!</p>
+    <p>GitHub Link: <a href="https://github.com/zephyr73/WallpaperSync">https://github.com/zephyr73/WallpaperSync</a></p>
   </div>
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
 </body>
 
 </html>
