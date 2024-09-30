@@ -350,7 +350,7 @@ p {
 		padding-left: 0;
 	}
 	.image-description h2, .image-description-right h2 {
-		text-align: center;
+		text-align: left;
 		height: auto;
 		margin: 0;
 		padding-left: 10px;
@@ -360,7 +360,7 @@ p {
 		padding: 0;
 		padding-left: 10px;
 		padding-right : 10px;
-		text-align: center;
+		text-align: left;
 	}
 	.image-container-right {
 		padding-top: 35px;
@@ -563,6 +563,7 @@ p {
 			padding-top: 35px;
 			p, h2 {
 				padding: 0;
+				text-align: center;
 			}
 		}
 		.image-description-right {
@@ -570,6 +571,7 @@ p {
 			padding-top: 35px;
 			p, h2 {
 				padding: 0;
+				text-align: center;
 			}
 		}
 	}
