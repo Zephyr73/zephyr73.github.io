@@ -4,8 +4,8 @@ const offScreenMenu = document.querySelector(".off-screen-menu");
 const dropdown = document.querySelector("#theme-menu.dropdown-content");
 const themeOptions = document.querySelectorAll(".dropdown-content a");
 const themeSwitchHam = document.getElementById("theme-switch-ham");
-const navItems = document.querySelectorAll(".nav-item");  // Select all nav items
-const themeOptionsHam = document.querySelector(".theme-options");  // Theme options container
+const navItems = document.querySelectorAll(".nav-item");
+const themeOptionsHam = document.querySelector(".theme-options");
 
 let themeVisible = false;
 
@@ -16,12 +16,12 @@ hamMenu.addEventListener("click", () => {
 });
 
 // Theme dropdown toggle
-document.getElementById("theme-switch").addEventListener("click", function() {
+document.getElementById("theme-switch").addEventListener("click", () => {
     dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 });
 
 // Close theme dropdown when clicking outside
-window.addEventListener("click", function(event) {
+window.addEventListener("click", (event) => {
     if (!event.target.closest("#theme-switch") && !event.target.closest(".dropdown-content")) {
         dropdown.style.display = "none";
     }
@@ -35,48 +35,41 @@ if (savedTheme) {
 
 // Apply the selected theme
 themeOptions.forEach(option => {
-    option.addEventListener("click", function(event) {
+    option.addEventListener("click", (event) => {
         const selectedTheme = event.target.getAttribute("data-theme");
-        document.body.className = selectedTheme; // Set the body class to the selected theme
-
-        // Save the selected theme in localStorage
-        localStorage.setItem('theme', selectedTheme);
+        if (selectedTheme) {
+            document.body.className = selectedTheme;
+            localStorage.setItem('theme', selectedTheme);
+        }
     });
 });
 
-// Toggle between showing nav items and theme options in hamburger menu (for mobile)
-themeSwitchHam.addEventListener("click", function() {
+// Toggle between showing nav items and theme options in hamburger menu
+themeSwitchHam.addEventListener("click", () => {
+    themeVisible = !themeVisible;
+
     if (themeVisible) {
-        // Show navigation buttons and hide theme options
-        themeOptionsHam.style.display = "none";
-        navItems.forEach(item => item.style.display = "block");
-    } else {
-        // Hide navigation buttons and show theme options
         navItems.forEach(item => item.style.display = "none");
         themeOptionsHam.style.display = "block";
         themeOptionsHam.style.opacity = "1";
         themeOptionsHam.style.pointerEvents = "auto";
+    } else {
+        themeOptionsHam.style.display = "none";
+        navItems.forEach(item => item.style.display = "block");
     }
-    themeVisible = !themeVisible;
 });
 
 // Apply the selected theme from hamburger menu
 const themeOptionsHamLinks = document.querySelectorAll(".theme-options a");
 themeOptionsHamLinks.forEach(option => {
-    option.addEventListener("click", function(event) {
+    option.addEventListener("click", (event) => {
         const selectedTheme = event.target.getAttribute("data-theme");
-
         if (selectedTheme) {
-            document.body.className = selectedTheme; // Set the body class to the selected theme
-            // Save the selected theme in localStorage
+            document.body.className = selectedTheme;
             localStorage.setItem('theme', selectedTheme);
-
-            // Hide the theme options in hamburger menu
             themeOptionsHam.style.display = "none";
-            themeVisible = false; // Update visibility state
-            navItems.forEach(item => item.style.display = "block"); // Show nav items
-        } else {
-            console.error("No theme found in data-theme attribute.");
+            themeVisible = false;
+            navItems.forEach(item => item.style.display = "block");
         }
     });
 });
