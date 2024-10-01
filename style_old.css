@@ -401,7 +401,7 @@ a {
   width: 75%;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 0 20px #00000s04d;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .image-container {
@@ -422,7 +422,7 @@ a {
   display: flex;
   position: relative;
   width: 100%;
-  box-shadow: 0 0 10px #00000s04d;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .image-description, .image-description-right {
