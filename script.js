@@ -73,3 +73,37 @@ themeOptionsHamLinks.forEach(option => {
         }
     });
 });
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+function updateWidth() {
+    const container = document.querySelector('.container');
+    const navbar = document.querySelector('.navbar');
+
+    // Exit if not on the gallery page
+    if (!window.location.pathname.includes('gallery')) return;
+
+    const isDesktop = window.innerWidth > 768;
+    const newWidth = isDesktop ? "calc(100vw - 10%)" : "100vw";
+
+    // Set transition and width for both elements
+    container.style.transition = navbar.style.transition = "max-width 0.5s ease";
+    container.style.maxWidth = isDesktop ? newWidth : '100vw';
+    navbar.style.maxWidth = newWidth;
+
+    // Add click event listeners to links
+    document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', event => {
+            if (!link.href.includes('gallery')) {
+                event.preventDefault();
+                container.style.maxWidth = navbar.style.maxWidth = "800px";
+                setTimeout(() => window.location.href = link.href, 500);
+            }
+        });
+    });
+}
+
+// Execute on load and on resize
+window.onload = updateWidth;
+window.addEventListener('resize', updateWidth);

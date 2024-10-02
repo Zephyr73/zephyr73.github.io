@@ -106,7 +106,9 @@ body {
     padding-bottom: 0;
 	transition: 0.3s ease;
 }
-
+.hidden {
+    opacity: 0;
+}
 /* Navbar Styles */
 .off-screen-menu {
     display: none;
@@ -279,7 +281,9 @@ td {
     position: relative;
     z-index: 1;
     margin-top: 100px;
+    transition: max-width 0.5s ease;
 }
+
 .hobbies-container {
     text-align: center;
 }
@@ -333,6 +337,7 @@ p {
 
 #home .container .image {
     width: 45%;
+    max-height: fit-content;
     box-sizing: border-box;
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
 }
@@ -505,6 +510,57 @@ p {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
 }
 
+#gallery .container nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gallery .container nav a {
+    color: var(--clr-body-text);
+    text-decoration: none;
+}
+
+#gallery .container nav ul {
+    display: flex;
+    list-style-type: none;
+    gap: 20px;
+    padding-inline-start: 0;
+}
+
+#gallery .container .photography-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+#gallery .container .photography-container .column {
+    display: flex;
+    flex-direction: column;
+    width: 32.5%;
+    align-items: center;
+    gap: 20px;
+}
+
+#gallery .container .photography-container .column img {
+    width: 100%;
+    object-fit: cover;
+}
+
+#gallery .container .photography-container .column img:hover {
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.2) ;
+    transition: 0.4s ease;
+}
+
+#gallery .container .gallery-nav button {
+    background-color: transparent;
+    border: none;
+    color: var(--clr-body-text);
+    font-family: var(--font-regular);
+    font-size: 16px;
+    cursor: pointer;
+}
 
 @media(max-width: 768px) {
 
@@ -596,6 +652,7 @@ p {
 	}
 	.container {
 	  height: 100%;
+      max-width: 800px;
 	  padding-bottom: 30px; /* Ensure there's enough bottom padding */
 	}
 	#home .container .image-container {
@@ -671,4 +728,15 @@ p {
 	#wallpapersync .container p {
 		text-indent: 0;
 	}
+    #gallery .container .photography-container {
+        flex-direction: column;
+    }
+
+    #gallery .container .photography-container .column {
+        width: 100%;
+    }   
+
+    #gallery .container .gallery-nav {
+        font-size: 14px;
+    }
 }
