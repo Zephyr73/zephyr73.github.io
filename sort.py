@@ -126,5 +126,5 @@ def main(folder_path, html_path):
 
 if __name__ == "__main__":
     folder_path = r'img\gallery\photography'  # Change this to your image folder path
-    html_path = r'gallery\index_test.html'  # Change this to your HTML file path
+    html_path = r'gallery\index.html'  # Change this to your HTML file path
     main(folder_path, html_path)
