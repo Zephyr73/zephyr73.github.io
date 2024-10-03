@@ -74,9 +74,7 @@ themeOptionsHamLinks.forEach(option => {
     });
 });
 
-///////////////////////////////////////////////////////////////////////////////
-
-
+// Gallery Width
 function updateWidth() {
     const container = document.querySelector('.container');
     const navbar = document.querySelector('.navbar');
@@ -107,3 +105,107 @@ function updateWidth() {
 // Execute on load and on resize
 window.onload = updateWidth;
 window.addEventListener('resize', updateWidth);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.nav-button');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            buttons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to the clicked button
+            button.classList.add('active');
+        });
+    });
+});
+
+// Gallery Fade and Hide
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.nav-button');
+    const containers = {
+        Photography: document.querySelector('.photography-container'),
+        'AI-Generations': document.querySelector('.ai-container'),
+        Forza: document.querySelector('.forza-container')
+    };
+
+    const hideAllContainers = () => {
+        Object.values(containers).forEach(container => {
+            container.style.display = 'none';
+        });
+    };
+
+    const showContainerWithTransition = (container) => {
+        hideAllContainers();
+        container.style.display = 'flex';
+        container.style.opacity = '0';
+
+        setTimeout(() => {
+            container.style.opacity = '1';
+        }, 10);
+    };
+
+    // Show the photography container by default
+    showContainerWithTransition(containers.Photography);
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const containerToShow = containers[button.textContent];
+            if (containerToShow) {
+                showContainerWithTransition(containerToShow);
+            }
+        });
+    });
+});
+
+// AI button redirect
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.nav-button');
+    const containers = {
+        'AI-Generations': document.querySelector('.ai-container'),
+        Photography: document.querySelector('.photography-container'),
+        Forza: document.querySelector('.forza-container')
+    };
+
+    const hideAll = () => {
+        Object.values(containers).forEach(container => {
+            container.style.display = 'none';
+            container.style.opacity = '0';
+        });
+    };
+
+    const setActive = (activeButton) => {
+        buttons.forEach(button => button.classList.remove('active'));
+        activeButton.classList.add('active');
+    };
+
+    const showContainer = (containerName) => {
+        hideAll();
+        const container = containers[containerName];
+        container.style.display = 'flex';
+        container.style.opacity = '0';
+        setTimeout(() => {
+            container.style.opacity = '1';
+        }, 10);
+        setActive(Array.from(buttons).find(button => button.textContent === containerName));
+    };
+
+    // Show container based on URL hash
+    const hash = window.location.hash;
+    if (hash === '#ai-container') {
+        showContainer('AI-Generations');
+    } else {
+        showContainer('Photography');
+    }
+
+    // Handle click events on buttons
+    buttons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            // Prevent default link behavior
+            event.preventDefault();
+            showContainer(button.textContent);
+        });
+    });
+});
