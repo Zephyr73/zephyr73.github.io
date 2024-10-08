@@ -113,6 +113,42 @@ def generate_new_columns_html(images, is_ai=False, is_forza=False):
     return '\n'.join(new_html)
 
 
+def generate_horizontal_columns_html(images, is_ai=False, is_forza=False):
+    total_images = len(images)
+    columns = 3
+    new_html = [[] for _ in range(columns)]  # Create a list of lists to hold each column's images
+
+    for index, img_path in enumerate(images):
+        column_index = index % columns  # Alternate between columns
+        if is_ai:
+            new_html[column_index].append(
+                f'        <img src="/img/gallery/ai/{os.path.basename(img_path)}" '
+                f'alt="image {os.path.basename(img_path)[:-4]}">'
+            )
+        elif is_forza:
+            new_html[column_index].append(
+                f'        <img src="/img/gallery/forza/{os.path.basename(img_path)}" '
+                f'alt="image {os.path.basename(img_path)[:-4]}">'
+            )
+        else:
+            new_html[column_index].append(
+                f'        <img src="/img/gallery/photography/{os.path.basename(img_path)}" '
+                f'alt="image {os.path.basename(img_path)[:-4]}">'
+            )
+
+    final_html = []
+    for col_index in range(columns):
+        if col_index == 0:
+            final_html.append('<div class="column">')  # No indentation for the first column
+        else:
+            final_html.append('      <div class="column">')  # 6 spaces indentation for other columns
+
+        final_html.extend(new_html[col_index])
+        final_html.append('      </div>')  # 6 spaces indentation for closing divs
+
+    return '\n'.join(final_html)
+
+
 def replace_gallery_columns(html_path, new_columns_html, container_class):
     try:
         with open(html_path, 'r', encoding='utf-8') as file:
@@ -146,30 +182,48 @@ def replace_gallery_columns(html_path, new_columns_html, container_class):
         print(f"Error updating HTML file: {e}")
 
 
-
-def main(folder_photography, folder_ai, folder_forza, html_path):
+def main(folder_photography, folder_ai, folder_forza, html_path, layout="default"):
     # Process photography images
     photography_images = sort_images_by_date(folder_photography)
     new_photography_images = rename_images(photography_images)  # Get the new image names after renaming
-    new_photography_columns_html = generate_new_columns_html(new_photography_images, is_ai=False)
+
+    if layout == "horizontal":
+        new_photography_columns_html = generate_horizontal_columns_html(new_photography_images, is_ai=False)
+    else:
+        new_photography_columns_html = generate_new_columns_html(new_photography_images, is_ai=False)
+
     replace_gallery_columns(html_path, new_photography_columns_html, "photography-container")
 
     # Process AI images
     ai_images = sort_images_by_modification_date(folder_ai)
     new_ai_images = rename_images(ai_images)  # Get the new image names after renaming
-    new_ai_columns_html = generate_new_columns_html(new_ai_images, is_ai=True)  # Pass is_ai=True for AI images
+
+    if layout == "horizontal":
+        new_ai_columns_html = generate_horizontal_columns_html(new_ai_images, is_ai=True)  # Pass is_ai=True for AI images
+    else:
+        new_ai_columns_html = generate_new_columns_html(new_ai_images, is_ai=True)  # Pass is_ai=True for AI images
+
     replace_gallery_columns(html_path, new_ai_columns_html, "ai-container")
 
     # Process Forza images
     forza_images = sort_images_by_modification_date(folder_forza)
     new_forza_images = rename_images(forza_images)  # Get the new image names after renaming
-    new_forza_columns_html = generate_new_columns_html(new_forza_images, is_forza=True)  # Pass is_forza=True for Forza images
+
+    if layout == "horizontal":
+        new_forza_columns_html = generate_horizontal_columns_html(new_forza_images, is_forza=True)  # Pass is_forza=True for Forza images
+    else:
+        new_forza_columns_html = generate_new_columns_html(new_forza_images, is_forza=True)  # Pass is_forza=True for Forza images
+
     replace_gallery_columns(html_path, new_forza_columns_html, "forza-container")
 
 
 if __name__ == "__main__":
-    folder_photography = r'img\gallery\photography'  # Change this to your photography folder path
-    folder_ai = r'img\gallery\ai'  # Change this to your AI folder path
-    folder_forza = r'img\gallery\forza'  # Change this to your Forza folder path
-    html_path = r'gallery\index.html'  # Change this to your HTML file path
-    main(folder_photography, folder_ai, folder_forza, html_path)
+    folder_photography = r'img/gallery/photography'
+    folder_ai = r'img/gallery/ai'
+    folder_forza = r'img/gallery/forza'
+    html_path = r'gallery/index.html'
+    
+    # Choose between "default" or "horizontal" layout
+    layout = "horizontal"
+    
+    main(folder_photography, folder_ai, folder_forza, html_path, layout)

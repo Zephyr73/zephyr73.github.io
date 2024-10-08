@@ -74,33 +74,30 @@ themeOptionsHamLinks.forEach(option => {
     });
 });
 
-// Gallery Width
 function updateWidth() {
-    const container = document.querySelector('.container');
-    const navbar = document.querySelector('.navbar');
-
-    // Exit if not on the gallery page
+    const [container, navbar] = [document.querySelector('.container'), document.querySelector('.navbar')];
     if (!window.location.pathname.includes('gallery')) return;
 
-    const isDesktop = window.innerWidth > 768;
-    const newWidth = isDesktop ? "calc(100vw - 10%)" : "100vw";
+    const newWidth = window.innerWidth > 768 ? "calc(100vw - 10%)" : "100vw";
+    [container, navbar].forEach(el => el.style.transition = "max-width 0.5s ease-in-out");
 
-    // Set transition and width for both elements
-    container.style.transition = navbar.style.transition = "max-width 0.5s ease";
-    container.style.maxWidth = isDesktop ? newWidth : '100vw';
-    navbar.style.maxWidth = newWidth;
+    requestAnimationFrame(() => [container, navbar].forEach(el => el.style.maxWidth = newWidth));
 
-    // Add click event listeners to links
     document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', event => {
+        link.addEventListener('click', e => {
             if (!link.href.includes('gallery')) {
-                event.preventDefault();
-                container.style.maxWidth = navbar.style.maxWidth = "800px";
+                e.preventDefault();
+                [container, navbar].forEach(el => el.style.maxWidth = "800px");
                 setTimeout(() => window.location.href = link.href, 500);
             }
         });
     });
 }
+
+// Trigger on page load and resize
+window.addEventListener('load', updateWidth);
+window.addEventListener('resize', updateWidth);
+
 
 // Execute on load and on resize
 window.onload = updateWidth;

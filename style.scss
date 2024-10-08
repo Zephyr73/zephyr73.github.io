@@ -370,7 +370,7 @@ p {
 #home .container {
     .image-container, .image-container-right {
         a, a:visited {
-            color: var(--clr-navbar-text);
+            color: var(--clr-body-text);
         }
         a:hover {
             text-decoration: none;
@@ -590,6 +590,8 @@ p {
 #gallery .container .photography-container .column img:hover {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.2) ;
     transition: 0.4s ease;
+    outline: var(--clr-body-text) 1px solid;
+    width: 103%;
 }
 
 
@@ -616,6 +618,8 @@ p {
 #gallery .container .ai-container .column img:hover {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.2) ;
     transition: 0.4s ease;
+    outline: var(--clr-body-text) 1px solid;
+    width: 103%
 }
 
 #gallery .container .forza-container {
@@ -641,6 +645,8 @@ p {
 #gallery .container .forza-container .column img:hover {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.2) ;
     transition: 0.4s ease;
+    outline: var(--clr-body-text) 1px solid;
+    width: 103%
 }
 
 @media(max-width: 768px) {
