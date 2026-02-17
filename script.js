@@ -127,18 +127,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const hideAllContainers = () => {
         Object.values(containers).forEach(container => {
-            container.style.display = 'none';
+            if (container) { // Check if the container is found
+                container.style.display = 'none';
+            } else {
+                console.warn('Container not found');
+            }
         });
     };
 
     const showContainerWithTransition = (container) => {
         hideAllContainers();
-        container.style.display = 'flex';
-        container.style.opacity = '0';
+        if (container) {
+            container.style.display = 'flex';
+            container.style.opacity = '0';
 
-        setTimeout(() => {
-            container.style.opacity = '1';
-        }, 10);
+            setTimeout(() => {
+                container.style.opacity = '1';
+            }, 10);
+        }
     };
 
     // Show the photography container by default
@@ -206,3 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+window.onload = function() {
+    const images = document.querySelectorAll('img.lazyload');
+    images.forEach(img => {
+        img.src = img.getAttribute('data-src');
+    });
+};

@@ -95,17 +95,17 @@ def generate_new_columns_html(images, is_ai=False, is_forza=False):
             if is_ai:
                 new_html.append(
                     f'        <img src="/img/gallery/ai/{os.path.basename(img_path)}" '
-                    f'alt="image {os.path.basename(img_path)[:-4]}">'
+                    f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
                 )  # AI images source path
             elif is_forza:
                 new_html.append(
                     f'        <img src="/img/gallery/forza/{os.path.basename(img_path)}" '
-                    f'alt="image {os.path.basename(img_path)[:-4]}">'
+                    f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
                 )  # Forza images source path
             else:
                 new_html.append(
                     f'        <img src="/img/gallery/photography/{os.path.basename(img_path)}" '
-                    f'alt="image {os.path.basename(img_path)[:-4]}">'
+                    f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
                 )  # Photography images source path
 
         new_html.append('      </div>')  # 6 spaces indentation for closing divs
@@ -123,17 +123,17 @@ def generate_horizontal_columns_html(images, is_ai=False, is_forza=False):
         if is_ai:
             new_html[column_index].append(
                 f'        <img src="/img/gallery/ai/{os.path.basename(img_path)}" '
-                f'alt="image {os.path.basename(img_path)[:-4]}">'
+                f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
             )
         elif is_forza:
             new_html[column_index].append(
                 f'        <img src="/img/gallery/forza/{os.path.basename(img_path)}" '
-                f'alt="image {os.path.basename(img_path)[:-4]}">'
+                f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
             )
         else:
             new_html[column_index].append(
                 f'        <img src="/img/gallery/photography/{os.path.basename(img_path)}" '
-                f'alt="image {os.path.basename(img_path)[:-4]}">'
+                f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
             )
 
     final_html = []
@@ -183,47 +183,34 @@ def replace_gallery_columns(html_path, new_columns_html, container_class):
 
 
 def main(folder_photography, folder_ai, folder_forza, html_path, layout="default"):
-    # Process photography images
-    photography_images = sort_images_by_date(folder_photography)
-    new_photography_images = rename_images(photography_images)  # Get the new image names after renaming
+    # Define the categories to process
+    categories = [
+        (folder_photography, "photography-container", True, False),
+        (folder_ai, "ai-container", False, True),
+        (folder_forza, "forza-container", False, False)
+    ]
 
-    if layout == "horizontal":
-        new_photography_columns_html = generate_horizontal_columns_html(new_photography_images, is_ai=False)
-    else:
-        new_photography_columns_html = generate_new_columns_html(new_photography_images, is_ai=False)
+    for folder, container, by_exif, is_ai in categories:
+        # Sort images based on EXIF data or modification date
+        images = sort_images_by_date(folder) if by_exif else sort_images_by_modification_date(folder)
+        new_images = rename_images(images)  # Rename images
 
-    replace_gallery_columns(html_path, new_photography_columns_html, "photography-container")
+        # Generate new HTML based on layout
+        if layout == "horizontal":
+            new_columns_html = generate_horizontal_columns_html(new_images, is_ai=is_ai, is_forza=not is_ai and container == "forza-container")
+        else:
+            new_columns_html = generate_new_columns_html(new_images, is_ai=is_ai, is_forza=not is_ai and container == "forza-container")
 
-    # Process AI images
-    ai_images = sort_images_by_modification_date(folder_ai)
-    new_ai_images = rename_images(ai_images)  # Get the new image names after renaming
-
-    if layout == "horizontal":
-        new_ai_columns_html = generate_horizontal_columns_html(new_ai_images, is_ai=True)  # Pass is_ai=True for AI images
-    else:
-        new_ai_columns_html = generate_new_columns_html(new_ai_images, is_ai=True)  # Pass is_ai=True for AI images
-
-    replace_gallery_columns(html_path, new_ai_columns_html, "ai-container")
-
-    # Process Forza images
-    forza_images = sort_images_by_modification_date(folder_forza)
-    new_forza_images = rename_images(forza_images)  # Get the new image names after renaming
-
-    if layout == "horizontal":
-        new_forza_columns_html = generate_horizontal_columns_html(new_forza_images, is_forza=True)  # Pass is_forza=True for Forza images
-    else:
-        new_forza_columns_html = generate_new_columns_html(new_forza_images, is_forza=True)  # Pass is_forza=True for Forza images
-
-    replace_gallery_columns(html_path, new_forza_columns_html, "forza-container")
+        replace_gallery_columns(html_path, new_columns_html, container)
 
 
 if __name__ == "__main__":
     folder_photography = r'img/gallery/photography'
     folder_ai = r'img/gallery/ai'
     folder_forza = r'img/gallery/forza'
-    html_path = r'gallery/index.html'
+    html_path = r'gallery/index_test.html'
     
     # Choose between "default" or "horizontal" layout
-    layout = "horizontal"
+    layout = "vertical"
     
     main(folder_photography, folder_ai, folder_forza, html_path, layout)

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="preload" href="/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/woff2/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Gallery</title>
+  <link href="/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body id="gallery" class="">
+  <div class="off-screen-menu">
+    <ul>
+      <li class="nav-item"><a href="/index.html">Home</a></li>
+      <li class="nav-item"><a href="/gallery">Gallery</a></li>
+      <li class="nav-item"><a href="/projects">Projects</a></li>
+      <li class="nav-item"><a href="/about">About</a></li>
+      <li class="theme-options" style="display: none;">
+        <ul>
+          <li><a href="#" data-theme="light">Light</a></li>
+          <li><a href="#" data-theme="dark">Dark</a></li>
+          <li><a href="#" data-theme="midnight">Midnight</a></li>
+          <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
+        </ul>
+      </li>
+    </ul>
+    <button id="theme-switch-ham">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed">
+        <path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/>
+      </svg>
+    </button>
+  </div>
+
+  <nav class="navbar">
+    <div class="navbar-left">
+        <p><a href="/index.html">MY PORTFOLIO</a></p>
+    </div>
+    <div class="navbar-right">
+        <div class="nav-links">
+          <ul>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/about">About</a></li>
+          </ul>
+          <button id="theme-switch"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/></svg>
+          </button>
+          <div class="dropdown-content" id="theme-menu">
+            <a href="#" data-theme="light">Light</a>
+            <a href="#" data-theme="dark">Dark</a>
+            <a href="#" data-theme="midnight">Midnight</a>
+            <a href="#" data-theme="catppuccin-dark">Catppuccin Dark</a>
+          </div>
+        </div>
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <nav class="gallery-nav">
+      <ul>
+        <li><button class="nav-button active">Photography</button></li>
+        <li><button class="nav-button">AI-Generations</button></li>
+        <li><button class="nav-button">Forza</button></li>
+      </ul>
+    </nav>
+    <div class="photography-container">
+      <div class="column">
+        <img src="/img/gallery/photography/1.jpg" alt="image 1" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/2.jpg" alt="image 2" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/3.jpg" alt="image 3" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/4.jpg" alt="image 4" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/5.jpg" alt="image 5" decoding="async" loading="lazy">
+      </div>
+      <div class="column">
+        <img src="/img/gallery/photography/6.jpg" alt="image 6" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/7.jpg" alt="image 7" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/8.jpg" alt="image 8" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/9.jpg" alt="image 9" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/10.jpg" alt="image 10" decoding="async" loading="lazy">
+      </div>
+      <div class="column">
+        <img src="/img/gallery/photography/11.jpg" alt="image 11" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/12.jpg" alt="image 12" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/13.jpg" alt="image 13" decoding="async" loading="lazy">
+        <img src="/img/gallery/photography/14.jpg" alt="image 14" decoding="async" loading="lazy">
+      </div>
+    </div>
+    <div class="ai-container" style="display: none;">
+      <div class="column">
+        <img src="/img/gallery/ai/1.jpg" alt="image 1" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/2.jpg" alt="image 2" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/3.jpg" alt="image 3" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/4.jpg" alt="image 4" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/5.jpg" alt="image 5" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/6.jpg" alt="image 6" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/7.jpg" alt="image 7" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/8.jpg" alt="image 8" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/9.jpg" alt="image 9" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/10.jpg" alt="image 10" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/11.jpg" alt="image 11" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/12.jpg" alt="image 12" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/13.jpg" alt="image 13" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/14.jpg" alt="image 14" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/15.jpg" alt="image 15" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/16.jpg" alt="image 16" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/17.jpg" alt="image 17" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/18.jpg" alt="image 18" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/19.jpg" alt="image 19" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/20.jpg" alt="image 20" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/21.jpg" alt="image 21" decoding="async" loading="lazy">
+      </div>
+      <div class="column">
+        <img src="/img/gallery/ai/22.jpg" alt="image 22" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/23.jpg" alt="image 23" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/24.jpg" alt="image 24" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/25.jpg" alt="image 25" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/26.jpg" alt="image 26" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/27.jpg" alt="image 27" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/28.jpg" alt="image 28" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/29.jpg" alt="image 29" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/30.jpg" alt="image 30" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/31.jpg" alt="image 31" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/32.jpg" alt="image 32" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/33.jpg" alt="image 33" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/34.jpg" alt="image 34" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/35.jpg" alt="image 35" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/36.jpg" alt="image 36" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/37.jpg" alt="image 37" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/38.jpg" alt="image 38" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/39.jpg" alt="image 39" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/40.jpg" alt="image 40" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/41.jpg" alt="image 41" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/42.jpg" alt="image 42" decoding="async" loading="lazy">
+      </div>
+      <div class="column">
+        <img src="/img/gallery/ai/43.jpg" alt="image 43" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/44.jpg" alt="image 44" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/45.jpg" alt="image 45" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/46.jpg" alt="image 46" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/47.jpg" alt="image 47" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/48.jpg" alt="image 48" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/49.jpg" alt="image 49" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/50.jpg" alt="image 50" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/51.jpg" alt="image 51" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/52.jpg" alt="image 52" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/53.jpg" alt="image 53" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/54.jpg" alt="image 54" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/55.jpg" alt="image 55" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/56.jpg" alt="image 56" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/57.jpg" alt="image 57" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/58.jpg" alt="image 58" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/59.jpg" alt="image 59" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/60.jpg" alt="image 60" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/61.jpg" alt="image 61" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/62.jpg" alt="image 62" decoding="async" loading="lazy">
+        <img src="/img/gallery/ai/63.jpg" alt="image 63" decoding="async" loading="lazy">
+      </div>
+    </div>
+    <div class="forza-container" style="display: none;">
+      <div class="column">
+        <img src="/img/gallery/forza/1.jpg" alt="image 1" decoding="async" loading="lazy">
+        <img src="/img/gallery/forza/2.jpg" alt="image 2" decoding="async" loading="lazy">
+        <img src="/img/gallery/forza/3.jpg" alt="image 3" decoding="async" loading="lazy">
+        <img src="/img/gallery/forza/4.jpg" alt="image 4" decoding="async" loading="lazy">
+      </div>
+      <div class="column">
+        <img src="/img/gallery/forza/5.jpg" alt="image 5" decoding="async" loading="lazy">
+        <img src="/img/gallery/forza/6.jpg" alt="image 6" decoding="async" loading="lazy">
+        <img src="/img/gallery/forza/7.jpg" alt="image 7" decoding="async" loading="lazy">
+        <img src="/img/gallery/forza/8.jpg" alt="image 8" decoding="async" loading="lazy">
+      </div>
+      <div class="column">
+        <img src="/img/gallery/forza/9.jpg" alt="image 9" decoding="async" loading="lazy">
+        <img src="/img/gallery/forza/10.jpg" alt="image 10" decoding="async" loading="lazy">
+        <img src="/img/gallery/forza/11.jpg" alt="image 11" decoding="async" loading="lazy">
+      </div>
+    </div>
+  <script src="/script.js"></script>
+</body>
+
+</html>
