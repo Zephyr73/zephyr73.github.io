@@ -1,0 +1,140 @@
+// =============================================================================
+// Navigation: site-nav (navbar + drawer + theme picker + hamburger)
+// =============================================================================
+
+.site-nav__drawer {
+  display: none;
+}
+
+.site-nav {
+  width: 100%;
+  max-width: 800px;
+  height: 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 36px;
+}
+
+.site-nav__brand {
+  white-space: nowrap;
+  font-family: var(--font-regular);
+  font-weight: bold;
+}
+
+.site-nav__brand p {
+  margin: 0;
+  padding: 0 15px;
+}
+
+.site-nav__brand a,
+.site-nav__actions a,
+.theme-picker__menu a {
+  color: var(--clr-navbar-text);
+  text-decoration: none;
+  font-family: var(--font-regular);
+}
+
+.site-nav__brand a {
+  font-family: var(--font-bold);
+}
+
+.site-nav__actions {
+  padding: 0 15px;
+}
+
+.site-nav__actions button {
+  align-items: center;
+}
+
+.site-nav__actions ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__actions li {
+  margin: 0 5px;
+}
+
+.site-nav__actions a:hover {
+  text-decoration: underline;
+}
+
+.site-nav__links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.site-nav__links ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__links li {
+  margin: 0 10px;
+}
+
+.theme-picker__menu {
+  display: none;
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: var(--clr-body-bg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  min-width: 160px;
+}
+
+.theme-picker__menu a {
+  outline: 1px solid var(--clr-navbar-text);
+  padding: 12px 16px;
+  display: block;
+}
+
+.theme-picker__menu a:hover {
+  background-color: var(--clr-container-bg);
+  color: var(--clr-body-text);
+}
+
+#theme-switch,
+#theme-switch-ham {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+#theme-switch svg,
+#theme-switch-ham svg {
+  fill: var(--clr-navbar-text);
+}
+
+.site-nav__hamburger,
+.hamburger {
+  display: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+}
+
+.hamburger__bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--clr-hamburger-bg);
+}
+
+.theme-selector > fieldset {
+  border: 0;
+}

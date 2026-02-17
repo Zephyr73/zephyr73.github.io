@@ -1,0 +1,87 @@
+// =============================================================================
+// Home page: feature rows (image + text)
+// =============================================================================
+
+.page--home .page__content h1,
+.page--home .page__content p {
+  text-align: center;
+}
+
+.page--home .page__content .feature-row {
+  padding-top: 35px;
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+.page--home .page__content .feature-row__media {
+  width: 45%;
+  max-height: fit-content;
+  box-sizing: border-box;
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
+}
+
+.page--home .page__content .feature-row__media img {
+  outline: 1px solid var(--clr-body-text);
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.page--home .page__content .feature-row__body {
+  gap: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: relative;
+}
+
+.page--home .page__content .feature-row:not(.feature-row--reverse) .feature-row__body {
+  padding-right: 0;
+}
+
+.page--home .page__content .feature-row--reverse .feature-row__body {
+  padding-left: 0;
+}
+
+.page--home .page__content {
+  .feature-row,
+  .feature-row--reverse {
+    a,
+    a:visited {
+      color: var(--clr-body-text);
+    }
+    a:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.page--home .page__content .feature-row__body h2 {
+  text-align: left;
+  height: auto;
+  margin: 0;
+  padding-left: 10px;
+}
+
+.page--home .page__content .feature-row__body p {
+  margin: 0;
+  padding: 0 10px;
+  text-align: left;
+}
+
+.page--home .page__content .feature-row--reverse {
+  padding-top: 35px;
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+.page--home .page__content .feature-row--reverse .feature-row__media {
+  margin-left: auto;
+  width: 45%;
+  box-sizing: border-box;
+}

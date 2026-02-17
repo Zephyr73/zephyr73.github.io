@@ -1,3 +1,15 @@
+"""
+Gallery image sort and HTML generator.
+
+Usage (run from repo root):
+  1. Add images to assets/img/gallery/photography, assets/img/gallery/ai, or assets/img/gallery/forza.
+  2. Run:  python src/scripts/sort.py
+
+This script:
+  - Sorts images (EXIF date for photography, modification date for ai/forza).
+  - Renames them to 1.jpg, 2.jpg, ... in place.
+  - Regenerates the three column blocks inside gallery/index.html for each section.
+"""
 import os
 import re
 from PIL import Image
@@ -69,19 +81,31 @@ def rename_images(images):
     return new_image_names  # Return the list of new names
 
 
+# Base URL for gallery images (must match site asset path)
+IMG_BASE = "/assets/img/gallery"
+
+
+def _img_src(img_path, subfolder):
+    """Return img src and alt for gallery image."""
+    basename = os.path.basename(img_path)
+    name = basename[:-4] if len(basename) > 4 else basename
+    return f'        <img src="{IMG_BASE}/{subfolder}/{basename}" alt="image {name}" decoding="async" loading="lazy">'
+
+
 def generate_new_columns_html(images, is_ai=False, is_forza=False):
     total_images = len(images)
     columns = 3
     base_images_per_column = total_images // columns
     extra_images = total_images % columns
     new_html = []
+    subfolder = "ai" if is_ai else ("forza" if is_forza else "photography")
 
     start_index = 0
     for col in range(columns):
         if col == 0:
-            new_html.append('<div class="column">')  # No indentation for the first column
+            new_html.append('      <div class="gallery-grid__column">')
         else:
-            new_html.append('      <div class="column">')  # 6 spaces indentation for other columns
+            new_html.append('      <div class="gallery-grid__column">')
 
         if col < extra_images:
             images_in_this_column = base_images_per_column + 1
@@ -92,92 +116,82 @@ def generate_new_columns_html(images, is_ai=False, is_forza=False):
         start_index += images_in_this_column
 
         for img_path in images_to_display:
-            if is_ai:
-                new_html.append(
-                    f'        <img src="/img/gallery/ai/{os.path.basename(img_path)}" '
-                    f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
-                )  # AI images source path
-            elif is_forza:
-                new_html.append(
-                    f'        <img src="/img/gallery/forza/{os.path.basename(img_path)}" '
-                    f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
-                )  # Forza images source path
-            else:
-                new_html.append(
-                    f'        <img src="/img/gallery/photography/{os.path.basename(img_path)}" '
-                    f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
-                )  # Photography images source path
+            new_html.append(_img_src(img_path, subfolder))
 
-        new_html.append('      </div>')  # 6 spaces indentation for closing divs
+        new_html.append('      </div>')
 
     return '\n'.join(new_html)
 
 
 def generate_horizontal_columns_html(images, is_ai=False, is_forza=False):
-    total_images = len(images)
     columns = 3
-    new_html = [[] for _ in range(columns)]  # Create a list of lists to hold each column's images
+    subfolder = "ai" if is_ai else ("forza" if is_forza else "photography")
+    new_html = [[] for _ in range(columns)]
 
     for index, img_path in enumerate(images):
-        column_index = index % columns  # Alternate between columns
-        if is_ai:
-            new_html[column_index].append(
-                f'        <img src="/img/gallery/ai/{os.path.basename(img_path)}" '
-                f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
-            )
-        elif is_forza:
-            new_html[column_index].append(
-                f'        <img src="/img/gallery/forza/{os.path.basename(img_path)}" '
-                f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
-            )
-        else:
-            new_html[column_index].append(
-                f'        <img src="/img/gallery/photography/{os.path.basename(img_path)}" '
-                f'alt="image {os.path.basename(img_path)[:-4]}" decoding="async" loading="lazy">'
-            )
+        column_index = index % columns
+        new_html[column_index].append(_img_src(img_path, subfolder))
 
     final_html = []
     for col_index in range(columns):
-        if col_index == 0:
-            final_html.append('<div class="column">')  # No indentation for the first column
-        else:
-            final_html.append('      <div class="column">')  # 6 spaces indentation for other columns
-
+        final_html.append('      <div class="gallery-grid__column">')
         final_html.extend(new_html[col_index])
-        final_html.append('      </div>')  # 6 spaces indentation for closing divs
+        final_html.append('      </div>')
 
     return '\n'.join(final_html)
 
 
+# Map internal category name to the BEM class used in gallery HTML
+_GALLERY_GRID_CLASS = {
+    "photography-container": "gallery-grid gallery-grid--photography",
+    "ai-container": "gallery-grid gallery-grid--ai",
+    "forza-container": "gallery-grid gallery-grid--forza",
+}
+
+
 def replace_gallery_columns(html_path, new_columns_html, container_class):
+    """
+    Replace the three column divs inside a gallery grid container.
+    Matches structure: <div class="gallery-grid gallery-grid--{section} [is-visible]"> ... columns ... </div>
+    """
     try:
         with open(html_path, 'r', encoding='utf-8') as file:
             content = file.read()
 
-        # Check if the container is for photography or for AI/Forza
+        grid_class = _GALLERY_GRID_CLASS.get(container_class)
+        if not grid_class:
+            print(f"Unknown container_class: {container_class}")
+            return
+
+        # Photography container may have is-visible; ai/forza do not
         if container_class == "photography-container":
-            # Regex for photography container
-            updated_content = re.sub(
-                rf'(<div class="{container_class}">\s*)(<div class="column">.*?</div>\s*'
-                r'<div class="column">.*?</div>\s*<div class="column">.*?</div>\s*)(</div>)',
-                rf'\1{new_columns_html}\n    \3',
-                content,
-                flags=re.DOTALL
-            )
+            opening = rf'<div class="{re.escape(grid_class)}(?:\s+is-visible)?">\s*'
         else:
-            # Regex for AI/Forza containers (with display:none)
-            updated_content = re.sub(
-                rf'(<div class="{container_class}" style="display: none;">\s*)(<div class="column">.*?</div>\s*'
-                r'<div class="column">.*?</div>\s*<div class="column">.*?</div>\s*)(</div>)',
-                rf'\1{new_columns_html}\n    \3',
-                content,
-                flags=re.DOTALL
-            )
+            opening = rf'<div class="{re.escape(grid_class)}">\s*'
+
+        # Match three gallery-grid__column divs (any content inside each)
+        pattern = (
+            r'(' + opening + r')'
+            r'(<div class="gallery-grid__column">.*?</div>\s*'
+            r'<div class="gallery-grid__column">.*?</div>\s*'
+            r'<div class="gallery-grid__column">.*?</div>)'
+            r'(\s*</div>)'
+        )
+        updated_content = re.sub(
+            pattern,
+            r'\1' + new_columns_html + r'\n    \3',
+            content,
+            count=1,
+            flags=re.DOTALL
+        )
+
+        if updated_content == content:
+            print(f"Warning: no match found in {html_path} for {container_class}. Check that the file uses class=\"gallery-grid gallery-grid--...\" and gallery-grid__column.")
+        else:
+            print(f"Updated {html_path} – {container_class}.")
 
         with open(html_path, 'w', encoding='utf-8') as file:
             file.write(updated_content)
-
-        print(f"Updated HTML file at {html_path} with new images in {container_class}.")
     except Exception as e:
         print(f"Error updating HTML file: {e}")
 
@@ -205,12 +219,13 @@ def main(folder_photography, folder_ai, folder_forza, html_path, layout="default
 
 
 if __name__ == "__main__":
-    folder_photography = r'img/gallery/photography'
-    folder_ai = r'img/gallery/ai'
-    folder_forza = r'img/gallery/forza'
-    html_path = r'gallery/index_test.html'
-    
-    # Choose between "default" or "horizontal" layout
-    layout = "vertical"
-    
+    # Run from repo root. Image folders live under assets/img/gallery/.
+    folder_photography = r'assets/img/gallery/photography'
+    folder_ai = r'assets/img/gallery/ai'
+    folder_forza = r'assets/img/gallery/forza'
+    html_path = r'gallery/index.html'
+
+    # "default" = fill columns in order; "horizontal" = distribute images round-robin across columns
+    layout = "default"
+
     main(folder_photography, folder_ai, folder_forza, html_path, layout)

@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build Output
+_site/
+.sass-cache/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.venv/
+.vscode/
+
+# Compiled Assets (Optional - if you want to commit them, remove these lines)
+# assets/css/

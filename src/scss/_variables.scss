@@ -1,0 +1,60 @@
+// =============================================================================
+// Variables & theme overrides
+// =============================================================================
+
+:root {
+  --clr-body-bg: #0f0f0f;
+  --clr-body-text: #0f0f0f;
+  --clr-navbar-bg: #0f0f0f;
+  --clr-navbar-text: #cacaca;
+  --clr-container-bg: #cacaca;
+  --clr-hamburger-bg: #cacaca;
+  --clr-off-screen-menu-txt: #cacaca;
+  --font-regular: JetBrains Mono;
+  --font-bold: JetBrains Mono Bold;
+  --clr-link-visited: #b71c1c;
+}
+
+.dark {
+  --clr-body-bg: #0f0f0f;
+  --clr-body-text: #0f0f0f;
+  --clr-navbar-bg: #0f0f0f;
+  --clr-navbar-text: #cacaca;
+  --clr-container-bg: #cacaca;
+  --clr-hamburger-bg: #cacaca;
+  --clr-off-screen-menu-txt: #cacaca;
+  --clr-link-visited: #b71c1c;
+}
+
+.midnight {
+  --clr-body-bg: #0f0f0f;
+  --clr-body-text: #cacaca;
+  --clr-navbar-bg: #0f0f0f;
+  --clr-navbar-text: #cacaca;
+  --clr-container-bg: #1b1b1b;
+  --clr-hamburger-bg: #cacaca;
+  --clr-off-screen-menu-txt: #cacaca;
+  --clr-link-visited: #b71c1c;
+}
+
+.light {
+  --clr-body-bg: #cacaca;
+  --clr-body-text: #0f0f0f;
+  --clr-navbar-bg: #cacaca;
+  --clr-navbar-text: #0f0f0f;
+  --clr-container-bg: #cacaca;
+  --clr-hamburger-bg: #0f0f0f;
+  --clr-off-screen-menu-txt: #0f0f0f;
+  --clr-link-visited: #b71c1c;
+}
+
+.catppuccin-dark {
+  --clr-body-bg: #11111b;
+  --clr-body-text: #cdd6f4;
+  --clr-navbar-bg: #0f0f0f;
+  --clr-navbar-text: #cdd6f4;
+  --clr-container-bg: #1e1e2e;
+  --clr-hamburger-bg: #cdd6f4;
+  --clr-off-screen-menu-txt: #cdd6f4;
+  --clr-link-visited: #89b4fa;
+}
