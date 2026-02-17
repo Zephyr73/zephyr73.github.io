@@ -1,112 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>My Profile</title>
+    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+  </head>
 
-<head>
-  <link rel="preload" href="woff2/iosevka-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="woff2/iosevka-ss08-bold.woff2" as="font" type="font/woff2" crossorigin>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>My Profile</title>
-  <link href="/style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body id = "about" class="">
-  <div class="off-screen-menu">
-    <ul>
-      <li class="nav-item"><a href="/index.html">Home</a></li>
-      <li class="nav-item"><a href="/gallery">Gallery</a></li>
-      <li class="nav-item"><a href="/projects">Projects</a></li>
-      <li class="nav-item"><a href="/about">About</a></li>
-      <li class="theme-options" style="display: none;">
-        <ul>
-          <li><a href="#" data-theme="light">Light</a></li>
-          <li><a href="#" data-theme="dark">Dark</a></li>
-          <li><a href="#" data-theme="midnight">Midnight</a></li>
-          <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
-        </ul>
-      </li>
-    </ul>
-    <button id="theme-switch-ham">
-      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed">
-        <path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/>
-      </svg>
-    </button>
-  </div>
-
-  <nav class="navbar">
-    <div class="navbar-left">
-        <p><a href="/index.html">MY PORTFOLIO</a></p>
+  <body class="page page--about" data-page="about">
+    <div class="site-nav__drawer">
+      <ul>
+        <li class="site-nav__drawer-item"><a href="/index.html">Home</a></li>
+        <li class="site-nav__drawer-item"><a href="/gallery">Gallery</a></li>
+        <li class="site-nav__drawer-item"><a href="/projects">Projects</a></li>
+        <li class="site-nav__drawer-item"><a href="/about">About</a></li>
+        <li class="theme-picker__drawer-options" style="display: none">
+          <ul>
+            <li><a href="#" data-theme="light">Light</a></li>
+            <li><a href="#" data-theme="dark">Dark</a></li>
+            <li><a href="#" data-theme="midnight">Midnight</a></li>
+            <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
+          </ul>
+        </li>
+      </ul>
+      <button id="theme-switch-ham" type="button" aria-label="Theme options">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="20px"
+          viewBox="0 -960 960 960"
+          width="20px"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"
+          />
+        </svg>
+      </button>
     </div>
-    <div class="navbar-right">
-        <div class="nav-links">
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <div class="site-nav__brand">
+        <p><a href="/index.html">MY PORTFOLIO</a></p>
+      </div>
+      <div class="site-nav__actions">
+        <div class="site-nav__links">
           <ul>
             <li><a href="/gallery">Gallery</a></li>
             <li><a href="/projects">Projects</a></li>
             <li><a href="/about">About</a></li>
           </ul>
-          <button id="theme-switch"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/></svg>
+          <button id="theme-switch" type="button" aria-label="Choose theme">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="20px"
+              viewBox="0 -960 960 960"
+              width="20px"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"
+              />
+            </svg>
           </button>
-          <div class="dropdown-content" id="theme-menu">
-            <a href="#" data-theme="light">Light</a>
-            <a href="#" data-theme="dark">Dark</a>
-            <a href="#" data-theme="midnight">Midnight</a>
-            <a href="#" data-theme="catppuccin-dark">Catppuccin Dark</a>
+          <div class="theme-picker__menu" id="theme-menu" role="menu">
+            <a href="#" role="menuitem" data-theme="light">Light</a>
+            <a href="#" role="menuitem" data-theme="dark">Dark</a>
+            <a href="#" role="menuitem" data-theme="midnight">Midnight</a>
+            <a href="#" role="menuitem" data-theme="catppuccin-dark">Catppuccin Dark</a>
           </div>
         </div>
-        <div class="hamburger">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
+        <div class="site-nav__hamburger hamburger" aria-label="Open menu">
+          <span class="hamburger__bar"></span>
+          <span class="hamburger__bar"></span>
+          <span class="hamburger__bar"></span>
         </div>
-    </div>
-  </nav>
+      </div>
+    </nav>
 
-  <div class="container">
-    <img id="profile" src="/img/profile.png" alt="Profile Picture"><br>
-    <div style="height: 25px;"></div>
-    <h1>Zephyr</h1>
-    <h3 >ABOUT ME</h2>
-    <p>I am Zephyr, a student of Laguardia Community College. I have completed my O and A levels which was taken by Cambridge University. I have interests in new technologies, software development and game development</p>
-    <h3>HOBBIES</h2>
-    <div class="hobbies-container">
-      <ul style="margin-top: 0;">
-        <li>Coding</li>
-        <li>Gaming</li>
-        <li>Photography</li>
-      </ul>
-    </div>
-    <h3>EDUCATIONAL QUALIFICATIONS</h2>
-    <table>
-      <tr>
-        <th>Degree Name</th>
-        <th>Board/University</th>
-        <th>GPA</th>
-      </tr>
-      <tr>
-        <td>O levels</td>
-        <td>Cambridge University</td>
-        <td>4.14</td>
-      </tr>
-      <tr>
-        <td>A levels</td>
-        <td>Cambridge University</td>
-        <td>5.0</td>
-      </tr>
-    </table><br><br>
-    <p>SIGNATURE</p>
-    <hr style="margin-top: 0;">
-    <img id="signature-img" src="/img/signature_transparent.png" alt="Signature" width="128px" height="72px">
-    <div id="info">
-      <div class="links">
-        <a href="https://www.github.com/zephyr73">Github</a>
-        <span id="separator"> | </span>
-        <a href="https://www.twitter.com/Zephyr73_">Twitter</a>
-        <span id="separator"> | </span>
-        <a href="https://www.pixiv.net/en/users/28541154">Pixiv</a>
-      </div>      
-    </div>
-  </div>
-  <script src="/script.js"></script>
-</body>
+    <main class="page__content">
+      <img class="about__avatar" src="/assets/img/profile.png" alt="Profile Picture" /><br />
+      <div style="height: 25px"></div>
+      <h1>Zephyr</h1>
+      <section class="about__section">
+        <h3>ABOUT ME</h3>
+        <p>
+          I am Zephyr, a student of Laguardia Community College. I have completed my O and A levels
+          which was taken by Cambridge University. I have interests in new technologies, software
+          development and game development
+        </p>
+      </section>
 
+      <section class="about__section">
+        <h3>HOBBIES</h3>
+        <div class="about__hobbies">
+          <ul style="margin-top: 0">
+            <li>Coding</li>
+            <li>Gaming</li>
+            <li>Photography</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="about__section">
+        <h3>EDUCATIONAL QUALIFICATIONS</h3>
+        <table>
+          <tr>
+            <th>Degree Name</th>
+            <th>Board/University</th>
+            <th>GPA</th>
+          </tr>
+          <tr>
+            <td>O levels</td>
+            <td>Cambridge University</td>
+            <td>4.14</td>
+          </tr>
+          <tr>
+            <td>A levels</td>
+            <td>Cambridge University</td>
+            <td>5.0</td>
+          </tr>
+        </table>
+      </section>
+
+      <br /><br />
+
+      <section class="about__signature-section" style="text-align: center">
+        <p>SIGNATURE</p>
+        <hr style="margin-top: 0; max-width: 200px; margin: 0 auto 1rem auto" />
+        <img
+          class="about__signature"
+          src="/assets/img/signature_transparent.png"
+          alt="Signature"
+          width="128"
+          height="72"
+        />
+      </section>
+
+      <footer class="about__footer">
+        <div class="about__footer-links">
+          <a href="https://www.github.com/zephyr73">Github</a>
+          <span class="about__separator"> | </span>
+          <a href="https://www.twitter.com/Zephyr73_">Twitter</a>
+          <span class="about__separator"> | </span>
+          <a href="https://www.pixiv.net/en/users/28541154">Pixiv</a>
+        </div>
+      </footer>
+    </main>
+    <script src="/assets/js/script.js"></script>
+  </body>
 </html>

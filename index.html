@@ -1,95 +1,157 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
+    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+  </head>
 
-<head>
-  <link rel="preload" href="/woff2/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="/woff2/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body id = "home" class="">
-  <div class="off-screen-menu">
-    <ul>
-      <li class="nav-item"><a href="/index.html">Home</a></li>
-      <li class="nav-item"><a href="/gallery">Gallery</a></li>
-      <li class="nav-item"><a href="/projects">Projects</a></li>
-      <li class="nav-item"><a href="/about">About</a></li>
-      <li class="theme-options" style="display: none;">
-        <ul>
-          <li><a href="#" data-theme="light">Light</a></li>
-          <li><a href="#" data-theme="dark">Dark</a></li>
-          <li><a href="#" data-theme="midnight">Midnight</a></li>
-          <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
-        </ul>
-      </li>
-    </ul>
-    <button id="theme-switch-ham">
-      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed">
-        <path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/>
-      </svg>
-    </button>
-  </div>
-
-  <nav class="navbar">
-    <div class="navbar-left">
-        <p><a href="/index.html">MY PORTFOLIO</a></p>
+  <body class="page page--home" data-page="home">
+    <div class="site-nav__drawer">
+      <ul>
+        <li class="site-nav__drawer-item"><a href="/index.html">Home</a></li>
+        <li class="site-nav__drawer-item"><a href="/gallery">Gallery</a></li>
+        <li class="site-nav__drawer-item"><a href="/projects">Projects</a></li>
+        <li class="site-nav__drawer-item"><a href="/about">About</a></li>
+        <li class="theme-picker__drawer-options" style="display: none">
+          <ul>
+            <li><a href="#" data-theme="light">Light</a></li>
+            <li><a href="#" data-theme="dark">Dark</a></li>
+            <li><a href="#" data-theme="midnight">Midnight</a></li>
+            <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
+          </ul>
+        </li>
+      </ul>
+      <button id="theme-switch-ham" type="button" aria-label="Theme options">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="20px"
+          viewBox="0 -960 960 960"
+          width="20px"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"
+          />
+        </svg>
+      </button>
     </div>
-    <div class="navbar-right">
-        <div class="nav-links">
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <div class="site-nav__brand">
+        <p><a href="/index.html">MY PORTFOLIO</a></p>
+      </div>
+      <div class="site-nav__actions">
+        <div class="site-nav__links">
           <ul>
             <li><a href="/gallery">Gallery</a></li>
             <li><a href="/projects">Projects</a></li>
             <li><a href="/about">About</a></li>
           </ul>
-          <button id="theme-switch"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#e8eaed"><path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/></svg>
+          <button
+            id="theme-switch"
+            type="button"
+            aria-label="Choose theme"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="20px"
+              viewBox="0 -960 960 960"
+              width="20px"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"
+              />
+            </svg>
           </button>
-          <div class="dropdown-content" id="theme-menu">
-            <a href="#" data-theme="light">Light</a>
-            <a href="#" data-theme="dark">Dark</a>
-            <a href="#" data-theme="midnight">Midnight</a>
-            <a href="#" data-theme="catppuccin-dark">Catppuccin Dark</a>
+          <div class="theme-picker__menu" id="theme-menu" role="menu">
+            <a href="#" role="menuitem" data-theme="light">Light</a>
+            <a href="#" role="menuitem" data-theme="dark">Dark</a>
+            <a href="#" role="menuitem" data-theme="midnight">Midnight</a>
+            <a href="#" role="menuitem" data-theme="catppuccin-dark">Catppuccin Dark</a>
           </div>
         </div>
-        <div class="hamburger">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
+        <div class="site-nav__hamburger hamburger" aria-label="Open menu">
+          <span class="hamburger__bar"></span>
+          <span class="hamburger__bar"></span>
+          <span class="hamburger__bar"></span>
         </div>
-    </div>
-  </nav>
+      </div>
+    </nav>
 
-  <div class="container">
-    <h1>Welcome to my portfolio!</h1>
-    <p>This is where I showcase all my Photography, Ai Generations and random projects I make for fun</p>
-    <p class="warning">The website is still under development and will be updated. If you have suggestions please let me know on how to improve</p>
-    <div class="image-container">
-      <div class="image">
-        <img src="img/photo.jpg">
-      </div>
-      <div class="image-description">
-        <h2><a href="/gallery">Photography</a></h2>
-        <p> A curated collection of my favorite landscape and cityscape images. Each photo captures the essence of my travels and the beauty I see in everyday life.  </p>
-        <p>I’m not a professional, but I enjoy capturing the moments that catch my eye. Thanks for checking out my gallery! I hope you like these pictures as much as I enjoyed taking them.</p>
-        <p>I use my smartphone (Samsung Galaxy S22 Ultra) to take these photos and I use Adobe Lightroom to edit these pictures. I am still learning a lot about Photography and Photo editing</p>
-      </div>
-    </div>
-    <div class="image-container-right">
-      <div class="image-description-right">
-        <h2><a href="/gallery#ai-container" id="ai-button">Ai Generations</a></h2>
-        <p> A collection of my favorite AI generations.  </p>
-        <p>I love creating art using Stable diffusion 1.5, and I'm always looking for new ways to express my creativity.  </p>
-        <p> I am still learning a lot about AI and Stable diffusion and how to use plugins like OpenPose, ControlNet etc. </p>
-        <p> I hope you like these images as much as I enjoyed making them. </p>
-      </div>
-      <div class="image">
-        <img src="img/ai.jpg">
-      </div>
-    </div>
-  </div>
-  <script src="script.js"></script>
-</body>
+    <main class="page__content">
+      <h1>Welcome to my portfolio!</h1>
+      <p>
+        This is where I showcase all my Photography, Ai Generations and random projects I make for
+        fun
+      </p>
+      <p class="u-warning">
+        The website is still under development and will be updated. If you have suggestions please
+        let me know on how to improve
+      </p>
 
+      <section class="feature-row">
+        <div class="feature-row__media">
+          <img src="/assets/img/photo.jpg" alt="Photography" />
+        </div>
+        <div class="feature-row__body">
+          <h2><a href="/gallery">Photography</a></h2>
+          <p>
+            A curated collection of my favorite landscape and cityscape images. Each photo captures
+            the essence of my travels and the beauty I see in everyday life.
+          </p>
+          <p>
+            I'm not a professional, but I enjoy capturing the moments that catch my eye. Thanks for
+            checking out my gallery! I hope you like these pictures as much as I enjoyed taking
+            them.
+          </p>
+          <p>
+            I use my smartphone (Samsung Galaxy S22 Ultra) to take these photos and I use Adobe
+            Lightroom to edit these pictures. I am still learning a lot about Photography and Photo
+            editing
+          </p>
+        </div>
+      </section>
+
+      <section class="feature-row feature-row--reverse">
+        <div class="feature-row__body">
+          <h2><a href="/gallery#ai-container">Ai Generations</a></h2>
+          <p>A collection of my favorite AI generations.</p>
+          <p>
+            I love creating art using Stable diffusion 1.5, and I'm always looking for new ways to
+            express my creativity.
+          </p>
+          <p>
+            I am still learning a lot about AI and Stable diffusion and how to use plugins like
+            OpenPose, ControlNet etc.
+          </p>
+          <p>I hope you like these images as much as I enjoyed making them.</p>
+        </div>
+        <div class="feature-row__media">
+          <img src="/assets/img/ai.jpg" alt="AI Generations" />
+        </div>
+      </section>
+    </main>
+    <script src="/assets/js/script.js"></script>
+  </body>
 </html>

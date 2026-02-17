@@ -1,0 +1,45 @@
+// =============================================================================
+// About page
+// =============================================================================
+
+.page--about .page__content h1,
+.page--about .page__content h3,
+.page--about .page__content p {
+  text-align: center;
+}
+
+.page--about .page__content ul {
+  display: inline-block;
+  text-align: center;
+  font-family: var(--font-regular);
+  font-size: 16px;
+  font-weight: 300;
+  margin: 0;
+  padding: 0;
+}
+
+.page--about .page__content hr {
+  border-color: var(--clr-body-text);
+  width: 50%;
+}
+
+.page--about .page__content .about__signature {
+  display: block;
+  margin: 0 auto;
+}
+
+.page--about .page__content .about__footer * {
+  font-size: 14px;
+  text-align: center;
+}
+
+.page--about .page__content .about__separator {
+  display: inline;
+}
+
+.page--about .page__content .about__footer-links a {
+  color: var(--clr-body-text);
+  font-family: var(--font-regular);
+  font-weight: 300;
+  text-decoration: underline;
+}
