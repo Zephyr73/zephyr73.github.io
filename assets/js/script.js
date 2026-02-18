@@ -149,34 +149,45 @@ function initGallery() {
 // -----------------------------------------------------------------------------
 
 function updateGalleryWidth() {
-  if (!window.location.pathname.includes('gallery')) return;
   const content = document.querySelector('.page__content');
-  const siteNav = document.querySelector('.site-nav');
-  if (!content || !siteNav) return;
+  const nav = document.querySelector('.site-nav');
+  if (!content || !nav) return;
 
-  const maxWidth = window.innerWidth > 768 ? 'calc(100vw - 10%)' : '100vw';
-  [content, siteNav].forEach((el) => {
-    el.style.transition = 'max-width 0.5s ease-in-out';
-    el.style.maxWidth = maxWidth;
-  });
+  const isGallery = document.body.classList.contains('page--gallery');
+
+  if (isGallery && window.innerWidth > 768) {
+    content.style.maxWidth = 'calc(100vw - 10%)';
+    nav.style.maxWidth = 'calc(100vw - 10%)';
+  } else {
+    content.style.maxWidth = '800px';
+    nav.style.maxWidth = '800px';
+  }
 }
 
 function initLayoutWidth() {
   updateGalleryWidth();
   window.addEventListener('resize', updateGalleryWidth);
+
+  // Transition out when leaving gallery
   document.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', (e) => {
-      if (!link.href.includes('gallery')) {
+      const isGallery = document.body.classList.contains('page--gallery');
+      const targetHref = link.getAttribute('href');
+
+      // Only trigger if we are leaving the gallery page to another internal page
+      if (isGallery && targetHref && !targetHref.includes('gallery') && !targetHref.startsWith('#')) {
+        e.preventDefault();
         const content = document.querySelector('.page__content');
-        const siteNav = document.querySelector('.site-nav');
-        if (content && siteNav) {
-          e.preventDefault();
+        const nav = document.querySelector('.site-nav');
+
+        if (content && nav) {
           content.style.maxWidth = '800px';
-          siteNav.style.maxWidth = '800px';
-          setTimeout(() => {
-            window.location.href = link.href;
-          }, 500);
+          nav.style.maxWidth = '800px';
         }
+
+        setTimeout(() => {
+          window.location.href = targetHref;
+        }, 300); // Matches the 0.3s CSS transition
       }
     });
   });

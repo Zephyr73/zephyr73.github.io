@@ -105,16 +105,6 @@ body {
   opacity: 0;
 }
 
-.u-visually-hidden {
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
-  white-space: nowrap;
-  /* added line */
-}
-
 .site-nav__drawer {
   display: none;
 }
@@ -128,7 +118,7 @@ body {
   align-items: center;
   position: absolute;
   top: 36px;
-  transition: max-width 0.3s ease;
+  transition: max-width 0.5s ease;
 }
 
 .site-nav__brand {
@@ -266,7 +256,7 @@ body {
   position: relative;
   z-index: 1;
   margin-top: 100px;
-  transition: max-width 0.3s ease;
+  transition: max-width 0.5s ease;
 }
 
 table,
@@ -345,6 +335,7 @@ p {
 
 .page--home .page__content .feature-row__media {
   width: 45%;
+  max-height: -moz-fit-content;
   max-height: fit-content;
   box-sizing: border-box;
   box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
@@ -433,6 +424,11 @@ p {
   width: 50%;
 }
 
+.page--about .page__content .about__signature {
+  display: block;
+  margin: 0 auto;
+}
+
 .page--about .page__content .about__footer * {
   font-size: 14px;
   text-align: center;
@@ -449,39 +445,19 @@ p {
   text-decoration: underline;
 }
 
-.about__signature-wrapper {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-.about__signature-line {
-  margin-top: 0;
-  border-color: var(--clr-body-text);
-  width: 50%;
-}
-
-.about__signature-img {
-  display: block;
-  margin: 0 auto;
-}
-
-#projects .container h1,
-#projects .container p {
+.page--projects .page__content p,
+.page--projects .page__content h1 {
   text-align: left;
-  padding: 0;
+  padding: 0 5%;
 }
-#projects .container a {
-  color: #0000ee;
+
+.page--projects .page__content a {
+  color: var(--clr-body-text);
   word-wrap: break-word;
 }
-#projects .container a:visited {
-  color: var(--clr-link-visited);
-}
 
-.dark #projects .container a,
-.midnight #projects .container a,
-.catppuccin-dark #projects .container a {
-  color: #8ab4f8;
+.page--projects .page__content a:visited {
+  color: var(--clr-link-visited);
 }
 
 .page--wallpapersync .page__content h1,
@@ -604,7 +580,8 @@ p {
 .page--gallery .page__content .gallery-grid--ai .gallery-grid__column img,
 .page--gallery .page__content .gallery-grid--forza .gallery-grid__column img {
   width: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .page--gallery .page__content .gallery-grid--photography .gallery-grid__column img:hover,
@@ -746,4 +723,4 @@ p {
   .page--gallery .hamburger.active {
     display: block;
   }
-}
+}/*# sourceMappingURL=style.css.map */
