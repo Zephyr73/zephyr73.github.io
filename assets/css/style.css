@@ -1,25 +1,13 @@
 :root {
   --clr-body-bg: #0f0f0f;
-  --clr-body-text: #0f0f0f;
+  --clr-body-text: #cacaca;
   --clr-navbar-bg: #0f0f0f;
   --clr-navbar-text: #cacaca;
-  --clr-container-bg: #cacaca;
+  --clr-container-bg: #1b1b1b;
   --clr-hamburger-bg: #cacaca;
   --clr-off-screen-menu-txt: #cacaca;
   --font-regular: JetBrains Mono;
   --font-bold: JetBrains Mono Bold;
-  --clr-link-visited: #b71c1c;
-}
-
-.dark {
-  --clr-body-bg: #0f0f0f;
-  --clr-body-text: #0f0f0f;
-  --clr-navbar-bg: #0f0f0f;
-  --clr-navbar-text: #cacaca;
-  --clr-container-bg: #cacaca;
-  --clr-hamburger-bg: #cacaca;
-  --clr-off-screen-menu-txt: #cacaca;
-  --clr-link-visited: #b71c1c;
 }
 
 .midnight {

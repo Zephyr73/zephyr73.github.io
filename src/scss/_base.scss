@@ -28,3 +28,8 @@ body {
 .u-hidden {
   opacity: 0;
 }
+
+::selection {
+    background-color: var(--clr-body-text);
+    color: var(--clr-body-bg);
+}
