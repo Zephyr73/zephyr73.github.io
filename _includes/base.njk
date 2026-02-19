@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- DYNAMIC TITLE: Falls back to 'Portfolio' if no title is set -->
+    <title>{{ title | default("Portfolio") }}</title>
+
+    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Optional: Add specific styles for Markdown content if needed -->
+    <style>
+      {# .markdown-content img { max-width: 100%; height: auto; display: block; margin: 2rem auto; } #}
+      {# .markdown-content pre { overflow-x: auto; } #}
+    </style>
+  </head>
+
+  <!-- DYNAMIC BODY CLASSES: Allows you to style specific pages differently -->
+  <body class="page {{ bodyClass }}" data-page="{{ pageId }}">
+
+    <!-- MOBILE DRAWER -->
+    {% include "drawer.njk" %}
+
+    <!-- MAIN NAVIGATION -->
+    {% include "navbar.njk" %}
+
+    <!-- CONTENT INJECTION POINT -->
+    <main class="page__content">
+        <!-- This wrapper class ensures markdown styles we made earlier apply -->
+        <div class="markdown-content">
+            {{ content | safe }}
+        </div>
+    </main>
+
+    <script src="/assets/js/script.js"></script>
+  </body>
+</html>

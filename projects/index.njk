@@ -1,0 +1,21 @@
+---
+layout: base.njk
+title: Projects | My Portfolio
+bodyClass: page--projects
+pageId: projects-index
+---
+<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+<div class="project-list">
+    <!-- Loop through the collection named 'project' -->
+    {% for project in collections.project %}
+        <article class="project-preview">
+            <h2>
+                <a href="{{ project.url }}">{{ project.data.title }}</a>
+            </h2>
+            <p class="project-description">
+                {{ project.data.description }}
+            </p>
+            <a href="{{ project.url }}" class="read-more">Read More →</a>
+        </article>
+    {% endfor %}
