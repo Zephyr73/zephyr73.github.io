@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- DYNAMIC TITLE: Falls back to 'Portfolio' if no title is set -->
+    <title>How I setup my windows 11 desktop</title>
+
+    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Optional: Add specific styles for Markdown content if needed -->
+    <style>
+      
+      
+    </style>
+  </head>
+
+  <!-- DYNAMIC BODY CLASSES: Allows you to style specific pages differently -->
+  <body class="page " data-page="3">
+
+    <!-- MOBILE DRAWER -->
+    <div class="site-nav__drawer">
+  <ul>
+    <!-- Logic to highlight active link -->
+    <li class="site-nav__drawer-item"><a href="/index.html" >Home</a></li>
+    <li class="site-nav__drawer-item"><a href="/gallery" >Gallery</a></li>
+    <li class="site-nav__drawer-item"><a href="/projects" >Projects</a></li>
+    <li class="site-nav__drawer-item"><a href="/blog" aria-current=&quot;page&quot;>Blog</a></li>
+    <li class="site-nav__drawer-item"><a href="/about" >About</a></li>
+
+    <li class="theme-picker__drawer-options" style="display: none">
+      <ul>
+        <li><a href="#" data-theme="light">Light</a></li>
+        <li><a href="#" data-theme="midnight">Midnight</a></li>
+        <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <button id="theme-switch-ham" type="button" aria-label="Theme options">
+    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor" aria-hidden="true">
+      <path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/>
+    </svg>
+  </button>
+</div>
+
+    <!-- MAIN NAVIGATION -->
+    <nav class="site-nav" aria-label="Main navigation">
+    <div class="site-nav__brand">
+    <p><a href="/index.html">MY PORTFOLIO</a></p>
+    </div>
+    <div class="site-nav__actions">
+    <div class="site-nav__links">
+        <ul>
+        <li><a href="/gallery">Gallery</a></li>
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/about">About</a></li>
+        </ul>
+        <button
+        id="theme-switch"
+        type="button"
+        aria-label="Choose theme"
+        aria-haspopup="true"
+        aria-expanded="false"
+        >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 -960 960 960"
+            width="20px"
+            fill="currentColor"
+            aria-hidden="true"
+        >
+            <path
+            d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"
+            />
+        </svg>
+        </button>
+        <div class="theme-picker__menu" id="theme-menu" role="menu">
+        <a href="#" role="menuitem" data-theme="light">Light</a>
+        <a href="#" role="menuitem" data-theme="midnight">Midnight</a>
+        <a href="#" role="menuitem" data-theme="catppuccin-dark">Catppuccin Dark</a>
+        </div>
+    </div>
+    <div class="site-nav__hamburger hamburger" aria-label="Open menu">
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+    </div>
+    </div>
+</nav>
+
+    <!-- CONTENT INJECTION POINT -->
+    <main class="page__content">
+        <!-- This wrapper class ensures markdown styles we made earlier apply -->
+        <div class="markdown-content">
+            <h1>Step by step process of my windows setup</h1>
+<hr>
+<h2>Step 1</h2>
+<h3>Initialization</h3>
+<ul>
+<li>
+<p><strong>Display</strong></p>
+<ul>
+<li>Download NVidia Drivers (Preferrably Debloated)</li>
+<li>Set Display resolution and refresh rates</li>
+<li>Set color depth in NVidia Control Panel</li>
+</ul>
+</li>
+<li>
+<p><strong>Settings</strong></p>
+<ul>
+<li>System
+<ul>
+<li>Display
+<ul>
+<li><strong>Apply</strong> Color Profile</li>
+<li><strong>Disable</strong> Automatically manage color for apps</li>
+<li><strong>Disable</strong> HDR</li>
+</ul>
+</li>
+<li>Sound
+<ul>
+<li>Change Default sound devices</li>
+<li>Headphones
+<ul>
+<li>Change Default format to highest quality</li>
+<li><strong>Enable</strong> Audio Enhancements</li>
+<li><strong>Disable</strong> Spacial Sound</li>
+</ul>
+</li>
+<li>Microphone
+<ul>
+<li><strong>Disable</strong> Listen to device</li>
+<li>Default playback device</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Notifications
+<ul>
+<li><strong>Disable</strong> notifications</li>
+<li><strong>Enable</strong> Do not Disturb</li>
+</ul>
+</li>
+<li>Power
+<ul>
+<li>Never turn off display</li>
+</ul>
+</li>
+<li>Storage
+<ul>
+<li><strong>Disable</strong> storage sense</li>
+</ul>
+</li>
+<li>Nearby Sharing: <strong>OFF</strong></li>
+<li>Advanced
+<ul>
+<li>Long Paths: <strong>ON</strong></li>
+<li>Remote Desktop: <strong>OFF</strong></li>
+<li>Terminal: Windows Terminal</li>
+<li>Developer Mode: <strong>ON</strong></li>
+<li>Device Discovery: <strong>OFF</strong></li>
+</ul>
+</li>
+<li>Optional Features
+<ul>
+<li>OpenSSH Client</li>
+<li>OpenSSH Server</li>
+<li>More Windows Features
+<ul>
+<li>SMB Direct</li>
+<li>Virtual Machine Platform (Optional)</li>
+<li>Windows Sandbox (Optional)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Network &amp; Ethernet
+<ul>
+<li>Private Network</li>
+</ul>
+</li>
+<li>Apps
+<ul>
+<li>Uninstall bloats if there are any</li>
+</ul>
+</li>
+<li>Accounts
+<ul>
+<li>Make sure to use local account</li>
+</ul>
+</li>
+<li>Gaming
+<ul>
+<li>Game Bar
+<ul>
+<li>Allow controller to open Game bar: <strong>OFF</strong></li>
+</ul>
+</li>
+<li>Captures
+<ul>
+<li><strong>Disable</strong> captures</li>
+</ul>
+</li>
+<li>Game mode: <strong>OFF</strong></li>
+</ul>
+</li>
+<li>Privacy &amp; Security
+<ul>
+<li><strong>Disable</strong> almost everything unless you need it</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Device Manager</strong></p>
+<ul>
+<li><code>Ethernet &gt; Properties &gt; Advanced</code>
+<ul>
+<li>Advanced EEE: <strong>Disabled</strong></li>
+<li>ARP Offload: <strong>Enabled</strong></li>
+<li>Auto Disable Gigabit: <strong>Disabled</strong></li>
+<li>Energy-Efficient Ethernet: <strong>Disabled</strong></li>
+<li>Flow Control: <strong>Rx &amp; Tx Enabled</strong></li>
+<li>Gigabit Lite: <strong>Enabled</strong></li>
+<li>Green Ethernet: <strong>Enabled</strong></li>
+<li>Interrupt Moderation: <strong>Enabled</strong></li>
+<li>IPv4 Checksum Offload: <strong>Rx &amp; Tx Enabled</strong></li>
+<li>Power Saving Mode: <strong>Disabled</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Downloads</h3>
+<ul>
+<li>
+<p><strong>Browsers</strong></p>
+<ul>
+<li>Brave Browser (Make sure to debloat it)</li>
+<li>Firefox (Make sure to debloat it)</li>
+</ul>
+</li>
+<li>
+<p><strong>Gaming</strong></p>
+<ul>
+<li>Discord with <a href="https://github.com/Vendicated/Vencord">Vencord</a></li>
+<li>Steam with <a href="https://github.com/SteamClientHomebrew/Millennium">Millenium</a></li>
+<li><a href="https://github.com/ClassicOldSong/Apollo">Apollo</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Connectivity</strong></p>
+<ul>
+<li>Tailscale</li>
+<li>KDE Connect</li>
+</ul>
+</li>
+<li>
+<p><strong>Utilities</strong></p>
+<ul>
+<li>7zip</li>
+<li>VS Code</li>
+<li>MSI Afterburner</li>
+<li>Notepad++</li>
+<li>OnlyOffice</li>
+<li>OpenRGB</li>
+<li>qBittorrent</li>
+<li>Malwarebytes</li>
+<li>VLC Player</li>
+<li>Sysinternals Suite</li>
+<li>TreeSize</li>
+<li>Defender UI</li>
+<li>Revo Uninstaller OR Bulk Crap Uninstaller (BCU)</li>
+</ul>
+</li>
+<li>
+<p><strong>Customization</strong></p>
+<ul>
+<li>Nilesoft Shell</li>
+<li>Transclucent Taskbar</li>
+<li>Explorer Patcher</li>
+<li>Windhawk</li>
+<li>Rainmeter</li>
+<li>Oh My Posh</li>
+<li>Clink</li>
+<li>Fonts
+<ul>
+<li>JetBrainsMono Nerd Font</li>
+<li>Iosevka</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Network and Firewall</h3>
+<p>Device IP Address should be managed by PiHole, however in the case it is not set appropriately:</p>
+<ul>
+<li>Go to <code>control panel &gt; network and internet &gt; network and sharing center &gt; ethernet &gt; properties &gt; ipv4</code></li>
+<li>set the device ip to <code>192.168.1.200</code></li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>
+For a list of IP and Ports in case of a network rest, refer to the <a href="ip-and-ports.md">handbook</a></p>
+</blockquote>
+<hr>
+<h2>Step 2</h2>
+<h3>Shared Folders</h3>
+<p>Share the Following drives to the network</p>
+<ul>
+<li><code>D:\Games</code></li>
+<li><code>D:\Media</code></li>
+<li><code>D:\Programming</code></li>
+<li><code>D:\BACKUPS\Phone Backup\Samsung S25 ULTRA</code></li>
+</ul>
+<h3>Performance</h3>
+<ul>
+<li>Use <strong>MSI Afterburner</strong> to undervolt GPU and make sure to launch in startup</li>
+<li>Change <strong>nvidia control panel</strong> settings according to updated guide</li>
+<li>Turn off game optimization in NVidia App</li>
+<li>Go to task scheduler and disable all unwanted tasks</li>
+<li>Go to <strong>Sysinternals Suite: Autoruns</strong>, go through it to make sure there are no sneaky startup tasks</li>
+</ul>
+<h3>PATH Variables</h3>
+<p>Add the following directories to <code>User Variables &gt; PATHS</code></p>
+<ul>
+<li><code>D:\Programming\PATH Scripts</code></li>
+<li><code>D:\Programming\PATH Scripts\ViVeTool v0.3.4</code></li>
+<li><code>D:\Programming\Python\ThemeSwitcher\</code></li>
+<li><code>C:\Users\Zephyr\Downloads\OpenRGB Windows 64-bit</code></li>
+</ul>
+<h3>Create Tasks</h3>
+<p>Import the all the tasks from the tasks <a href="./Task%20Scheduler/MyScripts/">folder</a></p>
+<hr>
+<h2>Step 3</h2>
+<h3>Customize Apps</h3>
+<h4>Oh My Posh &amp; Clink</h4>
+<p>Oh My Posh is needed to theme the terminal ui, Clink is used for suggestions and more advanced but helpful features.</p>
+<p>Download Oh My Posh using the following command in powershell:</p>
+<pre><code class="language-sh">winget install JanDeDobbeleer.OhMyPosh --source winget
+</code></pre>
+<p>To check if it is intalled properly type <code>oh-my-posh</code> in powershell or cmd
+Once installed, type the following command to use a default config</p>
+<pre><code class="language-sh">oh-my-posh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json'
+</code></pre>
+<p>To change your theme for <strong>PowerShell</strong>, adjust the init script in <code>C:\Users\Zephyr\Documents\Powershell\Microsoft.PowerShell_profile.ps1</code> or <code>C:\Users\Zephyr\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1</code>
+If neither location exist, open Powershell and then type <code>$PROFILE</code> to find the location for the profile script. Or ask an AI on how to find/create one.</p>
+<p>If the file <code>Microsoft.PowerShell_profile.ps1</code> does not exist, create it and paste the following for applying catppuccin theme</p>
+<pre><code class="language-sh">oh-my-posh init pwsh --config 'C:\Users\Zephyr\AppData\Local\Programs\oh-my-posh\themes\catppuccin_mocha.omp.json' | Invoke-Expression
+</code></pre>
+<p>Once altered, reload your profile for the changes to take effect</p>
+<pre><code class="language-sh">. $PROFILE
+</code></pre>
+<p>For <strong>CMD/Command Prompt</strong> search for <code>oh-my-posh.lua</code>, which should be in <code>C:\Program Files(x86)\clink\</code> after you install clink. Open the file and then paste the following</p>
+<pre><code class="language-sh">load(io.popen('oh-my-posh init cmd --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/catppuccin_mocha.omp.json'):read(&quot;*a&quot;))()
+</code></pre>
+<h4>Windows Terminal</h4>
+<p>You can either import the config from <a href="./Customization/Windows%20Terminal/">here</a>, or have a fresh start.
+Here are some settings which I recommend to change:</p>
+<ul>
+<li>Launch Size: 120 x 30</li>
+<li>Center on launch</li>
+<li>Appearance
+<ul>
+<li>JetBrainsMono Nerd Font Mono</li>
+<li>Font Size: 11</li>
+<li>Line height: 1.2</li>
+<li>Cell width: 0.6</li>
+<li>Background Opacity: 80%</li>
+<li>Window Padding: 30</li>
+</ul>
+</li>
+<li>Profiles
+<ul>
+<li>PowerShell
+<ul>
+<li>Command line: powershell.exe -nologo</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>CMD.exe</h4>
+<p>Right click the title bar and then change the settings for the following</p>
+<h5>Default</h5>
+<ul>
+<li>Font
+<ul>
+<li><strong>Size:</strong> 18</li>
+<li><strong>Font:</strong> JetBrainsMono Nerd Font Mono</li>
+</ul>
+</li>
+<li>Layout
+<ul>
+<li>Screen Buffer Size
+<ul>
+<li><strong>Width:</strong> 127</li>
+<li><strong>Height:</strong> 9001</li>
+<li>Wrap text output on resize</li>
+</ul>
+</li>
+<li>Window Size
+<ul>
+<li><strong>Width:</strong> 127</li>
+<li><strong>Height:</strong> 32</li>
+</ul>
+</li>
+<li>Window Position
+<ul>
+<li><strong>Left:</strong> 696</li>
+<li><strong>Top:</strong> 357</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5>Properties</h5>
+<ul>
+<li>Font
+<ul>
+<li><strong>Size:</strong> 18</li>
+<li><strong>Font:</strong> JetBrainsMono Nerd Font Mono</li>
+</ul>
+</li>
+<li>Layout
+<ul>
+<li>Screen Buffer Size
+<ul>
+<li><strong>Width:</strong> 127</li>
+<li><strong>Height:</strong> 9001</li>
+<li>Wrap text output on resize</li>
+</ul>
+</li>
+<li>Window Size
+<ul>
+<li><strong>Width:</strong> 127</li>
+<li><strong>Height:</strong> 32</li>
+</ul>
+</li>
+<li>Window Position
+<ul>
+<li><strong>Left:</strong> 696</li>
+<li><strong>Top:</strong> 357</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Colors
+<ul>
+<li><strong>Opacity:</strong> 97%</li>
+</ul>
+</li>
+</ul>
+<h4>Nilesoft Shell</h4>
+<p>Just copy paste the config files</p>
+<h4>Transclucent Taskbar</h4>
+<p>Everything should be at default settings except
+<code>Desktop &gt; Acrylic</code>
+<code>Maximized window &gt; Acrylic</code></p>
+<h4>Explorer Patcher</h4>
+<p>Import the config file, OR apply these main settings:</p>
+<h5>Taskbar</h5>
+<ul>
+<li>Taskbar Style: <strong>Windows 11</strong></li>
+<li>Search: <strong>Hidden</strong></li>
+<li>Show Task View Button: *<em>OFF</em></li>
+</ul>
+<h5>File Explorer</h5>
+<ul>
+<li>Disable the windows 11 context menu: <strong>OFF</strong></li>
+<li>Use classic drive groupings in this PC: <strong>OFF</strong>
+<ul>
+<li>Control Interface: <strong>Windows 10 Ribbon</strong></li>
+</ul>
+</li>
+</ul>
+<h4>Windhawk</h4>
+<p>Download the following extenstions for windhawk</p>
+<ul>
+<li>Disable rounder corners in windows 11</li>
+<li>Slick window arrangement</li>
+<li>Windows 11 notification center styler</li>
+<li>Windows 11 start menu slider</li>
+</ul>
+<p>Go to <code>Settings &gt; Advanced Settings &gt; More Advanced Settings</code>
+In the <code>Process inclusion list</code> enter <code>dwm.exe</code>
+Save and Restart Windhawk</p>
+<h5>Slick window arrangement</h5>
+<ul>
+<li>Slick windows distance: 25</li>
+</ul>
+<h5>Windows 11 notification center styler</h5>
+<ul>
+<li>Theme: Matter</li>
+</ul>
+<h5>Windows 11 start menu styler</h5>
+<ul>
+<li>Theme: <strong>Windows11_Metro10Minimal</strong></li>
+<li>Disable the new start menu layout: <strong>ON</strong></li>
+<li>Control styles
+<ul>
+<li>Target: <code>Border#AcrylicBorder</code>
+Styles: <code>Background:=&lt;AcrylicBrush TintOpacity=&quot;0&quot; TintColor=&quot;Black&quot; TintLuminosityOpacity=&quot;0.6&quot; Opacity=&quot;1&quot; FallbackColor=&quot;#101010&quot;/&gt;</code></li>
+<li>Target: <code>Border#AppBorder</code>
+Styles: <code>Background:=&lt;AcrylicBrush TintOpacity=&quot;0&quot; TintColor=&quot;Black&quot; TintLuminosityOpacity=&quot;0.6&quot; Opacity=&quot;1&quot; FallbackColor=&quot;#101010&quot;/&gt;</code></li>
+</ul>
+</li>
+</ul>
+<h4>VS Code</h4>
+<h5>Download the following extensions before setting the configs</h5>
+<ul>
+<li>Python Preview (Discontinued, Download from shared folder)</li>
+<li>AREPL for Python</li>
+<li>C/C++</li>
+<li>C/C++ Extension Pack</li>
+<li>Catppuccin for VSCode</li>
+<li>clangd</li>
+<li>CMake Tools</li>
+<li>Code Runner</li>
+<li>Debug Visualizer</li>
+<li>Doxygen Documentation Gemerator</li>
+<li>Gemini Code Assist</li>
+<li>Github Copilot Chat</li>
+<li>Gruvbox Theme</li>
+<li>Hex Editor</li>
+<li>json</li>
+<li>Jupyter</li>
+<li>Jupyter Cell Tags</li>
+<li>Jupyter Keymap</li>
+<li>Jupyter Notebook Renderers</li>
+<li>Jupyter Slide Show</li>
+<li>Language Support for Java(TM) by Red Hat</li>
+<li>Live Sass Compiler</li>
+<li>Live Server</li>
+<li>Markdown Preview Enhanced</li>
+<li>Markdownlint</li>
+<li>Material Icon Theme</li>
+<li>Open in Github, Bitbucket, Gitlab</li>
+<li>Project Tree</li>
+<li>Pylance</li>
+<li>Python</li>
+<li>Python debugger</li>
+<li>Python Environments</li>
+<li>Remote - SSH</li>
+<li>Remote - SSH: Editing Configuration Files</li>
+<li>Ruff</li>
+<li>vscode-pdf</li>
+<li>YAML</li>
+</ul>
+<h5>Configuration for VS Code</h5>
+<p><em><strong>Text Editor</strong></em></p>
+<ul>
+<li>Bracket Pairs Horizontal: true</li>
+<li>Line Height: 1.6</li>
+<li>Semantic Highlighting Enabled: true</li>
+<li>Smooth Scrolling: ON</li>
+<li>Word Wrap: ON</li>
+<li>Cursor Blinking: Smooth</li>
+<li>Cursor Smooth Caret Animation: on</li>
+<li>Font Family: JetBrains Mono Nerd Font</li>
+<li>Font Size: 14</li>
+<li>Auto Save: After Delay</li>
+</ul>
+<p><em><strong>Workbench</strong></em></p>
+<ul>
+<li>Smooth Scrolling: ON</li>
+<li>Workbench Color theme: Catppuccin Mocha</li>
+<li>Icon Theme: Material Icon Theme</li>
+<li>Empty Hint: hidden</li>
+</ul>
+<p><em><strong>Features</strong></em></p>
+<ul>
+<li>Explorer Kind: Integrated</li>
+<li>Integrated &gt; Font Ligatures Enabled: ON</li>
+<li>Integrated Mouse wheel zoom: ON</li>
+<li>Integrated Smooth Scrolling: ON</li>
+</ul>
+<p><em><strong>C/C++</strong></em></p>
+<ul>
+<li>C_Cpp Intelli Sense Engine: Disabled</li>
+</ul>
+<p><em><strong>Clangd</strong></em></p>
+<ul>
+<li>Clangd Arguments:
+<ul>
+<li><code>--inlay-hints=true</code></li>
+</ul>
+</li>
+<li>Clangd PATH: <code>ENTER PATH OF CLANGD.exe</code></li>
+</ul>
+<p><em><strong>Git</strong></em></p>
+<ul>
+<li>Open Repository in Parent Folders: Never</li>
+</ul>
+<p><em><strong>Live Server</strong></em></p>
+<ul>
+<li>Donot verify tags: ON</li>
+</ul>
+<p><em><strong>Python</strong></em></p>
+<ul>
+<li><strong>Python &gt; Analysis &gt; Inlay hints: Call Argument Names:</strong> ON</li>
+<li><strong>Python &gt; Analysis &gt; Inlay hints: Variable Types:</strong> ON</li>
+<li><strong>Python &gt; Analysis: Type Checking Mode:</strong> OFF</li>
+<li>Language Server: Pylance</li>
+<li><strong>Python-envs &gt; Terminal: Auto Activation Type:</strong> shellStartup</li>
+</ul>
+
+        </div>
+    </main>
+
+    <script src="/assets/js/script.js"></script>
+  </body>
+</html>

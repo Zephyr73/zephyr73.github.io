@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/JetBrainsMono-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- DYNAMIC TITLE: Falls back to 'Portfolio' if no title is set -->
+    <title>WallpaperSync</title>
+
+    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Optional: Add specific styles for Markdown content if needed -->
+    <style>
+      
+      
+    </style>
+  </head>
+
+  <!-- DYNAMIC BODY CLASSES: Allows you to style specific pages differently -->
+  <body class="page " data-page="">
+
+    <!-- MOBILE DRAWER -->
+    <div class="site-nav__drawer">
+  <ul>
+    <!-- Logic to highlight active link -->
+    <li class="site-nav__drawer-item"><a href="/index.html" >Home</a></li>
+    <li class="site-nav__drawer-item"><a href="/gallery" >Gallery</a></li>
+    <li class="site-nav__drawer-item"><a href="/projects" aria-current=&quot;page&quot;>Projects</a></li>
+    <li class="site-nav__drawer-item"><a href="/blog" >Blog</a></li>
+    <li class="site-nav__drawer-item"><a href="/about" >About</a></li>
+
+    <li class="theme-picker__drawer-options" style="display: none">
+      <ul>
+        <li><a href="#" data-theme="light">Light</a></li>
+        <li><a href="#" data-theme="midnight">Midnight</a></li>
+        <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <button id="theme-switch-ham" type="button" aria-label="Theme options">
+    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor" aria-hidden="true">
+      <path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/>
+    </svg>
+  </button>
+</div>
+
+    <!-- MAIN NAVIGATION -->
+    <nav class="site-nav" aria-label="Main navigation">
+    <div class="site-nav__brand">
+    <p><a href="/index.html">MY PORTFOLIO</a></p>
+    </div>
+    <div class="site-nav__actions">
+    <div class="site-nav__links">
+        <ul>
+        <li><a href="/gallery">Gallery</a></li>
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/about">About</a></li>
+        </ul>
+        <button
+        id="theme-switch"
+        type="button"
+        aria-label="Choose theme"
+        aria-haspopup="true"
+        aria-expanded="false"
+        >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 -960 960 960"
+            width="20px"
+            fill="currentColor"
+            aria-hidden="true"
+        >
+            <path
+            d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"
+            />
+        </svg>
+        </button>
+        <div class="theme-picker__menu" id="theme-menu" role="menu">
+        <a href="#" role="menuitem" data-theme="light">Light</a>
+        <a href="#" role="menuitem" data-theme="midnight">Midnight</a>
+        <a href="#" role="menuitem" data-theme="catppuccin-dark">Catppuccin Dark</a>
+        </div>
+    </div>
+    <div class="site-nav__hamburger hamburger" aria-label="Open menu">
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+        <span class="hamburger__bar"></span>
+    </div>
+    </div>
+</nav>
+
+    <!-- CONTENT INJECTION POINT -->
+    <main class="page__content">
+        <!-- This wrapper class ensures markdown styles we made earlier apply -->
+        <div class="markdown-content">
+            <h1>WallpaperSync</h1>
+<p><img src="/assets/img/WallpaperSync.jpg" alt="preview"></p>
+<h2>How it works</h2>
+<p><a href="https://www.reddit.com/r/pcmasterrace/comments/1edjz55/made_this_script_that_changes_rgb_color_depending/">Demo</a></p>
+<h2>Real-time wallpaper monitoring</h2>
+<p>WallpaperSync uses <a href="https://github.com/gorakhargosh/watchdog">Watchdog</a> to monitor the system wallpaper for changes from the path <code>%appdata%/Microsoft/Windows/Themes/TranscodedWallpaper</code>. The monitoring starts with the instantation of the <code>WallpaperHandler</code> class.</p>
+<pre><code class="language-python">path_to_wallpaper = os.path.join(local_folder, 'TranscodedWallpaper.png')
+print(&quot;Monitoring wallpaper changes...&quot;)
+event_handler = WallpaperHandler(original_path, path_to_wallpaper, ip, port)
+</code></pre>
+<p>The Observer starts listening for modifications to the specified wallpaper file. Upon detecting changes, it triggers the <code>on_modified</code> method defined in the <code>WallpaperHandler</code> class.</p>
+<pre><code class="language-python">observer = Observer()
+observer.schedule(event_handler, path=os.path.dirname(original_path), recursive=False)
+observer.start()
+</code></pre>
+<h2>Color Palette Extraction</h2>
+<p>After obtaining the new wallpaper, the script extracts the dominant colors using the <code>ColorThief</code> library. This functionality is encapsulated in the <code>process_wallpaper</code> function.</p>
+<pre><code class="language-python">def process_wallpaper(path_to_wallpaper: str) -&gt; Tuple[List[Tuple[int, int, int]], Tuple[int, int, int]]:
+    color_thief = ColorThief(path_to_wallpaper)
+    palette = color_thief.get_palette(color_count=6)
+</code></pre>
+<p>The <code>ColorThief</code> class is instantiated witht he paath to the wallpaper, and the <code>get_palette</code> method extracts a palette of colors. The palette is then filtered to exclude nearly white colors using the <code>is_near_white</code> function.</p>
+<h2>Color Adjustment</h2>
+<pre><code class="language-python">def check_palette(palette: List[Tuple[int, int, int]], tolerance: float = 10.0, threshold: float = 50.0) -&gt; str:
+
+    ...
+</code></pre>
+<p>This function uses two inner functions, <code>is_greyscale()</code> and <code>is_low_contrast()</code>, to classify the palette based on defined thresholds.</p>
+<p>Based on the classification, the script adjusts the selected colors. For instance, if the palette is classified as &quot;greyscale&quot;, it sets a default color of white.</p>
+<pre><code class="language-python">if palette_type == 'greyscale':
+    adjusted_rgb1 = (255, 255, 255)  # White
+</code></pre>
+<p>If it is classified as &quot;low contrast&quot;, it identifies the most saturated color and enhances its vibrance</p>
+<pre><code class="language-python">most_saturated_color = max(filtered_palette, key=get_saturation)
+adjusted_rgb1 = adjust_saturation_vibrance(most_saturated_color)
+</code></pre>
+<h2>Configuring LEDs</h2>
+<p>The script utilizes the OpenRGB client to connect to the LED devices and configure their colors based on the extracted palette.</p>
+<pre><code class="language-python">def configure_leds(adjusted_rgb1: Tuple[int, int, int], ip: str, port: int):
+    client = OpenRGBClient(ip, port, 'Wal.py')
+    client.connect()
+
+    target_color = RGBColor(*adjusted_rgb1)
+    fade_color_transition(client, target_color)
+</code></pre>
+<p>Here, the script creates a connection to the OpenRGB server using the specified IP address and port. It then calls the <code>fade_color_transition</code> function to smoothly transition the LED colors to match the wallpaper</p>
+<h2>Fading color Transition</h2>
+<pre><code class="language-python">def fade_color_transition(client: OpenRGBClient, target_color: RGBColor, duration: int = 1, steps: int = 20):
+    current_colors = [device.colors[0] for device in client.devices]
+
+...
+</code></pre>
+<p>The <code>fade_color_transition</code> function gradually changes the LED colors from the current state tot then new target color over a specified duration and number of steps.</p>
+<p>The function calculates the intermediate color for each step and applies it to all connected LED devides, creating a smooth fading effect.</p>
+<h2>Configuration Management</h2>
+<pre><code class="language-python">def load_config(config_file: str) -&gt; Tuple[str, int]:
+    if os.path.isfile(config_file):
+        with open(config_file, 'r') as file:
+            config = json.load(file)
+            return config.get('ip', 'localhost'), config.get('port', 6742)
+    return 'localhost', 6742
+</code></pre>
+<p>The script supports loading and saving configurations through JSON files, allowing users to persist their IP and port settings for the OpenRGB client</p>
+<p>This function checks if a configuration file exists and reads the server settings if it does. If not, it defaults to <code>localhost</code> and <code>6742</code>.</p>
+
+        </div>
+    </main>
+
+    <script src="/assets/js/script.js"></script>
+  </body>
+</html>

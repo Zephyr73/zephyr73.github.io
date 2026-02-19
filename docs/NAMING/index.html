@@ -1,0 +1,81 @@
+<h1>Naming conventions</h1>
+<p>This project uses <strong>BEM-style</strong> class names and <strong>semantic IDs</strong> only where JS or landmarks need them. All paths and selectors are consistent so another developer can extend the site easily.</p>
+<h2>Page context</h2>
+<ul>
+<li><strong>Body:</strong> One class <code>page</code> plus a modifier <code>page--{name}</code>.
+<ul>
+<li>Examples: <code>page page--home</code>, <code>page page--about</code>, <code>page page--gallery</code>, <code>page page--blog</code>.</li>
+</ul>
+</li>
+<li><strong>Main content wrapper:</strong> <code>page__content</code> (replaces the old generic &quot;container&quot;).</li>
+<li><strong>SCSS:</strong> Page-specific styles use <code>.page--home</code>, <code>.page--about</code>, etc., not <code>#home</code> or <code>#about</code>.</li>
+</ul>
+<h2>Blocks and elements</h2>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Block</th>
+<th>Elements / modifiers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site header/nav</strong></td>
+<td><code>site-nav</code></td>
+<td><code>site-nav__brand</code>, <code>site-nav__actions</code>, <code>site-nav__links</code>, <code>site-nav__drawer</code>, <code>site-nav__drawer-item</code>, <code>site-nav__hamburger</code></td>
+</tr>
+<tr>
+<td><strong>Hamburger icon</strong></td>
+<td><code>hamburger</code></td>
+<td><code>hamburger__bar</code> (the three lines). State: <code>.hamburger.is-open</code></td>
+</tr>
+<tr>
+<td><strong>Theme switcher</strong></td>
+<td><code>theme-picker</code></td>
+<td><code>theme-picker__menu</code> (desktop dropdown), <code>theme-picker__drawer-options</code> (mobile drawer). IDs kept for JS: <code>#theme-switch</code>, <code>#theme-switch-ham</code>, <code>#theme-menu</code></td>
+</tr>
+<tr>
+<td><strong>Home feature rows</strong></td>
+<td><code>feature-row</code></td>
+<td><code>feature-row__media</code>, <code>feature-row__body</code>. Modifier: <code>feature-row--reverse</code> (image on right)</td>
+</tr>
+<tr>
+<td><strong>About section</strong></td>
+<td><code>about</code></td>
+<td><code>about__avatar</code>, <code>about__hobbies</code>, <code>about__signature</code>, <code>about__footer</code>, <code>about__footer-links</code>, <code>about__separator</code></td>
+</tr>
+<tr>
+<td><strong>Gallery</strong></td>
+<td><code>gallery-tabs</code>, <code>gallery-grid</code></td>
+<td><code>gallery-tabs__btn</code>, <code>gallery-grid__column</code>. Modifiers: <code>gallery-grid--photography</code>, <code>gallery-grid--ai</code>, <code>gallery-grid--forza</code>. Visible panel: <code>.gallery-grid.is-visible</code></td>
+</tr>
+<tr>
+<td><strong>Code blocks</strong></td>
+<td><code>code-block</code></td>
+<td>Wraps <code>&lt;pre&gt;&lt;code&gt;</code> on project pages</td>
+</tr>
+</tbody>
+</table>
+<h2>Utilities</h2>
+<ul>
+<li><code>u-hidden</code> – hide (opacity/pointer-events).</li>
+<li><code>u-warning</code> – warning/alert text style.</li>
+</ul>
+<h2>IDs (use sparingly)</h2>
+<ul>
+<li><strong>Theme UI (JS):</strong> <code>theme-switch</code>, <code>theme-switch-ham</code>, <code>theme-menu</code>.</li>
+<li><strong>Optional landmarks:</strong> e.g. <code>profile</code> only if you need a single in-page target; otherwise prefer classes like <code>about__avatar</code>.</li>
+</ul>
+<h2>Data attributes</h2>
+<ul>
+<li><code>data-theme</code> – theme key on theme-picker links (e.g. <code>data-theme=&quot;dark&quot;</code>). JS reads this to switch body theme class.</li>
+<li><code>data-src</code> – used for lazy-loaded images (e.g. <code>img.lazyload</code>).</li>
+</ul>
+<h2>Rules of thumb</h2>
+<ol>
+<li><strong>Classes</strong> – Describe the component and its part/modifier (BEM); avoid generic names like &quot;container&quot; or &quot;box&quot;.</li>
+<li><strong>IDs</strong> – Only for unique JS hooks or one-off landmarks; don’t style by ID.</li>
+<li><strong>Body</strong> – Use <code>page page--{name}</code> for page-specific layout; keep theme class (e.g. <code>.dark</code>) separate.</li>
+<li><strong>JS</strong> – Prefer <code>querySelector('.block__element')</code> or <code>getElementById</code> only where the ID is required.</li>
+</ol>

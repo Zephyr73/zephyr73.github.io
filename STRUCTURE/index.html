@@ -1,0 +1,71 @@
+<h1>Site structure</h1>
+<p>This layout keeps pages, assets, and source code separate so you can add sections (e.g. blog, more projects) without clutter. For <strong>class and ID naming conventions</strong> (BEM-style, page context, JS hooks), see <strong><a href="docs/NAMING.md">docs/NAMING.md</a></strong>.</p>
+<h2>Folder layout</h2>
+<pre><code>/
+├── index.html              # Home
+├── about/
+│   └── index.html
+├── gallery/
+│   ├── index.html
+│   ├── index_test.html
+│   └── info/
+│       └── index.html
+├── projects/
+│   ├── index.html
+│   └── wallpapersync/
+│       └── index.html
+├── blog/
+│   └── index.html          # Placeholder; add posts here later
+├── assets/                 # All static files (CSS, JS, images, fonts)
+│   ├── css/
+│   │   └── style.css       # Compiled; do not edit by hand
+│   ├── js/
+│   │   └── script.js
+│   ├── img/
+│   │   ├── gallery/
+│   │   │   ├── photography/
+│   │   │   ├── ai/
+│   │   │   └── forza/
+│   │   ├── profile.png
+│   │   └── ...
+│   └── fonts/
+│       └── *.woff2
+└── src/                    # Source only (not served as-is)
+    ├── scss/
+    │   ├── style.scss      # Main entry; compile to assets/css/style.css
+    │   ├── _variables.scss
+    │   ├── _fonts.scss
+    │   ├── _base.scss
+    │   ├── _nav.scss
+    │   ├── _layout.scss
+    │   ├── _page-*.scss
+    │   └── _media-queries.scss
+    └── scripts/
+        └── sort.py         # Gallery: sort/rename images and regenerate gallery HTML
+</code></pre>
+<h2>Gallery (dynamic)</h2>
+<ol>
+<li>Add images to <code>assets/img/gallery/photography</code>, <code>assets/img/gallery/ai</code>, or <code>assets/img/gallery/forza</code>.</li>
+<li>From repo root run: <code>python src/scripts/sort.py</code></li>
+<li>The script sorts images (EXIF date for photography, mtime for ai/forza), renames them to <code>1.jpg</code>, <code>2.jpg</code>, … in place, and replaces the three column blocks inside <code>gallery/index.html</code> with the new image markup.</li>
+</ol>
+<h2>Adding a new page</h2>
+<ol>
+<li>Create a folder and <code>index.html</code>, e.g. <code>blog/my-post/index.html</code>.</li>
+<li>Reuse the same <code>&lt;head&gt;</code> (assets paths) and nav block from any existing page.</li>
+<li>Set <code>&lt;body class=&quot;page page--pagename&quot; data-page=&quot;pagename&quot;&gt;</code> and add <code>src/scss/_page-pagename.scss</code> if you need page-specific styles.</li>
+<li>In <code>src/scss/style.scss</code>, add <code>@use 'page-pagename';</code> and compile.</li>
+</ol>
+<h2>Build</h2>
+<p>From the repo root:</p>
+<pre><code class="language-bash">npx sass src/scss/style.scss assets/css/style.css
+</code></pre>
+<p>Optional: <code>--watch</code> to recompile on save.</p>
+<h2>Asset paths in HTML</h2>
+<ul>
+<li>CSS: <code>/assets/css/style.css</code></li>
+<li>JS: <code>/assets/js/script.js</code></li>
+<li>Fonts: <code>/assets/fonts/…</code></li>
+<li>Images: <code>/assets/img/…</code> (e.g. <code>/assets/img/gallery/photography/1.jpg</code>)</li>
+</ul>
+<p>Always use root-relative paths (starting with <code>/</code>) so links work from any page depth.</p>
