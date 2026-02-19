@@ -1,0 +1,221 @@
+.markdown-content {
+    // 1. Global Layout & Vars
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--clr-body-text);
+    line-height: 1.7;
+
+    // Scoped variables for easy theming
+    --code-bg: var(--clr-body-bg);
+    --code-text: var(--clr-body-text);
+    --code-inline-bg: var(--clr-body-bg);
+    --code-inline-text: var(--clr-body-text); // Can change to pink/accent if desired
+
+    // Syntax Highlight Colors
+    --token-comment: #999;
+    --token-string: #98c379;
+    --token-keyword: #c678dd;
+    --token-func: #61afef;
+
+    // 2. Typography Reset
+    h1, h2, h3, h4 {
+        font-family: var(--font-bold);
+        text-transform: uppercase;
+        line-height: 1.2;
+
+        // Responsive vertical rhythm: smaller gaps on mobile, larger on desktop
+        margin-top: clamp(2rem, 5vw, 3.5rem);
+        margin-bottom: 1rem;
+    }
+
+    // 3. H1: Fluid Sizing
+    h1 {
+        // Smoothly scales between 1.75rem (mobile) and 3rem (desktop)
+        font-size: clamp(1.75rem, 4vw + 1rem, 3rem);
+
+        // Safety for long words (e.g., German nouns or URLs)
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        hyphens: auto;
+
+        border-bottom: 4px solid var(--clr-body-text);
+        padding-bottom: 10px;
+        letter-spacing: -1px;
+    }
+
+    // 4. H2: The Boxed Link
+    h2 {
+        font-size: clamp(1.4rem, 3vw, 1.8rem); // Slightly fluid
+        background: var(--clr-body-text);
+        color: var(--clr-body-bg);
+        border: 1px solid var(--clr-body-text);
+        padding: 5px 15px;
+
+        display: inline-block;
+        max-width: 100%;       // Prevents box from overflowing screen width
+        box-sizing: border-box; // Includes padding in width calc
+
+        position: relative;     // Anchor for the link overlay
+        transition: background 0.2s ease, color 0.2s ease;
+
+        // Only hover effect if it contains a link
+        &:has(a):hover {
+            background: var(--clr-body-bg);
+            color: var(--clr-body-text);
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            background: transparent;
+            display: inline; // Keep inline so text wrapping works inside the box
+
+            // Overlay to make the whole box clickable
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+            }
+
+            // Override global link hover to prevent conflicts
+            &:hover {
+                background: transparent !important;
+                color: inherit !important;
+            }
+        }
+    }
+
+    h3 {
+        font-size: 1.4rem;
+        border-bottom: 2px solid var(--clr-navbar-text);
+        padding-bottom: 5px;
+        display: inline-block; // Matches the underline length to text
+        padding-right: 1rem;
+    }
+
+    p {
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+    }
+
+    // 5. Global Links
+    a {
+        color: var(--clr-body-text);
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 2px; // Looks cleaner
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: var(--clr-body-text);
+            color: var(--clr-body-bg);
+            text-decoration: none;
+        }
+    }
+
+    // 6. Lists
+    ul, ol {
+        margin-bottom: 2rem;
+        padding-left: 1.5rem;
+
+        li {
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem; // Breathing room from bullet
+
+            &::marker {
+                color: var(--clr-link-visited);
+                font-family: var(--font-bold);
+            }
+        }
+    }
+
+    // 7. Images
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 2rem auto;
+        border: 1px solid var(--clr-navbar-text);
+    }
+
+    // 8. Blockquotes
+    blockquote {
+        margin: 2rem 0;
+        padding: 1rem 1.5rem;
+        border: 2px solid var(--clr-body-text);
+        border-left-width: 8px;
+        background: rgba(0,0,0, 0.02); // Subtle highlight (optional)
+        font-style: italic;
+    }
+
+    // 9. Code Blocks (PRE) - WRAPPING enabled
+    pre {
+        background: var(--code-bg);
+        color: var(--code-text);
+        border: 1px solid var(--clr-body-text);
+
+        padding: 1.25rem;
+        margin: 2rem 0;
+        width: 100%;
+        box-sizing: border-box; // Critical for mobile
+
+        line-height: 1.5;
+        font-family: 'Courier New', Courier, monospace;
+
+        // Force Wrapping (Mobile Friendly)
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+
+        code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            white-space: inherit;
+            border: none;
+        }
+    }
+
+    // 10. Inline Code Lines - SCROLLING enabled
+    :not(pre) > code {
+        font-family: 'Courier New', Courier, monospace;
+        background: var(--code-inline-bg);
+        color: var(--code-inline-text);
+        padding: 0.2rem 0.4rem;
+        font-size: 0.9em;
+
+        display: inline-block;
+        vertical-align: bottom;
+        max-width: 100%;
+
+        // Force Scroll (No Wrap)
+        white-space: nowrap;
+        overflow-x: auto;
+
+        // Scrollbar styling
+        scrollbar-width: thin;
+        scrollbar-color: var(--code-inline-text) var(--code-inline-bg);
+
+        &::-webkit-scrollbar {
+            height: 4px; // Thinner for inline
+            background: transparent;
+        }
+        &::-webkit-scrollbar-track {
+            background: rgba(0,0,0, 0.02);
+            border-radius: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: var(--clr-body-text);
+        }
+    }
+
+    // 11. Syntax Highlighting Classes
+    .token.comment, .hljs-comment { color: var(--token-comment); font-style: italic; }
+    .token.string, .hljs-string   { color: var(--token-string); }
+    .token.keyword, .hljs-keyword { color: var(--token-keyword); font-weight: bold; }
+    .token.function, .hljs-title  { color: var(--token-func); }
+    .token.number, .hljs-number   { color: #d19a66; }
+    .token.operator               { color: #56b6c2; }
+}

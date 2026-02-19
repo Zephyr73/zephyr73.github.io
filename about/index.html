@@ -1,167 +1,96 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link
-      rel="preload"
-      href="/assets/fonts/JetBrainsMono-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/JetBrainsMono-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>My Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume | Zephyr</title>
+
+    <!-- Fonts -->
+    <link rel="preload" href="/assets/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/fonts/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Stylesheet -->
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
   </head>
 
-  <body class="page page--about" data-page="about">
-    <div class="site-nav__drawer">
-      <ul>
-        <li class="site-nav__drawer-item"><a href="/index.html">Home</a></li>
-        <li class="site-nav__drawer-item"><a href="/gallery">Gallery</a></li>
-        <li class="site-nav__drawer-item"><a href="/projects">Projects</a></li>
-        <li class="site-nav__drawer-item"><a href="/about">About</a></li>
-        <li class="theme-picker__drawer-options" style="display: none">
-          <ul>
-            <li><a href="#" data-theme="light">Light</a></li>
-            <li><a href="#" data-theme="dark">Dark</a></li>
-            <li><a href="#" data-theme="midnight">Midnight</a></li>
-            <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
-          </ul>
-        </li>
-      </ul>
-      <button id="theme-switch-ham" type="button" aria-label="Theme options">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="20px"
-          viewBox="0 -960 960 960"
-          width="20px"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"
-          />
-        </svg>
-      </button>
-    </div>
+  <body class="page page--resume" data-page="resume">
 
-    <nav class="site-nav" aria-label="Main navigation">
-      <div class="site-nav__brand">
-        <p><a href="/index.html">MY PORTFOLIO</a></p>
-      </div>
-      <div class="site-nav__actions">
-        <div class="site-nav__links">
-          <ul>
-            <li><a href="/gallery">Gallery</a></li>
-            <li><a href="/projects">Projects</a></li>
-            <li><a href="/about">About</a></li>
-          </ul>
-          <button id="theme-switch" type="button" aria-label="Choose theme">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="20px"
-              viewBox="0 -960 960 960"
-              width="20px"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"
-              />
-            </svg>
-          </button>
-          <div class="theme-picker__menu" id="theme-menu" role="menu">
-            <a href="#" role="menuitem" data-theme="light">Light</a>
-            <a href="#" role="menuitem" data-theme="dark">Dark</a>
-            <a href="#" role="menuitem" data-theme="midnight">Midnight</a>
-            <a href="#" role="menuitem" data-theme="catppuccin-dark">Catppuccin Dark</a>
-          </div>
-        </div>
-        <div class="site-nav__hamburger hamburger" aria-label="Open menu">
-          <span class="hamburger__bar"></span>
-          <span class="hamburger__bar"></span>
-          <span class="hamburger__bar"></span>
-        </div>
-      </div>
-    </nav>
+    <!-- 1. DRAWER (Formerly drawer.njk) -->
+    {% include "drawer.njk" %}
 
+    <!-- 2. NAVBAR (Formerly navbar.njk) -->
+    {% include "navbar.njk" %}
+
+    <!-- 3. RESUME CONTENT -->
     <main class="page__content">
-      <img class="about__avatar" src="/assets/img/profile.png" alt="Profile Picture" /><br />
-      <div style="height: 25px"></div>
-      <h1>Zephyr</h1>
-      <section class="about__section">
-        <h3>ABOUT ME</h3>
-        <p>
-          I am Zephyr, a student of Laguardia Community College. I have completed my O and A levels
-          which was taken by Cambridge University. I have interests in new technologies, software
-          development and game development
-        </p>
-      </section>
+        <div class="resume-container">
+            <!-- TOP SECTION: Balanced Header -->
+            <header class="resume-hero">
+                <!-- LEFT SIDE: Identity -->
+                <div class="hero-sidebar">
+                    <img class="resume-avatar" src="/assets/img/profile.png" alt="Zephyr">
+                    <div class="resume-contact">
+                        <a href="https://github.com/zephyr73" target="_blank">Github ↗</a>
+                        <a href="https://twitter.com/Zephyr73_" target="_blank">Twitter ↗</a>
+                        <a href="https://pixiv.net/users/28541154" target="_blank">Pixiv ↗</a>
+                    </div>
+                </div>
 
-      <section class="about__section">
-        <h3>HOBBIES</h3>
-        <div class="about__hobbies">
-          <ul style="margin-top: 0">
-            <li>Coding</li>
-            <li>Gaming</li>
-            <li>Photography</li>
-          </ul>
+                <!-- RIGHT SIDE: Intro -->
+                <div class="hero-main">
+                    <h1>Zephyr</h1>
+                    <span class="role-title">Software Developer</span>
+                    <div class="hero-bio">
+                        <p>I am a student at Laguardia Community College with a strong foundation in computer science principles completed through the Cambridge University curriculum.</p>
+                        <p>I have a passion for building software, exploring new technologies, and game development. I focus on creating clean, efficient code and exploring creative technical workflows.</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- BOTTOM SECTION: Full Width Details -->
+            <div class="resume-details">
+                <h3 class="resume-section-title">Technical Skills</h3>
+                <div class="skills-grid">
+                    <div class="skill-box">Python</div>
+                    <div class="skill-box">HTML / CSS</div>
+                    <div class="skill-box">JavaScript</div>
+                    <div class="skill-box">Game Dev</div>
+                    <div class="skill-box">Photography</div>
+                    <div class="skill-box">Adobe Suite</div>
+                    <div class="skill-box">Stable Diffusion</div>
+                </div>
+
+                <h3 class="resume-section-title">Education</h3>
+                <div class="resume-item">
+                    <div class="item-header">
+                        <h4>Laguardia Community College</h4>
+                        <span class="item-meta">Computer Science | Present</span>
+                    </div>
+                    <p>Currently pursuing a degree in Computer Science, focusing on software engineering principles, data structures, and algorithms.</p>
+                </div>
+
+                <div class="resume-item">
+                    <div class="item-header">
+                        <h4>Cambridge University (A Levels)</h4>
+                        <span class="item-meta">GPA: 5.0 | Graduated</span>
+                    </div>
+                    <p>Advanced Level qualifications in Mathematics, Physics, and Computer Science. Ranked top tier in curriculum performance.</p>
+                </div>
+
+                <div class="resume-item">
+                    <div class="item-header">
+                        <h4>Cambridge University (O Levels)</h4>
+                        <span class="item-meta">GPA: 4.14 | Graduated</span>
+                    </div>
+                    <p>Ordinary Level qualifications in Mathematics-D, Additional Mathematics, Physics, Computer Science, Chemistry and English. Achieved high marks across all subjects.</p>
+                </div>
+
+                <h3 class="resume-section-title">Interests</h3>
+                <p>When I am not coding, I explore digital art through AI generation, capture street photography using my Galaxy S22 Ultra, and participate in competitive gaming. I am also researching Machine Learning plugins for creative workflows.</p>
+            </div>
         </div>
-      </section>
-
-      <section class="about__section">
-        <h3>EDUCATIONAL QUALIFICATIONS</h3>
-        <table>
-          <tr>
-            <th>Degree Name</th>
-            <th>Board/University</th>
-            <th>GPA</th>
-          </tr>
-          <tr>
-            <td>O levels</td>
-            <td>Cambridge University</td>
-            <td>4.14</td>
-          </tr>
-          <tr>
-            <td>A levels</td>
-            <td>Cambridge University</td>
-            <td>5.0</td>
-          </tr>
-        </table>
-      </section>
-
-      <br /><br />
-
-      <section class="about__signature-section" style="text-align: center">
-        <p>SIGNATURE</p>
-        <hr style="margin-top: 0; max-width: 200px; margin: 0 auto 1rem auto" />
-        <img
-          class="about__signature"
-          src="/assets/img/signature_transparent.png"
-          alt="Signature"
-          width="128"
-          height="72"
-        />
-      </section>
-
-      <footer class="about__footer">
-        <div class="about__footer-links">
-          <a href="https://www.github.com/zephyr73">Github</a>
-          <span class="about__separator"> | </span>
-          <a href="https://www.twitter.com/Zephyr73_">Twitter</a>
-          <span class="about__separator"> | </span>
-          <a href="https://www.pixiv.net/en/users/28541154">Pixiv</a>
-        </div>
-      </footer>
     </main>
+
     <script src="/assets/js/script.js"></script>
   </body>
 </html>

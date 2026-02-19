@@ -1,0 +1,24 @@
+<div class="site-nav__drawer">
+  <ul>
+    <!-- Logic to highlight active link -->
+    <li class="site-nav__drawer-item"><a href="/index.html" {{ 'aria-current="page"' if page.url == '/' }}>Home</a></li>
+    <li class="site-nav__drawer-item"><a href="/gallery" {{ 'aria-current="page"' if '/gallery' in page.url }}>Gallery</a></li>
+    <li class="site-nav__drawer-item"><a href="/projects" {{ 'aria-current="page"' if '/projects' in page.url }}>Projects</a></li>
+    <li class="site-nav__drawer-item"><a href="/blog" {{ 'aria-current="page"' if '/blog' in page.url }}>Blog</a></li>
+    <li class="site-nav__drawer-item"><a href="/about" {{ 'aria-current="page"' if '/about' in page.url }}>About</a></li>
+
+    <li class="theme-picker__drawer-options" style="display: none">
+      <ul>
+        <li><a href="#" data-theme="light">Light</a></li>
+        <li><a href="#" data-theme="midnight">Midnight</a></li>
+        <li><a href="#" data-theme="catppuccin-dark">Catppuccin</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <button id="theme-switch-ham" type="button" aria-label="Theme options">
+    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor" aria-hidden="true">
+      <path d="M240-120q-45 0-89-22t-71-58q26 0 53-20.5t27-59.5q0-50 35-85t85-35q50 0 85 35t35 85q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T320-280q0-17-11.5-28.5T280-320q-17 0-28.5 11.5T240-280q0 23-5.5 42T220-202q5 2 10 2h10Zm230-160L360-470l358-358q11-11 27.5-11.5T774-828l54 54q12 12 12 28t-12 28L470-360Zm-190 80Z"/>
+    </svg>
+  </button>
+</div>
