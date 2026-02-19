@@ -16,3 +16,6 @@ Thumbs.db
 
 # Compiled Assets (Optional - if you want to commit them, remove these lines)
 # assets/css/
+
+.venv/
+.src/scripts/
