@@ -5,7 +5,7 @@ html {
   width: 100%;
 
   scrollbar-color: var(--clr-body-text) var(--clr-body-bg);
-  scrollbar-width: thin;
+  scrollbar-width: auto;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -17,8 +17,11 @@ html {
 
   &::-webkit-scrollbar-thumb {
     background-color: var(--clr-body-text);
-    border-radius: 10px;
-    border: 3px solid var(--clr-body-bg);
+    border: 2px solid var(--clr-body-bg);
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--clr-body-text), white 10%);
+    }
   }
 }
 
@@ -43,6 +46,6 @@ body {
 }
 
 ::selection {
-    background-color: var(--clr-body-text);
-    color: var(--clr-body-bg);
+  background-color: var(--clr-body-text);
+  color: var(--clr-body-bg);
 }
