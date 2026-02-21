@@ -1,83 +1,124 @@
-.page--home .page__content h1,
-.page--home .page__content p {
-  text-align: left;
-}
-
-.page--home .page__content .feature-row {
-  padding-top: 35px;
-  display: flex;
-  flex-wrap: nowrap;
-  width: 100%;
-  position: relative;
-}
-
-.page--home .page__content .feature-row__media {
-  width: 45%;
-  max-height: fit-content;
-  box-sizing: border-box;
-  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
-}
-
-.page--home .page__content .feature-row__media img {
-  outline: 1px solid var(--clr-body-text);
-  display: flex;
-  position: relative;
-  width: 100%;
-}
-
-.page--home .page__content .feature-row__body {
-  gap: 10px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  position: relative;
-}
-
-.page--home .page__content .feature-row:not(.feature-row--reverse) .feature-row__body {
-  padding-right: 0;
-}
-
-.page--home .page__content .feature-row--reverse .feature-row__body {
-  padding-left: 0;
-}
+/* ========================
+   HOME PAGE STYLES
+   ======================== */
 
 .page--home .page__content {
-  .feature-row,
+
+  /* MAIN HEADER - Matches Resume H1 */
+  h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+    margin-top: 0;
+    text-align: left;
+  }
+
+  /* BASE PARAGRAPHS - Matches Resume Text */
+  p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+    text-align: left;
+  }
+
+  /* WARNING CALLOUT */
+  .u-warning {
+    border-left: 3px solid var(--clr-link-visited);
+    padding-left: 1rem;
+    font-style: italic;
+    margin-bottom: 3rem;
+  }
+
+  /* ========================
+     FEATURE ROWS (LAYOUT)
+     ======================== */
+  .feature-row {
+    padding-top: 2rem;
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    position: relative;
+    align-items: center; /* Centers text vertically next to the image */
+    gap: 3rem;           /* Replaces the messy padding from your old CSS */
+    margin-bottom: 4rem;
+  }
+
+  /* REVERSE LAYOUT */
   .feature-row--reverse {
-    a,
-    a:visited {
-      color: var(--clr-body-text);
+    flex-direction: row-reverse;
+  }
+
+  /* IMAGES - Matches Resume Profile Box (No Grayscale) */
+  .feature-row__media {
+    width: 45%;
+    flex-shrink: 0;
+    box-sizing: border-box;
+
+    img {
+      display: block;
+      width: 100%;
+      border: 2px solid var(--clr-body-text); /* Thick boxy border */
     }
-    a:hover {
-      text-decoration: none;
+  }
+
+  /* TEXT BODY */
+  .feature-row__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    /* H2 & LINKS - Matches Resume Section Titles & Contact Buttons */
+    h2 {
+      margin: 0 0 1.5rem 0;
+      padding: 0;
+      text-align: left;
+
+      a {
+        display: inline-block;
+        font-family: var(--font-bold);
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+
+        /* Solid Highlight Block look */
+        background: var(--clr-body-text);
+        color: var(--clr-body-bg);
+        padding: 6px 16px;
+        border: 2px solid var(--clr-body-text);
+        transition: all 0.2s ease;
+
+        &:hover {
+          /* Inverts colors and shifts slightly to the right */
+          background: transparent;
+          color: var(--clr-body-text);
+          transform: translateX(5px);
+        }
+      }
+    }
+
+    /* Target paragraphs only inside the row to remove default margins/padding */
+    p {
+      padding: 0;
+      margin: 0 0 1rem 0;
     }
   }
 }
 
-.page--home .page__content .feature-row__body h2 {
-  text-align: left;
-  height: auto;
-  margin: 0;
-  padding-left: 10px;
-}
+/* Optional: Mobile Stacking */
+/* If you ever want them to stack cleanly on small phone screens, uncomment this: */
 
-.page--home .page__content .feature-row__body p {
-  margin: 0;
-  padding: 0 10px;
-  text-align: left;
-}
-
-.page--home .page__content .feature-row--reverse {
-  padding-top: 35px;
-  display: flex;
-  flex-wrap: nowrap;
-  width: 100%;
-  position: relative;
-}
-
-.page--home .page__content .feature-row--reverse .feature-row__media {
-  margin-left: auto;
-  width: 45%;
-  box-sizing: border-box;
+@media (max-width: 768px) {
+  .page--home .page__content .feature-row,
+  .page--home .page__content .feature-row--reverse {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .page--home .page__content .feature-row__media {
+    width: 100%;
+  }
 }

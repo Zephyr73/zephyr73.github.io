@@ -5,6 +5,9 @@ module.exports = function(eleventyConfig) {
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
   eleventyConfig.addWatchTarget("./assets/");
 
+  //3. Add Plugins
+  eleventyConfig.addPlugin(require("@11ty/eleventy-plugin-syntaxhighlight"));
+
   return {
     dir: {
       input: ".",        // Look for files in the root

@@ -5,17 +5,15 @@
     color: var(--clr-body-text);
     line-height: 1.7;
 
-    // Scoped variables for easy theming
-    --code-bg: var(--clr-body-bg);
-    --code-text: var(--clr-body-text);
-    --code-inline-bg: var(--clr-body-bg);
-    --code-inline-text: var(--clr-body-text); // Can change to pink/accent if desired
+    --code-bg: var(--clr-code-bg);
+    --code-text: var(--clr-code-text);
+    --code-inline-bg: var(--clr-inline-code-bg);
+    --code-inline-text: var(--clr-inline-code-text);
 
-    // Syntax Highlight Colors
-    --token-comment: #999;
-    --token-string: #98c379;
-    --token-keyword: #c678dd;
-    --token-func: #61afef;
+    .token.comment { color: var(--clr-code-comment); }
+    .token.string  { color: var(--clr-code-string); }
+    .token.keyword { color: var(--clr-code-keyword); }
+    .token.function { color: var(--clr-code-func); }
 
     // 2. Typography Reset
     h1, h2, h3, h4 {
@@ -43,33 +41,41 @@
         letter-spacing: -1px;
     }
 
-    // 4. H2: The Boxed Link
+// 4. H2: The Boxed Link
     h2 {
-        font-size: clamp(1.4rem, 3vw, 1.8rem); // Slightly fluid
-        background: var(--clr-body-text);
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+        background-color: var(--clr-body-text); // Use specific background-color property
         color: var(--clr-body-bg);
         border: 1px solid var(--clr-body-text);
         padding: 5px 15px;
 
         display: inline-block;
-        max-width: 100%;       // Prevents box from overflowing screen width
-        box-sizing: border-box; // Includes padding in width calc
+        max-width: 100%;
+        box-sizing: border-box;
 
-        position: relative;     // Anchor for the link overlay
-        transition: background 0.2s ease, color 0.2s ease;
+        position: relative;
+        transition: background-color 0.2s ease, color 0.2s ease;
 
-        // Only hover effect if it contains a link
-        &:has(a):hover {
-            background: var(--clr-body-bg);
-            color: var(--clr-body-text);
+        // Apply cursor pointer if it has a link (applies BEFORE hover for smoothness)
+        &:has(a) {
             cursor: pointer;
+
+            &:hover {
+                background-color: var(--clr-body-bg);
+                color: var(--clr-body-text);
+            }
         }
 
         a {
             color: inherit;
             text-decoration: none;
-            background: transparent;
-            display: inline; // Keep inline so text wrapping works inside the box
+            display: inline;
+
+            // FIX 1: Stop the child from trying to animate inherited colors
+            transition: none;
+
+            // FIX 2: Aggressively override global link backgrounds
+            background-color: transparent !important;
 
             // Overlay to make the whole box clickable
             &::after {
@@ -81,7 +87,7 @@
 
             // Override global link hover to prevent conflicts
             &:hover {
-                background: transparent !important;
+                background-color: transparent !important;
                 color: inherit !important;
             }
         }
@@ -186,13 +192,14 @@
         padding: 0.2rem 0.4rem;
         font-size: 0.9em;
 
-        display: inline-block;
-        vertical-align: bottom;
+        display: inline-block; // Allows padding and scrolling
+        vertical-align: middle;
         max-width: 100%;
 
         // Force Scroll (No Wrap)
         white-space: nowrap;
         overflow-x: auto;
+        box-sizing: border-box;
 
         // Scrollbar styling
         scrollbar-width: thin;
@@ -210,12 +217,4 @@
             background: var(--clr-body-text);
         }
     }
-
-    // 11. Syntax Highlighting Classes
-    .token.comment, .hljs-comment { color: var(--token-comment); font-style: italic; }
-    .token.string, .hljs-string   { color: var(--token-string); }
-    .token.keyword, .hljs-keyword { color: var(--token-keyword); font-weight: bold; }
-    .token.function, .hljs-title  { color: var(--token-func); }
-    .token.number, .hljs-number   { color: #d19a66; }
-    .token.operator               { color: #56b6c2; }
 }
