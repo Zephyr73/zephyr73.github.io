@@ -11,6 +11,26 @@
   --font-bold: JetBrains Mono Bold;
 }
 
+.light {
+  --clr-body-bg: #cacaca;
+  --clr-body-text: #0f0f0f;
+  --clr-navbar-bg: #cacaca;
+  --clr-navbar-text: #0f0f0f;
+  --clr-container-bg: #d6d6d6;
+  --clr-hamburger-bg: #0f0f0f;
+  --clr-off-screen-menu-txt: #0f0f0f;
+  --clr-link-visited: #b71c1c;
+  --clr-code-bg: #e0e0e0;
+  --clr-code-text: #0f0f0f;
+  --clr-code-comment: #5c5c5c;
+  --clr-code-keyword: #800080;
+  --clr-code-string: #006400;
+  --clr-code-func: #00008b;
+  --clr-code-number: #8b4500;
+  --clr-inline-code-bg: #b0b0b0;
+  --clr-inline-code-text: #000000;
+}
+
 .midnight {
   --clr-body-bg: #0f0f0f;
   --clr-body-text: #cacaca;
@@ -20,28 +40,35 @@
   --clr-hamburger-bg: #cacaca;
   --clr-off-screen-menu-txt: #cacaca;
   --clr-link-visited: #b71c1c;
-}
-
-.light {
-  --clr-body-bg: #cacaca;
-  --clr-body-text: #0f0f0f;
-  --clr-navbar-bg: #cacaca;
-  --clr-navbar-text: #0f0f0f;
-  --clr-container-bg: #cacaca;
-  --clr-hamburger-bg: #0f0f0f;
-  --clr-off-screen-menu-txt: #0f0f0f;
-  --clr-link-visited: #b71c1c;
+  --clr-code-bg: #161616;
+  --clr-code-text: #cacaca;
+  --clr-code-comment: #767676;
+  --clr-code-keyword: #d57bdd;
+  --clr-code-string: #98c379;
+  --clr-code-func: #61afef;
+  --clr-code-number: #e5c07b;
+  --clr-inline-code-bg: #262626;
+  --clr-inline-code-text: #e0e0e0;
 }
 
 .catppuccin-dark {
-  --clr-body-bg: #11111b;
+  --clr-body-bg: #11111b; /* Crust */
   --clr-body-text: #cdd6f4;
   --clr-navbar-bg: #0f0f0f;
   --clr-navbar-text: #cdd6f4;
-  --clr-container-bg: #1e1e2e;
+  --clr-container-bg: #181825; /* Mantle */
   --clr-hamburger-bg: #cdd6f4;
   --clr-off-screen-menu-txt: #cdd6f4;
-  --clr-link-visited: #89b4fa;
+  --clr-link-visited: #f38ba8;
+  --clr-code-bg: #1e1e2e; /* Base */
+  --clr-code-text: #cdd6f4;
+  --clr-code-comment: #6c7086;
+  --clr-code-keyword: #cba6f7;
+  --clr-code-string: #a6e3a1;
+  --clr-code-func: #89b4fa;
+  --clr-code-number: #fab387;
+  --clr-inline-code-bg: #313244; /* Surface0 */
+  --clr-inline-code-text: #eba0ac; /* Maroon (Pinkish-Red) for emphasis */
 }
 
 @font-face {
@@ -105,6 +132,11 @@ body {
 
 .u-hidden {
   opacity: 0;
+}
+
+::-moz-selection {
+  background-color: var(--clr-body-text);
+  color: var(--clr-body-bg);
 }
 
 ::selection {
@@ -327,88 +359,129 @@ p {
   text-align: left;
 }
 
-.page--home .page__content h1,
-.page--home .page__content p {
+/* ========================
+   HOME PAGE STYLES
+   ======================== */
+.page--home .page__content {
+  /* MAIN HEADER - Matches Resume H1 */
+}
+.page--home .page__content h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
   text-align: left;
 }
-
+.page--home .page__content {
+  /* BASE PARAGRAPHS - Matches Resume Text */
+}
+.page--home .page__content p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+  text-align: left;
+}
+.page--home .page__content {
+  /* WARNING CALLOUT */
+}
+.page--home .page__content .u-warning {
+  border-left: 3px solid var(--clr-link-visited);
+  padding-left: 1rem;
+  font-style: italic;
+  margin-bottom: 3rem;
+}
+.page--home .page__content {
+  /* ========================
+     FEATURE ROWS (LAYOUT)
+     ======================== */
+}
 .page--home .page__content .feature-row {
-  padding-top: 35px;
+  padding-top: 2rem;
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
   position: relative;
+  align-items: center; /* Centers text vertically next to the image */
+  gap: 3rem; /* Replaces the messy padding from your old CSS */
+  margin-bottom: 4rem;
 }
-
+.page--home .page__content {
+  /* REVERSE LAYOUT */
+}
+.page--home .page__content .feature-row--reverse {
+  flex-direction: row-reverse;
+}
+.page--home .page__content {
+  /* IMAGES - Matches Resume Profile Box (No Grayscale) */
+}
 .page--home .page__content .feature-row__media {
   width: 45%;
-  max-height: fit-content;
+  flex-shrink: 0;
   box-sizing: border-box;
-  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
 }
-
 .page--home .page__content .feature-row__media img {
-  outline: 1px solid var(--clr-body-text);
-  display: flex;
-  position: relative;
+  display: block;
   width: 100%;
+  border: 2px solid var(--clr-body-text); /* Thick boxy border */
 }
-
+.page--home .page__content {
+  /* TEXT BODY */
+}
 .page--home .page__content .feature-row__body {
-  gap: 10px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  position: relative;
+  justify-content: center;
+  /* H2 & LINKS - Matches Resume Section Titles & Contact Buttons */
 }
-
-.page--home .page__content .feature-row:not(.feature-row--reverse) .feature-row__body {
-  padding-right: 0;
-}
-
-.page--home .page__content .feature-row--reverse .feature-row__body {
-  padding-left: 0;
-}
-
-.page--home .page__content .feature-row a,
-.page--home .page__content .feature-row a:visited,
-.page--home .page__content .feature-row--reverse a,
-.page--home .page__content .feature-row--reverse a:visited {
-  color: var(--clr-body-text);
-}
-.page--home .page__content .feature-row a:hover,
-.page--home .page__content .feature-row--reverse a:hover {
-  text-decoration: none;
-}
-
 .page--home .page__content .feature-row__body h2 {
+  margin: 0 0 1.5rem 0;
+  padding: 0;
   text-align: left;
-  height: auto;
-  margin: 0;
-  padding-left: 10px;
 }
-
+.page--home .page__content .feature-row__body h2 a {
+  display: inline-block;
+  font-family: var(--font-bold);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  /* Solid Highlight Block look */
+  background: var(--clr-body-text);
+  color: var(--clr-body-bg);
+  padding: 6px 16px;
+  border: 2px solid var(--clr-body-text);
+  transition: all 0.2s ease;
+}
+.page--home .page__content .feature-row__body h2 a:hover {
+  /* Inverts colors and shifts slightly to the right */
+  background: transparent;
+  color: var(--clr-body-text);
+  transform: translateX(5px);
+}
+.page--home .page__content .feature-row__body {
+  /* Target paragraphs only inside the row to remove default margins/padding */
+}
 .page--home .page__content .feature-row__body p {
-  margin: 0;
-  padding: 0 10px;
-  text-align: left;
+  padding: 0;
+  margin: 0 0 1rem 0;
 }
 
-.page--home .page__content .feature-row--reverse {
-  padding-top: 35px;
-  display: flex;
-  flex-wrap: nowrap;
-  width: 100%;
-  position: relative;
+/* Optional: Mobile Stacking */
+/* If you ever want them to stack cleanly on small phone screens, uncomment this: */
+@media (max-width: 768px) {
+  .page--home .page__content .feature-row,
+  .page--home .page__content .feature-row--reverse {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .page--home .page__content .feature-row__media {
+    width: 100%;
+  }
 }
-
-.page--home .page__content .feature-row--reverse .feature-row__media {
-  margin-left: auto;
-  width: 45%;
-  box-sizing: border-box;
-}
-
 /* src/scss/_page-about.scss */
 .resume-container {
   max-width: 900px;
@@ -416,86 +489,125 @@ p {
   padding-bottom: 5rem;
 }
 
-/* ========================
-   THE HERO (TOP SECTION)
-   ======================== */
 .resume-hero {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  align-items: flex-start; /* Keeps everything perfectly aligned to the top */
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  /* Desktop Layout */
 }
 @media (min-width: 768px) {
   .resume-hero {
-    flex-direction: row;
+    grid-template-columns: 240px 1fr;
+    align-items: start;
   }
 }
 
-/* Identity Column (Left) */
 .hero-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
   width: 100%;
-  max-width: 260px;
-  flex-shrink: 0;
+  /* DESKTOP: Align left */
+}
+@media (min-width: 768px) {
+  .hero-sidebar {
+    align-items: flex-start;
+    width: auto;
+  }
 }
 .hero-sidebar .resume-avatar {
   width: 100%;
+  max-width: 240px;
   aspect-ratio: 1/1;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   display: block;
-  border: 1px solid var(--clr-body-text);
+  border: 2px solid var(--clr-body-text);
   filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+.hero-sidebar .resume-avatar:hover {
+  filter: grayscale(0%);
 }
 .hero-sidebar .resume-contact {
-  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 240px;
 }
 .hero-sidebar .resume-contact a {
+  display: block;
+  width: 100%;
+  text-align: center;
   font-family: var(--font-bold);
   font-size: 0.85rem;
   text-decoration: none;
   text-transform: uppercase;
-  border-bottom: 1px solid transparent;
-  width: fit-content;
+  border: 1px solid var(--clr-body-text);
+  padding: 10px 0;
+  background: transparent;
+  color: var(--clr-body-text);
+  transition: all 0.2s ease;
 }
 .hero-sidebar .resume-contact a:hover {
-  border-bottom-color: var(--clr-body-text);
-}
-
-/* Intro Column (Right) */
-.hero-main {
-  flex-grow: 1;
-}
-.hero-main h1 {
-  font-size: 4rem;
-  line-height: 0.85;
-  text-transform: uppercase;
-  letter-spacing: -2px;
-  margin-bottom: 0;
-  margin-top: 0;
-}
-.hero-main .role-title {
-  font-size: 1.1rem;
-  text-transform: uppercase;
   background: var(--clr-body-text);
   color: var(--clr-body-bg);
-  padding: 6px 12px;
-  display: inline-block;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  font-family: var(--font-bold);
-  letter-spacing: 1px;
-}
-.hero-main .hero-bio p {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  margin-bottom: 1rem;
+  transform: translateX(5px);
 }
 
-/* ========================
-   THE DETAILS (BOTTOM SECTION)
-   ======================== */
+.hero-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .hero-main {
+    align-items: flex-start;
+    text-align: left;
+    justify-content: flex-start;
+  }
+}
+.hero-main h1 {
+  font-size: clamp(3rem, 5vw, 5rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: -3px;
+  margin: 0;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .hero-main h1 {
+    top: -6px;
+  }
+}
+.hero-main .role-title {
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-family: var(--font-bold);
+  letter-spacing: 2px;
+  background: var(--clr-body-text);
+  color: var(--clr-body-bg);
+  padding: 4px 10px;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+.hero-main .hero-bio {
+  max-width: 600px;
+  border-top: 1px solid var(--clr-navbar-text);
+  padding-top: 1.5rem;
+}
+.hero-main .hero-bio p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
 .resume-details {
   width: 100%;
 }
@@ -513,7 +625,6 @@ p {
   letter-spacing: 1px;
 }
 
-/* Resume Items */
 .resume-item {
   margin-bottom: 2.5rem;
 }
@@ -540,7 +651,6 @@ p {
   line-height: 1.6;
 }
 
-/* Skills Grid */
 .skills-grid {
   display: flex;
   flex-wrap: wrap;
@@ -679,7 +789,8 @@ p {
 .page--gallery .page__content .gallery-grid--ai .gallery-grid__column img,
 .page--gallery .page__content .gallery-grid--forza .gallery-grid__column img {
   width: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .page--gallery .page__content .gallery-grid--photography .gallery-grid__column img:hover,
@@ -827,14 +938,22 @@ p {
   margin: 0 auto;
   color: var(--clr-body-text);
   line-height: 1.7;
-  --code-bg: var(--clr-body-bg);
-  --code-text: var(--clr-body-text);
-  --code-inline-bg: var(--clr-body-bg);
-  --code-inline-text: var(--clr-body-text);
-  --token-comment: #999;
-  --token-string: #98c379;
-  --token-keyword: #c678dd;
-  --token-func: #61afef;
+  --code-bg: var(--clr-code-bg);
+  --code-text: var(--clr-code-text);
+  --code-inline-bg: var(--clr-inline-code-bg);
+  --code-inline-text: var(--clr-inline-code-text);
+}
+.markdown-content .token.comment {
+  color: var(--clr-code-comment);
+}
+.markdown-content .token.string {
+  color: var(--clr-code-string);
+}
+.markdown-content .token.keyword {
+  color: var(--clr-code-keyword);
+}
+.markdown-content .token.function {
+  color: var(--clr-code-func);
 }
 .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4 {
   font-family: var(--font-bold);
@@ -854,7 +973,7 @@ p {
 }
 .markdown-content h2 {
   font-size: clamp(1.4rem, 3vw, 1.8rem);
-  background: var(--clr-body-text);
+  background-color: var(--clr-body-text);
   color: var(--clr-body-bg);
   border: 1px solid var(--clr-body-text);
   padding: 5px 15px;
@@ -862,18 +981,21 @@ p {
   max-width: 100%;
   box-sizing: border-box;
   position: relative;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.markdown-content h2:has(a) {
+  cursor: pointer;
 }
 .markdown-content h2:has(a):hover {
-  background: var(--clr-body-bg);
+  background-color: var(--clr-body-bg);
   color: var(--clr-body-text);
-  cursor: pointer;
 }
 .markdown-content h2 a {
   color: inherit;
   text-decoration: none;
-  background: transparent;
   display: inline;
+  transition: none;
+  background-color: transparent !important;
 }
 .markdown-content h2 a::after {
   content: "";
@@ -882,7 +1004,7 @@ p {
   z-index: 1;
 }
 .markdown-content h2 a:hover {
-  background: transparent !important;
+  background-color: transparent !important;
   color: inherit !important;
 }
 .markdown-content h3 {
@@ -963,10 +1085,11 @@ p {
   padding: 0.2rem 0.4rem;
   font-size: 0.9em;
   display: inline-block;
-  vertical-align: bottom;
+  vertical-align: middle;
   max-width: 100%;
   white-space: nowrap;
   overflow-x: auto;
+  box-sizing: border-box;
   scrollbar-width: thin;
   scrollbar-color: var(--code-inline-text) var(--code-inline-bg);
 }
@@ -980,24 +1103,4 @@ p {
 }
 .markdown-content :not(pre) > code::-webkit-scrollbar-thumb {
   background: var(--clr-body-text);
-}
-.markdown-content .token.comment, .markdown-content .hljs-comment {
-  color: var(--token-comment);
-  font-style: italic;
-}
-.markdown-content .token.string, .markdown-content .hljs-string {
-  color: var(--token-string);
-}
-.markdown-content .token.keyword, .markdown-content .hljs-keyword {
-  color: var(--token-keyword);
-  font-weight: bold;
-}
-.markdown-content .token.function, .markdown-content .hljs-title {
-  color: var(--token-func);
-}
-.markdown-content .token.number, .markdown-content .hljs-number {
-  color: #d19a66;
-}
-.markdown-content .token.operator {
-  color: #56b6c2;
-}
+}/*# sourceMappingURL=style.css.map */

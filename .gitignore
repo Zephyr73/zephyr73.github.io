@@ -18,4 +18,4 @@ Thumbs.db
 # assets/css/
 
 .venv/
-.src/scripts/
+.src/scripts

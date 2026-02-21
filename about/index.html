@@ -5,28 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Resume | Zephyr</title>
 
-    <!-- Fonts -->
     <link rel="preload" href="/assets/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin />
-
-    <!-- Stylesheet -->
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body class="page page--resume" data-page="resume">
 
-    <!-- 1. DRAWER (Formerly drawer.njk) -->
     {% include "drawer.njk" %}
 
-    <!-- 2. NAVBAR (Formerly navbar.njk) -->
     {% include "navbar.njk" %}
 
-    <!-- 3. RESUME CONTENT -->
     <main class="page__content">
         <div class="resume-container">
-            <!-- TOP SECTION: Balanced Header -->
             <header class="resume-hero">
-                <!-- LEFT SIDE: Identity -->
                 <div class="hero-sidebar">
                     <img class="resume-avatar" src="/assets/img/profile.png" alt="Zephyr">
                     <div class="resume-contact">
@@ -36,7 +28,6 @@
                     </div>
                 </div>
 
-                <!-- RIGHT SIDE: Intro -->
                 <div class="hero-main">
                     <h1>Zephyr</h1>
                     <span class="role-title">Software Developer</span>
@@ -47,17 +38,25 @@
                 </div>
             </header>
 
-            <!-- BOTTOM SECTION: Full Width Details -->
             <div class="resume-details">
-                <h3 class="resume-section-title">Technical Skills</h3>
+                <h3 class="resume-section-title">Programming & Development</h3>
                 <div class="skills-grid">
-                    <div class="skill-box">Python</div>
-                    <div class="skill-box">HTML / CSS</div>
-                    <div class="skill-box">JavaScript</div>
-                    <div class="skill-box">Game Dev</div>
-                    <div class="skill-box">Photography</div>
-                    <div class="skill-box">Adobe Suite</div>
-                    <div class="skill-box">Stable Diffusion</div>
+                    <div class="skill-box sk-blue">Python</div>
+                    <div class="skill-box sk-green">HTML / CSS</div>
+                    <div class="skill-box sk-yellow">JavaScript</div>
+                    <div class="skill-box sk-blue">C++</div>
+                    <div class="skill-box sk-orange">Java</div>
+                    <div class="skill-box sk-red">Git</div>
+                    <div class="skill-box sk-purple">Linux</div>
+                </div>
+
+                <h3 class="resume-section-title" style="margin-top: 2rem;">Creative & Tools</h3>
+                <div class="skills-grid">
+                    <div class="skill-box sk-blue">Adobe Photoshop</div>
+                    <div class="skill-box sk-purple">Adobe Premiere</div>
+                    <div class="skill-box sk-purple">After Effects</div>
+                    <div class="skill-box sk-pink">Stable Diffusion</div>
+                    <div class="skill-box sk-red">Photography</div>
                 </div>
 
                 <h3 class="resume-section-title">Education</h3>
