@@ -196,11 +196,15 @@
 
         &::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.02);
-            border-radius: 10px;
+            border-radius: 0px;
         }
 
         &::-webkit-scrollbar-thumb {
             background: var(--clr-body-text);
+
+            &:hover {
+                background-color: color-mix(in srgb, var(--clr-body-text), white 10%);
+            }
         }
     }
 }

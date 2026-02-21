@@ -100,7 +100,7 @@ html {
   overflow-x: hidden;
   width: 100%;
   scrollbar-color: var(--clr-body-text) var(--clr-body-bg);
-  scrollbar-width: thin;
+  scrollbar-width: auto;
 }
 html::-webkit-scrollbar {
   width: 12px;
@@ -110,8 +110,10 @@ html::-webkit-scrollbar-track {
 }
 html::-webkit-scrollbar-thumb {
   background-color: var(--clr-body-text);
-  border-radius: 10px;
-  border: 3px solid var(--clr-body-bg);
+  border: 2px solid var(--clr-body-bg);
+}
+html::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--clr-body-text), white 10%);
 }
 
 body {
@@ -132,11 +134,6 @@ body {
 
 .u-hidden {
   opacity: 0;
-}
-
-::-moz-selection {
-  background-color: var(--clr-body-text);
-  color: var(--clr-body-bg);
 }
 
 ::selection {
@@ -462,8 +459,7 @@ p {
   width: 100%;
   max-width: 240px;
   aspect-ratio: 1/1;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   display: block;
   border: 2px solid var(--clr-body-text);
   filter: grayscale(100%);
@@ -533,7 +529,6 @@ p {
   background: var(--clr-body-text);
   color: var(--clr-body-bg);
   padding: 4px 10px;
-  width: -moz-fit-content;
   width: fit-content;
   margin-top: 1rem;
   margin-bottom: 2rem;
@@ -705,8 +700,7 @@ p {
 .page--gallery .page__content .gallery-grid--ai .gallery-grid__column img,
 .page--gallery .page__content .gallery-grid--forza .gallery-grid__column img {
   width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .page--gallery .page__content .gallery-grid--photography .gallery-grid__column img:hover,
 .page--gallery .page__content .gallery-grid--ai .gallery-grid__column img:hover,
@@ -1019,10 +1013,13 @@ p {
 }
 .markdown-content :not(pre) > code::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.02);
-  border-radius: 10px;
+  border-radius: 0px;
 }
 .markdown-content :not(pre) > code::-webkit-scrollbar-thumb {
   background: var(--clr-body-text);
+}
+.markdown-content :not(pre) > code::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--clr-body-text), white 10%);
 }
 
 pre[class*=language-],
@@ -1036,11 +1033,9 @@ code[class*=language-] {
   word-spacing: normal;
   word-break: normal;
   line-height: 1.5;
-  -moz-tab-size: 4;
-    -o-tab-size: 4;
-       tab-size: 4;
+  tab-size: 4;
   hyphens: none;
-  border-radius: 8px;
+  border-radius: 0px;
 }
 
 pre[class*=language-] {
