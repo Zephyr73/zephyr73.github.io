@@ -1,51 +1,36 @@
 # Site structure
 
-This layout keeps pages, assets, and source code separate so you can add sections (e.g. blog, more projects) without clutter. For **class and ID naming conventions** (BEM-style, page context, JS hooks), see **[docs/NAMING.md](docs/NAMING.md)**.
+This layout keeps all source files, assets, and project code inside the `src` directory, keeping the root clean. For **class and ID naming conventions**, see **[docs/NAMING.md](docs/NAMING.md)**.
 
 ## Folder layout
 
 ```
 /
-├── index.html              # Home
-├── about/
-│   └── index.html
-├── gallery/
-│   ├── index.html
-│   ├── index_test.html
-│   └── info/
-│       └── index.html
-├── projects/
-│   ├── index.html
-│   └── wallpapersync/
-│       └── index.html
-├── blog/
-│   └── index.html          # Placeholder; add posts here later
-├── assets/                 # All static files (CSS, JS, images, fonts)
-│   ├── css/
-│   │   └── style.css       # Compiled; do not edit by hand
-│   ├── js/
-│   │   └── script.js
-│   ├── img/
-│   │   ├── gallery/
-│   │   │   ├── photography/
-│   │   │   ├── ai/
-│   │   │   └── forza/
-│   │   ├── profile.png
-│   │   └── ...
-│   └── fonts/
-│       └── *.woff2
-└── src/                    # Source only (not served as-is)
-    ├── scss/
-    │   ├── style.scss      # Main entry; compile to assets/css/style.css
-    │   ├── _variables.scss
-    │   ├── _fonts.scss
-    │   ├── _base.scss
-    │   ├── _nav.scss
-    │   ├── _layout.scss
-    │   ├── _page-*.scss
-    │   └── _media-queries.scss
-    └── scripts/
-        └── sort.py         # Gallery: sort/rename images and regenerate gallery HTML
+├── .eleventy.js            # Configuration
+├── src/                    # All source content and assets
+│   ├── index.html          # Home
+│   ├── _includes/          # Layouts and partials
+│   ├── about/              # About page
+│   ├── blog/               # Blog posts
+│   ├── projects/           # Project pages
+│   ├── gallery/            # Gallery pages
+│   ├── assets/             # Static assets (images, fonts, scripts, COMPILED CSS)
+│   │   ├── css/
+│   │   │   └── style.css   # Compiled from SCSS
+│   │   ├── js/
+│   │   ├── img/
+│   │   └── fonts/
+│   └── scss/               # Stylesheets (modularized)
+│       ├── style.scss      # Main entry
+│       ├── abstracts/
+│       ├── base/
+│       ├── components/
+│       ├── layout/
+│       ├── pages/
+│       └── vendors/
+├── _site/                  # Built output (ready for deployment)
+├── package.json            # Scripts and dependencies
+└── .gitignore              # Repository settings
 ```
 
 ## Gallery (dynamic)
@@ -66,16 +51,18 @@ This layout keeps pages, assets, and source code separate so you can add section
 From the repo root:
 
 ```bash
-npx sass src/scss/style.scss assets/css/style.css
+# Compile CSS
+npm run build:css
+
+# Build Site
+npm run build
 ```
 
-Optional: `--watch` to recompile on save.
-
 ## Asset paths in HTML
+
+Always use root-relative paths (starting with `/`) so links work from any page depth. Eleventy is configured to copy the contents of `src/assets` directly to `_site/assets`.
 
 - CSS: `/assets/css/style.css`
 - JS: `/assets/js/script.js`
 - Fonts: `/assets/fonts/…`
-- Images: `/assets/img/…` (e.g. `/assets/img/gallery/photography/1.jpg`)
-
-Always use root-relative paths (starting with `/`) so links work from any page depth.
+- Images: `/assets/img/…`

@@ -1,9 +1,9 @@
-/* 1. Base Styles for Code Blocks */
+// Syntax Highlighting Styles (Prism.js / 11ty-plugin-syntaxhighlight)
 pre[class*="language-"],
 code[class*="language-"] {
   background-color: var(--clr-code-bg);
   color: var(--clr-code-text);
-  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace; /* Optional: Clean font */
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
   direction: ltr;
   text-align: left;
   white-space: pre;
@@ -12,20 +12,15 @@ code[class*="language-"] {
   line-height: 1.5;
   tab-size: 4;
   hyphens: none;
-
-  /* Smooth corners for the block */
   border-radius: 8px;
 }
 
-/* Remove default padding from inline code inside a pre block */
 pre[class*="language-"] {
   padding: 1em;
   overflow: auto;
 }
 
-/* 2. Token Mapping (The Magic Part) */
-
-/* Comments */
+// Token Rendering
 .token.comment,
 .token.prolog,
 .token.doctype,
@@ -34,7 +29,6 @@ pre[class*="language-"] {
   font-style: italic;
 }
 
-/* Keywords (const, let, function, if) */
 .token.keyword,
 .token.atrule,
 .token.selector,
@@ -43,20 +37,17 @@ pre[class*="language-"] {
   font-weight: bold;
 }
 
-/* Strings ("hello") & Attributes (class="...") */
 .token.string,
 .token.attr-value,
 .token.char {
   color: var(--clr-code-string);
 }
 
-/* Functions (myFunction(), console.log) & Class Names */
 .token.function,
 .token.class-name {
   color: var(--clr-code-func);
 }
 
-/* Numbers & Booleans (100, true, false) */
 .token.number,
 .token.boolean,
 .token.constant,
@@ -64,21 +55,18 @@ pre[class*="language-"] {
   color: var(--clr-code-number);
 }
 
-/* Operators (=, +, -, =>) & Punctuation */
 .token.operator,
 .token.punctuation {
-  color: var(--clr-code-text); /* Uses standard text color */
-  opacity: 0.7;                 /* Slightly dimmed */
+  color: var(--clr-code-text);
+  opacity: 0.7;
 }
 
-/* Tags (<div>, <span>) - Specific to HTML */
 .token.tag,
 .token.tag .token.punctuation,
 .token.doctype {
-  color: var(--clr-code-func); /* Often looks good as the function color */
+  color: var(--clr-code-func);
 }
 
-/* HTML Attribute Names (class=, id=) */
 .token.attr-name {
   color: var(--clr-code-keyword);
 }

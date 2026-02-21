@@ -1,27 +1,17 @@
-// =============================================================================
-// Main stylesheet – portfolio site
-// Compile from repo root:  npx sass src/scss/style.scss assets/css/style.css
-// Organized into partials in this folder:
-//   _variables.scss   – CSS custom properties & theme overrides
-//   _fonts.scss       – @font-face (paths relative to output assets/css/)
-//   _base.scss        – html, body, utilities
-//   _nav.scss         – navbar, off-screen menu, theme dropdown, hamburger
-//   _layout.scss      – .container, table, typography, shared blocks
-//   _page-*.scss      – page-specific styles
-//   _media-queries.scss – responsive overrides
-// =============================================================================
+// Main entry point for styles
 
-@use 'variables';
-@use 'fonts';
-@use 'base';
-@use 'nav';
-@use 'layout';
-@use 'page-home';
-@use 'page-about';
-@use 'page-wallpapersync';
-@use 'page-gallery';
-@use 'media-queries';
-// @use 'page-projects';
-// @use 'page-markdown-list';
-// @use 'page-markdown.scss';
-@use 'markdown';
+@use 'abstracts/variables';
+@use 'base/fonts';
+@use 'base/base';
+@use 'components/nav';
+@use 'layout/layout';
+@use 'pages/page-home';
+@use 'pages/page-about';
+@use 'pages/page-wallpapersync';
+@use 'pages/page-gallery';
+@use 'layout/media-queries';
+// @use 'pages/page-projects';
+// @use 'pages/page-markdown-list';
+// @use 'pages/page-markdown.scss';
+@use 'components/markdown';
+@use 'vendors/syntax';

@@ -1,0 +1,72 @@
+// Gallery page specific styles
+.page--gallery .page__content {
+  .gallery-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      color: var(--clr-body-text);
+      text-decoration: none;
+    }
+
+    ul {
+      display: flex;
+      list-style-type: none;
+      gap: 20px;
+      padding-inline-start: 0;
+    }
+
+    &__btn {
+      background-color: transparent;
+      border: none;
+      color: var(--clr-body-text);
+      font-family: var(--font-regular);
+      font-size: 16px;
+      cursor: pointer;
+
+      &.is-active {
+        background-color: var(--clr-body-text);
+        color: var(--clr-container-bg);
+      }
+    }
+  }
+
+  .gallery-grid--photography,
+  .gallery-grid--ai,
+  .gallery-grid--forza {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 20px;
+    gap: 20px;
+
+    &.is-visible {
+      display: flex;
+      opacity: 1;
+    }
+
+    .gallery-grid__column {
+      display: flex;
+      flex-direction: column;
+      width: 32.5%;
+      align-items: center;
+      gap: 20px;
+
+      img {
+        width: 100%;
+        object-fit: cover;
+
+        &:hover {
+          box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.2);
+          transition: 0.4s ease;
+          outline: 1px solid var(--clr-body-text);
+          width: 103%;
+        }
+      }
+    }
+  }
+}

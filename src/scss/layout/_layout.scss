@@ -14,7 +14,7 @@
   transition: max-width 0.5s ease;
 }
 
-// Tables
+// Table styling
 table,
 th,
 td {
@@ -39,10 +39,10 @@ td {
 
 .about__hobbies {
   text-align: center;
-}
 
-.about__hobbies li {
-  margin: 5px 0;
+  li {
+    margin: 5px 0;
+  }
 }
 
 .about__avatar {
@@ -58,7 +58,6 @@ td {
   z-index: 0;
 }
 
-// Base typography
 .u-warning {
   color: #ff0000;
 }
@@ -68,11 +67,9 @@ h2,
 h3 {
   font-family: var(--font-bold);
   color: var(--clr-body-text);
-  text-align: left;
 }
 
 p {
   font-family: var(--font-regular);
   font-size: 16px;
-  text-align: left;
 }

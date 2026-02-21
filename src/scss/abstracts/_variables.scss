@@ -12,16 +12,7 @@
   --font-bold: JetBrains Mono Bold;
 }
 
-// .dark {
-//   --clr-body-bg: #0f0f0f;
-//   --clr-body-text: #0f0f0f;
-//   --clr-navbar-bg: #0f0f0f;
-//   --clr-navbar-text: #cacaca;
-//   --clr-container-bg: #cacaca;
-//   --clr-hamburger-bg: #cacaca;
-//   --clr-off-screen-menu-txt: #cacaca;
-//   --clr-link-visited: #b71c1c;
-// }
+
 
 .light {
   --clr-body-bg: #cacaca;
@@ -68,16 +59,16 @@
 }
 
 .catppuccin-dark {
-  --clr-body-bg: #11111b;      /* Crust */
+  --clr-body-bg: #11111b;
   --clr-body-text: #cdd6f4;
   --clr-navbar-bg: #0f0f0f;
   --clr-navbar-text: #cdd6f4;
-  --clr-container-bg: #181825; /* Mantle */
+  --clr-container-bg: #181825;
   --clr-hamburger-bg: #cdd6f4;
   --clr-off-screen-menu-txt: #cdd6f4;
   --clr-link-visited: #f38ba8;
 
-  --clr-code-bg: #1e1e2e;      /* Base */
+  --clr-code-bg: #1e1e2e;
   --clr-code-text: #cdd6f4;
   --clr-code-comment: #6c7086;
   --clr-code-keyword: #cba6f7;
@@ -85,6 +76,6 @@
   --clr-code-func: #89b4fa;
   --clr-code-number: #fab387;
 
-  --clr-inline-code-bg: #313244;   /* Surface0 */
-  --clr-inline-code-text: #eba0ac; /* Maroon (Pinkish-Red) for emphasis */
+  --clr-inline-code-bg: #313244;
+  --clr-inline-code-text: #eba0ac;
 }
