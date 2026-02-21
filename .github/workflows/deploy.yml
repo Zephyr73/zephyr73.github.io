@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Build Eleventy site
-        run: npx @11ty/eleventy --input . --output _site
+        run: npx @11ty/eleventy --input src --output _site
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
