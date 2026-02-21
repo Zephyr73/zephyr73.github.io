@@ -1,10 +1,5 @@
-/* ========================
-   HOME PAGE STYLES
-   ======================== */
-
+// Home page specific styles
 .page--home .page__content {
-
-  /* MAIN HEADER - Matches Resume H1 */
   h1 {
     font-size: clamp(2.5rem, 5vw, 4rem);
     line-height: 0.9;
@@ -12,19 +7,15 @@
     letter-spacing: -2px;
     margin-bottom: 1.5rem;
     margin-top: 0;
-    text-align: left;
   }
 
-  /* BASE PARAGRAPHS - Matches Resume Text */
   p {
     font-size: 1.05rem;
     line-height: 1.6;
     margin-bottom: 1rem;
     opacity: 0.9;
-    text-align: left;
   }
 
-  /* WARNING CALLOUT */
   .u-warning {
     border-left: 3px solid var(--clr-link-visited);
     padding-left: 1rem;
@@ -32,26 +23,21 @@
     margin-bottom: 3rem;
   }
 
-  /* ========================
-     FEATURE ROWS (LAYOUT)
-     ======================== */
   .feature-row {
     padding-top: 2rem;
     display: flex;
     flex-wrap: nowrap;
     width: 100%;
     position: relative;
-    align-items: center; /* Centers text vertically next to the image */
-    gap: 3rem;           /* Replaces the messy padding from your old CSS */
+    align-items: center;
+    gap: 3rem;
     margin-bottom: 4rem;
   }
 
-  /* REVERSE LAYOUT */
   .feature-row--reverse {
     flex-direction: row-reverse;
   }
 
-  /* IMAGES - Matches Resume Profile Box (No Grayscale) */
   .feature-row__media {
     width: 45%;
     flex-shrink: 0;
@@ -60,22 +46,19 @@
     img {
       display: block;
       width: 100%;
-      border: 2px solid var(--clr-body-text); /* Thick boxy border */
+      border: 2px solid var(--clr-body-text);
     }
   }
 
-  /* TEXT BODY */
   .feature-row__body {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
 
-    /* H2 & LINKS - Matches Resume Section Titles & Contact Buttons */
     h2 {
       margin: 0 0 1.5rem 0;
       padding: 0;
-      text-align: left;
 
       a {
         display: inline-block;
@@ -84,8 +67,6 @@
         text-transform: uppercase;
         letter-spacing: 1px;
         text-decoration: none;
-
-        /* Solid Highlight Block look */
         background: var(--clr-body-text);
         color: var(--clr-body-bg);
         padding: 6px 16px;
@@ -93,7 +74,6 @@
         transition: all 0.2s ease;
 
         &:hover {
-          /* Inverts colors and shifts slightly to the right */
           background: transparent;
           color: var(--clr-body-text);
           transform: translateX(5px);
@@ -101,7 +81,6 @@
       }
     }
 
-    /* Target paragraphs only inside the row to remove default margins/padding */
     p {
       padding: 0;
       margin: 0 0 1rem 0;
@@ -109,15 +88,14 @@
   }
 }
 
-/* Optional: Mobile Stacking */
-/* If you ever want them to stack cleanly on small phone screens, uncomment this: */
-
 @media (max-width: 768px) {
+
   .page--home .page__content .feature-row,
   .page--home .page__content .feature-row--reverse {
     flex-direction: column;
     gap: 1.5rem;
   }
+
   .page--home .page__content .feature-row__media {
     width: 100%;
   }

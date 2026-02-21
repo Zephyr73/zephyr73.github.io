@@ -1,0 +1,45 @@
+// WallpaperSync page specific styles
+.page--wallpapersync .page__content {
+  p {
+    text-indent: 40px;
+    padding: 0;
+    line-height: 30px;
+  }
+
+  a {
+    color: var(--clr-body-text);
+
+    &:visited {
+      color: var(--clr-link-visited);
+    }
+  }
+
+  .code-block {
+    position: relative;
+    outline: 1px solid var(--clr-body-text);
+
+    code {
+      outline: none;
+    }
+
+    pre {
+      padding: 10px 20px;
+      line-height: 1.75;
+    }
+  }
+
+  code {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    outline: 1px solid var(--clr-body-text);
+    padding: 3px 10px;
+  }
+
+  img {
+    margin: 50px auto;
+    outline: 1px solid var(--clr-body-text);
+    display: block;
+    width: 75%;
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
+  }
+}
