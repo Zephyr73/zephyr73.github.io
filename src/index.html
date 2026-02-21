@@ -1,85 +1,59 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <link
-      rel="preload"
-      href="/assets/fonts/JetBrainsMono-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/JetBrainsMono-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
-    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
-  </head>
+---
+layout: base.njk
+title: Portfolio
+bodyClass: page--home
+pageId: home
+noMarkdownWrapper: true
+description: "Welcome to my portfolio showcasing Photography, AI Generations, and software development projects."
+---
+<h1>Welcome to my portfolio!</h1>
+<p>
+  This is where I showcase all my Photography, Ai Generations and random projects I make for
+  fun
+</p>
+<p class="u-warning">
+  The website is still under development and will be updated. If you have suggestions please
+  let me know on how to improve
+</p>
 
-  <body class="page page--home" data-page="home">
+<section class="feature-row">
+  <div class="feature-row__media">
+    <img src="/assets/img/photo.jpg" alt="Photography" />
+  </div>
+  <div class="feature-row__body">
+    <h2><a href="/gallery">Photography</a></h2>
+    <p>
+      A curated collection of my favorite landscape and cityscape images. Each photo captures
+      the essence of my travels and the beauty I see in everyday life.
+    </p>
+    <p>
+      I'm not a professional, but I enjoy capturing the moments that catch my eye. Thanks for
+      checking out my gallery! I hope you like these pictures as much as I enjoyed taking
+      them.
+    </p>
+    <p>
+      I use my smartphone (Samsung Galaxy S22 Ultra) to take these photos and I use Adobe
+      Lightroom to edit these pictures. I am still learning a lot about Photography and Photo
+      editing
+    </p>
+  </div>
+</section>
 
-    {% include "drawer.njk" %}
-
-    {% include "navbar.njk" %}
-
-    <main class="page__content">
-      <h1>Welcome to my portfolio!</h1>
-      <p>
-        This is where I showcase all my Photography, Ai Generations and random projects I make for
-        fun
-      </p>
-      <p class="u-warning">
-        The website is still under development and will be updated. If you have suggestions please
-        let me know on how to improve
-      </p>
-
-      <section class="feature-row">
-        <div class="feature-row__media">
-          <img src="/assets/img/photo.jpg" alt="Photography" />
-        </div>
-        <div class="feature-row__body">
-          <h2><a href="/gallery">Photography</a></h2>
-          <p>
-            A curated collection of my favorite landscape and cityscape images. Each photo captures
-            the essence of my travels and the beauty I see in everyday life.
-          </p>
-          <p>
-            I'm not a professional, but I enjoy capturing the moments that catch my eye. Thanks for
-            checking out my gallery! I hope you like these pictures as much as I enjoyed taking
-            them.
-          </p>
-          <p>
-            I use my smartphone (Samsung Galaxy S22 Ultra) to take these photos and I use Adobe
-            Lightroom to edit these pictures. I am still learning a lot about Photography and Photo
-            editing
-          </p>
-        </div>
-      </section>
-
-      <section class="feature-row feature-row--reverse">
-        <div class="feature-row__body">
-          <h2><a href="/gallery#ai-container">Ai Generations</a></h2>
-          <p>A collection of my favorite AI generations.</p>
-          <p>
-            I love creating art using Stable diffusion 1.5, and I'm always looking for new ways to
-            express my creativity.
-          </p>
-          <p>
-            I am still learning a lot about AI and Stable diffusion and how to use plugins like
-            OpenPose, ControlNet etc.
-          </p>
-          <p>I hope you like these images as much as I enjoyed making them.</p>
-        </div>
-        <div class="feature-row__media">
-          <img src="/assets/img/ai.jpg" alt="AI Generations" />
-        </div>
-      </section>
-    </main>
-    <script src="/assets/js/script.js"></script>
-  </body>
-</html>
+<section class="feature-row feature-row--reverse">
+  <div class="feature-row__body">
+    <h2><a href="/gallery#ai-container">Ai Generations</a></h2>
+    <p>A collection of my favorite AI generations.</p>
+    <p>
+      I love creating art using Stable diffusion 1.5, and I'm always looking for new ways to
+      express my creativity.
+    </p>
+    <p>
+      I am still learning a lot about AI and Stable diffusion and how to use plugins like
+      OpenPose, ControlNet etc.
+    </p>
+    <p>I hope you like these images as much as I enjoyed making them.</p>
+  </div>
+  <div class="feature-row__media">
+    <img src="/assets/img/ai.jpg" alt="AI Generations" />
+  </div>
+</section>

@@ -17,17 +17,19 @@
     />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% if description %}<meta name="description" content="{{ description }}" />{% endif %}
 
-    <!-- DYNAMIC TITLE: Falls back to 'Portfolio' if no title is set -->
     <title>{{ title | default("Portfolio") }}</title>
 
-    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+    <!-- Restore saved theme before CSS loads to prevent FOUC -->
+    <script>
+      (function () {
+        var t = localStorage.getItem('theme');
+        if (t) document.documentElement.setAttribute('data-theme-pending', t);
+      })();
+    </script>
 
-    <!-- Optional: Add specific styles for Markdown content if needed -->
-    <style>
-      {# .markdown-content img { max-width: 100%; height: auto; display: block; margin: 2rem auto; } #}
-      {# .markdown-content pre { overflow-x: auto; } #}
-    </style>
+    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
   </head>
 
   <!-- DYNAMIC BODY CLASSES: Allows you to style specific pages differently -->
@@ -41,10 +43,14 @@
 
     <!-- CONTENT INJECTION POINT -->
     <main class="page__content">
-        <!-- This wrapper class ensures markdown styles we made earlier apply -->
+      {% if noMarkdownWrapper %}
+        {{ content | safe }}
+      {% else %}
+        <!-- This wrapper ensures markdown styles apply to blog/project content -->
         <div class="markdown-content">
-            {{ content | safe }}
+          {{ content | safe }}
         </div>
+      {% endif %}
     </main>
 
     <script src="/assets/js/script.js"></script>
