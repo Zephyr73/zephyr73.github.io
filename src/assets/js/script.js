@@ -1,6 +1,6 @@
 /**
  * Portfolio site – main script
- * Sections: Navigation (hamburger + theme) | Gallery tabs | Layout width | Lazy load
+ * Sections: Navigation (hamburger + theme) | Gallery tabs | Theme persistence
  * Selectors use BEM-style classes; see docs/NAMING.md.
  */
 
@@ -36,12 +36,15 @@ function getBodyPageClass() {
 }
 
 function applyTheme(themeKey) {
-  if (!themeKey) return;
+  if (!themeKey) {
+    return;
+  }
   document.body.className = getBodyPageClass() + ' ' + themeKey;
   localStorage.setItem('theme', themeKey);
 }
 
-// Restore saved theme on load (preserve page context)
+// Restore saved theme on load (the inline script in <head> set data-theme-pending
+// before CSS loaded; now apply it to body.className)
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme) {
   document.body.className = getBodyPageClass() + ' ' + savedTheme;
@@ -83,7 +86,9 @@ if (themeSwitchHam && themeDrawerOptions && drawerNavItems.length) {
 document.querySelectorAll('.theme-picker__drawer-options a').forEach((option) => {
   option.addEventListener('click', (e) => {
     applyTheme(e.target.getAttribute('data-theme'));
-    if (themeDrawerOptions) themeDrawerOptions.style.display = 'none';
+    if (themeDrawerOptions) {
+      themeDrawerOptions.style.display = 'none';
+    }
     themePanelVisible = false;
     drawerNavItems.forEach((item) => {
       item.style.display = 'block';
@@ -103,17 +108,23 @@ const GALLERY_SECTIONS = {
 
 function initGallery() {
   const buttons = document.querySelectorAll('.gallery-tabs__btn');
-  if (!buttons.length) return;
+  if (!buttons.length) {
+    return;
+  }
 
   const containers = {};
   Object.entries(GALLERY_SECTIONS).forEach(([name, selector]) => {
     const el = document.querySelector(selector);
-    if (el) containers[name] = el;
+    if (el) {
+      containers[name] = el;
+    }
   });
 
   function hideAll() {
     Object.values(containers).forEach((el) => {
-      if (el) el.classList.remove('is-visible');
+      if (el) {
+        el.classList.remove('is-visible');
+      }
     });
   }
 
@@ -122,7 +133,6 @@ function initGallery() {
     const el = containers[name];
     if (el) {
       el.classList.add('is-visible');
-      // el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     buttons.forEach((btn) => {
       btn.classList.toggle('is-active', btn.textContent.trim() === name);
@@ -145,73 +155,9 @@ function initGallery() {
 }
 
 // -----------------------------------------------------------------------------
-// Layout: gallery page full-width content on large screens
-// -----------------------------------------------------------------------------
-
-function updateGalleryWidth() {
-  const content = document.querySelector('.page__content');
-  const nav = document.querySelector('.site-nav');
-  if (!content || !nav) return;
-
-  const isGallery = document.body.classList.contains('page--gallery');
-
-  if (isGallery && window.innerWidth > 768) {
-    content.style.maxWidth = 'calc(100vw - 10%)';
-    nav.style.maxWidth = 'calc(100vw - 10%)';
-  } else {
-    content.style.maxWidth = '800px';
-    nav.style.maxWidth = '800px';
-  }
-}
-
-function initLayoutWidth() {
-  updateGalleryWidth();
-  window.addEventListener('resize', updateGalleryWidth);
-
-  // Transition out when leaving gallery
-  document.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', (e) => {
-      const isGallery = document.body.classList.contains('page--gallery');
-      const targetHref = link.getAttribute('href');
-
-      // Only trigger if we are leaving the gallery page to another internal page
-      if (isGallery && targetHref && !targetHref.includes('gallery') && !targetHref.startsWith('#')) {
-        e.preventDefault();
-        const content = document.querySelector('.page__content');
-        const nav = document.querySelector('.site-nav');
-
-        if (content && nav) {
-          content.style.maxWidth = '800px';
-          nav.style.maxWidth = '800px';
-        }
-
-        setTimeout(() => {
-          window.location.href = targetHref;
-        }, 300); // Matches the 0.3s CSS transition
-      }
-    });
-  });
-}
-
-// -----------------------------------------------------------------------------
-// Lazy load images (data-src → src)
-// -----------------------------------------------------------------------------
-
-function initLazyLoad() {
-  document.querySelectorAll('img.lazyload').forEach((img) => {
-    const src = img.getAttribute('data-src');
-    if (src) img.src = src;
-  });
-}
-
-// -----------------------------------------------------------------------------
 // Init: run on DOM ready
 // -----------------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
   initGallery();
-  initLayoutWidth();
-  initLazyLoad();
 });
-
-window.addEventListener('load', updateGalleryWidth);

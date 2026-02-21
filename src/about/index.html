@@ -1,95 +1,86 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resume | Zephyr</title>
-
-    <link rel="preload" href="/assets/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/assets/fonts/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin />
-    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
-  </head>
-
-  <body class="page page--resume" data-page="resume">
-
-    {% include "drawer.njk" %}
-
-    {% include "navbar.njk" %}
-
-    <main class="page__content">
-        <div class="resume-container">
-            <header class="resume-hero">
-                <div class="hero-sidebar">
-                    <img class="resume-avatar" src="/assets/img/profile.png" alt="Zephyr">
-                    <div class="resume-contact">
-                        <a href="https://github.com/zephyr73" target="_blank">Github ↗</a>
-                        <a href="https://twitter.com/Zephyr73_" target="_blank">Twitter ↗</a>
-                        <a href="https://pixiv.net/users/28541154" target="_blank">Pixiv ↗</a>
-                    </div>
-                </div>
-
-                <div class="hero-main">
-                    <h1>Zephyr</h1>
-                    <span class="role-title">Software Developer</span>
-                    <div class="hero-bio">
-                        <p>I am a student at Laguardia Community College with a strong foundation in computer science principles completed through the Cambridge University curriculum.</p>
-                        <p>I have a passion for building software, exploring new technologies, and game development. I focus on creating clean, efficient code and exploring creative technical workflows.</p>
-                    </div>
-                </div>
-            </header>
-
-            <div class="resume-details">
-                <h3 class="resume-section-title">Programming & Development</h3>
-                <div class="skills-grid">
-                    <div class="skill-box sk-blue">Python</div>
-                    <div class="skill-box sk-green">HTML / CSS</div>
-                    <div class="skill-box sk-yellow">JavaScript</div>
-                    <div class="skill-box sk-blue">C++</div>
-                    <div class="skill-box sk-orange">Java</div>
-                    <div class="skill-box sk-red">Git</div>
-                    <div class="skill-box sk-purple">Linux</div>
-                </div>
-
-                <h3 class="resume-section-title" style="margin-top: 2rem;">Creative & Tools</h3>
-                <div class="skills-grid">
-                    <div class="skill-box sk-blue">Adobe Photoshop</div>
-                    <div class="skill-box sk-purple">Adobe Premiere</div>
-                    <div class="skill-box sk-purple">After Effects</div>
-                    <div class="skill-box sk-pink">Stable Diffusion</div>
-                    <div class="skill-box sk-red">Photography</div>
-                </div>
-
-                <h3 class="resume-section-title">Education</h3>
-                <div class="resume-item">
-                    <div class="item-header">
-                        <h4>Laguardia Community College</h4>
-                        <span class="item-meta">Computer Science | Present</span>
-                    </div>
-                    <p>Currently pursuing a degree in Computer Science, focusing on software engineering principles, data structures, and algorithms.</p>
-                </div>
-
-                <div class="resume-item">
-                    <div class="item-header">
-                        <h4>Cambridge University (A Levels)</h4>
-                        <span class="item-meta">GPA: 5.0 | Graduated</span>
-                    </div>
-                    <p>Advanced Level qualifications in Mathematics, Physics, and Computer Science. Ranked top tier in curriculum performance.</p>
-                </div>
-
-                <div class="resume-item">
-                    <div class="item-header">
-                        <h4>Cambridge University (O Levels)</h4>
-                        <span class="item-meta">GPA: 4.14 | Graduated</span>
-                    </div>
-                    <p>Ordinary Level qualifications in Mathematics-D, Additional Mathematics, Physics, Computer Science, Chemistry and English. Achieved high marks across all subjects.</p>
-                </div>
-
-                <h3 class="resume-section-title">Interests</h3>
-                <p>When I am not coding, I explore digital art through AI generation, capture street photography using my Galaxy S22 Ultra, and participate in competitive gaming. I am also researching Machine Learning plugins for creative workflows.</p>
+---
+layout: base.njk
+title: Resume | Zephyr
+bodyClass: page--resume
+pageId: resume
+noMarkdownWrapper: true
+description: "Software Developer and Computer Science student. View my skills, education, and creative portfolio."
+---
+<div class="resume-container">
+    <header class="resume-hero">
+        <div class="hero-sidebar">
+            <img class="resume-avatar" src="/assets/img/profile.png" alt="Zephyr">
+            <div class="resume-contact">
+                <a href="https://github.com/zephyr73" target="_blank" rel="noopener noreferrer">Github ↗</a>
+                <a href="https://twitter.com/Zephyr73_" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
+                <a href="https://pixiv.net/users/28541154" target="_blank" rel="noopener noreferrer">Pixiv ↗</a>
             </div>
         </div>
-    </main>
 
-    <script src="/assets/js/script.js"></script>
-  </body>
-</html>
+        <div class="hero-main">
+            <h1>Zephyr</h1>
+            <span class="role-title">Software Developer</span>
+            <div class="hero-bio">
+                <p>I am a student at Laguardia Community College with a strong foundation in computer science principles
+                    completed through the Cambridge University curriculum.</p>
+                <p>I have a passion for building software, exploring new technologies, and game development. I focus on
+                    creating clean, efficient code and exploring creative technical workflows.</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="resume-details">
+        <h3 class="resume-section-title">Programming &amp; Development</h3>
+        <div class="skills-grid">
+            <div class="skill-box sk-blue">Python</div>
+            <div class="skill-box sk-green">HTML / CSS</div>
+            <div class="skill-box sk-yellow">JavaScript</div>
+            <div class="skill-box sk-blue">C++</div>
+            <div class="skill-box sk-orange">Java</div>
+            <div class="skill-box sk-red">Git</div>
+            <div class="skill-box sk-purple">Linux</div>
+        </div>
+
+        <h3 class="resume-section-title" style="margin-top: 2rem;">Creative &amp; Tools</h3>
+        <div class="skills-grid">
+            <div class="skill-box sk-blue">Adobe Photoshop</div>
+            <div class="skill-box sk-purple">Adobe Premiere</div>
+            <div class="skill-box sk-purple">After Effects</div>
+            <div class="skill-box sk-pink">Stable Diffusion</div>
+            <div class="skill-box sk-red">Photography</div>
+        </div>
+
+        <h3 class="resume-section-title">Education</h3>
+        <div class="resume-item">
+            <div class="item-header">
+                <h4>Laguardia Community College</h4>
+                <span class="item-meta">Computer Science | Present</span>
+            </div>
+            <p>Currently pursuing a degree in Computer Science, focusing on software engineering principles, data
+                structures, and algorithms.</p>
+        </div>
+
+        <div class="resume-item">
+            <div class="item-header">
+                <h4>Cambridge University (A Levels)</h4>
+                <span class="item-meta">GPA: 5.0 | Graduated</span>
+            </div>
+            <p>Advanced Level qualifications in Mathematics, Physics, and Computer Science. Ranked top tier in
+                curriculum performance.</p>
+        </div>
+
+        <div class="resume-item">
+            <div class="item-header">
+                <h4>Cambridge University (O Levels)</h4>
+                <span class="item-meta">GPA: 4.14 | Graduated</span>
+            </div>
+            <p>Ordinary Level qualifications in Mathematics-D, Additional Mathematics, Physics, Computer Science,
+                Chemistry and English. Achieved high marks across all subjects.</p>
+        </div>
+
+        <h3 class="resume-section-title">Interests</h3>
+        <p>When I am not coding, I explore digital art through AI generation, capture street photography using my Galaxy
+            S22 Ultra, and participate in competitive gaming. I am also researching Machine Learning plugins for
+            creative workflows.</p>
+    </div>
+</div>
