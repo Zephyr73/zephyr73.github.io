@@ -73,7 +73,6 @@
 
 // Full-width gallery layout on large screens (replaces JS initLayoutWidth)
 @media (min-width: 769px) {
-
   .page--gallery .page__content,
   .page--gallery .site-nav {
     max-width: calc(100vw - 10%);
