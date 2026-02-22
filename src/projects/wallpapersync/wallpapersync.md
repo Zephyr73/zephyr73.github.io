@@ -1,11 +1,12 @@
 ---
 layout: base.njk
 title: WallpaperSync
-description: WallpaperSync is a Python script that dynamically adjusts the color of connected RGB LED
-        devices based on your desktop wallpaper using OpenRGB. The script continuously monitors the
-        system wallpaper for changes and updates the LED colors to match the most prominent color in
-        the wallpaper. This ensures a visually cohesive environment that aligns with your desktop's
-        aesthetics.
+description:
+  WallpaperSync is a Python script that dynamically adjusts the color of connected RGB LED
+  devices based on your desktop wallpaper using OpenRGB. The script continuously monitors the
+  system wallpaper for changes and updates the LED colors to match the most prominent color in
+  the wallpaper. This ensures a visually cohesive environment that aligns with your desktop's
+  aesthetics.
 date: 2023-10-27
 tags: project
 ---

@@ -290,7 +290,7 @@ Import the config file, OR apply these main settings:
 
 - Taskbar Style: **Windows 11**
 - Search: **Hidden**
-- Show Task View Button: **OFF*
+- Show Task View Button: \*_OFF_
 
 ##### File Explorer
 
@@ -373,7 +373,7 @@ Save and Restart Windhawk
 
 ##### Configuration for VS Code
 
-***Text Editor***
+**_Text Editor_**
 
 - Bracket Pairs Horizontal: true
 - Line Height: 1.6
@@ -386,39 +386,39 @@ Save and Restart Windhawk
 - Font Size: 14
 - Auto Save: After Delay
 
-***Workbench***
+**_Workbench_**
 
 - Smooth Scrolling: ON
 - Workbench Color theme: Catppuccin Mocha
 - Icon Theme: Material Icon Theme
 - Empty Hint: hidden
 
-***Features***
+**_Features_**
 
 - Explorer Kind: Integrated
 - Integrated > Font Ligatures Enabled: ON
 - Integrated Mouse wheel zoom: ON
 - Integrated Smooth Scrolling: ON
 
-***C/C++***
+**_C/C++_**
 
 - C_Cpp Intelli Sense Engine: Disabled
 
-***Clangd***
+**_Clangd_**
 
 - Clangd Arguments:
   - `--inlay-hints=true`
 - Clangd PATH: `ENTER PATH OF CLANGD.exe`
 
-***Git***
+**_Git_**
 
 - Open Repository in Parent Folders: Never
 
-***Live Server***
+**_Live Server_**
 
 - Donot verify tags: ON
 
-***Python***
+**_Python_**
 
 - **Python > Analysis > Inlay hints: Call Argument Names:** ON
 - **Python > Analysis > Inlay hints: Variable Types:** ON

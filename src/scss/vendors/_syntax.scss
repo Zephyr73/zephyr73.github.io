@@ -1,6 +1,6 @@
 // Syntax Highlighting Styles (Prism.js / 11ty-plugin-syntaxhighlight)
-pre[class*="language-"],
-code[class*="language-"] {
+pre[class*='language-'],
+code[class*='language-'] {
   background-color: var(--clr-code-bg);
   color: var(--clr-code-text);
   font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
@@ -15,7 +15,7 @@ code[class*="language-"] {
   border-radius: 0px;
 }
 
-pre[class*="language-"] {
+pre[class*='language-'] {
   padding: 1em;
   overflow: auto;
 }
