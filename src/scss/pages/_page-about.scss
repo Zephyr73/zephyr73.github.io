@@ -38,15 +38,10 @@
     object-fit: cover;
     display: block;
     border: 2px solid var(--clr-body-text);
-    filter: grayscale(100%);
-    transition: filter 0.3s ease;
+    cursor: pointer;
 
     @include m.respond-to('md-up') {
       max-width: 240px;
-    }
-
-    &:hover {
-      filter: grayscale(0%);
     }
   }
 

@@ -891,16 +891,12 @@ tr:hover td {
      object-fit: cover;
   display: block;
   border: 2px solid var(--clr-body-text);
-  filter: grayscale(100%);
-  transition: filter 0.3s ease;
+  cursor: pointer;
 }
 @media (min-width: 769px) {
   .hero-sidebar .resume-avatar {
     max-width: 240px;
   }
-}
-.hero-sidebar .resume-avatar:hover {
-  filter: grayscale(0%);
 }
 .hero-sidebar .resume-contact {
   display: flex;
