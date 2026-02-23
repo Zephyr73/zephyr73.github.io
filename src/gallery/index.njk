@@ -1,0 +1,127 @@
+---
+layout: base.njk
+title: Gallery
+bodyClass: page--gallery
+pageId: gallery
+noMarkdownWrapper: true
+description: 'Explore my collection of photography, AI-generated art, and Forza screenshots.'
+---
+
+<nav class="gallery-tabs" aria-label="Gallery sections">
+  <ul>
+    <li><button type="button" class="gallery-tabs__btn">Photography</button></li>
+    <li><button type="button" class="gallery-tabs__btn">AI-Generations</button></li>
+    <li><button type="button" class="gallery-tabs__btn">Forza</button></li>
+  </ul>
+</nav>
+<div class="gallery-grid gallery-grid--photography">
+  <div class="gallery-grid__column">
+    {% gimg "photography/1.jpg", "image 1", "eager", "high" %}
+    {% gimg "photography/4.jpg", "image 4" %}
+    {% gimg "photography/7.jpg", "image 7" %}
+    {% gimg "photography/10.jpg", "image 10" %}
+    {% gimg "photography/13.jpg", "image 13" %}
+  </div>
+  <div class="gallery-grid__column">
+    {% gimg "photography/2.jpg", "image 2" %}
+    {% gimg "photography/5.jpg", "image 5" %}
+    {% gimg "photography/8.jpg", "image 8" %}
+    {% gimg "photography/11.jpg", "image 11" %}
+  </div>
+  <div class="gallery-grid__column">
+    {% gimg "photography/3.jpg", "image 3" %}
+    {% gimg "photography/6.jpg", "image 6" %}
+    {% gimg "photography/9.jpg", "image 9" %}
+    {% gimg "photography/12.jpg", "image 12" %}
+  </div>
+</div>
+<div class="gallery-grid gallery-grid--ai">
+  <div class="gallery-grid__column">
+    {% gimg "ai/1.jpg", "image 1" %}
+    {% gimg "ai/4.jpg", "image 4" %}
+    {% gimg "ai/7.jpg", "image 7" %}
+    {% gimg "ai/10.jpg", "image 10" %}
+    {% gimg "ai/13.jpg", "image 13" %}
+    {% gimg "ai/16.jpg", "image 16" %}
+    {% gimg "ai/19.jpg", "image 19" %}
+    {% gimg "ai/22.jpg", "image 22" %}
+    {% gimg "ai/25.jpg", "image 25" %}
+    {% gimg "ai/28.jpg", "image 28" %}
+    {% gimg "ai/31.jpg", "image 31" %}
+    {% gimg "ai/34.jpg", "image 34" %}
+    {% gimg "ai/37.jpg", "image 37" %}
+    {% gimg "ai/40.jpg", "image 40" %}
+    {% gimg "ai/43.jpg", "image 43" %}
+    {% gimg "ai/46.jpg", "image 46" %}
+    {% gimg "ai/49.jpg", "image 49" %}
+    {% gimg "ai/52.jpg", "image 52" %}
+    {% gimg "ai/55.jpg", "image 55" %}
+    {% gimg "ai/58.jpg", "image 58" %}
+    {% gimg "ai/61.jpg", "image 61" %}
+  </div>
+  <div class="gallery-grid__column">
+    {% gimg "ai/2.jpg", "image 2" %}
+    {% gimg "ai/5.jpg", "image 5" %}
+    {% gimg "ai/8.jpg", "image 8" %}
+    {% gimg "ai/11.jpg", "image 11" %}
+    {% gimg "ai/14.jpg", "image 14" %}
+    {% gimg "ai/17.jpg", "image 17" %}
+    {% gimg "ai/20.jpg", "image 20" %}
+    {% gimg "ai/23.jpg", "image 23" %}
+    {% gimg "ai/26.jpg", "image 26" %}
+    {% gimg "ai/29.jpg", "image 29" %}
+    {% gimg "ai/32.jpg", "image 32" %}
+    {% gimg "ai/35.jpg", "image 35" %}
+    {% gimg "ai/38.jpg", "image 38" %}
+    {% gimg "ai/41.jpg", "image 41" %}
+    {% gimg "ai/44.jpg", "image 44" %}
+    {% gimg "ai/47.jpg", "image 47" %}
+    {% gimg "ai/50.jpg", "image 50" %}
+    {% gimg "ai/53.jpg", "image 53" %}
+    {% gimg "ai/56.jpg", "image 56" %}
+    {% gimg "ai/59.jpg", "image 59" %}
+    {% gimg "ai/62.jpg", "image 62" %}
+  </div>
+  <div class="gallery-grid__column">
+    {% gimg "ai/3.jpg", "image 3" %}
+    {% gimg "ai/6.jpg", "image 6" %}
+    {% gimg "ai/9.jpg", "image 9" %}
+    {% gimg "ai/12.jpg", "image 12" %}
+    {% gimg "ai/15.jpg", "image 15" %}
+    {% gimg "ai/18.jpg", "image 18" %}
+    {% gimg "ai/21.jpg", "image 21" %}
+    {% gimg "ai/24.jpg", "image 24" %}
+    {% gimg "ai/27.jpg", "image 27" %}
+    {% gimg "ai/30.jpg", "image 30" %}
+    {% gimg "ai/33.jpg", "image 33" %}
+    {% gimg "ai/36.jpg", "image 36" %}
+    {% gimg "ai/39.jpg", "image 39" %}
+    {% gimg "ai/42.jpg", "image 42" %}
+    {% gimg "ai/45.jpg", "image 45" %}
+    {% gimg "ai/48.jpg", "image 48" %}
+    {% gimg "ai/51.jpg", "image 51" %}
+    {% gimg "ai/54.jpg", "image 54" %}
+    {% gimg "ai/57.jpg", "image 57" %}
+    {% gimg "ai/60.jpg", "image 60" %}
+    {% gimg "ai/63.jpg", "image 63" %}
+  </div>
+</div>
+<div class="gallery-grid gallery-grid--forza">
+  <div class="gallery-grid__column">
+    {% gimg "forza/1.jpg", "image 1" %}
+    {% gimg "forza/4.jpg", "image 4" %}
+    {% gimg "forza/7.jpg", "image 7" %}
+    {% gimg "forza/10.jpg", "image 10" %}
+  </div>
+  <div class="gallery-grid__column">
+    {% gimg "forza/2.jpg", "image 2" %}
+    {% gimg "forza/5.jpg", "image 5" %}
+    {% gimg "forza/8.jpg", "image 8" %}
+    {% gimg "forza/11.jpg", "image 11" %}
+  </div>
+  <div class="gallery-grid__column">
+    {% gimg "forza/3.jpg", "image 3" %}
+    {% gimg "forza/6.jpg", "image 6" %}
+    {% gimg "forza/9.jpg", "image 9" %}
+  </div>
+</div>

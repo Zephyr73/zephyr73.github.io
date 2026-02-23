@@ -37,7 +37,8 @@ body {
   align-items: center;
   min-height: 100vh;
   position: relative;
-  transition: 0.3s ease; // padding-bottom: 0 removed — covered by padding: 0 above
+  // Scope to specific properties — catch-all transition fires during View Transitions and causes jank
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 // .no-scroll, .u-hidden, ::selection → base/_utilities.scss

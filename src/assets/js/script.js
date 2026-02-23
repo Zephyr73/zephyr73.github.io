@@ -88,10 +88,18 @@ function initGallery() {
   if (!isGalleryPage) return;
 
   // 1. Width Animation
-  // Expand width shortly after load
+  // Use View Transitions API so the max-width change is handled by the GPU compositor
+  // (avoids layout recalculations on every frame — the cause of Chromium jank).
+  // Falls back to instant class addition on browsers without View Transitions support.
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      document.body.classList.add('is-expanded');
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          document.body.classList.add('is-expanded');
+        });
+      } else {
+        document.body.classList.add('is-expanded');
+      }
     });
   });
 
@@ -99,15 +107,23 @@ function initGallery() {
   document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
-      // Check if it's an internal navigation link (not a hash, not external, not empty)
+      // Internal navigation link (not a hash anchor, not external, not empty)
       if (href && href.startsWith('/') && !href.startsWith('#')) {
         e.preventDefault();
-        document.body.classList.remove('is-expanded');
-
-        // Wait for CSS transition (0.5s) before navigating
-        setTimeout(() => {
-          window.location.href = href;
-        }, 500);
+        if (document.startViewTransition) {
+          // transition.finished resolves when the exit animation completes
+          const transition = document.startViewTransition(() => {
+            document.body.classList.remove('is-expanded');
+          });
+          transition.finished.then(() => {
+            window.location.href = href;
+          });
+        } else {
+          document.body.classList.remove('is-expanded');
+          setTimeout(() => {
+            window.location.href = href;
+          }, 500);
+        }
       }
     });
   });
@@ -204,16 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initGallery();
 });
 
-// Preload gallery images after the main page has finished loading
-window.addEventListener('load', () => {
-  const isGalleryPage = document.body.classList.contains('page--gallery');
-  if (!isGalleryPage) return;
-
-  // Find all lazy-loaded images in the gallery
-  const lazyImages = document.querySelectorAll('.gallery-grid img[loading="lazy"]');
-
-  // Change them to eager to force the browser to download them in the background
-  lazyImages.forEach(img => {
-    img.setAttribute('loading', 'eager');
-  });
-});
+// Note: the lazy→eager preload hack has been removed.
+// Images now use WebP/srcset variants generated at build time, which are small
+// enough that native lazy-loading handles background tab preloading correctly.
