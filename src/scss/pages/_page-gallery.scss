@@ -55,20 +55,34 @@
       width: 32.5%;
       align-items: center;
       gap: 20px;
-      contain: layout paint;
+      // contain: paint removed — it clips scaled/outlined children at the column boundary,
+      // which caused the partial outline lines. contain: layout kept for reflow isolation.
+      contain: layout;
+
+      // eleventy-img wraps every <img> in a <picture> element.
+      // picture is inline by default — display:block prevents baseline-gap lines
+      // at the top/bottom of each image and ensures it stretches to column width.
+      picture {
+        display: block;
+        width: 100%;
+      }
 
       img {
+        display: block;
         width: 100%;
         object-fit: cover;
         transform: translateZ(0);
         backface-visibility: hidden;
-        content-visibility: auto;
+        // content-visibility: auto removed — causes containment boundary artifacts on img elements
+        // and conflicts with the explicit width/height attrs eleventy-img provides
 
         &:hover {
           box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.2);
           transition: 0.4s ease;
           outline: 1px solid var(--clr-body-text);
-          width: 103%;
+          // scale instead of width: 103% — width overflow gets clipped by contain:paint
+          // on the column, leaving only top/bottom outline lines visible
+          transform: translateZ(0) scale(1.015);
         }
       }
     }
@@ -81,6 +95,39 @@
   body.is-expanded.page--gallery .site-nav {
     max-width: calc(100vw - 10%);
   }
+
+  // Opt the content box into View Transitions — GPU compositor handles the size morph,
+  // no layout recalculations on every frame (the cause of Chromium jank).
+  // The nav is intentionally excluded: fixed/positioned elements captured in VT layers
+  // lose stacking context and produce visual artifacts during the transition.
+  body.page--gallery .page__content {
+    view-transition-name: gallery-content;
+  }
+}
+
+// Control View Transition animation duration & easing
+::view-transition-group(gallery-content) {
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}
+
+// Kill the root cross-fade — root contains everything outside the named group
+// (including the nav). Old + new root render simultaneously during the default
+// fade, which causes a double-nav. Hiding old root and freezing new root means
+// the nav instantly shows its final state while only gallery-content animates.
+::view-transition-old(root) {
+  display: none;
+}
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+// Suppress the cross-fade on gallery-content image layers — size morph only
+::view-transition-old(gallery-content),
+::view-transition-new(gallery-content) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 // ── Mobile gallery: moved from layout/_media-queries.scss ────────────────────
