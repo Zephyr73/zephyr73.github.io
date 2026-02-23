@@ -21,24 +21,29 @@
 .hero-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: center;
   width: 100%;
 
   @include m.respond-to('md-up') {
+    gap: 1.5rem;
     align-items: flex-start;
     width: auto;
   }
 
   .resume-avatar {
     width: 100%;
-    max-width: 240px;
+    max-width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
     display: block;
     border: 2px solid var(--clr-body-text);
     filter: grayscale(100%);
     transition: filter 0.3s ease;
+
+    @include m.respond-to('md-up') {
+      max-width: 240px;
+    }
 
     &:hover {
       filter: grayscale(0%);
@@ -50,9 +55,13 @@
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
-    max-width: 240px;
 
-    a {
+    @include m.respond-to('md-up') {
+      max-width: 240px;
+    }
+
+    a,
+    .resume-contact__copy {
       display: block;
       width: 100%;
       text-align: center;
@@ -64,9 +73,17 @@
       padding: 10px 0;
       background: transparent;
       color: var(--clr-body-text);
+      cursor: pointer;
       transition: all 0.2s ease;
+      letter-spacing: inherit;
 
       &:hover {
+        background: var(--clr-body-text);
+        color: var(--clr-body-bg);
+        transform: translateX(5px);
+      }
+
+      &.copied {
         background: var(--clr-body-text);
         color: var(--clr-body-bg);
         transform: translateX(5px);
@@ -78,22 +95,23 @@
 .hero-main {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
 
   @include m.respond-to('md-up') {
-    align-items: flex-start;
-    text-align: left;
     justify-content: flex-start;
   }
 
   h1 {
-    font-size: clamp(3rem, 5vw, 5rem);
+    font-size: clamp(2rem, 8vw, 5rem);
     line-height: 0.9;
     text-transform: uppercase;
     letter-spacing: -3px;
     margin: 0;
     position: relative;
+    max-width: 100%;
+    word-break: break-word;
+    overflow-wrap: break-word;
 
     @include m.respond-to('md-up') {
       top: -6px;
@@ -138,10 +156,14 @@
   color: var(--clr-body-bg);
   padding: 6px 12px;
   display: inline-block;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
   font-family: var(--font-bold);
   letter-spacing: 1px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .resume-item {
@@ -178,6 +200,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  margin-bottom: 1rem;
 
   .skill-box {
     border: 2px solid var(--clr-body-text);

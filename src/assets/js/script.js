@@ -239,3 +239,46 @@ document.addEventListener('DOMContentLoaded', () => {
 // Note: the lazy→eager preload hack has been removed.
 // Images now use WebP/srcset variants generated at build time, which are small
 // enough that native lazy-loading handles background tab preloading correctly.
+
+// About page: copy email to clipboard on button click
+// Android Chrome automatically shows a native "Copied to clipboard" toast.
+// On desktop, the button text changes briefly to confirm.
+function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
+  }
+  return new Promise((resolve, reject) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    textarea.style.top = '0';
+    textarea.style.left = '0';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      document.execCommand('copy') ? resolve() : reject();
+    } catch (e) {
+      reject(e);
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  });
+}
+
+document.querySelectorAll('.resume-contact__copy[data-copy]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const text = btn.dataset.copy;
+    const original = btn.textContent.trim();
+    copyToClipboard(text).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      clearTimeout(btn._revertTimer);
+      btn._revertTimer = setTimeout(() => {
+        btn.textContent = original;
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  });
+});
