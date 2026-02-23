@@ -20,3 +20,5 @@ docs/
 src/assets/css/style.css
 src/assets/css/style.css.map
 src/assets/js/script_old.js
+
+*.code-workspace
