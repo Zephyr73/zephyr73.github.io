@@ -22,7 +22,9 @@ const themeDrawerOptions = document.querySelector('.theme-picker__drawer-options
 const drawerNavItems = document.querySelectorAll('.site-nav__drawer-item');
 
 function applyTheme(themeKey) {
-  if (!themeKey) return;
+  if (!themeKey) {
+    return;
+  }
   // Apply theme to html element to match the inline script in base.njk
   document.documentElement.className = themeKey;
   localStorage.setItem('theme', themeKey);
@@ -36,7 +38,11 @@ if (themeSwitch && themeMenu) {
 }
 
 window.addEventListener('click', (e) => {
-  if (themeMenu && !e.target.closest('.site-nav__theme-toggle') && !e.target.closest('.theme-picker__menu')) {
+  if (
+    themeMenu &&
+    !e.target.closest('.site-nav__theme-toggle') &&
+    !e.target.closest('.theme-picker__menu')
+  ) {
     themeMenu.style.display = 'none';
   }
 });
@@ -78,14 +84,16 @@ document.querySelectorAll('.theme-picker__drawer-options a').forEach((option) =>
 
 // Gallery Page: Width Animation and Tabs
 const GALLERY_SECTIONS = {
-  'Photography': '.gallery-grid--photography',
+  Photography: '.gallery-grid--photography',
   'AI-Generations': '.gallery-grid--ai',
-  'Forza': '.gallery-grid--forza',
+  Forza: '.gallery-grid--forza',
 };
 
 function initGallery() {
   const isGalleryPage = document.body.classList.contains('page--gallery');
-  if (!isGalleryPage) return;
+  if (!isGalleryPage) {
+    return;
+  }
 
   // 1. Width Animation
   // Use View Transitions API so the max-width change is handled by the GPU compositor
@@ -104,7 +112,7 @@ function initGallery() {
   });
 
   // Intercept internal links to animate width back before navigating
-  document.querySelectorAll('a').forEach(link => {
+  document.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       // Internal navigation link (not a hash anchor, not external, not empty)
@@ -130,23 +138,31 @@ function initGallery() {
 
   // 2. Tabs Fade Animation
   const buttons = document.querySelectorAll('.gallery-tabs__btn');
-  if (!buttons.length) return;
+  if (!buttons.length) {
+    return;
+  }
 
   const containers = {};
   Object.entries(GALLERY_SECTIONS).forEach(([name, selector]) => {
     const el = document.querySelector(selector);
-    if (el) containers[name] = el;
+    if (el) {
+      containers[name] = el;
+    }
   });
 
   let isAnimating = false;
 
   function show(name) {
-    if (isAnimating) return;
+    if (isAnimating) {
+      return;
+    }
 
     const currentActiveBtn = document.querySelector('.gallery-tabs__btn.is-active');
     const currentActiveName = currentActiveBtn ? currentActiveBtn.textContent.trim() : null;
 
-    if (currentActiveName === name) return;
+    if (currentActiveName === name) {
+      return;
+    }
 
     isAnimating = true;
 
@@ -192,7 +208,7 @@ function initGallery() {
   }
 
   // Initial setup: hide all, then show based on hash or default
-  Object.values(containers).forEach(el => {
+  Object.values(containers).forEach((el) => {
     if (el) {
       el.classList.remove('is-visible');
       el.style.display = 'none';

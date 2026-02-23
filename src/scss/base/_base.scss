@@ -38,7 +38,9 @@ body {
   min-height: 100vh;
   position: relative;
   // Scope to specific properties — catch-all transition fires during View Transitions and causes jank
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 // .no-scroll, .u-hidden, ::selection → base/_utilities.scss

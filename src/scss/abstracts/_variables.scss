@@ -3,22 +3,22 @@
 // ============================================================
 
 // Breakpoints
-$breakpoint-sm:    480px;
-$breakpoint-md:    768px;
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
 $breakpoint-md-up: 769px;
 
 // Layout sizing
-$content-max-width:  800px;
-$resume-max-width:   900px;
-$sidebar-width:      240px;
-$content-padding:    35px;
+$content-max-width: 800px;
+$resume-max-width: 900px;
+$sidebar-width: 240px;
+$content-padding: 35px;
 $nav-height-desktop: 64px;
-$nav-height-mobile:  100px;
+$nav-height-mobile: 100px;
 
 // Z-index scale
 $z-content: 1;
-$z-drawer:  2;
-$z-nav:     3;
+$z-drawer: 2;
+$z-nav: 3;
 
 // Transitions
 $transition-fast: 0.2s;
@@ -26,9 +26,9 @@ $transition-base: 0.3s;
 $transition-slow: 0.5s;
 
 // Box shadows
-$shadow-light:  rgba(0, 0, 0, 0.2);
+$shadow-light: rgba(0, 0, 0, 0.2);
 $shadow-medium: rgba(0, 0, 0, 0.5);
-$shadow-faint:  rgba(0, 0, 0, 0.02);
+$shadow-faint: rgba(0, 0, 0, 0.02);
 
 // Warning colour
 $clr-warning: #ff0000;
