@@ -75,7 +75,8 @@
       text-decoration: none;
       display: inline;
       transition: none;
-      background-color: transparent !important; // Override global link backgrounds
+      // Specificity (0,1,2) beats .markdown-content a (0,1,1) — no !important needed
+      background-color: transparent;
 
       &::after {
         // Full box clickable
@@ -85,9 +86,10 @@
         z-index: 1;
       }
 
+      // Specificity (0,2,2) beats .markdown-content a:hover (0,2,1) — no !important needed
       &:hover {
-        background-color: transparent !important;
-        color: inherit !important;
+        background-color: transparent;
+        color: inherit;
       }
     }
   }
