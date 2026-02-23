@@ -12,6 +12,7 @@
   z-index: 1;
   margin-top: 100px;
   transition: max-width 0.5s ease;
+  will-change: max-width;
 }
 
 // Table styling

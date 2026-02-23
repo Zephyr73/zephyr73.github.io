@@ -19,3 +19,4 @@ docs/
 # Compiled Assets (built by CI — do not commit)
 src/assets/css/style.css
 src/assets/css/style.css.map
+src/assets/js/script_old.js

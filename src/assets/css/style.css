@@ -141,8 +141,18 @@ body {
   transition: 0.3s ease;
 }
 
+html.no-scroll,
+body.no-scroll {
+  overflow: hidden;
+}
+
 .u-hidden {
   opacity: 0;
+}
+
+::-moz-selection {
+  background-color: var(--clr-body-text);
+  color: var(--clr-body-bg);
 }
 
 ::selection {
@@ -164,6 +174,7 @@ body {
   position: absolute;
   top: 36px;
   transition: max-width 0.5s ease;
+  will-change: max-width;
 }
 .site-nav__brand {
   white-space: nowrap;
@@ -287,6 +298,7 @@ body {
   z-index: 1;
   margin-top: 100px;
   transition: max-width 0.5s ease;
+  will-change: max-width;
 }
 
 table,
@@ -468,7 +480,8 @@ p {
   width: 100%;
   max-width: 240px;
   aspect-ratio: 1/1;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   display: block;
   border: 2px solid var(--clr-body-text);
   filter: grayscale(100%);
@@ -538,6 +551,7 @@ p {
   background: var(--clr-body-text);
   color: var(--clr-body-bg);
   padding: 4px 10px;
+  width: -moz-fit-content;
   width: fit-content;
   margin-top: 1rem;
   margin-bottom: 2rem;
@@ -688,7 +702,7 @@ p {
 .page--gallery .page__content .gallery-grid--forza {
   display: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.15s ease;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
@@ -709,12 +723,17 @@ p {
   width: 32.5%;
   align-items: center;
   gap: 20px;
+  contain: layout paint;
 }
 .page--gallery .page__content .gallery-grid--photography .gallery-grid__column img,
 .page--gallery .page__content .gallery-grid--ai .gallery-grid__column img,
 .page--gallery .page__content .gallery-grid--forza .gallery-grid__column img {
   width: 100%;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  content-visibility: auto;
 }
 .page--gallery .page__content .gallery-grid--photography .gallery-grid__column img:hover,
 .page--gallery .page__content .gallery-grid--ai .gallery-grid__column img:hover,
@@ -726,8 +745,8 @@ p {
 }
 
 @media (min-width: 769px) {
-  .page--gallery .page__content,
-  .page--gallery .site-nav {
+  body.is-expanded.page--gallery .page__content,
+  body.is-expanded.page--gallery .site-nav {
     max-width: calc(100vw - 10%);
   }
 }
@@ -1026,7 +1045,9 @@ code[class*=language-] {
   word-spacing: normal;
   word-break: normal;
   line-height: 1.5;
-  tab-size: 4;
+  -moz-tab-size: 4;
+    -o-tab-size: 4;
+       tab-size: 4;
   hyphens: none;
   border-radius: 0px;
 }
