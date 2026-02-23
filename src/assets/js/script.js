@@ -1,12 +1,4 @@
-/**
- * Portfolio site – main script
- * Sections: Navigation (hamburger + theme) | Gallery tabs | Theme persistence
- * Selectors use BEM-style classes; see docs/NAMING.md.
- */
-
-// -----------------------------------------------------------------------------
 // Navigation: hamburger menu (opens drawer)
-// -----------------------------------------------------------------------------
 
 const hamTrigger =
   document.querySelector('.site-nav__hamburger') || document.querySelector('.hamburger');
@@ -19,9 +11,7 @@ if (hamTrigger && drawer) {
   });
 }
 
-// -----------------------------------------------------------------------------
 // Theme: dropdown (desktop), drawer theme panel, persistence
-// -----------------------------------------------------------------------------
 
 const themeMenu = document.getElementById('theme-menu');
 const themeSwitch = document.getElementById('theme-switch');
@@ -96,9 +86,7 @@ document.querySelectorAll('.theme-picker__drawer-options a').forEach((option) =>
   });
 });
 
-// -----------------------------------------------------------------------------
 // Gallery page: tab buttons (Photography / AI-Generations / Forza)
-// -----------------------------------------------------------------------------
 
 const GALLERY_SECTIONS = {
   Photography: '.gallery-grid--photography',
@@ -154,9 +142,7 @@ function initGallery() {
   });
 }
 
-// -----------------------------------------------------------------------------
 // Init: run on DOM ready
-// -----------------------------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
   initGallery();
