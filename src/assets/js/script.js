@@ -25,15 +25,24 @@ function applyTheme(themeKey) {
   if (!themeKey) {
     return;
   }
-  // Apply theme to html element to match the inline script in base.njk
-  document.documentElement.className = themeKey;
+  // Remove any existing theme classes without touching unrelated classes (e.g. no-scroll).
+  // Snapshot first (Array.from) because DOMTokenList is live — mutating it while
+  // iterating with forEach can cause entries to be skipped.
+  Array.from(document.documentElement.classList)
+    .filter((cls) => cls !== 'no-scroll')
+    .forEach((cls) => document.documentElement.classList.remove(cls));
+  document.documentElement.classList.add(themeKey);
   localStorage.setItem('theme', themeKey);
+  // Re-dither the avatar using the new theme's colours
+  ditherAvatar();
 }
 
 // Desktop theme dropdown
 if (themeSwitch && themeMenu) {
   themeSwitch.addEventListener('click', () => {
-    themeMenu.style.display = themeMenu.style.display === 'block' ? 'none' : 'block';
+    const isOpen = themeMenu.style.display === 'block';
+    themeMenu.style.display = isOpen ? 'none' : 'block';
+    themeSwitch.setAttribute('aria-expanded', String(!isOpen));
   });
 }
 
@@ -44,6 +53,7 @@ window.addEventListener('click', (e) => {
     !e.target.closest('.theme-picker__menu')
   ) {
     themeMenu.style.display = 'none';
+    if (themeSwitch) themeSwitch.setAttribute('aria-expanded', 'false');
   }
 });
 
@@ -246,6 +256,7 @@ function initGallery() {
 document.addEventListener('DOMContentLoaded', () => {
   initGallery();
   initGalleryDetail();
+  initAvatarDither();
 });
 
 // Gallery detail page: flag that we're staying in the gallery zone so the
@@ -277,6 +288,9 @@ function initGalleryDetail() {
     const renderedWidth = img.getBoundingClientRect().width;
     if (renderedWidth > 0) {
       wrap.style.maxWidth = renderedWidth + 'px';
+    } else {
+      // Image not yet rendered (e.g. background tab); clear so layout reflows correctly
+      wrap.style.maxWidth = '';
     }
   }
 
@@ -292,6 +306,174 @@ function initGalleryDetail() {
     wrap.style.maxWidth = '';
     requestAnimationFrame(clampWrap);
   });
+}
+
+// ---- Avatar Dithering (About/Resume page) ----
+// Halftone dot dithering: the image is divided into CELL×CELL blocks;
+// each block gets one filled circle whose radius scales with the average
+// block luminance, producing big visible dots matching the theme colours.
+// A <canvas> overlay sits above the original <img> so the hover reveal is
+// a CSS opacity crossfade. Luminance is cached; theme switches only repaint.
+
+function hexToRgb(hex) {
+  const clean = hex.trim().replace(/^#/, '');
+  const full =
+    clean.length === 3 ? clean.split('').map((c) => c + c).join('') : clean;
+  return {
+    r: parseInt(full.slice(0, 2), 16),
+    g: parseInt(full.slice(2, 4), 16),
+    b: parseInt(full.slice(4, 6), 16),
+  };
+}
+
+// Coalesces rapid theme-switch repaints into a single frame.
+let _ditherRafId = null;
+
+function ditherAvatar() {
+  const avatar = document.querySelector('.resume-avatar');
+  if (!avatar) return;
+
+  const style = getComputedStyle(document.documentElement);
+  const bgHex = style.getPropertyValue('--clr-body-bg').trim();
+  const fgHex = style.getPropertyValue('--clr-body-text').trim();
+  if (!bgHex || !fgHex) return;
+
+  const bg = hexToRgb(bgHex);
+  const fg = hexToRgb(fgHex);
+
+  // Luminance already cached — jump straight to repaint.
+  if (avatar._lumCache) {
+    _paintDither(avatar, bg, fg);
+    return;
+  }
+
+  // First call: decode the original image and build the luminance cache.
+  const originalSrc = avatar.dataset.originalSrc;
+  if (!originalSrc) return;
+
+  const tmpImg = new Image();
+  tmpImg.onload = () => {
+    const W = tmpImg.naturalWidth;
+    const H = tmpImg.naturalHeight;
+    const offscreen = document.createElement('canvas');
+    offscreen.width = W;
+    offscreen.height = H;
+    const ctx = offscreen.getContext('2d');
+    ctx.drawImage(tmpImg, 0, 0);
+    const src = ctx.getImageData(0, 0, W, H).data;
+
+    // Pre-compute ITU-R BT.601 luminance for every pixel once.
+    const lum = new Float32Array(W * H);
+    for (let i = 0; i < W * H; i++) {
+      lum[i] = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+    }
+    avatar._lumCache = lum;
+    avatar._lumW = W;
+    avatar._lumH = H;
+
+    // Size the overlay canvas to the source image's pixel dimensions.
+    if (avatar._ditherCanvas) {
+      avatar._ditherCanvas.width = W;
+      avatar._ditherCanvas.height = H;
+    }
+
+    _paintDither(avatar, bg, fg);
+  };
+  tmpImg.src = originalSrc;
+}
+
+// Bayer 8×8 ordered dithering — the canonical algorithm used by ImageMagick,
+// ffmpeg, swww, and most Linux image tools. Produces the iconic crosshatch /
+// diamond tiling pattern seen in Linux ricing/wallpaper communities.
+// Threshold: (matrix[y%8][x%8] + 0.5) / 64, compared against gamma-corrected
+// luminance so midtones map correctly to the visible dither pattern.
+const BAYER8 = [
+  [ 0, 32,  8, 40,  2, 34, 10, 42],
+  [48, 16, 56, 24, 50, 18, 58, 26],
+  [12, 44,  4, 36, 14, 46,  6, 38],
+  [60, 28, 52, 20, 62, 30, 54, 22],
+  [ 3, 35, 11, 43,  1, 33,  9, 41],
+  [51, 19, 59, 27, 49, 17, 57, 25],
+  [15, 47,  7, 39, 13, 45,  5, 37],
+  [63, 31, 55, 23, 61, 29, 53, 21],
+];
+
+function _paintDither(avatar, bg, fg) {
+  if (_ditherRafId) cancelAnimationFrame(_ditherRafId);
+  _ditherRafId = requestAnimationFrame(() => {
+    _ditherRafId = null;
+    const canvas = avatar._ditherCanvas;
+    if (!canvas) return;
+
+    const W   = avatar._lumW;
+    const H   = avatar._lumH;
+    const lum = avatar._lumCache;
+
+    // In a light theme bg is brighter than fg (text). Without correction,
+    // bright image pixels map to the dark text colour — visually inverted.
+    // Detect light themes by comparing bg/fg perceived luminance and, if
+    // needed, invert the effective tone so bright always → lighter colour.
+    const bgLum  = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b;
+    const fgLum  = 0.299 * fg.r + 0.587 * fg.g + 0.114 * fg.b;
+    const invert = bgLum > fgLum; // true = light theme
+
+    const ctx       = canvas.getContext('2d');
+    const imageData = ctx.createImageData(W, H);
+    const out       = imageData.data;
+
+    for (let y = 0; y < H; y++) {
+      const row = BAYER8[y & 7];
+      for (let x = 0; x < W; x++) {
+        // Gamma-linearise, then flip tone for light themes so bright pixels
+        // always resolve to the lighter of the two theme colours.
+        let linear = Math.pow(lum[y * W + x] / 255, 2.2);
+        if (invert) linear = 1 - linear;
+
+        const threshold = (row[x & 7] + 0.5) / 64;
+        const useFg     = linear > threshold;
+
+        const pi    = (y * W + x) * 4;
+        out[pi]     = useFg ? fg.r : bg.r;
+        out[pi + 1] = useFg ? fg.g : bg.g;
+        out[pi + 2] = useFg ? fg.b : bg.b;
+        out[pi + 3] = 255;
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+  });
+}
+
+function initAvatarDither() {
+  const avatar = document.querySelector('.resume-avatar');
+  if (!avatar) return;
+
+  avatar.dataset.originalSrc = avatar.src;
+
+  // Wrap the img so we can layer the dither canvas on top of it.
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position:relative; display:block; width:100%;';
+  avatar.parentNode.insertBefore(wrapper, avatar);
+  wrapper.appendChild(avatar);
+
+  // Overlay canvas — drawn above the original photo, pointer-events off
+  // so cursor events fall through to the wrapper.
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText =
+    'position:absolute; inset:0; width:100%; height:100%;' +
+    'transition:opacity 0.5s ease; pointer-events:none;';
+  wrapper.appendChild(canvas);
+  avatar._ditherCanvas = canvas;
+
+  // Smooth crossfade: fade canvas out to reveal original, back in on leave.
+  wrapper.addEventListener('mouseenter', () => { canvas.style.opacity = '0'; });
+  wrapper.addEventListener('mouseleave', () => { canvas.style.opacity = '1'; });
+
+  if (avatar.complete && avatar.naturalWidth > 0) {
+    ditherAvatar();
+  } else {
+    avatar.addEventListener('load', ditherAvatar, { once: true });
+  }
 }
 
 // Note: the lazy→eager preload hack has been removed.
@@ -329,14 +511,22 @@ document.querySelectorAll('.resume-contact__copy[data-copy]').forEach((btn) => {
   btn.addEventListener('click', () => {
     const text = btn.dataset.copy;
     const original = btn.textContent.trim();
-    copyToClipboard(text).then(() => {
-      btn.textContent = 'Copied!';
-      btn.classList.add('copied');
-      clearTimeout(btn._revertTimer);
-      btn._revertTimer = setTimeout(() => {
-        btn.textContent = original;
-        btn.classList.remove('copied');
-      }, 2000);
-    });
+    copyToClipboard(text)
+      .then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        clearTimeout(btn._revertTimer);
+        btn._revertTimer = setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      })
+      .catch(() => {
+        btn.textContent = 'Failed!';
+        clearTimeout(btn._revertTimer);
+        btn._revertTimer = setTimeout(() => {
+          btn.textContent = original;
+        }, 2000);
+      });
   });
 });
