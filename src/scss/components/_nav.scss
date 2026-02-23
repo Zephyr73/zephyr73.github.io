@@ -12,6 +12,7 @@
   position: absolute;
   top: 36px;
   transition: max-width 0.5s ease;
+  will-change: max-width;
 
   &__brand {
     white-space: nowrap;

@@ -25,7 +25,7 @@
     <script>
       (function () {
         var t = localStorage.getItem('theme');
-        if (t) document.documentElement.setAttribute('data-theme-pending', t);
+        if (t) document.documentElement.className = t;
       })();
     </script>
 
