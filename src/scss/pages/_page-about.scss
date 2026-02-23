@@ -1,4 +1,6 @@
 // About / Resume page styles
+@use '../abstracts/mixins' as m;
+
 .resume-container {
   max-width: 900px;
   margin: 0 auto;
@@ -10,7 +12,7 @@
   gap: 2rem;
   margin-bottom: 4rem;
 
-  @media (min-width: 768px) {
+  @include m.respond-to('md-up') {
     grid-template-columns: 240px 1fr;
     align-items: start;
   }
@@ -23,7 +25,7 @@
   align-items: center;
   width: 100%;
 
-  @media (min-width: 768px) {
+  @include m.respond-to('md-up') {
     align-items: flex-start;
     width: auto;
   }
@@ -79,7 +81,7 @@
   align-items: center;
   text-align: center;
 
-  @media (min-width: 768px) {
+  @include m.respond-to('md-up') {
     align-items: flex-start;
     text-align: left;
     justify-content: flex-start;
@@ -93,7 +95,7 @@
     margin: 0;
     position: relative;
 
-    @media (min-width: 768px) {
+    @include m.respond-to('md-up') {
       top: -6px;
     }
   }

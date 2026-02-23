@@ -90,7 +90,6 @@ body {
   align-items: center;
   min-height: 100vh;
   position: relative;
-  padding-bottom: 0;
   transition: 0.3s ease;
 }
 
@@ -407,7 +406,7 @@ td {
   text-decoration: none;
   display: inline;
   transition: none;
-  background-color: transparent !important;
+  background-color: transparent;
 }
 .markdown-content h2 a::after {
   content: "";
@@ -416,8 +415,8 @@ td {
   z-index: 1;
 }
 .markdown-content h2 a:hover {
-  background-color: transparent !important;
-  color: inherit !important;
+  background-color: transparent;
+  color: inherit;
 }
 .markdown-content h3 {
   font-size: 1.4rem;
@@ -703,7 +702,7 @@ td {
   gap: 2rem;
   margin-bottom: 4rem;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .resume-hero {
     grid-template-columns: 240px 1fr;
     align-items: start;
@@ -717,7 +716,7 @@ td {
   align-items: center;
   width: 100%;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .hero-sidebar {
     align-items: flex-start;
     width: auto;
@@ -770,7 +769,7 @@ td {
   align-items: center;
   text-align: center;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .hero-main {
     align-items: flex-start;
     text-align: left;
@@ -785,7 +784,7 @@ td {
   margin: 0;
   position: relative;
 }
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .hero-main h1 {
     top: -6px;
   }

@@ -37,8 +37,7 @@ body {
   align-items: center;
   min-height: 100vh;
   position: relative;
-  padding-bottom: 0;
-  transition: 0.3s ease;
+  transition: 0.3s ease; // padding-bottom: 0 removed — covered by padding: 0 above
 }
 
 // .no-scroll, .u-hidden, ::selection → base/_utilities.scss
