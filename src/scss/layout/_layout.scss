@@ -1,3 +1,10 @@
+// Layout: Page content container
+// Table styles      → components/_tables.scss
+// h1/h2/h3, p       → base/_typography.scss
+// .about__hobbies,
+//   .about__avatar  → pages/_page-about.scss
+// .u-warning        → base/_utilities.scss
+
 .page__content {
   background-color: var(--clr-container-bg);
   outline: 1px solid var(--clr-navbar-text);
@@ -15,62 +22,10 @@
   will-change: max-width;
 }
 
-// Table styling
-table,
-th,
-td {
-  font-family: var(--font-regular);
-  border: 2px solid var(--clr-body-text);
-  border-collapse: collapse;
-  padding: 6px 12px;
-}
-
-table {
-  margin: 0 auto;
-  text-align: center;
-}
-
-th {
-  font-weight: bold;
-}
-
-td {
-  font-weight: 300;
-}
-
-.about__hobbies {
-  text-align: center;
-
-  li {
-    margin: 5px 0;
+@media (max-width: 768px) {
+  .page__content {
+    height: 100%;
+    max-width: 800px;
+    padding-bottom: 30px;
   }
-}
-
-.about__avatar {
-  border: 5px solid var(--clr-body-bg);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 50%;
-  width: 128px;
-  height: 128px;
-  position: absolute;
-  top: -64px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 0;
-}
-
-.u-warning {
-  color: #ff0000;
-}
-
-h1,
-h2,
-h3 {
-  font-family: var(--font-bold);
-  color: var(--clr-body-text);
-}
-
-p {
-  font-family: var(--font-regular);
-  font-size: 16px;
 }

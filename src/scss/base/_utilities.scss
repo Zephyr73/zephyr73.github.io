@@ -1,0 +1,25 @@
+// Base: Utility classes & global interactive states
+// Single-purpose helpers that are not tied to any one component.
+
+// ── Scroll lock (applied to html/body by JS when drawer is open) ──────────────
+html.no-scroll,
+body.no-scroll {
+  overflow: hidden;
+}
+
+// ── Opacity-based hide (used for progressive reveal) ─────────────────────────
+.u-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+// ── Warning text ──────────────────────────────────────────────────────────────
+.u-warning {
+  color: #ff0000;
+}
+
+// ── Text selection ────────────────────────────────────────────────────────────
+::selection {
+  background-color: var(--clr-body-text);
+  color: var(--clr-body-bg);
+}

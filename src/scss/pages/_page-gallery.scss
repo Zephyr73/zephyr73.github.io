@@ -82,3 +82,27 @@
     max-width: calc(100vw - 10%);
   }
 }
+
+// ── Mobile gallery: moved from layout/_media-queries.scss ────────────────────
+@media (max-width: 768px) {
+  .page--gallery .page__content .gallery-tabs__btn {
+    font-size: 14px;
+  }
+
+  .page--gallery .page__content {
+    .gallery-grid--photography,
+    .gallery-grid--ai,
+    .gallery-grid--forza {
+      gap: 20px;
+      flex-direction: column;
+
+      .gallery-grid__column {
+        width: 100%;
+      }
+    }
+  }
+
+  .page--gallery .site-nav__hamburger.active {
+    display: block;
+  }
+}

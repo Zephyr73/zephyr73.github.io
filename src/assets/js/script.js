@@ -1,5 +1,5 @@
 // Navigation: hamburger menu (opens drawer)
-const hamTrigger = document.querySelector('.site-nav__hamburger') || document.querySelector('.hamburger');
+const hamTrigger = document.querySelector('.site-nav__hamburger');
 const drawer = document.querySelector('.site-nav__drawer');
 
 if (hamTrigger && drawer) {
@@ -14,9 +14,9 @@ if (hamTrigger && drawer) {
 }
 
 // Theme: dropdown (desktop), drawer theme panel, persistence
-const themeMenu = document.getElementById('theme-menu');
-const themeSwitch = document.getElementById('theme-switch');
-const themeSwitchHam = document.getElementById('theme-switch-ham');
+const themeMenu = document.querySelector('.theme-picker__menu');
+const themeSwitch = document.querySelector('.site-nav__theme-toggle');
+const themeSwitchHam = document.querySelector('.site-nav__theme-toggle--drawer');
 const themeOptions = document.querySelectorAll('.theme-picker__menu a');
 const themeDrawerOptions = document.querySelector('.theme-picker__drawer-options');
 const drawerNavItems = document.querySelectorAll('.site-nav__drawer-item');
@@ -36,7 +36,7 @@ if (themeSwitch && themeMenu) {
 }
 
 window.addEventListener('click', (e) => {
-  if (themeMenu && !e.target.closest('#theme-switch') && !e.target.closest('.theme-picker__menu')) {
+  if (themeMenu && !e.target.closest('.site-nav__theme-toggle') && !e.target.closest('.theme-picker__menu')) {
     themeMenu.style.display = 'none';
   }
 });

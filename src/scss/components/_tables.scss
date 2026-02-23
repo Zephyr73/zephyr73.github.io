@@ -1,0 +1,24 @@
+// Component: Tables
+// Moved from layout/_layout.scss
+
+table,
+th,
+td {
+  font-family: var(--font-regular);
+  border: 2px solid var(--clr-body-text);
+  border-collapse: collapse;
+  padding: 6px 12px;
+}
+
+table {
+  margin: 0 auto;
+  text-align: center;
+}
+
+th {
+  font-weight: bold;
+}
+
+td {
+  font-weight: 300;
+}

@@ -41,16 +41,4 @@ body {
   transition: 0.3s ease;
 }
 
-html.no-scroll,
-body.no-scroll {
-  overflow: hidden;
-}
-
-.u-hidden {
-  opacity: 0;
-}
-
-::selection {
-  background-color: var(--clr-body-text);
-  color: var(--clr-body-bg);
-}
+// .no-scroll, .u-hidden, ::selection → base/_utilities.scss
