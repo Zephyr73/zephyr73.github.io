@@ -75,8 +75,20 @@
         backface-visibility: hidden;
         // content-visibility: auto removed — causes containment boundary artifacts on img elements
         // and conflicts with the explicit width/height attrs eleventy-img provides
+        // hover styles applied via .gallery-item:hover img below
+      }
 
-        &:hover {
+      // ── Gallery item: hover overlay ───────────────────────────────────────
+      .gallery-item {
+        position: relative;
+        width: 100%;
+        // flex column removes inline-level whitespace gaps from <picture>;
+        // overflow: hidden clips the scaled image cleanly to the item bounds
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        &:hover img {
           box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.2);
           transition: 0.4s ease;
           outline: 1px solid var(--clr-body-text);
@@ -84,16 +96,77 @@
           // on the column, leaving only top/bottom outline lines visible
           transform: translateZ(0) scale(1.015);
         }
+
+        &__overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.85) 100%);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          align-items: flex-start;
+          padding: 14px;
+          gap: 10px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+
+        &:hover .gallery-item__overlay {
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        &__meta {
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+          font-family: var(--font-regular);
+          font-size: 11px;
+          color: #d8d8d8;
+        }
+
+        &__view-details {
+          display: inline-block;
+          background-color: var(--clr-body-text);
+          color: var(--clr-container-bg);
+          font-family: var(--font-regular);
+          font-size: 12px;
+          padding: 6px 14px;
+          text-decoration: none;
+          cursor: pointer;
+          transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+
+          &:hover {
+            background-color: var(--clr-container-bg);
+            color: var(--clr-body-text);
+            outline: 1px solid var(--clr-body-text);
+          }
+        }
       }
     }
   }
 }
 
-// Full-width gallery layout on large screens (replaces JS initLayoutWidth)
+// Full-width gallery layout on large screens
 @media (min-width: 769px) {
   body.is-expanded.page--gallery .page__content,
+  body.page--gallery-detail .page__content {
+    max-width: calc(100vw - 10%);
+  }
+
+  // Nav expands with the gallery page via is-expanded (transition from _nav.scss applies normally).
+  // On the detail page the nav is always wide from first paint, so transition: none
+  // prevents it animating on load or when navigating back to gallery.
   body.is-expanded.page--gallery .site-nav {
     max-width: calc(100vw - 10%);
+  }
+
+  body.page--gallery-detail .site-nav {
+    max-width: calc(100vw - 10%);
+    transition: none;
   }
 
   // Opt the content box into View Transitions — GPU compositor handles the size morph,

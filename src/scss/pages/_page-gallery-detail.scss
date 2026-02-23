@@ -1,0 +1,175 @@
+// Gallery image detail page
+// The content box fills exactly the viewport below the navbar (margin-top: 100px).
+// overflow: hidden prevents any scrollbar — everything lives in the flex layout.
+
+// Desktop only: lock body to one viewport so neither content nor footer causes scroll.
+@media (min-width: 769px) {
+  body.page--gallery-detail {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+.page--gallery-detail .page__content {
+  min-height: auto;
+  // Let flex distribution (body: 100vh) determine height instead of a hardcoded calc,
+  // so the footer remains visible and the page never scrolls on desktop.
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  .gallery-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    &__back {
+      flex-shrink: 0;
+      display: inline-block;
+      font-family: var(--font-regular);
+      font-size: 13px;
+      color: var(--clr-body-text);
+      text-decoration: none;
+      margin-bottom: 20px;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &__layout {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: row;
+      gap: 0;
+      align-items: stretch;
+      overflow: hidden;
+    }
+
+    &__image-wrap {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      align-self: stretch;
+
+      img {
+        display: block;
+        height: auto;
+        max-height: 100%;
+        width: auto;
+        max-width: 100%;
+        outline: 1px solid rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    &__panel {
+      flex: 0 0 auto;
+      width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-left: 36px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--clr-body-text) transparent;
+    }
+
+    &__title {
+      font-family: var(--font-bold);
+      font-size: 14px;
+      font-weight: normal;
+      margin: 0;
+      color: var(--clr-body-text);
+      opacity: 0.5;
+    }
+
+    &__table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-regular);
+      font-size: 13px;
+
+      tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+        &:first-child {
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+      }
+
+      td {
+        padding: 14px 8px;
+        color: var(--clr-body-text);
+        vertical-align: top;
+        text-align: left;
+
+        &:first-child {
+          width: 40%;
+          opacity: 0.45;
+          padding-right: 20px;
+        }
+      }
+    }
+
+    &__download {
+      display: inline-block;
+      background-color: var(--clr-body-text);
+      color: var(--clr-container-bg);
+      font-family: var(--font-regular);
+      font-size: 13px;
+      padding: 9px 20px;
+      text-decoration: none;
+      cursor: pointer;
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+      align-self: flex-start;
+
+      &:hover {
+        background-color: transparent;
+        color: var(--clr-body-text);
+        outline: 1px solid var(--clr-body-text);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .page--gallery-detail .page__content {
+    height: auto;
+    overflow: visible;
+
+    .gallery-detail {
+      &__layout {
+        flex-direction: column;
+        overflow: visible;
+      }
+
+      &__image-wrap {
+        width: 100%;
+        height: 60vw;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+
+      &__panel {
+        width: 100%;
+        padding-left: 0;
+        padding-top: 20px;
+        overflow-y: visible;
+      }
+    }
+  }
+}

@@ -1,24 +1,46 @@
 // Component: Tables
-// Moved from layout/_layout.scss
-
-table,
-th,
-td {
-  font-family: var(--font-regular);
-  border: 2px solid var(--clr-body-text);
-  border-collapse: collapse;
-  padding: 6px 12px;
-}
+// Borderless horizontal-rule style to match the minimal monospace aesthetic.
 
 table {
-  margin: 0 auto;
-  text-align: center;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-regular);
+  font-size: 14px;
+  margin: 1.5rem 0;
+}
+
+th,
+td {
+  padding: 10px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid color-mix(in srgb, var(--clr-body-text) 12%, transparent);
 }
 
 th {
-  font-weight: bold;
+  font-family: var(--font-bold);
+  font-weight: normal;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background-color: var(--clr-container-bg);
+  color: var(--clr-body-text);
+  border-bottom: 2px solid color-mix(in srgb, var(--clr-body-text) 22%, transparent);
 }
 
 td {
-  font-weight: 300;
+  color: var(--clr-body-text);
+}
+
+// Top border on first row
+tr:first-child th,
+tr:first-child td {
+  border-top: 1px solid color-mix(in srgb, var(--clr-body-text) 12%, transparent);
+}
+
+// Subtle row hover
+tbody tr:hover td,
+tr:hover td {
+  background-color: color-mix(in srgb, var(--clr-body-text) 4%, transparent);
+  transition: background-color 0.2s ease;
 }
