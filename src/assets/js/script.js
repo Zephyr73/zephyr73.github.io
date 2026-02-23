@@ -98,25 +98,36 @@ function initGallery() {
   // 1. Width Animation
   // Use View Transitions API so the max-width change is handled by the GPU compositor
   // (avoids layout recalculations on every frame — the cause of Chromium jank).
-  // Falls back to instant class addition on browsers without View Transitions support.
-  requestAnimationFrame(() => {
+  //
+  // If the inline script in base.njk already applied is-expanded (arriving from
+  // the gallery detail page), skip the animation entirely — it was handled before
+  // first paint so there is nothing left to animate.
+  if (!document.body.classList.contains('is-expanded')) {
     requestAnimationFrame(() => {
-      if (document.startViewTransition) {
-        document.startViewTransition(() => {
+      requestAnimationFrame(() => {
+        if (document.startViewTransition) {
+          document.startViewTransition(() => {
+            document.body.classList.add('is-expanded');
+          });
+        } else {
           document.body.classList.add('is-expanded');
-        });
-      } else {
-        document.body.classList.add('is-expanded');
-      }
+        }
+      });
     });
-  });
+  }
 
-  // Intercept internal links to animate width back before navigating
+  // Intercept internal links to animate width back before navigating.
+  // Exception: links into the gallery detail zone share the same width,
+  // so we navigate directly without collapsing first.
   document.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       // Internal navigation link (not a hash anchor, not external, not empty)
       if (href && href.startsWith('/') && !href.startsWith('#')) {
+        // Navigating within the gallery zone — preserve expanded width
+        if (href.startsWith('/gallery/')) {
+          return; // let the browser navigate normally, no collapse
+        }
         e.preventDefault();
         if (document.startViewTransition) {
           // transition.finished resolves when the exit animation completes
@@ -234,7 +245,54 @@ function initGallery() {
 // Init: run on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   initGallery();
+  initGalleryDetail();
 });
+
+// Gallery detail page: flag that we're staying in the gallery zone so the
+// gallery index page skips its expand animation when we navigate back.
+// Also clamps the image wrap to the image's actual rendered width so that
+// portrait images sit flush against the info panel with no gap.
+function initGalleryDetail() {
+  if (!document.body.classList.contains('page--gallery-detail')) {
+    return;
+  }
+
+  // Navigation flag
+  document.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('/gallery/')) {
+        sessionStorage.setItem('gallery-keep-expanded', '1');
+      }
+    });
+  });
+
+  // Clamp wrap width to image's rendered width so panel stays adjacent
+  const wrap = document.querySelector('.gallery-detail__image-wrap');
+  const img = wrap?.querySelector('img');
+  if (!wrap || !img) return;
+
+  function clampWrap() {
+    // getBoundingClientRect gives the actual rendered size after CSS constraints
+    const renderedWidth = img.getBoundingClientRect().width;
+    if (renderedWidth > 0) {
+      wrap.style.maxWidth = renderedWidth + 'px';
+    }
+  }
+
+  if (img.complete && img.naturalWidth > 0) {
+    clampWrap();
+  } else {
+    img.addEventListener('load', clampWrap);
+  }
+
+  // Re-clamp on resize in case the viewport changes
+  window.addEventListener('resize', () => {
+    // Remove the clamp so the layout reflows naturally first, then re-measure
+    wrap.style.maxWidth = '';
+    requestAnimationFrame(clampWrap);
+  });
+}
 
 // Note: the lazy→eager preload hack has been removed.
 // Images now use WebP/srcset variants generated at build time, which are small

@@ -57,5 +57,14 @@
     {% include "footer.njk" %}
 
     <script src="/assets/js/script.js"></script>
+
+    <!-- Pre-expand gallery pages arriving from within the gallery zone.
+         Runs synchronously before first paint so there is no narrow→wide flash. -->
+    <script>
+      if (sessionStorage.getItem('gallery-keep-expanded')) {
+        sessionStorage.removeItem('gallery-keep-expanded');
+        document.body.classList.add('is-expanded');
+      }
+    </script>
   </body>
 </html>

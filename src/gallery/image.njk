@@ -1,0 +1,94 @@
+---
+pagination:
+  data: galleryImages
+  size: 1
+  alias: img
+permalink: "/gallery/image/{{ img.slug }}/"
+layout: base.njk
+bodyClass: page--gallery-detail
+pageId: gallery
+eleventyComputed:
+  title: "{{ img.category | capitalize }} — {{ img.filename }}"
+  description: "Details for {{ img.filename }} from the {{ img.category }} gallery."
+noMarkdownWrapper: true
+---
+
+<div class="gallery-detail">
+
+  <a href="/gallery/" class="gallery-detail__back">← Back to Gallery</a>
+
+  <div class="gallery-detail__layout">
+
+    <div class="gallery-detail__image-wrap">
+      <img
+        src="{{ img.fullUrl }}"
+        alt="{{ img.filename }}"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <div class="gallery-detail__panel">
+
+      <h1 class="gallery-detail__title">{{ img.category | capitalize }} — {{ img.filename }}</h1>
+
+      <table class="gallery-detail__table">
+        {% if img.device %}
+        <tr>
+          <td>Device</td>
+          <td>{{ img.device }}</td>
+        </tr>
+        {% endif %}
+        {% if img.lens %}
+        <tr>
+          <td>Lens</td>
+          <td>{{ img.lens }}</td>
+        </tr>
+        {% endif %}
+        {% if img.date %}
+        <tr>
+          <td>Date taken</td>
+          <td>{{ img.date }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td>Resolution</td>
+          <td>{{ img.resolution }}</td>
+        </tr>
+        <tr>
+          <td>File size</td>
+          <td>{{ img.fileSize }}</td>
+        </tr>
+        {% if img.shutterSpeed %}
+        <tr>
+          <td>Shutter speed</td>
+          <td>{{ img.shutterSpeed }}</td>
+        </tr>
+        {% endif %}
+        {% if img.aperture %}
+        <tr>
+          <td>Aperture</td>
+          <td>{{ img.aperture }}</td>
+        </tr>
+        {% endif %}
+        {% if img.iso %}
+        <tr>
+          <td>ISO</td>
+          <td>{{ img.iso }}</td>
+        </tr>
+        {% endif %}
+        {% if img.focalLength %}
+        <tr>
+          <td>Focal length</td>
+          <td>{{ img.focalLength }}</td>
+        </tr>
+        {% endif %}
+      </table>
+
+      <a href="{{ img.fullUrl }}" download="{{ img.downloadFilename }}" class="gallery-detail__download">
+        Download full resolution
+      </a>
+
+    </div>
+  </div>
+</div>
