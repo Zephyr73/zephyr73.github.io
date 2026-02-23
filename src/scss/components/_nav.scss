@@ -1,7 +1,13 @@
+// Component: Navigation
+// BEM blocks: .site-nav, .theme-picker, .site-nav__theme-toggle
+// Mobile drawer styles are co-located here in their @media block.
+
+// ── Off-screen drawer (hidden on desktop) ─────────────────────────────────────
 .site-nav__drawer {
   display: none;
 }
 
+// ── Desktop nav ───────────────────────────────────────────────────────────────
 .site-nav {
   width: 100%;
   max-width: 800px;
@@ -76,14 +82,26 @@
     }
   }
 
+  // Hamburger trigger button
   &__hamburger {
     display: none;
     cursor: pointer;
     position: relative;
     z-index: 3;
   }
+
+  // Hamburger bars (BEM element of site-nav__hamburger)
+  &__hamburger-bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--clr-hamburger-bg);
+  }
 }
 
+// ── Theme-picker dropdown (desktop) ───────────────────────────────────────────
 .theme-picker__menu {
   display: none;
   position: absolute;
@@ -106,8 +124,11 @@
   }
 }
 
-#theme-switch,
-#theme-switch-ham {
+// ── Theme toggle buttons (desktop + drawer) ────────────────────────────────────
+// BEM: .site-nav__theme-toggle  (was #theme-switch)
+//      .site-nav__theme-toggle--drawer  (was #theme-switch-ham)
+.site-nav__theme-toggle,
+.site-nav__theme-toggle--drawer {
   background: none;
   border: none;
   cursor: pointer;
@@ -118,22 +139,103 @@
   }
 }
 
-.hamburger {
-  display: none;
-  cursor: pointer;
-  position: relative;
-  z-index: 3;
-
-  &__bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    transition: all 0.3s ease-in-out;
-    background-color: var(--clr-hamburger-bg);
-  }
-}
-
+// ── Fieldset reset ────────────────────────────────────────────────────────────
 .theme-selector > fieldset {
   border: 0;
+}
+
+// ── Mobile ≤ 768px: drawer + hamburger ────────────────────────────────────────
+@media (max-width: 768px) {
+  // Show/hide
+  .site-nav__hamburger {
+    display: block;
+  }
+
+  .site-nav__links {
+    display: none;
+  }
+
+  // Hamburger → X animation
+  .site-nav__hamburger.active .site-nav__hamburger-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-nav__hamburger.active .site-nav__hamburger-bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .site-nav__hamburger.active .site-nav__hamburger-bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  // Nav dimensions
+  .site-nav {
+    height: 100px;
+    top: 0;
+  }
+
+  .site-nav__brand {
+    padding-left: 5px;
+  }
+
+  .site-nav__actions {
+    padding-right: 20px;
+  }
+
+  // Drawer item states
+  .site-nav__drawer-item {
+    opacity: 1;
+  }
+
+  // Drawer: full-screen off-canvas panel
+  .site-nav__drawer {
+    z-index: 2;
+    text-decoration: none;
+    background-color: var(--clr-body-bg);
+    height: 100vh;
+    width: 100%;
+    max-width: 90%;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: 0.3s ease;
+
+    &.active {
+      right: 0;
+      margin: 0;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: var(--clr-off-screen-menu-txt);
+    }
+
+    li {
+      margin: 35px 0;
+    }
+  }
+
+  // Theme options panel inside drawer
+  .theme-picker__drawer-options {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  li.theme-picker__drawer-options {
+    margin: 0;
+  }
 }

@@ -1,0 +1,45 @@
+// Abstracts: Mixins
+// Usage: @use '../abstracts/mixins' as m; then @include m.respond-to('md-down') { ... }
+
+@use 'variables' as v;
+
+// ── Breakpoint helper ─────────────────────────────────────────────────────────
+// Wraps content in the correct @media query for the given named breakpoint.
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'md-down' {
+    @media (max-width: #{v.$breakpoint-md}) {
+      @content;
+    }
+  } @else if $breakpoint == 'md-up' {
+    @media (min-width: #{v.$breakpoint-md-up}) {
+      @content;
+    }
+  } @else if $breakpoint == 'sm-down' {
+    @media (max-width: #{v.$breakpoint-sm}) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: `#{$breakpoint}`. Available: sm-down, md-down, md-up.";
+  }
+}
+
+// ── Flex centering ─────────────────────────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ── Visually hidden (accessible) ──────────────────────────────────────────────
+// Hides element visually while keeping it available to screen readers.
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

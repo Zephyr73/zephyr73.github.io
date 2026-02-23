@@ -1,0 +1,14 @@
+// Base: Global typography defaults
+// Component-specific overrides live in their own files (e.g. _markdown.scss).
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-bold);
+  color: var(--clr-body-text);
+}
+
+p {
+  font-family: var(--font-regular);
+  font-size: 16px;
+}

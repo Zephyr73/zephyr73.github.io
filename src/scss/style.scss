@@ -1,17 +1,34 @@
-// Main entry point for styles
+// Main entry point — 7-1 SCSS Architecture
+// Order: abstracts → base → components → layout → themes → pages → vendors
 
+// ── Abstracts (no CSS output — variables & mixins only) ───────────────────────
 @use 'abstracts/variables';
+@use 'abstracts/mixins';
+
+// ── Base (global resets & defaults) ───────────────────────────────────────────
+@use 'base/reset';
 @use 'base/fonts';
 @use 'base/base';
+@use 'base/typography';
+@use 'base/utilities';
+
+// ── Components ────────────────────────────────────────────────────────────────
+@use 'components/tables';
 @use 'components/nav';
+@use 'components/markdown';
+
+// ── Layout ────────────────────────────────────────────────────────────────────
 @use 'layout/layout';
+
+// ── Themes ────────────────────────────────────────────────────────────────────
+@use 'themes/themes';
+
+// ── Pages ─────────────────────────────────────────────────────────────────────
 @use 'pages/page-home';
 @use 'pages/page-about';
 @use 'pages/page-wallpapersync';
 @use 'pages/page-gallery';
-@use 'layout/media-queries';
 // @use 'pages/page-projects';
-// @use 'pages/page-markdown-list';
-// @use 'pages/page-markdown.scss';
-@use 'components/markdown';
+
+// ── Vendors ───────────────────────────────────────────────────────────────────
 @use 'vendors/syntax';

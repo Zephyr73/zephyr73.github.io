@@ -1,3 +1,43 @@
+// ============================================================
+// Sass Variables (compile-time constants)
+// ============================================================
+
+// Breakpoints
+$breakpoint-sm:    480px;
+$breakpoint-md:    768px;
+$breakpoint-md-up: 769px;
+
+// Layout sizing
+$content-max-width:  800px;
+$resume-max-width:   900px;
+$sidebar-width:      240px;
+$content-padding:    35px;
+$nav-height-desktop: 64px;
+$nav-height-mobile:  100px;
+
+// Z-index scale
+$z-content: 1;
+$z-drawer:  2;
+$z-nav:     3;
+
+// Transitions
+$transition-fast: 0.2s;
+$transition-base: 0.3s;
+$transition-slow: 0.5s;
+
+// Box shadows
+$shadow-light:  rgba(0, 0, 0, 0.2);
+$shadow-medium: rgba(0, 0, 0, 0.5);
+$shadow-faint:  rgba(0, 0, 0, 0.02);
+
+// Warning colour
+$clr-warning: #ff0000;
+
+// ============================================================
+// CSS Custom Properties (runtime theming — base / default dark)
+// Theme overrides (.light, .midnight, .catppuccin-dark) → themes/_themes.scss
+// ============================================================
+
 :root {
   --clr-body-bg: #0f0f0f;
   --clr-body-text: #cacaca;
@@ -21,70 +61,4 @@
 
   --clr-inline-code-bg: #262626;
   --clr-inline-code-text: #e0e0e0;
-}
-
-.light {
-  --clr-body-bg: #cacaca;
-  --clr-body-text: #0f0f0f;
-  --clr-navbar-bg: #cacaca;
-  --clr-navbar-text: #0f0f0f;
-  --clr-container-bg: #d6d6d6;
-  --clr-hamburger-bg: #0f0f0f;
-  --clr-off-screen-menu-txt: #0f0f0f;
-  --clr-link-visited: #b71c1c;
-
-  --clr-code-bg: #e0e0e0;
-  --clr-code-text: #0f0f0f;
-  --clr-code-comment: #5c5c5c;
-  --clr-code-keyword: #800080;
-  --clr-code-string: #006400;
-  --clr-code-func: #00008b;
-  --clr-code-number: #8b4500;
-
-  --clr-inline-code-bg: #b0b0b0;
-  --clr-inline-code-text: #000000;
-}
-
-.midnight {
-  --clr-body-bg: #0f0f0f;
-  --clr-body-text: #cacaca;
-  --clr-navbar-bg: #0f0f0f;
-  --clr-navbar-text: #cacaca;
-  --clr-container-bg: #1b1b1b;
-  --clr-hamburger-bg: #cacaca;
-  --clr-off-screen-menu-txt: #cacaca;
-  --clr-link-visited: #b71c1c;
-
-  --clr-code-bg: #161616;
-  --clr-code-text: #cacaca;
-  --clr-code-comment: #767676;
-  --clr-code-keyword: #d57bdd;
-  --clr-code-string: #98c379;
-  --clr-code-func: #61afef;
-  --clr-code-number: #e5c07b;
-
-  --clr-inline-code-bg: #262626;
-  --clr-inline-code-text: #e0e0e0;
-}
-
-.catppuccin-dark {
-  --clr-body-bg: #11111b;
-  --clr-body-text: #cdd6f4;
-  --clr-navbar-bg: #0f0f0f;
-  --clr-navbar-text: #cdd6f4;
-  --clr-container-bg: #181825;
-  --clr-hamburger-bg: #cdd6f4;
-  --clr-off-screen-menu-txt: #cdd6f4;
-  --clr-link-visited: #f38ba8;
-
-  --clr-code-bg: #1e1e2e;
-  --clr-code-text: #cdd6f4;
-  --clr-code-comment: #6c7086;
-  --clr-code-keyword: #cba6f7;
-  --clr-code-string: #a6e3a1;
-  --clr-code-func: #89b4fa;
-  --clr-code-number: #fab387;
-
-  --clr-inline-code-bg: #313244;
-  --clr-inline-code-text: #eba0ac;
 }
