@@ -12,6 +12,8 @@ Thumbs.db
 # Environment
 .env
 .venv/
+__pycache__/
+*.pyc
 .vscode/
 src/scripts/
 docs/
@@ -22,3 +24,4 @@ src/assets/css/style.css.map
 src/assets/js/script_old.js
 
 *.code-workspace
+sort.bat
