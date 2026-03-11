@@ -206,6 +206,7 @@ notepad $PROFILE
 ```
 
 This will create a Profile for PowerShell in one of these locations
+
 - `$HOME\Documents\Powershell\Microsoft.PowerShell_profile.ps1`
 - `$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
 

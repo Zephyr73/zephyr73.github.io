@@ -80,7 +80,9 @@ export default function (eleventyConfig) {
           const model = exif.Image?.Model?.trim() ?? '';
           // Avoid duplicating brand name when model already includes it (e.g. "Google Pixel 8")
           if (make && model) {
-            deviceStr = model.toLowerCase().startsWith(make.toLowerCase()) ? model : `${make} ${model}`;
+            deviceStr = model.toLowerCase().startsWith(make.toLowerCase())
+              ? model
+              : `${make} ${model}`;
           } else {
             deviceStr = model || make;
           }
@@ -89,8 +91,6 @@ export default function (eleventyConfig) {
         }
       }
 
-      const downloadUrl = largestJpeg.url;
-      const downloadFilename = path.basename(srcPath);
       const baseName = path.basename(srcPath, path.extname(srcPath));
       const slug = `${subdir}-${baseName}`;
       const detailUrl = `/gallery/image/${slug}/`;
@@ -98,8 +98,12 @@ export default function (eleventyConfig) {
       return `<div class="gallery-item">
   ${pictureHtml}
   <div class="gallery-item__overlay">
-    <div class="gallery-item__meta">${deviceStr ? `
-      <span>${deviceStr}</span>` : ''}
+    <div class="gallery-item__meta">${
+      deviceStr
+        ? `
+      <span>${deviceStr}</span>`
+        : ''
+    }
       <span>${dateStr}</span>
       <span>${resolutionStr}</span>
       <span>${fileSizeStr}</span>

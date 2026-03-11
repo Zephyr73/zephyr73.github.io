@@ -53,7 +53,9 @@ window.addEventListener('click', (e) => {
     !e.target.closest('.theme-picker__menu')
   ) {
     themeMenu.style.display = 'none';
-    if (themeSwitch) themeSwitch.setAttribute('aria-expanded', 'false');
+    if (themeSwitch) {
+      themeSwitch.setAttribute('aria-expanded', 'false');
+    }
   }
 });
 
@@ -281,7 +283,9 @@ function initGalleryDetail() {
   // Clamp wrap width to image's rendered width so panel stays adjacent
   const wrap = document.querySelector('.gallery-detail__image-wrap');
   const img = wrap?.querySelector('img');
-  if (!wrap || !img) return;
+  if (!wrap || !img) {
+    return;
+  }
 
   function clampWrap() {
     // getBoundingClientRect gives the actual rendered size after CSS constraints
@@ -318,7 +322,12 @@ function initGalleryDetail() {
 function hexToRgb(hex) {
   const clean = hex.trim().replace(/^#/, '');
   const full =
-    clean.length === 3 ? clean.split('').map((c) => c + c).join('') : clean;
+    clean.length === 3
+      ? clean
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : clean;
   return {
     r: parseInt(full.slice(0, 2), 16),
     g: parseInt(full.slice(2, 4), 16),
@@ -331,12 +340,16 @@ let _ditherRafId = null;
 
 function ditherAvatar() {
   const avatar = document.querySelector('.resume-avatar');
-  if (!avatar) return;
+  if (!avatar) {
+    return;
+  }
 
   const style = getComputedStyle(document.documentElement);
   const bgHex = style.getPropertyValue('--clr-body-bg').trim();
   const fgHex = style.getPropertyValue('--clr-body-text').trim();
-  if (!bgHex || !fgHex) return;
+  if (!bgHex || !fgHex) {
+    return;
+  }
 
   const bg = hexToRgb(bgHex);
   const fg = hexToRgb(fgHex);
@@ -349,7 +362,9 @@ function ditherAvatar() {
 
   // First call: decode the original image and build the luminance cache.
   const originalSrc = avatar.dataset.originalSrc;
-  if (!originalSrc) return;
+  if (!originalSrc) {
+    return;
+  }
 
   const tmpImg = new Image();
   tmpImg.onload = () => {
@@ -388,38 +403,42 @@ function ditherAvatar() {
 // Threshold: (matrix[y%8][x%8] + 0.5) / 64, compared against gamma-corrected
 // luminance so midtones map correctly to the visible dither pattern.
 const BAYER8 = [
-  [ 0, 32,  8, 40,  2, 34, 10, 42],
+  [0, 32, 8, 40, 2, 34, 10, 42],
   [48, 16, 56, 24, 50, 18, 58, 26],
-  [12, 44,  4, 36, 14, 46,  6, 38],
+  [12, 44, 4, 36, 14, 46, 6, 38],
   [60, 28, 52, 20, 62, 30, 54, 22],
-  [ 3, 35, 11, 43,  1, 33,  9, 41],
+  [3, 35, 11, 43, 1, 33, 9, 41],
   [51, 19, 59, 27, 49, 17, 57, 25],
-  [15, 47,  7, 39, 13, 45,  5, 37],
+  [15, 47, 7, 39, 13, 45, 5, 37],
   [63, 31, 55, 23, 61, 29, 53, 21],
 ];
 
 function _paintDither(avatar, bg, fg) {
-  if (_ditherRafId) cancelAnimationFrame(_ditherRafId);
+  if (_ditherRafId) {
+    cancelAnimationFrame(_ditherRafId);
+  }
   _ditherRafId = requestAnimationFrame(() => {
     _ditherRafId = null;
     const canvas = avatar._ditherCanvas;
-    if (!canvas) return;
+    if (!canvas) {
+      return;
+    }
 
-    const W   = avatar._lumW;
-    const H   = avatar._lumH;
+    const W = avatar._lumW;
+    const H = avatar._lumH;
     const lum = avatar._lumCache;
 
     // In a light theme bg is brighter than fg (text). Without correction,
     // bright image pixels map to the dark text colour — visually inverted.
     // Detect light themes by comparing bg/fg perceived luminance and, if
     // needed, invert the effective tone so bright always → lighter colour.
-    const bgLum  = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b;
-    const fgLum  = 0.299 * fg.r + 0.587 * fg.g + 0.114 * fg.b;
+    const bgLum = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b;
+    const fgLum = 0.299 * fg.r + 0.587 * fg.g + 0.114 * fg.b;
     const invert = bgLum > fgLum; // true = light theme
 
-    const ctx       = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
     const imageData = ctx.createImageData(W, H);
-    const out       = imageData.data;
+    const out = imageData.data;
 
     for (let y = 0; y < H; y++) {
       const row = BAYER8[y & 7];
@@ -427,13 +446,15 @@ function _paintDither(avatar, bg, fg) {
         // Gamma-linearise, then flip tone for light themes so bright pixels
         // always resolve to the lighter of the two theme colours.
         let linear = Math.pow(lum[y * W + x] / 255, 2.2);
-        if (invert) linear = 1 - linear;
+        if (invert) {
+          linear = 1 - linear;
+        }
 
         const threshold = (row[x & 7] + 0.5) / 64;
-        const useFg     = linear > threshold;
+        const useFg = linear > threshold;
 
-        const pi    = (y * W + x) * 4;
-        out[pi]     = useFg ? fg.r : bg.r;
+        const pi = (y * W + x) * 4;
+        out[pi] = useFg ? fg.r : bg.r;
         out[pi + 1] = useFg ? fg.g : bg.g;
         out[pi + 2] = useFg ? fg.b : bg.b;
         out[pi + 3] = 255;
@@ -446,7 +467,9 @@ function _paintDither(avatar, bg, fg) {
 
 function initAvatarDither() {
   const avatar = document.querySelector('.resume-avatar');
-  if (!avatar) return;
+  if (!avatar) {
+    return;
+  }
 
   avatar.dataset.originalSrc = avatar.src;
 
@@ -466,8 +489,12 @@ function initAvatarDither() {
   avatar._ditherCanvas = canvas;
 
   // Smooth crossfade: fade canvas out to reveal original, back in on leave.
-  wrapper.addEventListener('mouseenter', () => { canvas.style.opacity = '0'; });
-  wrapper.addEventListener('mouseleave', () => { canvas.style.opacity = '1'; });
+  wrapper.addEventListener('mouseenter', () => {
+    canvas.style.opacity = '0';
+  });
+  wrapper.addEventListener('mouseleave', () => {
+    canvas.style.opacity = '1';
+  });
 
   if (avatar.complete && avatar.naturalWidth > 0) {
     ditherAvatar();
