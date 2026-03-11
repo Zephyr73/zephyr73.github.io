@@ -10,6 +10,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -36,7 +40,7 @@ jobs:
         run: npm run build:css
 
       - name: Build Eleventy site
-        run: npx @11ty/eleventy --input src --output _site
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
