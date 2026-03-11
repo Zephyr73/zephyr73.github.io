@@ -21,15 +21,21 @@ function formatFileSize(bytes) {
 }
 
 function formatShutterSpeed(expTime) {
-  if (!expTime) return '';
-  if (expTime >= 1) return `${expTime}s`;
+  if (!expTime) {
+    return '';
+  }
+  if (expTime >= 1) {
+    return `${expTime}s`;
+  }
   const denom = Math.round(1 / expTime);
   return `1/${denom}s`;
 }
 
 /** Parse an EXIF date string "YYYY:MM:DD HH:MM:SS" into a JS Date */
 function parseExifDate(str) {
-  if (!str) return null;
+  if (!str) {
+    return null;
+  }
   const s = str.toString();
   const [datePart, timePart] = s.split(' ');
   const [y, m, d] = datePart.split(':');
@@ -50,7 +56,9 @@ export default async function () {
 
   for (const category of CATEGORIES) {
     const dir = path.join(GALLERY_ROOT, category);
-    if (!fs.existsSync(dir)) continue;
+    if (!fs.existsSync(dir)) {
+      continue;
+    }
 
     const files = fs
       .readdirSync(dir)
@@ -107,12 +115,18 @@ export default async function () {
 
           // Camera settings
           shutterSpeed = formatShutterSpeed(photo.ExposureTime);
-          if (photo.FNumber) aperture = `f/${photo.FNumber}`;
+          if (photo.FNumber) {
+            aperture = `f/${photo.FNumber}`;
+          }
           const isoVal = Array.isArray(photo.ISOSpeedRatings)
             ? photo.ISOSpeedRatings[0]
             : photo.ISOSpeedRatings;
-          if (isoVal) iso = `ISO ${isoVal}`;
-          if (photo.FocalLength) focalLength = `${photo.FocalLength}mm`;
+          if (isoVal) {
+            iso = `ISO ${isoVal}`;
+          }
+          if (photo.FocalLength) {
+            focalLength = `${photo.FocalLength}mm`;
+          }
 
           // Date — prefer oldest of EXIF date and file date
           const exifDate =
@@ -132,7 +146,8 @@ export default async function () {
       // Full-res display/download URL = largest generated JPEG width that
       // actually exists (eleventy-img skips widths larger than the original)
       const GENERATED_WIDTHS = [400, 800, 1200, 1800];
-      const largestWidth = [...GENERATED_WIDTHS].reverse().find((w) => w <= meta.width) ?? GENERATED_WIDTHS[0];
+      const largestWidth =
+        [...GENERATED_WIDTHS].reverse().find((w) => w <= meta.width) ?? GENERATED_WIDTHS[0];
       const thumbUrl = `/assets/img/gallery/${category}/${baseName}-800w.webp`;
       const fullUrl = `/assets/img/gallery/${category}/${baseName}-${largestWidth}w.jpeg`;
 

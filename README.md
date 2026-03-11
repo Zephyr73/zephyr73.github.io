@@ -30,6 +30,7 @@ Personal portfolio website built with Eleventy (11ty), showcasing projects, phot
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/Zephyr73/zephyr73.github.io.git
    cd zephyr73.github.io
@@ -43,14 +44,17 @@ Personal portfolio website built with Eleventy (11ty), showcasing projects, phot
 ### Development
 
 Run the development server with live reload and SCSS watching:
+
 ```bash
 npm run dev
 ```
+
 The site will be available at `http://localhost:8080`.
 
 ### Build
 
 Generate the static site into the `_site/` directory:
+
 ```bash
 npm run build
 ```
