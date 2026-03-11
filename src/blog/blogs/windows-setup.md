@@ -164,7 +164,7 @@ Add the following directories to `User Variables > PATHS`
 - `D:\Programming\PATH Scripts`
 - `D:\Programming\PATH Scripts\ViVeTool v0.3.4`
 - `D:\Programming\Python\ThemeSwitcher\`
-- `C:\Users\Zephyr\Downloads\OpenRGB Windows 64-bit`
+- `%USERPROFILE%\Downloads\OpenRGB Windows 64-bit`
 
 ### Create Tasks
 
@@ -180,10 +180,16 @@ Import the all the tasks from the tasks [folder][tasks-folder]
 
 Oh My Posh is needed to theme the terminal ui, Clink is used for suggestions and more advanced but helpful features.
 
-Download Oh My Posh using the following command in powershell:
+Download **Oh My Posh** using the following command:
 
 ```sh
 winget install JanDeDobbeleer.OhMyPosh --source winget
+```
+
+Download **Clink** using the following command:
+
+```sh
+winget install chrisant996.Clink
 ```
 
 To check if it is intalled properly type `oh-my-posh` in powershell or cmd
@@ -193,13 +199,20 @@ Once installed, type the following command to use a default config
 oh-my-posh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json'
 ```
 
-To change your theme for **PowerShell**, adjust the init script in `C:\Users\Zephyr\Documents\Powershell\Microsoft.PowerShell_profile.ps1` or `C:\Users\Zephyr\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
-If neither location exist, open Powershell and then type `$PROFILE` to find the location for the profile script. Or ask an AI on how to find/create one.
-
-If the file `Microsoft.PowerShell_profile.ps1` does not exist, create it and paste the following for applying catppuccin theme
+To change your theme for **PowerShell**, open **PowerShell** and type
 
 ```sh
-oh-my-posh init pwsh --config 'C:\Users\Zephyr\AppData\Local\Programs\oh-my-posh\themes\catppuccin_mocha.omp.json' | Invoke-Expression
+notepad $PROFILE
+```
+
+This will create a Profile for PowerShell in one of these locations
+- `$HOME\Documents\Powershell\Microsoft.PowerShell_profile.ps1`
+- `$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
+
+Download your favorite theme for **Oh My Posh** and save it in `Documents`, and to apply it, enter the following in the **PowerShell** profile
+
+```sh
+oh-my-posh init pwsh --config '$HOME/Documents/catppuccin_mocha.omp.json' | Invoke-Expression
 ```
 
 Once altered, reload your profile for the changes to take effect
@@ -208,11 +221,17 @@ Once altered, reload your profile for the changes to take effect
 . $PROFILE
 ```
 
-For **CMD/Command Prompt** search for `oh-my-posh.lua`, which should be in `C:\Program Files(x86)\clink\` after you install clink. Open the file and then paste the following
+For **CMD/Command Prompt** enter the following in your terminal:
 
 ```sh
-load(io.popen('oh-my-posh init cmd --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/catppuccin_mocha.omp.json'):read("*a"))()
+clink config prompt use oh-my-posh
 ```
+
+```sh
+clink set ohmyposh.theme "%USERPROFILE%\Documents\catppuccin_mocha.omp.json"
+```
+
+restart your CMD to see difference
 
 #### Windows Terminal
 
