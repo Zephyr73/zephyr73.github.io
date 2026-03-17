@@ -156,8 +156,8 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
 > - Go to **Control Panel > Network and Internet > Network and Sharing Center > Ethernet > Properties > IPv4**
 > - set the device ip to `192.168.1.2xx`
 >
->> **Note**
->> For a list of IP and Ports in case of a network rest, refer to the [handbook](ip-and-ports.md)
+> > **Note**
+> > For a list of IP and Ports in case of a network rest, refer to the [handbook](ip-and-ports.md)
 
 ---
 
@@ -173,13 +173,13 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
 
 The reason we will be using DisplayCal is because the default Windows Color Management program is not known to be reliable for handling color profiles. It glitches out especially when you switch to and from full screen mode, sometimes after a reboot it fails to load the color profile immediately. This is where DisplayCal comes in clutch, it makes sure the profile is always automatically loaded.
 
- After installing and setting up **DisplayCal**, download the calibrated `.icc` or `.icm` profiles for your monitor. YouTubers like *Techless* and *Monitor Unboxed* usually provide calibrated profiles for popular monitors. Once you download the color profiles, right click on them and select **Install Profile** from the context menu.
+After installing and setting up **DisplayCal**, download the calibrated `.icc` or `.icm` profiles for your monitor. YouTubers like _Techless_ and _Monitor Unboxed_ usually provide calibrated profiles for popular monitors. Once you download the color profiles, right click on them and select **Install Profile** from the context menu.
 
- Once you have everything ready, search for **Color Management** in windows search. On the top of the settings screen, it should show your monitors. Make sure to select the correct monitor. Once you select your monitor, click on the tickbox that says **Use my settings for this device**.
+Once you have everything ready, search for **Color Management** in windows search. On the top of the settings screen, it should show your monitors. Make sure to select the correct monitor. Once you select your monitor, click on the tickbox that says **Use my settings for this device**.
 
- On the bottom left of the settings screen, you should see an **Add...** button, click on it and you should see a lot of color profiles, from here select the one you installed earlier. Once you add the profile, it should already be set as default. However, just to be safe, click on the profile again and click **Set as Default Profile** just to be safe.
+On the bottom left of the settings screen, you should see an **Add...** button, click on it and you should see a lot of color profiles, from here select the one you installed earlier. Once you add the profile, it should already be set as default. However, just to be safe, click on the profile again and click **Set as Default Profile** just to be safe.
 
- After setting up the color profile in Windows Color Management, go to your system tray and right click the **DisplayCal** icon and click on **Profile Associations**. *The icon should be there if you installed **DisplayCal**, Do not launch **DisplayCal** App unless you are using hardware to calibrate your monitor*. **DisplayCal** should automatically select the profile for you, but double check if it is the correct profile. On the bottom left, click on **Automatically fix profile associations**
+After setting up the color profile in Windows Color Management, go to your system tray and right click the **DisplayCal** icon and click on **Profile Associations**. _The icon should be there if you installed **DisplayCal**, Do not launch **DisplayCal** App unless you are using hardware to calibrate your monitor_. **DisplayCal** should automatically select the profile for you, but double check if it is the correct profile. On the bottom left, click on **Automatically fix profile associations**
 
 > ### Shared Folders
 >
@@ -189,7 +189,6 @@ The reason we will be using DisplayCal is because the default Windows Color Mana
 > - `D:\Media`
 > - `D:\Programming`
 > - `D:\BACKUPS\Phone Backup\Samsung S25 ULTRA`
->
 >
 > ### PATH Variables
 >
@@ -474,7 +473,7 @@ Download the following extensions before setting the configs
 
 ##### Configuration for VS Code
 
-***Text Editor***
+**_Text Editor_**
 
 - Bracket Pairs Horizontal: **true**
 - Line Height: **1.6**
@@ -487,39 +486,39 @@ Download the following extensions before setting the configs
 - Font Size: **14**
 - Auto Save: **After Delay**
 
-***Workbench***
+**_Workbench_**
 
 - Smooth Scrolling: **ON**
 - Workbench Color theme: **Catppuccin Mocha**
 - Icon Theme: **Material Icon Theme**
 - Empty Hint: **hidden**
 
-***Features***
+**_Features_**
 
 - Explorer Kind: **Integrated**
 - Integrated > Font Ligatures Enabled: **ON**
 - Integrated Mouse wheel zoom: **ON**
 - Integrated Smooth Scrolling: **ON**
 
-***C/C++***
+**_C/C++_**
 
 - C_Cpp Intelli Sense Engine: Disabled
 
-***Clangd***
+**_Clangd_**
 
 - Clangd Arguments:
   - `--inlay-hints=true`
 - Clangd PATH: `ENTER PATH OF CLANGD.exe`
 
-***Git***
+**_Git_**
 
 - Open Repository in Parent Folders: **Never**
 
-***Live Server***
+**_Live Server_**
 
 - Do not verify tags: **ON**
 
-***Python***
+**_Python_**
 
 - **Python > Analysis > Inlay hints: Call Argument Names:** **ON**
 - **Python > Analysis > Inlay hints: Variable Types:** **ON**
