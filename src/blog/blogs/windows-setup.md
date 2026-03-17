@@ -105,7 +105,7 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
 - IPv4 Checksum Offload: **Rx & Tx Enabled**
 - Power Saving Mode: **Disabled**
 
-### Downloads
+#### Downloads
 
 - **Browsers**
   - Brave Browser (Make sure to debloat it, instructions below)
