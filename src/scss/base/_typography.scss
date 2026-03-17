@@ -11,10 +11,21 @@ html {
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-bold);
   color: var(--clr-body-text);
 }
+
+// Default heading size scale — overridden by page- and component-level rules
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.4rem; }
+h4 { font-size: 1.15rem; }
+h5 { font-size: 1.05rem; }
+h6 { font-size: 1rem; }
 
 p {
   font-family: var(--font-regular);
