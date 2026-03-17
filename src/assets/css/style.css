@@ -157,11 +157,6 @@ body.no-scroll {
   color: #ff0000;
 }
 
-::-moz-selection {
-  background-color: var(--clr-body-text);
-  color: var(--clr-body-bg);
-}
-
 ::selection {
   background-color: var(--clr-body-text);
   color: var(--clr-body-bg);
@@ -921,8 +916,7 @@ tr:hover td {
   width: 100%;
   max-width: 100%;
   aspect-ratio: 1/1;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   display: block;
   border: 2px solid var(--clr-body-text);
   cursor: pointer;
@@ -1008,7 +1002,6 @@ tr:hover td {
   background: var(--clr-body-text);
   color: var(--clr-body-bg);
   padding: 4px 10px;
-  width: -moz-fit-content;
   width: fit-content;
   margin-top: 1rem;
   margin-bottom: 2rem;
@@ -1217,8 +1210,7 @@ tr:hover td {
 .page--gallery .page__content .gallery-grid--forza .gallery-grid__column img {
   display: block;
   width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   transform: translateZ(0);
   backface-visibility: hidden;
 }
@@ -1482,8 +1474,7 @@ tr:hover td {
   .page--gallery-detail .page__content .gallery-detail__image-wrap img {
     width: 100%;
     height: 100%;
-    -o-object-fit: contain;
-       object-fit: contain;
+    object-fit: contain;
   }
   .page--gallery-detail .page__content .gallery-detail__panel {
     width: 100%;
@@ -1503,9 +1494,7 @@ code[class*=language-] {
   word-spacing: normal;
   word-break: normal;
   line-height: 1.5;
-  -moz-tab-size: 4;
-    -o-tab-size: 4;
-       tab-size: 4;
+  tab-size: 4;
   hyphens: none;
   border-radius: 0px;
 }
