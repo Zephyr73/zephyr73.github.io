@@ -13,12 +13,27 @@ date: 2023-10-27
 
 ## Step 1
 
+Before you start the guide, make sure to download a copy of Windows 11 ISO. I would suggest downloading the ISO of last year, usually they are more polished from my personal experience. So for example, as of today the latest version of Windows 11 is **25H2**, I would suggest downloading **24H2**. In some rare cases the newer version might be more polished and have less bugs on release, in that case download the latest one. Do your research to find the most stable version.
+
+After downloading the ISO, download my [autounattend.xml][autounattend.xml]. You can import this file in https://schneegans.de/windows/unattend-generator/ and inspect it to add or remove settings. I would always suggest creating an autounattend file because it will install an almost clean windows without you having to manually uninstalling bloats and changing settings
+
+Once you have both of these files, burn the ISO in a USB stick using **Rufus**. After the iso is installed in the USB stick, copy the `autounattend.xml` file and paste it in the root directory of the USB.
+
+Restart your PC and boot into the USB to go through the windows setup. The process should be almost hands-free because of the unattend file.
+
+## Step 2
+
 ### Initialization
 
 - **Display**
-  - Download NVidia Drivers (Preferrably Debloated)
+  - Download GPU Display Drivers
+    - For NVidia GPU users:
+      - Download version 572.83 (most stable version for me)
+      - Debloat via nvcleanstall
   - Set Display resolution and refresh rates
-  - Set color depth in NVidia Control Panel
+  - Set color depth in NVidia Control Panel or AMD Radeon Software
+
+Even after installing windows with the unattend file, the default settings of windows are a privacy nightmare.
 
 - **Settings**
   - System
@@ -71,6 +86,8 @@ date: 2023-10-27
   - Privacy & Security
     - **Disable** almost everything unless you need it
 
+For some reasons, my PC used to drop connection at random times after I switched to gigabit internet. It usually happened when I am playing games or when I am in a voice call. Weird issue, never found the exact reason for it, however I fixed them by changing these settings after doing some research.
+
 - **Device Manager**
   - `Ethernet > Properties > Advanced`
     - Advanced EEE: **Disabled**
@@ -87,7 +104,7 @@ date: 2023-10-27
 ### Downloads
 
 - **Browsers**
-  - Brave Browser (Make sure to debloat it)
+  - Brave Browser (Make sure to debloat it, instructions below)
   - Firefox (Make sure to debloat it)
 
 - **Gaming**
@@ -101,6 +118,7 @@ date: 2023-10-27
 
 - **Utilities**
   - 7zip
+  - DisplayCal
   - VS Code
   - MSI Afterburner
   - Notepad++
@@ -113,6 +131,7 @@ date: 2023-10-27
   - TreeSize
   - Defender UI
   - Revo Uninstaller OR Bulk Crap Uninstaller (BCU)
+  - nvcleanstall
 
 - **Customization**
   - Nilesoft Shell
@@ -126,53 +145,112 @@ date: 2023-10-27
     - JetBrainsMono Nerd Font
     - Iosevka
 
-### Network and Firewall
-
-Device IP Address should be managed by PiHole, however in the case it is not set appropriately:
-
-- Go to `control panel > network and internet > network and sharing center > ethernet > properties > ipv4`
-- set the device ip to `192.168.1.200`
-
-> **Note**
-> For a list of IP and Ports in case of a network rest, refer to the [handbook](ip-and-ports.md)
-
----
-
-## Step 2
-
-### Shared Folders
-
-Share the Following drives to the network
-
-- `D:\Games`
-- `D:\Media`
-- `D:\Programming`
-- `D:\BACKUPS\Phone Backup\Samsung S25 ULTRA`
-
-### Performance
-
-- Use **MSI Afterburner** to undervolt GPU and make sure to launch in startup
-- Change **nvidia control panel** settings according to updated guide
-- Turn off game optimization in NVidia App
-- Go to task scheduler and disable all unwanted tasks
-- Go to **Sysinternals Suite: Autoruns**, go through it to make sure there are no sneaky startup tasks
-
-### PATH Variables
-
-Add the following directories to `User Variables > PATHS`
-
-- `D:\Programming\PATH Scripts`
-- `D:\Programming\PATH Scripts\ViVeTool v0.3.4`
-- `D:\Programming\Python\ThemeSwitcher\`
-- `%USERPROFILE%\Downloads\OpenRGB Windows 64-bit`
-
-### Create Tasks
-
-Import the all the tasks from the tasks [folder][tasks-folder]
+> ### Network and Firewall
+>
+> Device IP Address should be managed by PiHole, however in the case it is not set appropriately:
+>
+> - Go to `control panel > network and internet > network and sharing center > ethernet > properties > ipv4`
+> - set the device ip to `192.168.1.2xx`
+>
+>> **Note**
+>> For a list of IP and Ports in case of a network rest, refer to the [handbook](ip-and-ports.md)
 
 ---
 
 ## Step 3
+
+### Setting up Utilities
+
+- Use **MSI Afterburner** to undervolt GPU and make sure to launch in startup
+- Change **nvidia control panel** settings according to updated guide
+- Turn off game optimization in **NVidia App**
+
+ #### DisplayCal
+
+The reason we will be using DisplayCal is because the default Windows Color Management program is not known to be reliable for handling color profiles. It glitches out especially when you switch to and from full screen mode, sometimes after a reboot it fails to load the color profile immediately. This is where DisplayCal comes in clutch, it makes sure the profile is always automatically loaded.
+
+ After installing and setting up **DisplayCal**, download the calibrated `.icc` or `.icm` profiles for your monitor. YouTubers like *Techless* and *Monitor Unboxed* usually provide calibrated profiles for popular monitors. Once you download the color profiles, right click on them and select `Install Profile` from the context menu.
+
+ Once you have everything ready, search for `Color Management` in windows search. On the top of the settings screen, it should show your monitors. Make sure to select the correct monitor. Once you select your monitor, click on the tickbox that says `Use my settings for this device`.
+
+ On the bottom left of the settings screen, you should see an `Add...` button, click on it and you should see a lot of color profiles, from here select the one you installed earlier. Once you add the profile, it should already be set as default. However, just to be safe, click on the profile again and click `Set as Default Profile` just to be safe.
+
+ After setting up the color profile in Windows Color Management, go to your system tray and right click the **DisplayCal** icon and click on `Profile Associations`. *The icon should be there if you installed **DisplayCal**, Do not launch **DisplayCal** App unless you are using hardware to calibrate your monitor*. **DisplayCal** should autoatically select the profile for you, but double check if it is the correct profile. On the bottom left, click on `Automatically fix profile associations`
+
+> ### Shared Folders
+>
+> Share the Following drives to the network
+>
+> - `D:\Games`
+> - `D:\Media`
+> - `D:\Programming`
+> - `D:\BACKUPS\Phone Backup\Samsung S25 ULTRA`
+>
+>
+> ### PATH Variables
+>
+> Add the following directories to `User Variables > PATHS`
+>
+> - `D:\Programming\PATH Scripts`
+> - `D:\Programming\PATH Scripts\ViVeTool v0.3.4`
+> - `D:\Programming\Python\ThemeSwitcher\`
+> - `%USERPROFILE%\Downloads\OpenRGB Windows 64-bit`
+>
+> ### Create Tasks
+>
+> Import the all the tasks from the tasks [folder][tasks-folder]
+
+---
+
+## Step 4
+
+### Debloat
+
+#### Chris Titus Tool
+
+Copy and paste this in `PowerShell`
+
+```sh
+irm "https://christitus.com/win" | iex
+```
+
+From the **TWEAKS** tab
+
+- Remove Widgets
+- Set services to manual
+- Adobe Network Block
+- Brave Debloat
+- Disable Microsoft Copilot
+- Set Classic Right-Click Menu
+
+Bing Search in Start Menu: **OFF**
+Center Taskbar Items: **OFF**
+Cross-Device Resume: **OFF**
+Detailed BSoD: **OFF**
+Disable Multiplane Overlay: **ON**
+Modern Standby Fix: **ON**
+Mouse Acceleration: **OFF**
+Recommendations in Start Menu: **OFF**
+Show File Extensions: **ON**
+Show Hidden Files: **ON**
+
+> For PC, you may want to `Add and Activate Ultimate Performance Profile`
+
+From the **UPDATES** tab, select Security Settings. This should delay Feature updates by 1 year, and security updates by 1 week. Delaying feature updates
+
+#### SysInternals: Autoruns
+
+Go through all the tabs and make sure there are no hidden tasks or services running. Even though we set all services to manual from **Chris Titus Tool**, some services may be overlooked by it. You can double check the services, and tasks created by various apps.
+
+Use this tool to help you with the next app, **Task Scheduler**
+
+#### Task Scheduler
+
+Many apps love to hide their automated scripts over here (Auto update, auto install etc). I personally turn off all auto update tasks created by Microsoft and other Browsers. Most of the services are generally safe to turn off, however it is best to do your own research.
+
+---
+
+## Step 5
 
 ### Customize Apps
 
@@ -192,12 +270,9 @@ Download **Clink** using the following command:
 winget install chrisant996.Clink
 ```
 
-To check if it is intalled properly type `oh-my-posh` in powershell or cmd
-Once installed, type the following command to use a default config
+To locally download the themes for **Oh My Posh**, go to [the release page](https://github.com/JanDeDobbeleer/oh-my-posh/releases/), and download the `themes.zip` file.
+Extract the themes.zip file in `~/Documents/OhMyPosh themes/`
 
-```sh
-oh-my-posh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json'
-```
 
 To change your theme for **PowerShell**, open **PowerShell** and type
 
@@ -207,13 +282,13 @@ notepad $PROFILE
 
 This will create a Profile for PowerShell in one of these locations
 
-- `$HOME\Documents\Powershell\Microsoft.PowerShell_profile.ps1`
-- `$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1`
+- `$HOME\Documents\Powershell\Microsoft.PowerShell_profile.ps1` (For PowerShell 7)
+- `$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1` (For PowerShell 5.1)
 
 Download your favorite theme for **Oh My Posh** and save it in `Documents`, and to apply it, enter the following in the **PowerShell** profile
 
 ```sh
-oh-my-posh init pwsh --config '$HOME/Documents/catppuccin_mocha.omp.json' | Invoke-Expression
+oh-my-posh init pwsh --config '$HOME/Documents/OhMyPosh themes/catppuccin_mocha.omp.json' | Invoke-Expression
 ```
 
 Once altered, reload your profile for the changes to take effect
@@ -229,7 +304,7 @@ clink config prompt use oh-my-posh
 ```
 
 ```sh
-clink set ohmyposh.theme "%USERPROFILE%\Documents\catppuccin_mocha.omp.json"
+clink set ohmyposh.theme "%USERPROFILE%\Documents\OhMyPosh themes\catppuccin_mocha.omp.json"
 ```
 
 restart your CMD to see difference
@@ -318,11 +393,14 @@ Import the config file, OR apply these main settings:
 - Use classic drive groupings in this PC: **OFF**
   - Control Interface: **Windows 10 Ribbon**
 
+##### Other
+
+- Disable Rounded Corners
+
 #### Windhawk
 
 Download the following extenstions for windhawk
 
-- Disable rounder corners in windows 11
 - Slick window arrangement
 - Windows 11 notification center styler
 - Windows 11 start menu slider
@@ -353,7 +431,8 @@ Save and Restart Windhawk
 
 ##### Download the following extensions before setting the configs
 
-- Python Preview (Discontinued, Download from shared folder)
+ - Python Preview (Discontinued, Download from shared folder)
+
 - AREPL for Python
 - C/C++
 - C/C++ Extension Pack
@@ -451,3 +530,4 @@ Save and Restart Windhawk
 [Apollo]: https://github.com/ClassicOldSong/Apollo
 [tasks-folder]: ./Task%20Scheduler/MyScripts/
 [terminal-config]: ./Customization/Windows%20Terminal/
+[autounattend.xml]: #
