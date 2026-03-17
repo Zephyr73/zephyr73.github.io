@@ -15,7 +15,7 @@ date: 2023-10-27
 
 Before you start the guide, make sure to download a copy of Windows 11 ISO. I would suggest downloading the ISO of last year, usually they are more polished from my personal experience. So for example, as of today the latest version of Windows 11 is **25H2**, I would suggest downloading **24H2**. In some rare cases the newer version might be more polished and have less bugs on release, in that case download the latest one. Do your research to find the most stable version.
 
-After downloading the ISO, download my [autounattend.xml][autounattend.xml]. You can import this file in https://schneegans.de/windows/unattend-generator/ and inspect it to add or remove settings. I would always suggest creating an autounattend file because it will install an almost clean windows without you having to manually uninstalling bloats and changing settings
+After downloading the ISO, download my [autounattend.xml][autounattend.xml]. You can import this file in <https://schneegans.de/windows/unattend-generator/> and inspect it to add or remove settings. I would always suggest creating an autounattend file because it will install an almost clean Windows without you having to manually uninstall bloatware and change settings.
 
 Once you have both of these files, burn the ISO in a USB stick using **Rufus**. After the iso is installed in the USB stick, copy the `autounattend.xml` file and paste it in the root directory of the USB.
 
@@ -25,81 +25,85 @@ Restart your PC and boot into the USB to go through the windows setup. The proce
 
 ### Initialization
 
-- **Display**
-  - Download GPU Display Drivers
-    - For NVidia GPU users:
-      - Download version 572.83 (most stable version for me)
-      - Debloat via nvcleanstall
-  - Set Display resolution and refresh rates
-  - Set color depth in NVidia Control Panel or AMD Radeon Software
+#### Display
+
+- Download GPU Display Drivers
+  - For NVIDIA GPU users:
+    - Download version 572.83 (most stable version for me)
+    - Debloat via NVCleanstall
+- Set Display resolution and refresh rates
+- Set color depth in NVIDIA Control Panel or AMD Radeon Software
 
 Even after installing windows with the unattend file, the default settings of windows are a privacy nightmare.
 
-- **Settings**
-  - System
-    - Display
-      - **Apply** Color Profile
-      - **Disable** Automatically manage color for apps
-      - **Disable** HDR
-    - Sound
-      - Change Default sound devices
-      - Headphones
-        - Change Default format to highest quality
-        - **Enable** Audio Enhancements
-        - **Disable** Spacial Sound
-      - Microphone
-        - **Disable** Listen to device
-        - Default playback device
-    - Notifications
-      - **Disable** notifications
-      - **Enable** Do not Disturb
-    - Power
-      - Never turn off display
-    - Storage
-      - **Disable** storage sense
-    - Nearby Sharing: **OFF**
-    - Advanced
-      - Long Paths: **ON**
-      - Remote Desktop: **OFF**
-      - Terminal: Windows Terminal
-      - Developer Mode: **ON**
-      - Device Discovery: **OFF**
-    - Optional Features
-      - OpenSSH Client
-      - OpenSSH Server
-      - More Windows Features
-        - SMB Direct
-        - Virtual Machine Platform (Optional)
-        - Windows Sandbox (Optional)
-  - Network & Ethernet
-    - Private Network
-  - Apps
-    - Uninstall bloats if there are any
-  - Accounts
-    - Make sure to use local account
-  - Gaming
-    - Game Bar
-      - Allow controller to open Game bar: **OFF**
-    - Captures
-      - **Disable** captures
-    - Game mode: **OFF**
-  - Privacy & Security
-    - **Disable** almost everything unless you need it
+#### Settings
+
+- System
+  - Display
+    - **Apply** Color Profile
+    - **Disable** Automatically manage color for apps
+    - **Disable** HDR
+  - Sound
+    - Change Default sound devices
+    - Headphones
+      - Change Default format to highest quality
+      - **Enable** Audio Enhancements
+      - **Disable** Spatial Sound
+    - Microphone
+      - **Disable** Listen to device
+      - Default playback device
+  - Notifications
+    - **Disable** notifications
+    - **Enable** Do not Disturb
+  - Power
+    - Never turn off display
+  - Storage
+    - **Disable** storage sense
+  - Nearby Sharing: **OFF**
+  - Advanced
+    - Long Paths: **ON**
+    - Remote Desktop: **OFF**
+    - Terminal: Windows Terminal
+    - Developer Mode: **ON**
+    - Device Discovery: **OFF**
+  - Optional Features
+    - OpenSSH Client
+    - OpenSSH Server
+    - More Windows Features
+      - SMB Direct
+      - Virtual Machine Platform (Optional)
+      - Windows Sandbox (Optional)
+- Network & Ethernet
+  - Private Network
+- Apps
+  - Uninstall bloatware if there is any
+- Accounts
+  - Make sure to use a local account
+- Gaming
+  - Game Bar
+    - Allow controller to open Game bar: **OFF**
+  - Captures
+    - **Disable** captures
+  - Game mode: **OFF**
+- Privacy & Security
+  - **Disable** almost everything unless you need it
 
 For some reasons, my PC used to drop connection at random times after I switched to gigabit internet. It usually happened when I am playing games or when I am in a voice call. Weird issue, never found the exact reason for it, however I fixed them by changing these settings after doing some research.
 
-- **Device Manager**
-  - `Ethernet > Properties > Advanced`
-    - Advanced EEE: **Disabled**
-    - ARP Offload: **Enabled**
-    - Auto Disable Gigabit: **Disabled**
-    - Energy-Efficient Ethernet: **Disabled**
-    - Flow Control: **Rx & Tx Enabled**
-    - Gigabit Lite: **Enabled**
-    - Green Ethernet: **Enabled**
-    - Interrupt Moderation: **Enabled**
-    - IPv4 Checksum Offload: **Rx & Tx Enabled**
-    - Power Saving Mode: **Disabled**
+#### Device Manager
+
+Go to **Ethernet > Properties > Advanced** and change the following settings
+
+- Advanced EEE: **Disabled**
+- ARP Offload: **Enabled**
+- Auto Disable Gigabit: **Disabled**
+- Energy-Efficient Ethernet: **Disabled**
+- Flow Control: **Rx & Tx Enabled**
+- Gigabit Lite: **Enabled**
+- Green Ethernet: **Enabled**
+- Interrupt Moderation: **Enabled**
+- IPv4 Checksum Offload: **Rx & Tx Enabled**
+- Power Saving Mode: **Disabled**
 
 ### Downloads
 
@@ -131,7 +135,7 @@ For some reasons, my PC used to drop connection at random times after I switched
   - TreeSize
   - Defender UI
   - Revo Uninstaller OR Bulk Crap Uninstaller (BCU)
-  - nvcleanstall
+  - NVCleanstall
 
 - **Customization**
   - Nilesoft Shell
@@ -149,7 +153,7 @@ For some reasons, my PC used to drop connection at random times after I switched
 >
 > Device IP Address should be managed by PiHole, however in the case it is not set appropriately:
 >
-> - Go to `control panel > network and internet > network and sharing center > ethernet > properties > ipv4`
+> - Go to **Control Panel > Network and Internet > Network and Sharing Center > Ethernet > Properties > IPv4**
 > - set the device ip to `192.168.1.2xx`
 >
 >> **Note**
@@ -162,20 +166,20 @@ For some reasons, my PC used to drop connection at random times after I switched
 ### Setting up Utilities
 
 - Use **MSI Afterburner** to undervolt GPU and make sure to launch in startup
-- Change **nvidia control panel** settings according to updated guide
-- Turn off game optimization in **NVidia App**
+- Change **NVIDIA Control Panel** settings according to updated guide
+- Turn off game optimization in **NVIDIA App**
 
- #### DisplayCal
+#### DisplayCal
 
 The reason we will be using DisplayCal is because the default Windows Color Management program is not known to be reliable for handling color profiles. It glitches out especially when you switch to and from full screen mode, sometimes after a reboot it fails to load the color profile immediately. This is where DisplayCal comes in clutch, it makes sure the profile is always automatically loaded.
 
- After installing and setting up **DisplayCal**, download the calibrated `.icc` or `.icm` profiles for your monitor. YouTubers like *Techless* and *Monitor Unboxed* usually provide calibrated profiles for popular monitors. Once you download the color profiles, right click on them and select `Install Profile` from the context menu.
+ After installing and setting up **DisplayCal**, download the calibrated `.icc` or `.icm` profiles for your monitor. YouTubers like *Techless* and *Monitor Unboxed* usually provide calibrated profiles for popular monitors. Once you download the color profiles, right click on them and select **Install Profile** from the context menu.
 
- Once you have everything ready, search for `Color Management` in windows search. On the top of the settings screen, it should show your monitors. Make sure to select the correct monitor. Once you select your monitor, click on the tickbox that says `Use my settings for this device`.
+ Once you have everything ready, search for **Color Management** in windows search. On the top of the settings screen, it should show your monitors. Make sure to select the correct monitor. Once you select your monitor, click on the tickbox that says **Use my settings for this device**.
 
- On the bottom left of the settings screen, you should see an `Add...` button, click on it and you should see a lot of color profiles, from here select the one you installed earlier. Once you add the profile, it should already be set as default. However, just to be safe, click on the profile again and click `Set as Default Profile` just to be safe.
+ On the bottom left of the settings screen, you should see an **Add...** button, click on it and you should see a lot of color profiles, from here select the one you installed earlier. Once you add the profile, it should already be set as default. However, just to be safe, click on the profile again and click **Set as Default Profile** just to be safe.
 
- After setting up the color profile in Windows Color Management, go to your system tray and right click the **DisplayCal** icon and click on `Profile Associations`. *The icon should be there if you installed **DisplayCal**, Do not launch **DisplayCal** App unless you are using hardware to calibrate your monitor*. **DisplayCal** should autoatically select the profile for you, but double check if it is the correct profile. On the bottom left, click on `Automatically fix profile associations`
+ After setting up the color profile in Windows Color Management, go to your system tray and right click the **DisplayCal** icon and click on **Profile Associations**. *The icon should be there if you installed **DisplayCal**, Do not launch **DisplayCal** App unless you are using hardware to calibrate your monitor*. **DisplayCal** should automatically select the profile for you, but double check if it is the correct profile. On the bottom left, click on **Automatically fix profile associations**
 
 > ### Shared Folders
 >
@@ -189,7 +193,7 @@ The reason we will be using DisplayCal is because the default Windows Color Mana
 >
 > ### PATH Variables
 >
-> Add the following directories to `User Variables > PATHS`
+> Add the following directories to **User Variables > PATHS**
 >
 > - `D:\Programming\PATH Scripts`
 > - `D:\Programming\PATH Scripts\ViVeTool v0.3.4`
@@ -208,9 +212,9 @@ The reason we will be using DisplayCal is because the default Windows Color Mana
 
 #### Chris Titus Tool
 
-Copy and paste this in `PowerShell`
+Copy and paste this in `PowerShell`:
 
-```sh
+```powershell
 irm "https://christitus.com/win" | iex
 ```
 
@@ -223,20 +227,20 @@ From the **TWEAKS** tab
 - Disable Microsoft Copilot
 - Set Classic Right-Click Menu
 
-Bing Search in Start Menu: **OFF**
-Center Taskbar Items: **OFF**
-Cross-Device Resume: **OFF**
-Detailed BSoD: **OFF**
-Disable Multiplane Overlay: **ON**
-Modern Standby Fix: **ON**
-Mouse Acceleration: **OFF**
-Recommendations in Start Menu: **OFF**
-Show File Extensions: **ON**
-Show Hidden Files: **ON**
+- Bing Search in Start Menu: **OFF**
+- Center Taskbar Items: **OFF**
+- Cross-Device Resume: **OFF**
+- Detailed BSoD: **OFF**
+- Disable Multiplane Overlay: **ON**
+- Modern Standby Fix: **ON**
+- Mouse Acceleration: **OFF**
+- Recommendations in Start Menu: **OFF**
+- Show File Extensions: **ON**
+- Show Hidden Files: **ON**
 
-> For PC, you may want to `Add and Activate Ultimate Performance Profile`
+> For PC, you may want to **Add and Activate Ultimate Performance Profile**
 
-From the **UPDATES** tab, select Security Settings. This should delay Feature updates by 1 year, and security updates by 1 week. Delaying feature updates
+From the **UPDATES** tab, select Security Settings. This should delay feature updates by 1 year, and security updates by 1 week.
 
 #### SysInternals: Autoruns
 
@@ -260,23 +264,22 @@ Oh My Posh is needed to theme the terminal ui, Clink is used for suggestions and
 
 Download **Oh My Posh** using the following command:
 
-```sh
+```powershell
 winget install JanDeDobbeleer.OhMyPosh --source winget
 ```
 
 Download **Clink** using the following command:
 
-```sh
+```powershell
 winget install chrisant996.Clink
 ```
 
 To locally download the themes for **Oh My Posh**, go to [the release page](https://github.com/JanDeDobbeleer/oh-my-posh/releases/), and download the `themes.zip` file.
 Extract the themes.zip file in `~/Documents/OhMyPosh themes/`
 
+To change your theme for **PowerShell**, open **PowerShell** and type:
 
-To change your theme for **PowerShell**, open **PowerShell** and type
-
-```sh
+```powershell
 notepad $PROFILE
 ```
 
@@ -285,29 +288,29 @@ This will create a Profile for PowerShell in one of these locations
 - `$HOME\Documents\Powershell\Microsoft.PowerShell_profile.ps1` (For PowerShell 7)
 - `$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1` (For PowerShell 5.1)
 
-Download your favorite theme for **Oh My Posh** and save it in `Documents`, and to apply it, enter the following in the **PowerShell** profile
+Download your favorite theme for **Oh My Posh** and save it in `Documents`, and to apply it, enter the following in the **PowerShell** profile:
 
-```sh
+```powershell
 oh-my-posh init pwsh --config '$HOME/Documents/OhMyPosh themes/catppuccin_mocha.omp.json' | Invoke-Expression
 ```
 
-Once altered, reload your profile for the changes to take effect
+Once altered, reload your profile for the changes to take effect:
 
-```sh
+```powershell
 . $PROFILE
 ```
 
-For **CMD/Command Prompt** enter the following in your terminal:
+For **Command Prompt**, enter the following in your terminal:
 
-```sh
+```cmd
 clink config prompt use oh-my-posh
 ```
 
-```sh
+```cmd
 clink set ohmyposh.theme "%USERPROFILE%\Documents\OhMyPosh themes\catppuccin_mocha.omp.json"
 ```
 
-restart your CMD to see difference
+Restart your Command Prompt to see the difference.
 
 #### Windows Terminal
 
@@ -325,7 +328,7 @@ Here are some settings which I recommend to change:
   - Window Padding: 30
 - Profiles
   - PowerShell
-    - Command line: powershell.exe -nologo
+    - Command line: `powershell.exe -nologo`
 
 #### CMD.exe
 
@@ -374,8 +377,8 @@ Just copy paste the config files
 #### Transclucent Taskbar
 
 Everything should be at default settings except
-`Desktop > Acrylic`
-`Maximized window > Acrylic`
+**Desktop > Acrylic**
+**Maximized window > Acrylic**
 
 #### Explorer Patcher
 
@@ -385,7 +388,7 @@ Import the config file, OR apply these main settings:
 
 - Taskbar Style: **Windows 11**
 - Search: **Hidden**
-- Show Task View Button: \*_OFF_
+- Show Task View Button: **OFF**
 
 ##### File Explorer
 
@@ -395,18 +398,18 @@ Import the config file, OR apply these main settings:
 
 ##### Other
 
-- Disable Rounded Corners
+- Disable Rounded Corners: **ON**
 
 #### Windhawk
 
-Download the following extenstions for windhawk
+Download the following extensions for windhawk
 
 - Slick window arrangement
 - Windows 11 notification center styler
 - Windows 11 start menu slider
 
-Go to `Settings > Advanced Settings > More Advanced Settings`
-In the `Process inclusion list` enter `dwm.exe`
+Go to **Settings > Advanced Settings > More Advanced Settings**
+In the **Process inclusion list** enter `dwm.exe`
 Save and Restart Windhawk
 
 ##### Slick window arrangement
@@ -429,10 +432,9 @@ Save and Restart Windhawk
 
 #### VS Code
 
-##### Download the following extensions before setting the configs
+Download the following extensions before setting the configs
 
- - Python Preview (Discontinued, Download from shared folder)
-
+- Python Preview (Discontinued, Download from shared folder)
 - AREPL for Python
 - C/C++
 - C/C++ Extension Pack
@@ -441,7 +443,7 @@ Save and Restart Windhawk
 - CMake Tools
 - Code Runner
 - Debug Visualizer
-- Doxygen Documentation Gemerator
+- Doxygen Documentation Generator
 - Gemini Code Assist
 - Github Copilot Chat
 - Gruvbox Theme
@@ -472,58 +474,58 @@ Save and Restart Windhawk
 
 ##### Configuration for VS Code
 
-**_Text Editor_**
+***Text Editor***
 
-- Bracket Pairs Horizontal: true
-- Line Height: 1.6
-- Semantic Highlighting Enabled: true
-- Smooth Scrolling: ON
-- Word Wrap: ON
-- Cursor Blinking: Smooth
-- Cursor Smooth Caret Animation: on
-- Font Family: JetBrains Mono Nerd Font
-- Font Size: 14
-- Auto Save: After Delay
+- Bracket Pairs Horizontal: **true**
+- Line Height: **1.6**
+- Semantic Highlighting Enabled: **true**
+- Smooth Scrolling: **ON**
+- Word Wrap: **ON**
+- Cursor Blinking: **Smooth**
+- Cursor Smooth Caret Animation: **ON**
+- Font Family: **JetBrains Mono Nerd Font**
+- Font Size: **14**
+- Auto Save: **After Delay**
 
-**_Workbench_**
+***Workbench***
 
-- Smooth Scrolling: ON
-- Workbench Color theme: Catppuccin Mocha
-- Icon Theme: Material Icon Theme
-- Empty Hint: hidden
+- Smooth Scrolling: **ON**
+- Workbench Color theme: **Catppuccin Mocha**
+- Icon Theme: **Material Icon Theme**
+- Empty Hint: **hidden**
 
-**_Features_**
+***Features***
 
-- Explorer Kind: Integrated
-- Integrated > Font Ligatures Enabled: ON
-- Integrated Mouse wheel zoom: ON
-- Integrated Smooth Scrolling: ON
+- Explorer Kind: **Integrated**
+- Integrated > Font Ligatures Enabled: **ON**
+- Integrated Mouse wheel zoom: **ON**
+- Integrated Smooth Scrolling: **ON**
 
-**_C/C++_**
+***C/C++***
 
 - C_Cpp Intelli Sense Engine: Disabled
 
-**_Clangd_**
+***Clangd***
 
 - Clangd Arguments:
   - `--inlay-hints=true`
 - Clangd PATH: `ENTER PATH OF CLANGD.exe`
 
-**_Git_**
+***Git***
 
-- Open Repository in Parent Folders: Never
+- Open Repository in Parent Folders: **Never**
 
-**_Live Server_**
+***Live Server***
 
-- Donot verify tags: ON
+- Do not verify tags: **ON**
 
-**_Python_**
+***Python***
 
-- **Python > Analysis > Inlay hints: Call Argument Names:** ON
-- **Python > Analysis > Inlay hints: Variable Types:** ON
-- **Python > Analysis: Type Checking Mode:** OFF
-- Language Server: Pylance
-- **Python-envs > Terminal: Auto Activation Type:** shellStartup
+- **Python > Analysis > Inlay hints: Call Argument Names:** **ON**
+- **Python > Analysis > Inlay hints: Variable Types:** **ON**
+- **Python > Analysis: Type Checking Mode:** **OFF**
+- Language Server: **Pylance**
+- **Python-envs > Terminal: Auto Activation Type:** **shellStartup**
 
 [Vencord]: https://github.com/Vendicated/Vencord
 [Millenium]: https://github.com/SteamClientHomebrew/Millennium
