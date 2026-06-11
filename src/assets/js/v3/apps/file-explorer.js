@@ -178,19 +178,9 @@ export function createFileExpApp(initialPath = '/') {
       item.addEventListener('click', (e) => {
         window.playSound?.('click');
         e.stopPropagation();
-<<<<<<< HEAD
         const now = Date.now();
         const isDoubleClick = (now - lastClick) < 300;
         lastClick = now;
-=======
-        document
-          .querySelectorAll('.fileexp-item.selected')
-          .forEach((el) => el.classList.remove('selected'));
-        item.classList.add('selected');
-        selectedItemNode = node;
-        updateStatusbar();
-      });
->>>>>>> 5f2c9920115485e87ae3240ed2abfe76c01c2b56
 
         if (isDoubleClick || item.classList.contains('selected')) {
           openItem(node);
