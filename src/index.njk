@@ -1,0 +1,252 @@
+---
+layout: false
+permalink: /
+eleventyExcludeFromCollections: true
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Portfolio 3.0 — Interactive Virtual Desktop</title>
+  <meta name="description" content="A professional, Linux-like interactive desktop portfolio environment." />
+
+  <!-- Preload fonts already in project -->
+  <link rel="preload" href="/assets/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/JetBrainsMono-Bold.woff2"   as="font" type="font/woff2" crossorigin />
+
+  <!-- Core stylesheet -->
+  <link rel="stylesheet" href="/assets/css/desktop.css" />
+
+  <!-- Inject local fonts (from portfolio 2.0 assets) -->
+  <style>
+    @font-face {
+      font-family: 'JetBrains Mono';
+      src: url('/assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      src: url('/assets/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+  </style>
+
+  <!-- Prevent CRT FOUC & Iframe nesting -->
+  <script>
+    (function() {
+      if (window.top !== window.self) {
+        window.location.replace('/v2/');
+        return;
+      }
+      if (localStorage.getItem('v3-crt') === '1') {
+        document.documentElement.classList.add('crt-pre');
+      }
+      if (localStorage.getItem('v3-mode')) {
+        document.documentElement.dataset.mode = localStorage.getItem('v3-mode');
+      }
+    })();
+  </script>
+</head>
+
+<body id="v3-body">
+
+<!-- ============================================================
+     BOOT SCREEN OVERLAY
+     ============================================================ -->
+<div id="boot-screen" class="boot-screen" role="dialog" aria-modal="true" aria-label="System booting">
+  <div class="boot-screen__content">
+    <div class="boot-screen__logs" id="boot-logs"></div>
+    <div class="boot-screen__footer">
+      <div class="boot-screen__msg">BOOTING RETRO_OS COMPILER SANDBOX...</div>
+      <div class="boot-screen__progress-container">
+        <div class="boot-screen__progress-bar" id="boot-progress"></div>
+      </div>
+      <div class="boot-screen__status-row">
+        <span id="boot-status-pct">LOAD STATUS: 0% COMPLETE</span>
+        <span class="boot-screen__skip-msg">CLICK ANYWHERE TO SKIP TELEMETRY LOGS</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DESKTOP ENVIRONMENT
+     ============================================================ -->
+<div id="desktop-env">
+
+  <!-- ── DESKTOP MODE ──────────────────────────────────────── -->
+  <div id="mode-desktop" class="mode-container active" role="main" aria-label="Desktop">
+
+    <!-- Desktop icon column (left) -->
+    <div class="desktop-icons" id="desktop-icon-grid" role="list" aria-label="Desktop icons">
+      <!-- Populated by desktop.js -->
+    </div>
+
+    <!-- Notification widget (top-right) -->
+    <div class="desktop-notification" id="desktop-notif" aria-live="polite">
+      <div class="desktop-notification__header">SYSTEM STATUS: ACTIVE</div>
+      <div class="desktop-notification__body">
+        Welcome to my interactive portfolio environment.<br><br>
+        <span class="notif-highlight">⬡ Navigation Quick Guide:</span><br>
+        • Double-click desktop icons to open applications.<br>
+        • Toggle the status bar tabs or use <kbd>Alt+1</kbd> / <kbd>Alt+2</kbd> to switch views.<br>
+        • Open files from the TTY navigation pane directly into split mode.<br>
+        • Toggle the CRT Bloom effect in the tray for a retro scanline filter.
+      </div>
+    </div>
+
+    <!-- Floating windows container (desktop mode) -->
+    <div id="desktop-floating-container" style="position:absolute;inset:0;pointer-events:none;z-index:10;">
+    </div>
+  </div>
+
+  <!-- ── TTY SHELL MODE ────────────────────────────────────── -->
+  <div id="mode-tty" class="mode-container" role="main" aria-label="TTY Shell">
+
+    <!-- Left: Navigation Pane -->
+    <div class="tty-nav-pane" id="tty-nav-pane" role="navigation" aria-label="File system tree">
+      <div class="nav-pane__header">
+        <span>FILE SYSTEM TREE</span>
+        <button class="nav-pane__sort-btn" id="nav-sort-btn" aria-label="Sort files">SORT↕</button>
+      </div>
+      <div class="nav-pane__tree" id="nav-tree" role="tree">
+        <!-- Populated by navigation-pane.js -->
+      </div>
+      <div class="nav-pane__footer">
+        <div id="nav-stats">Folders: — | Files: —</div>
+        <div class="vol-info">Volume: — / —</div>
+        <div style="margin-top:4px;font-size:9px;color:var(--cp-dim);">THEME ENGINE</div>
+        <select class="nav-pane__theme-select" id="nav-theme-select" aria-label="Terminal theme">
+          <option value="green">Matrix Green</option>
+          <option value="amber">Amber</option>
+          <option value="cyan">Cyan Hacker</option>
+          <option value="magenta">Magenta Wave</option>
+          <option value="red">Crimson Red</option>
+          <option value="purple">Hacker Purple</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Resize handle 1 -->
+    <div class="pane-resize-handle" id="resize-nav" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Resize navigation pane"></div>
+
+    <!-- Center: Console/Terminal -->
+    <div class="tty-console-pane" id="tty-console">
+      <div class="console-header">
+        <div class="console-header-title">Terminal: guest@portfolio:~/</div>
+        <div style="font-size:9px;color:var(--cp-dim);">KILL SERVER ACTIVE</div>
+      </div>
+      <div class="console-output" id="console-output" aria-live="polite" role="log">
+        <!-- Terminal output populated by terminal.js -->
+      </div>
+      <div class="console-input-row">
+        <span class="console-prompt-label" id="console-prompt-label">guest@portfolio:~$ </span>
+        <input
+          class="console-input"
+          id="console-input"
+          type="text"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Terminal input"
+          placeholder="type instructions (e.g. 'help', 'neofetch')..."
+        />
+      </div>
+    </div>
+
+    <!-- Resize handle 2 -->
+    <div class="pane-resize-handle hidden" id="resize-split" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Resize split pane"></div>
+
+    <!-- Right: Split viewer pane -->
+    <div class="tty-split-pane" id="tty-split-pane" aria-label="File viewer">
+      <!-- Populated by window manager when a file is opened in split -->
+    </div>
+
+  </div><!-- /mode-tty -->
+
+</div><!-- /desktop-env -->
+
+
+<!-- ============================================================
+     STATUS BAR
+     ============================================================ -->
+<div class="status-bar" role="toolbar" aria-label="Status bar">
+
+  <!-- Mode tabs -->
+  <div class="statusbar-tabs" role="tablist">
+    <div class="statusbar-tab active" id="tab-desktop" role="tab" aria-selected="true" data-mode="desktop" tabindex="0" aria-label="Switch to Desktop mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="0"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      DESKTOP
+    </div>
+    <div class="statusbar-tab" id="tab-tty" role="tab" aria-selected="false" data-mode="tty" tabindex="0" aria-label="Switch to TTY Shell">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      TTY SHELL
+    </div>
+  </div>
+
+  <!-- Active app tabs -->
+  <div class="statusbar-active-apps" id="statusbar-active-apps" role="tablist" aria-label="Open applications">
+    <!-- Populated by window manager -->
+  </div>
+
+  <!-- Center info -->
+  <div class="statusbar-center" id="statusbar-center">
+    TX_OS v3.0 — ACTIVE WORKSPACE SANDBOX
+  </div>
+
+  <!-- System tray -->
+  <div class="statusbar-tray">
+
+    <div class="tray-item crt-btn" id="crt-toggle" role="button" tabindex="0" aria-pressed="false" aria-label="Toggle CRT bloom effect">
+      ⬡ CRT BLOOM
+    </div>
+
+    <div class="tray-item" title="CPU Usage">
+      <span class="tray-label">CPU</span>
+      <span class="tray-value" id="stat-cpu">00%</span>
+    </div>
+
+    <div class="tray-item" title="GPU Usage">
+      <span class="tray-label">GPU</span>
+      <span class="tray-value" id="stat-gpu">00%</span>
+    </div>
+
+    <div class="tray-item" title="Memory Usage">
+      <span class="tray-label">MEM</span>
+      <span class="tray-value" id="stat-mem">0.0G</span>
+    </div>
+
+    <div class="tray-item" title="SATellite signal">
+      <span class="tray-label">SAT</span>
+      <span class="tray-value" id="stat-sat">00%</span>
+    </div>
+
+    <!-- Clock -->
+    <div class="tray-clock">
+      <span class="clock-time" id="clock-time">00:00 PM</span>
+      <span class="clock-date" id="clock-date">MON 1, 2025</span>
+    </div>
+
+  </div><!-- /tray -->
+</div><!-- /status-bar -->
+
+
+<!-- ============================================================
+     INJECT BUILD-TIME FILESYSTEM DATA
+     ============================================================ -->
+<script>
+  window.__FS_TREE__ = {{ filesystem | dump | safe }};
+</script>
+
+<!-- ============================================================
+     APPLICATION SCRIPTS (ES Modules)
+     ============================================================ -->
+<script type="module" src="/assets/js/v3/shell.js"></script>
+
+</body>
+</html>
