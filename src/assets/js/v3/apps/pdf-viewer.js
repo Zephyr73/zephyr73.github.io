@@ -70,8 +70,8 @@ export function createPdfApp(filePath) {
     { val: '1.0', label: '100%' },
     { val: '1.25', label: '125%' },
     { val: '1.5', label: '150%' },
-    { val: '2.0', label: '200%' }
-  ].forEach(opt => {
+    { val: '2.0', label: '200%' },
+  ].forEach((opt) => {
     const el = document.createElement('option');
     el.value = opt.val;
     el.textContent = opt.label;
@@ -173,7 +173,7 @@ export function createPdfApp(filePath) {
   function fallbackToNativeEmbed() {
     statusMsg.remove();
     canvas.remove();
-    
+
     // Embed using <embed> tag
     const embed = document.createElement('embed');
     embed.src = filePath;
@@ -199,7 +199,7 @@ export function createPdfApp(filePath) {
 
     try {
       const page = await pdfDoc.getPage(num);
-      
+
       const ctx = canvas.getContext('2d');
       const pageViewport = page.getViewport({ scale: zoomLevel, rotation: rotation });
 
@@ -208,7 +208,7 @@ export function createPdfApp(filePath) {
 
       const renderContext = {
         canvasContext: ctx,
-        viewport: pageViewport
+        viewport: pageViewport,
       };
 
       await page.render(renderContext).promise;

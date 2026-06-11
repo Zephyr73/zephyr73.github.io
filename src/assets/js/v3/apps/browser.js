@@ -7,9 +7,7 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
   container.className = 'app-browser';
 
   // State
-  let tabs = [
-    { id: 1, title: initialTitle, path: initialPath }
-  ];
+  let tabs = [{ id: 1, title: initialTitle, path: initialPath }];
   let activeTabId = 1;
   let tabIdCounter = 1;
 
@@ -84,11 +82,11 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
     { label: 'Gallery', path: '/gallery' },
     { label: 'Projects', path: '/projects' },
     { label: 'Blog', path: '/blog' },
-    { label: 'About', path: '/about' }
+    { label: 'About', path: '/about' },
   ];
 
   const menuButtons = [];
-  menuItems.forEach(item => {
+  menuItems.forEach((item) => {
     const btn = document.createElement('button');
     btn.className = 'browser-menu-item';
     btn.textContent = item.label;
@@ -117,7 +115,7 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
   // Tab Manager Functions
   function renderTabs() {
     tabsContainer.innerHTML = '';
-    tabs.forEach(t => {
+    tabs.forEach((t) => {
       const tabEl = document.createElement('div');
       tabEl.className = `browser-tab ${t.id === activeTabId ? 'active' : ''}`;
       tabEl.setAttribute('role', 'tab');
@@ -156,7 +154,7 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
     iframesMap.forEach((iframe, id) => {
       if (id === tabId) {
         iframe.style.display = 'block';
-        urlInput.value = tabs.find(t => t.id === tabId).path;
+        urlInput.value = tabs.find((t) => t.id === tabId).path;
         updateNavButtons();
         updateActiveMenuHighlight(urlInput.value);
       } else {
@@ -184,9 +182,9 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
       try {
         const loc = iframe.contentWindow.location;
         const relativePath = loc.pathname + loc.search + loc.hash;
-        
+
         // Update tab model
-        const tab = tabs.find(t => t.id === tabId);
+        const tab = tabs.find((t) => t.id === tabId);
         if (tab) {
           tab.path = relativePath;
           const pageTitle = iframe.contentWindow.document.title || 'Portfolio';
@@ -215,14 +213,14 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
     if (activeIframe) {
       activeIframe.src = url;
       urlInput.value = url;
-      
-      const tab = tabs.find(t => t.id === activeTabId);
+
+      const tab = tabs.find((t) => t.id === activeTabId);
       if (tab) tab.path = url;
     }
   }
 
   function closeTab(tabId) {
-    const idx = tabs.findIndex(t => t.id === tabId);
+    const idx = tabs.findIndex((t) => t.id === tabId);
     if (idx === -1) return;
 
     const iframe = iframesMap.get(tabId);
@@ -248,7 +246,7 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
   }
 
   function updateNavButtons() {
-    // Basic back/forward logic. Same-origin allows checking contentWindow history length, 
+    // Basic back/forward logic. Same-origin allows checking contentWindow history length,
     // but the back/forward API on iframe is just executing back/forward on contentWindow.history
     try {
       // In same-origin, we can just trigger history.back() and history.forward()
@@ -262,11 +260,12 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
   }
 
   function updateActiveMenuHighlight(currentPath) {
-    menuButtons.forEach(mb => {
+    menuButtons.forEach((mb) => {
       // Check if currentPath starts with mb.path (e.g. /gallery/image/1 starts with /gallery)
-      const isActive = mb.path === '/' 
-        ? currentPath === '/' || currentPath === '/index.html'
-        : currentPath.startsWith(mb.path);
+      const isActive =
+        mb.path === '/'
+          ? currentPath === '/' || currentPath === '/index.html'
+          : currentPath.startsWith(mb.path);
       mb.btn.classList.toggle('active', isActive);
     });
   }

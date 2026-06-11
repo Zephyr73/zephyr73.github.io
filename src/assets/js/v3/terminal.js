@@ -19,15 +19,15 @@ window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
   },
   write(text, type = 'output') {
     this.buffer.push({ text, type });
-    this.subscribers.forEach(cb => cb({ type: 'write', text, lineType: type }));
+    this.subscribers.forEach((cb) => cb({ type: 'write', text, lineType: type }));
   },
   clear() {
     this.buffer = [];
-    this.subscribers.forEach(cb => cb({ type: 'clear' }));
+    this.subscribers.forEach((cb) => cb({ type: 'clear' }));
   },
   async execute(commandLine) {
     if (!commandLine) return;
-    
+
     // Echo command
     const currentCwd = pwd();
     const promptText = `guest@portfolio:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
@@ -46,7 +46,7 @@ window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
       this.write(err.message, 'error');
     }
     this.cwd = pwd();
-  }
+  },
 };
 
 const BANNER = `
@@ -80,7 +80,7 @@ export function initTerminal({ openApp }) {
   // Initial draw from buffer
   const renderBuffer = () => {
     consoleOutput.innerHTML = '';
-    window.__TERMINAL_SESSION__.buffer.forEach(event => {
+    window.__TERMINAL_SESSION__.buffer.forEach((event) => {
       const div = document.createElement('div');
       div.className = `console-line ${event.type}`;
       if (/<[a-z][\s\S]*>/i.test(event.text)) {
@@ -96,7 +96,7 @@ export function initTerminal({ openApp }) {
   updatePromptLabel(promptLabel);
 
   // Subscribe to changes
-  window.__TERMINAL_SESSION__.subscribe(event => {
+  window.__TERMINAL_SESSION__.subscribe((event) => {
     if (event.type === 'clear') {
       consoleOutput.innerHTML = '';
     } else if (event.type === 'write') {
@@ -141,21 +141,19 @@ export function initTerminal({ openApp }) {
       // Update prompt label in case directory changed
       updatePromptLabel(promptLabel);
       consoleOutput.scrollTop = consoleOutput.scrollHeight;
-    } 
-    else if (e.key === 'ArrowUp') {
+    } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       const history = window.__TERMINAL_SESSION__.history;
       if (history.length > 0) {
         historyIndex = Math.min(historyIndex + 1, history.length - 1);
         consoleInput.value = history[historyIndex];
       }
-    } 
-    else if (e.key === 'ArrowDown') {
+    } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       historyIndex = Math.max(historyIndex - 1, -1);
-      consoleInput.value = historyIndex === -1 ? '' : window.__TERMINAL_SESSION__.history[historyIndex];
-    } 
-    else if (e.key === 'Tab') {
+      consoleInput.value =
+        historyIndex === -1 ? '' : window.__TERMINAL_SESSION__.history[historyIndex];
+    } else if (e.key === 'Tab') {
       e.preventDefault();
       handleTabCompletion(consoleInput);
     }
@@ -191,7 +189,7 @@ function handleTabCompletion(inputEl) {
   const val = inputEl.value;
   const words = val.split(' ');
   const lastWord = words[words.length - 1] || '';
-  
+
   // Resolve directory of last word if it has slashes
   let searchDir = pwd();
   let searchPrefix = lastWord;
@@ -206,26 +204,30 @@ function handleTabCompletion(inputEl) {
   const entries = ls(searchDir);
   if (!entries) return;
 
-  const matches = entries.filter(e => e.name.toLowerCase().startsWith(searchPrefix.toLowerCase()));
+  const matches = entries.filter((e) =>
+    e.name.toLowerCase().startsWith(searchPrefix.toLowerCase()),
+  );
 
   if (matches.length === 1) {
     // Exact match
     const match = matches[0];
     const completedName = match.name + (match.type === 'dir' ? '/' : ' ');
-    
+
     // Replace the last word
-    words[words.length - 1] = lastWord.includes('/') 
+    words[words.length - 1] = lastWord.includes('/')
       ? lastWord.substring(0, lastWord.lastIndexOf('/') + 1) + completedName
       : completedName;
-      
+
     inputEl.value = words.join(' ');
   } else if (matches.length > 1) {
     // Print multiple options
     writeLine(`guest@portfolio:${pwd()}$ ${val}`, 'prompt');
-    const optionStr = matches.map(e => {
-      const color = e.type === 'dir' ? 'var(--cp-cyan)' : 'var(--cp-white)';
-      return `<span style="color:${color}">${e.name}</span>`;
-    }).join('  ');
+    const optionStr = matches
+      .map((e) => {
+        const color = e.type === 'dir' ? 'var(--cp-cyan)' : 'var(--cp-white)';
+        return `<span style="color:${color}">${e.name}</span>`;
+      })
+      .join('  ');
     writeLine(optionStr, 'info');
   }
 }
@@ -280,16 +282,18 @@ Available commands:
       if (entries.length === 0) return '<span style="color:var(--cp-dim)">(empty directory)</span>';
 
       // Grid layout, 3 cols max, with type-colored entries
-      const items = entries.map(node => {
+      const items = entries.map((node) => {
         if (node.type === 'dir') {
           return `<span style="color:var(--cp-cyan);font-weight:bold;min-width:150px;display:inline-block">${node.name}/</span>`;
         } else {
           let color = 'var(--cp-white)';
-          if (node.fileType === 'md')   color = 'var(--cp-green)';
+          if (node.fileType === 'md') color = 'var(--cp-green)';
           else if (node.fileType === 'html') color = 'var(--cp-amber)';
-          else if (node.fileType === 'img')  color = 'var(--cp-magenta)';
-          else if (node.fileType === 'pdf')  color = 'var(--cp-red)';
-          const size = node.size ? ` <span style="color:var(--cp-dim);font-size:10px">${node.size}</span>` : '';
+          else if (node.fileType === 'img') color = 'var(--cp-magenta)';
+          else if (node.fileType === 'pdf') color = 'var(--cp-red)';
+          const size = node.size
+            ? ` <span style="color:var(--cp-dim);font-size:10px">${node.size}</span>`
+            : '';
           return `<span style="color:${color};min-width:150px;display:inline-block">${node.name}${size}</span>`;
         }
       });
@@ -321,13 +325,10 @@ Available commands:
       if (node.type === 'dir') {
         throw new Error(`cat: ${target}: Is a directory`);
       }
-      
+
       const content = await getFileContent(target);
       // Display raw content in a pre element for proper whitespace
-      const escaped = content
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+      const escaped = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       return `<pre style="font-family:var(--font-mono);font-size:11px;white-space:pre-wrap;word-break:break-all;color:var(--cp-white);margin:0;line-height:1.5">${escaped}</pre>`;
     }
 
@@ -355,9 +356,8 @@ Available commands:
     case 'neofetch': {
       // Get current uptime (simulated session uptime)
       const uptimeSec = Math.round((performance.now() || 0) / 1000);
-      const uptimeStr = uptimeSec > 60 
-        ? `${Math.floor(uptimeSec / 60)}m ${uptimeSec % 60}s` 
-        : `${uptimeSec}s`;
+      const uptimeStr =
+        uptimeSec > 60 ? `${Math.floor(uptimeSec / 60)}m ${uptimeSec % 60}s` : `${uptimeSec}s`;
 
       return `
 <div class="neofetch-output" style="display:flex;gap:20px;line-height:1.4;">
@@ -397,15 +397,15 @@ Available commands:
       }
 
       let output = `<span style="color:var(--cp-cyan)">${rootNode.name || 'root'}/</span>\n`;
-      
+
       function buildTreeString(node, prefix = '') {
         if (!node.children || node.children.length === 0) return '';
-        
+
         let result = '';
         node.children.forEach((child, index) => {
           const isLast = index === node.children.length - 1;
           const connector = isLast ? '└── ' : '├── ';
-          
+
           let nameStr = child.name;
           if (child.type === 'dir') {
             nameStr = `<span style="color:var(--cp-cyan)">${child.name}/</span>`;
@@ -419,7 +419,7 @@ Available commands:
           }
 
           result += `${prefix}${connector}${nameStr}\n`;
-          
+
           if (child.type === 'dir') {
             const nextPrefix = prefix + (isLast ? '    ' : '│   ');
             result += buildTreeString(child, nextPrefix);

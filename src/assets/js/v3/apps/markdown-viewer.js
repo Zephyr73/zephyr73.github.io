@@ -11,7 +11,7 @@ export function createMarkdownApp(filePath, fileTitle) {
   // Tabbar
   const tabbar = document.createElement('div');
   tabbar.className = 'markdown-tabbar';
-  
+
   const tab = document.createElement('div');
   tab.className = 'markdown-tab active';
   tab.textContent = fileTitle || 'Untitled.md';
@@ -48,10 +48,10 @@ export function createMarkdownApp(filePath, fileTitle) {
   async function loadContent() {
     try {
       const rawText = await getFileContent(filePath);
-      
+
       // Calculate lines
       const lineCount = rawText.split('\n').length;
-      
+
       // Populate gutter
       const nums = [];
       for (let i = 1; i <= Math.max(lineCount, 30); i++) {
@@ -86,10 +86,7 @@ function parseMarkdown(md) {
   let html = md;
 
   // Escape HTML tags to prevent arbitrary code execution, but preserve markdown formatting
-  html = html
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+  html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   // Code blocks: ```js ... ```
   html = html.replace(/```([\s\S]*?)```/g, (match, codeBlock) => {
@@ -148,15 +145,18 @@ function parseMarkdown(md) {
         inTable = true;
         tableHtml = '<table>';
       }
-      
-      const cells = line.split('|').slice(1, -1).map(c => c.trim());
-      
+
+      const cells = line
+        .split('|')
+        .slice(1, -1)
+        .map((c) => c.trim());
+
       // Check if it's separator row: |---|---|
-      const isSep = cells.every(c => /^:-*:?$/.test(c) || /^-+$/.test(c));
+      const isSep = cells.every((c) => /^:-*:?$/.test(c) || /^-+$/.test(c));
       if (isSep) continue;
 
       tableHtml += '<tr>';
-      cells.forEach(cell => {
+      cells.forEach((cell) => {
         // First row is header
         if (tableHtml.match(/<tr>/g).length === 1) {
           tableHtml += `<th>${cell}</th>`;
@@ -181,7 +181,7 @@ function parseMarkdown(md) {
   html = processedLines.join('\n');
 
   // Convert empty lines to paragraphs, wrapping non-HTML lines
-  const finalBlocks = html.split('\n\n').map(block => {
+  const finalBlocks = html.split('\n\n').map((block) => {
     const trimmed = block.trim();
     if (!trimmed) return '';
     // Skip if it's already an HTML block tag

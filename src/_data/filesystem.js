@@ -11,26 +11,38 @@ const SRC_ROOT = './src';
 
 // Folders completely hidden from Portfolio 3.0
 const HIDDEN = new Set([
-  '_data', '_includes', 'assets', 'scripts', 'scss',
+  '_data',
+  '_includes',
+  'assets',
+  'scripts',
+  'scss',
   'gallery', // injected separately from assets/img/gallery below
+<<<<<<< HEAD
   'node_modules', '.git', '.github', '.venv', '__pycache__',
   'v2',
+=======
+  'node_modules',
+  '.git',
+  '.github',
+  '.venv',
+  '__pycache__',
+>>>>>>> 5f2c9920115485e87ae3240ed2abfe76c01c2b56
 ]);
 
 const EXT_MAP = {
-  '.md':   'md',
+  '.md': 'md',
   '.html': 'html',
-  '.njk':  'html',
-  '.jpg':  'img',
+  '.njk': 'html',
+  '.jpg': 'img',
   '.jpeg': 'img',
-  '.png':  'img',
+  '.png': 'img',
   '.webp': 'img',
-  '.gif':  'img',
-  '.pdf':  'pdf',
-  '.txt':  'txt',
-  '.js':   'js',
+  '.gif': 'img',
+  '.pdf': 'pdf',
+  '.txt': 'txt',
+  '.js': 'js',
   '.json': 'json',
-  '.css':  'css',
+  '.css': 'css',
   '.scss': 'scss',
 };
 
@@ -57,16 +69,18 @@ function scanDir(dirPath, virtualPath = '/') {
   }
 
   // Folders first, then files, both alphabetical
-  const dirs  = entries.filter(e => e.isDirectory() && !HIDDEN.has(e.name)).sort((a,b) => a.name.localeCompare(b.name));
-  const files = entries.filter(e => e.isFile()).sort((a,b) => a.name.localeCompare(b.name));
+  const dirs = entries
+    .filter((e) => e.isDirectory() && !HIDDEN.has(e.name))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const files = entries.filter((e) => e.isFile()).sort((a, b) => a.name.localeCompare(b.name));
 
   for (const dirent of dirs) {
     const childVirtual = virtualPath === '/' ? `/${dirent.name}` : `${virtualPath}/${dirent.name}`;
-    const childReal    = path.join(dirPath, dirent.name);
+    const childReal = path.join(dirPath, dirent.name);
     children.push({
-      name:     dirent.name,
-      type:     'dir',
-      path:     childVirtual,
+      name: dirent.name,
+      type: 'dir',
+      path: childVirtual,
       children: scanDir(childReal, childVirtual),
     });
   }
@@ -79,20 +93,22 @@ function scanDir(dirPath, virtualPath = '/') {
     if (['.njk', '.js', '.ts', '.json', '.scss', '.css', '.xml', '.bat'].includes(ext)) continue;
 
     const childVirtual = virtualPath === '/' ? `/${dirent.name}` : `${virtualPath}/${dirent.name}`;
-    const childReal    = path.join(dirPath, dirent.name);
+    const childReal = path.join(dirPath, dirent.name);
 
     let size = '?';
     try {
       size = formatSize(fs.statSync(childReal).size);
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
 
     children.push({
-      name:     dirent.name,
-      type:     'file',
+      name: dirent.name,
+      type: 'file',
       fileType: getFileType(dirent.name),
-      path:     childVirtual,
+      path: childVirtual,
       size,
-      ext:      path.extname(dirent.name).toLowerCase(),
+      ext: path.extname(dirent.name).toLowerCase(),
     });
   }
 
@@ -109,7 +125,7 @@ export default function () {
       name: 'gallery',
       type: 'dir',
       path: '/gallery',
-      children: galleryChildren
+      children: galleryChildren,
     });
   }
 
