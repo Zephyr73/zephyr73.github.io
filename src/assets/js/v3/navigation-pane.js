@@ -1,10 +1,6 @@
 /**
  * navigation-pane.js — TTY Navigation Pane (File System Tree)
  */
-<<<<<<< HEAD
-=======
-
->>>>>>> 5f2c9920115485e87ae3240ed2abfe76c01c2b56
 let sortType = 'alpha'; // 'alpha' or 'type'
 let onFileSelectCallback = null;
 // Initialize Navigation Pane
