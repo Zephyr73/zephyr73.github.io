@@ -5,11 +5,11 @@
 import { initDesktop } from './desktop.js';
 import { initNavPane } from './navigation-pane.js';
 import { initTerminal } from './terminal.js';
-import { createBrowserApp    } from './apps/browser.js';
-import { createFileExpApp    } from './apps/file-explorer.js';
-import { createMarkdownApp   } from './apps/markdown-viewer.js';
-import { createGalleryApp    } from './apps/gallery.js';
-import { createPdfApp        } from './apps/pdf-viewer.js';
+import { createBrowserApp } from './apps/browser.js';
+import { createFileExpApp } from './apps/file-explorer.js';
+import { createMarkdownApp } from './apps/markdown-viewer.js';
+import { createGalleryApp } from './apps/gallery.js';
+import { createPdfApp } from './apps/pdf-viewer.js';
 /* ─────────────────────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────────────────────── */
@@ -51,16 +51,16 @@ export function playSound(type) {
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(140, now);
         osc.frequency.exponentialRampToValueAtTime(90, now + 0.05);
-        
+
         // Second popup click
         osc.frequency.setValueAtTime(190, now + 0.06);
         osc.frequency.exponentialRampToValueAtTime(110, now + 0.12);
-        
+
         gain.gain.setValueAtTime(0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
         gain.gain.setValueAtTime(0.25, now + 0.06);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-        
+
         osc.start(now);
         osc.stop(now + 0.14);
         break;
@@ -90,35 +90,35 @@ export function playSound(type) {
         osc.frequency.setValueAtTime(160, now);
         osc.frequency.exponentialRampToValueAtTime(100, now + 0.04);
         osc.frequency.setValueAtTime(220, now + 0.05);
-        osc.frequency.exponentialRampToValueAtTime(130, now + 0.10);
+        osc.frequency.exponentialRampToValueAtTime(130, now + 0.1);
         gain.gain.setValueAtTime(0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
         gain.gain.setValueAtTime(0.25, now + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.10);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
         osc.start(now);
-        osc.stop(now + 0.10);
+        osc.stop(now + 0.1);
         break;
       case 'error': {
         // Double oscillator warning key-thud/buzz
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(100, now);
         osc.frequency.exponentialRampToValueAtTime(50, now + 0.25);
-        
+
         const subOsc = ctx.createOscillator();
         const subGain = ctx.createGain();
         subOsc.type = 'sawtooth';
         subOsc.frequency.setValueAtTime(90, now);
         subOsc.frequency.exponentialRampToValueAtTime(45, now + 0.22);
-        
+
         subOsc.connect(subGain);
         subGain.connect(ctx.destination);
-        
+
         gain.gain.setValueAtTime(0.35, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-        
+
         subGain.gain.setValueAtTime(0.05, now);
         subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-        
+
         osc.start(now);
         subOsc.start(now);
         osc.stop(now + 0.25);
@@ -135,16 +135,16 @@ export function playSound(type) {
 /* ─────────────────────────────────────────────────────────────
    DOM REFERENCES
 ───────────────────────────────────────────────────────────── */
-const modeDesktop  = document.getElementById('mode-desktop');
-const modeTTY      = document.getElementById('mode-tty');
-const tabDesktop   = document.getElementById('tab-desktop');
-const tabTTY       = document.getElementById('tab-tty');
-const crtToggle    = document.getElementById('crt-toggle');
-const activeApps   = document.getElementById('statusbar-active-apps');
-const floatCont    = document.getElementById('desktop-floating-container');
-const splitPane    = document.getElementById('tty-split-pane');
-const resizeSplit  = document.getElementById('resize-split');
-const body         = document.body;
+const modeDesktop = document.getElementById('mode-desktop');
+const modeTTY = document.getElementById('mode-tty');
+const tabDesktop = document.getElementById('tab-desktop');
+const tabTTY = document.getElementById('tab-tty');
+const crtToggle = document.getElementById('crt-toggle');
+const activeApps = document.getElementById('statusbar-active-apps');
+const floatCont = document.getElementById('desktop-floating-container');
+const splitPane = document.getElementById('tty-split-pane');
+const resizeSplit = document.getElementById('resize-split');
+const body = document.body;
 /* ─────────────────────────────────────────────────────────────
    APP REGISTRY
    Maps file extensions → app factory functions
@@ -357,10 +357,10 @@ function _openFloating(id, appEl, title, filePath) {
   const H = Math.min(640, window.innerHeight - 80);
   const L = Math.round((window.innerWidth - W) / 2) + (id % 5) * 20;
   const T = Math.round((window.innerHeight - H) / 2) + (id % 5) * 20 - 20;
-  win.style.width  = `${W}px`;
+  win.style.width = `${W}px`;
   win.style.height = `${H}px`;
-  win.style.left   = `${L}px`;
-  win.style.top    = `${T}px`;
+  win.style.left = `${L}px`;
+  win.style.top = `${T}px`;
   floatCont.appendChild(win);
   playSound('open');
   openWindows.set(id, { el: win, state: 'floating', appName: title, title, filePath });
@@ -446,12 +446,12 @@ export function maximizeWindow(id) {
     win.dataset.prevH = win.style.height;
     win.dataset.prevL = win.style.left;
     win.dataset.prevT = win.style.top;
-    win.style.width  = '100%';
+    win.style.width = '100%';
     win.style.height = 'calc(100% - var(--status-bar-h))';
-    win.style.width  = '100%';
+    win.style.width = '100%';
     win.style.height = 'calc(100% - var(--status-bar-h))';
-    win.style.left   = '0px';
-    win.style.top    = '0px';
+    win.style.left = '0px';
+    win.style.top = '0px';
     win.dataset.maximized = '1';
     win.querySelector('.window-btn--maximize').textContent = '[R]';
   }
@@ -511,8 +511,12 @@ export function closeWindow(id) {
 ───────────────────────────────────────────────────────────── */
 export function focusWindow(id) {
   // Remove focused class from all
-  document.querySelectorAll('.window--floating.focused').forEach(w => w.classList.remove('focused'));
-  document.querySelectorAll('.statusbar-app-tab.focused').forEach(t => t.classList.remove('focused'));
+  document
+    .querySelectorAll('.window--floating.focused')
+    .forEach((w) => w.classList.remove('focused'));
+  document
+    .querySelectorAll('.statusbar-app-tab.focused')
+    .forEach((t) => t.classList.remove('focused'));
   const info = openWindows.get(id);
   if (!info || info.state !== 'floating') return;
   info.el.style.zIndex = ++topZ;
@@ -525,14 +529,14 @@ export function focusWindow(id) {
 ───────────────────────────────────────────────────────────── */
 function _makeDraggable(win, handle) {
   let startX, startY, origLeft, origTop;
-  handle.addEventListener('mousedown', e => {
+  handle.addEventListener('mousedown', (e) => {
     if (e.target.closest('.window-btn')) return; // don't drag on button clicks
     e.preventDefault();
     document.body.classList.add('resize-active');
-    startX   = e.clientX;
-    startY   = e.clientY;
+    startX = e.clientX;
+    startY = e.clientY;
     origLeft = parseInt(win.style.left) || 0;
-    origTop  = parseInt(win.style.top)  || 0;
+    origTop = parseInt(win.style.top) || 0;
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
@@ -553,10 +557,10 @@ function _makeResizeHandle(win, handle, dir) {
     e.preventDefault();
     e.stopPropagation();
     document.body.classList.add('resize-active');
-    const startX  = e.clientX;
-    const startY  = e.clientY;
-    const origW   = win.offsetWidth;
-    const origH   = win.offsetHeight;
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const origW = win.offsetWidth;
+    const origH = win.offsetHeight;
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
@@ -617,7 +621,7 @@ function switchMode(mode) {
   currentMode = mode;
   localStorage.setItem('v3-mode', mode);
   modeDesktop.classList.toggle('active', mode === 'desktop');
-  modeTTY.classList.toggle('active',     mode === 'tty');
+  modeTTY.classList.toggle('active', mode === 'tty');
   tabDesktop.classList.toggle('active', mode === 'desktop');
   tabTTY.classList.toggle('active', mode === 'tty');
   tabDesktop.setAttribute('aria-selected', String(mode === 'desktop'));
@@ -664,12 +668,12 @@ let _cpuBase = 8,
   _satBase = 87;
 function updateStats() {
   const jitter = (base, range) => Math.max(0, Math.min(99, base + (Math.random() - 0.5) * range));
-  const cpu  = Math.round(jitter(_cpuBase, 8));
-  const gpu  = Math.round(jitter(_gpuBase, 6));
-  const mem  = (jitter(_memBase, 0.4)).toFixed(1);
-  const sat  = Math.round(jitter(_satBase, 4));
-  document.getElementById('stat-cpu').textContent = `${String(cpu).padStart(2,'0')}%`;
-  document.getElementById('stat-gpu').textContent = `${String(gpu).padStart(2,'0')}%`;
+  const cpu = Math.round(jitter(_cpuBase, 8));
+  const gpu = Math.round(jitter(_gpuBase, 6));
+  const mem = jitter(_memBase, 0.4).toFixed(1);
+  const sat = Math.round(jitter(_satBase, 4));
+  document.getElementById('stat-cpu').textContent = `${String(cpu).padStart(2, '0')}%`;
+  document.getElementById('stat-gpu').textContent = `${String(gpu).padStart(2, '0')}%`;
   document.getElementById('stat-mem').textContent = `${mem}G`;
   document.getElementById('stat-sat').textContent = `${String(sat).padStart(2, '0')}%`;
 }
@@ -679,7 +683,7 @@ function updateStats() {
 function initPaneResize() {
   const navPane = document.getElementById('tty-nav-pane');
   const navHandle = document.getElementById('resize-nav');
-  const ttyMode   = document.getElementById('mode-tty');
+  const ttyMode = document.getElementById('mode-tty');
   if (!navPane || !navHandle) return;
   let dragging = false;
   navHandle.addEventListener('mousedown', (e) => {
@@ -688,7 +692,7 @@ function initPaneResize() {
     document.body.classList.add('resize-active');
     e.preventDefault();
   });
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', (e) => {
     if (!dragging) return;
     const rect = ttyMode.getBoundingClientRect();
     const newW = Math.max(140, Math.min(400, e.clientX - rect.left));
@@ -705,14 +709,14 @@ function initPaneResize() {
   let splitDragging = false;
   let splitRafId = null;
   let lastSplitClientX = 0;
-  splitHandle?.addEventListener('mousedown', e => {
+  splitHandle?.addEventListener('mousedown', (e) => {
     splitDragging = true;
     splitHandle.classList.add('dragging');
     document.body.classList.add('resize-active');
     splitPane.style.willChange = 'width';
     e.preventDefault();
   });
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', (e) => {
     if (!splitDragging) return;
     lastSplitClientX = e.clientX;
     if (splitRafId) return; // already scheduled
@@ -744,7 +748,8 @@ function createTerminalFloatApp() {
   const el = document.createElement('div');
   el.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;';
   const out = document.createElement('div');
-  out.style.cssText = 'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);';
+  out.style.cssText =
+    'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);';
   // Initial draw from buffer
   const renderBuffer = () => {
     out.innerHTML = '';
@@ -762,7 +767,8 @@ function createTerminalFloatApp() {
   };
   renderBuffer();
   const row = document.createElement('div');
-  row.style.cssText = 'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
+  row.style.cssText =
+    'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
   const prompt = document.createElement('span');
   prompt.style.cssText = 'color:var(--cp-green);font-size:12px;white-space:nowrap;';
   const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
@@ -790,7 +796,7 @@ function createTerminalFloatApp() {
   });
   // Attach cleanup to DOM node
   el.cleanup = unsubscribe;
-  inp.addEventListener('keydown', async e => {
+  inp.addEventListener('keydown', async (e) => {
     if (e.key === 'Enter') {
       const cmd = inp.value.trim();
       inp.value = '';
@@ -929,12 +935,30 @@ document.addEventListener('DOMContentLoaded', () => {
   currentMode = null;
   switchMode(initialMode);
   // Status bar events
-  tabDesktop.addEventListener('click',  () => { playSound('click'); switchMode('desktop'); });
-  tabTTY.addEventListener('click',      () => { playSound('click'); switchMode('tty'); });
-  tabDesktop.addEventListener('keydown', e => e.key === 'Enter' && (playSound('click'), switchMode('desktop')));
-  tabTTY.addEventListener('keydown',     e => e.key === 'Enter' && (playSound('click'), switchMode('tty')));
-  crtToggle.addEventListener('click',   () => { playSound('click'); toggleCRT(); });
-  crtToggle.addEventListener('keydown', e => e.key === 'Enter' && (playSound('click'), toggleCRT()));
+  tabDesktop.addEventListener('click', () => {
+    playSound('click');
+    switchMode('desktop');
+  });
+  tabTTY.addEventListener('click', () => {
+    playSound('click');
+    switchMode('tty');
+  });
+  tabDesktop.addEventListener(
+    'keydown',
+    (e) => e.key === 'Enter' && (playSound('click'), switchMode('desktop')),
+  );
+  tabTTY.addEventListener(
+    'keydown',
+    (e) => e.key === 'Enter' && (playSound('click'), switchMode('tty')),
+  );
+  crtToggle.addEventListener('click', () => {
+    playSound('click');
+    toggleCRT();
+  });
+  crtToggle.addEventListener(
+    'keydown',
+    (e) => e.key === 'Enter' && (playSound('click'), toggleCRT()),
+  );
   // Clock & stats
   updateClock();
   updateStats();

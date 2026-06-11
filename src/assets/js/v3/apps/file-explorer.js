@@ -179,13 +179,15 @@ export function createFileExpApp(initialPath = '/') {
         window.playSound?.('click');
         e.stopPropagation();
         const now = Date.now();
-        const isDoubleClick = (now - lastClick) < 300;
+        const isDoubleClick = now - lastClick < 300;
         lastClick = now;
 
         if (isDoubleClick || item.classList.contains('selected')) {
           openItem(node);
         } else {
-          document.querySelectorAll('.fileexp-item.selected').forEach(el => el.classList.remove('selected'));
+          document
+            .querySelectorAll('.fileexp-item.selected')
+            .forEach((el) => el.classList.remove('selected'));
           item.classList.add('selected');
           selectedItemNode = node;
           updateStatusbar();
