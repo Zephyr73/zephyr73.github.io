@@ -7,6 +7,7 @@ eleventyExcludeFromCollections: true
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Portfolio 3.0 — Interactive Virtual Desktop</title>
   <meta name="description" content="A professional, Linux-like interactive desktop portfolio environment." />
 
@@ -119,7 +120,7 @@ eleventyExcludeFromCollections: true
       <div class="nav-pane__footer">
         <div id="nav-stats">Folders: — | Files: —</div>
         <div class="vol-info">Volume: — / —</div>
-        <div style="margin-top:4px;font-size:9px;color:var(--cp-dim);">THEME ENGINE</div>
+        <div style="margin-top:4px;font-size:11px;color:var(--cp-dim);">THEME ENGINE</div>
         <select class="nav-pane__theme-select" id="nav-theme-select" aria-label="Terminal theme">
           <option value="green">Matrix Green</option>
           <option value="amber">Amber</option>
@@ -127,6 +128,9 @@ eleventyExcludeFromCollections: true
           <option value="magenta">Magenta Wave</option>
           <option value="red">Crimson Red</option>
           <option value="purple">Hacker Purple</option>
+          <option value="notebook">Paper Notebook</option>
+          <option value="slate">Slate Modern</option>
+          <option value="sunset">Cyber Sunset</option>
         </select>
       </div>
     </div>
@@ -137,8 +141,11 @@ eleventyExcludeFromCollections: true
     <!-- Center: Console/Terminal -->
     <div class="tty-console-pane" id="tty-console">
       <div class="console-header">
-        <div class="console-header-title">Terminal: guest@portfolio:~/</div>
-        <div style="font-size:9px;color:var(--cp-dim);">KILL SERVER ACTIVE</div>
+        <div class="console-header-title">
+          Terminal: guest@portfolio:~/
+        </div>
+        <button class="console-nav-toggle" id="console-nav-toggle" aria-label="Toggle Files Pane">⬡ FILES</button>
+        <div class="console-header-status" style="font-size:9px;color:var(--cp-dim);">KILL SERVER ACTIVE</div>
       </div>
       <div class="console-output" id="console-output" aria-live="polite" role="log">
         <!-- Terminal output populated by terminal.js -->
@@ -177,21 +184,23 @@ eleventyExcludeFromCollections: true
      ============================================================ -->
 <div class="status-bar" role="toolbar" aria-label="Status bar">
 
-  <!-- Mode tabs -->
-  <div class="statusbar-tabs" role="tablist">
-    <div class="statusbar-tab active" id="tab-desktop" role="tab" aria-selected="true" data-mode="desktop" tabindex="0" aria-label="Switch to Desktop mode">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="0"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      DESKTOP
+  <div class="statusbar-left-scroll">
+    <!-- Mode tabs -->
+    <div class="statusbar-tabs" role="tablist">
+      <div class="statusbar-tab active" id="tab-desktop" role="tab" aria-selected="true" data-mode="desktop" tabindex="0" aria-label="Switch to Desktop mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="0"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        DESKTOP
+      </div>
+      <div class="statusbar-tab" id="tab-tty" role="tab" aria-selected="false" data-mode="tty" tabindex="0" aria-label="Switch to TTY Shell">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        TTY SHELL
+      </div>
     </div>
-    <div class="statusbar-tab" id="tab-tty" role="tab" aria-selected="false" data-mode="tty" tabindex="0" aria-label="Switch to TTY Shell">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-      TTY SHELL
-    </div>
-  </div>
 
-  <!-- Active app tabs -->
-  <div class="statusbar-active-apps" id="statusbar-active-apps" role="tablist" aria-label="Open applications">
-    <!-- Populated by window manager -->
+    <!-- Active app tabs -->
+    <div class="statusbar-active-apps" id="statusbar-active-apps" role="tablist" aria-label="Open applications">
+      <!-- Populated by window manager -->
+    </div>
   </div>
 
   <!-- Center info -->

@@ -52,18 +52,21 @@ export function initDesktop({ openApp }) {
       <div class="desktop-icon__label">${cfg.label}</div>
     `;
 
-    // Click to select
+    // Click to select or double click/tap to open
+    let lastClick = 0;
     iconEl.addEventListener('click', (e) => {
       window.playSound?.('click');
       e.stopPropagation();
-      deselectAll();
-      iconEl.classList.add('selected');
-    });
+      const now = Date.now();
+      const isDoubleClick = (now - lastClick) < 300;
+      lastClick = now;
 
-    // Double click to open
-    iconEl.addEventListener('dblclick', () => {
-      window.playSound?.('click');
-      openIconShortcut(cfg, openApp);
+      if (isDoubleClick || iconEl.classList.contains('selected')) {
+        openIconShortcut(cfg, openApp);
+      } else {
+        deselectAll();
+        iconEl.classList.add('selected');
+      }
     });
 
     // Support keyboard Enter key
@@ -77,10 +80,95 @@ export function initDesktop({ openApp }) {
     iconGrid.appendChild(iconEl);
   });
 
-  // Click on grid background to deselect all
-  document.getElementById('mode-desktop')?.addEventListener('click', () => {
-    deselectAll();
-  });
+  // Drag selection marquee box logic
+  const modeDesktop = document.getElementById('mode-desktop');
+  if (modeDesktop) {
+    let marquee = null;
+    let startX = 0;
+    let startY = 0;
+
+    modeDesktop.addEventListener('mousedown', (e) => {
+      // Only left click
+      if (e.button !== 0) return;
+
+      // Do not start selection if clicking inside interactive elements
+      if (
+        e.target.closest('.window') ||
+        e.target.closest('.desktop-icon') ||
+        e.target.closest('.desktop-notification') ||
+        e.target.closest('.status-bar') ||
+        e.target.closest('.navbar') ||
+        e.target.closest('button') ||
+        e.target.closest('input') ||
+        e.target.closest('textarea') ||
+        e.target.closest('select') ||
+        e.target.closest('a')
+      ) {
+        return;
+      }
+
+      deselectAll();
+
+      const rect = modeDesktop.getBoundingClientRect();
+      startX = e.clientX - rect.left;
+      startY = e.clientY - rect.top;
+
+      marquee = document.createElement('div');
+      marquee.className = 'selection-marquee';
+      marquee.style.left = `${startX}px`;
+      marquee.style.top = `${startY}px`;
+      marquee.style.width = '0px';
+      marquee.style.height = '0px';
+      modeDesktop.appendChild(marquee);
+
+      const onMouseMove = (moveEvt) => {
+        if (!marquee) return;
+        const currentRect = modeDesktop.getBoundingClientRect();
+        const curX = moveEvt.clientX - currentRect.left;
+        const curY = moveEvt.clientY - currentRect.top;
+
+        const x = Math.min(startX, curX);
+        const y = Math.min(startY, curY);
+        const width = Math.abs(startX - curX);
+        const height = Math.abs(startY - curY);
+
+        marquee.style.left = `${x}px`;
+        marquee.style.top = `${y}px`;
+        marquee.style.width = `${width}px`;
+        marquee.style.height = `${height}px`;
+
+        // Check intersection with each desktop icon
+        const marqueeRect = marquee.getBoundingClientRect();
+        const icons = modeDesktop.querySelectorAll('.desktop-icon');
+        icons.forEach(icon => {
+          const iconRect = icon.getBoundingClientRect();
+          const intersect = !(
+            marqueeRect.right < iconRect.left ||
+            marqueeRect.left > iconRect.right ||
+            marqueeRect.bottom < iconRect.top ||
+            marqueeRect.top > iconRect.bottom
+          );
+          if (intersect) {
+            icon.classList.add('selected');
+          } else {
+            icon.classList.remove('selected');
+          }
+        });
+      };
+
+      const onMouseUp = () => {
+        if (marquee) {
+          marquee.remove();
+          marquee = null;
+        }
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+  }
 }
 
 function deselectAll() {
