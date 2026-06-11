@@ -11,8 +11,20 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const GALLERY_ROOT = './src/assets/img/gallery';
-const CATEGORIES = ['photography', 'ai', 'forza'];
 const IMAGE_RE = /\.(jpe?g|png|webp)$/i;
+
+function getCategories() {
+  try {
+    if (fs.existsSync(GALLERY_ROOT)) {
+      return fs.readdirSync(GALLERY_ROOT).filter(f => {
+        return fs.statSync(path.join(GALLERY_ROOT, f)).isDirectory();
+      });
+    }
+  } catch (e) {
+    console.error("Error reading gallery categories: ", e);
+  }
+  return ['photography', 'ai', 'forza'];
+}
 
 function formatFileSize(bytes) {
   return bytes >= 1024 * 1024
@@ -53,8 +65,9 @@ function formatDate(date, long = false) {
 
 export default async function () {
   const images = [];
+  const categories = getCategories();
 
-  for (const category of CATEGORIES) {
+  for (const category of categories) {
     const dir = path.join(GALLERY_ROOT, category);
     if (!fs.existsSync(dir)) {
       continue;

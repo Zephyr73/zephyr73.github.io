@@ -20,7 +20,7 @@ export default [
             'no-unused-vars': 'warn',
             'no-console': 'warn',
             'eqeqeq': 'error',
-            'curly': 'error',
+            'curly': ['error', 'multi-line'],
             'no-undef': 'error',
         },
     },
