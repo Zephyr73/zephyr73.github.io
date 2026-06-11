@@ -14,6 +14,7 @@ const HIDDEN = new Set([
   '_data', '_includes', 'assets', 'scripts', 'scss',
   'gallery', // injected separately from assets/img/gallery below
   'node_modules', '.git', '.github', '.venv', '__pycache__',
+  'v2',
 ]);
 
 const EXT_MAP = {

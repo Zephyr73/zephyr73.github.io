@@ -2,7 +2,6 @@
  * shell.js — Portfolio 3.0 Core Orchestrator
  * Manages: modes, window manager, status bar, CRT, app registry
  */
-
 import { initDesktop } from './desktop.js';
 import { initNavPane  } from './navigation-pane.js';
 import { initTerminal } from './terminal.js';
@@ -11,7 +10,6 @@ import { createFileExpApp    } from './apps/file-explorer.js';
 import { createMarkdownApp   } from './apps/markdown-viewer.js';
 import { createGalleryApp    } from './apps/gallery.js';
 import { createPdfApp        } from './apps/pdf-viewer.js';
-
 /* ─────────────────────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────────────────────── */
@@ -21,7 +19,6 @@ let windowIdCounter = 0;
 const openWindows = new Map(); // id → { el, state, appName, title }
 let topZ = 200;
 let splitWindowId = null; // current window docked in TTY split pane
-
 /* ─────────────────────────────────────────────────────────────
    SOUND ENGINE (Web Audio API — procedural, no files needed)
 ───────────────────────────────────────────────────────────── */
@@ -30,7 +27,6 @@ function _getAudioCtx() {
   if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   return _audioCtx;
 }
-
 export function playSound(type) {
   try {
     const ctx = _getAudioCtx();
@@ -38,57 +34,97 @@ export function playSound(type) {
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
-
     const now = ctx.currentTime;
-
     switch (type) {
       case 'click':
-        // Short high beep
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(880, now);
-        osc.frequency.exponentialRampToValueAtTime(440, now + 0.06);
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        // Warm mechanical thock keyboard click
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(60, now + 0.05);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
         osc.start(now);
-        osc.stop(now + 0.08);
+        osc.stop(now + 0.06);
         break;
       case 'open':
-        // Rising double-beep
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.setValueAtTime(660, now + 0.07);
-        gain.gain.setValueAtTime(0.07, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        // Rising double mechanical click/pop
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(90, now + 0.05);
+        
+        // Second popup click
+        osc.frequency.setValueAtTime(190, now + 0.06);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.12);
+        
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+        gain.gain.setValueAtTime(0.25, now + 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        
         osc.start(now);
-        osc.stop(now + 0.18);
+        osc.stop(now + 0.14);
         break;
       case 'close':
-        // Falling pitch
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(660, now);
-        osc.frequency.exponentialRampToValueAtTime(220, now + 0.12);
-        gain.gain.setValueAtTime(0.07, now);
+        // Deep mechanical key drop thud
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(130, now);
+        osc.frequency.exponentialRampToValueAtTime(45, now + 0.12);
+        gain.gain.setValueAtTime(0.35, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
         osc.start(now);
         osc.stop(now + 0.14);
         break;
       case 'minimize':
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(550, now);
-        osc.frequency.exponentialRampToValueAtTime(330, now + 0.1);
-        gain.gain.setValueAtTime(0.06, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+        // Bouncy hollow mechanical pop
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(200, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.08);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
         osc.start(now);
-        osc.stop(now + 0.12);
+        osc.stop(now + 0.1);
         break;
-      case 'error':
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(180, now);
-        gain.gain.setValueAtTime(0.06, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+      case 'maximize':
+        // A crisp double mechanical tap
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(100, now + 0.04);
+        osc.frequency.setValueAtTime(220, now + 0.05);
+        osc.frequency.exponentialRampToValueAtTime(130, now + 0.10);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
+        gain.gain.setValueAtTime(0.25, now + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.10);
         osc.start(now);
-        osc.stop(now + 0.2);
+        osc.stop(now + 0.10);
         break;
+      case 'error': {
+        // Double oscillator warning key-thud/buzz
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(100, now);
+        osc.frequency.exponentialRampToValueAtTime(50, now + 0.25);
+        
+        const subOsc = ctx.createOscillator();
+        const subGain = ctx.createGain();
+        subOsc.type = 'sawtooth';
+        subOsc.frequency.setValueAtTime(90, now);
+        subOsc.frequency.exponentialRampToValueAtTime(45, now + 0.22);
+        
+        subOsc.connect(subGain);
+        subGain.connect(ctx.destination);
+        
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        
+        subGain.gain.setValueAtTime(0.05, now);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        
+        osc.start(now);
+        subOsc.start(now);
+        osc.stop(now + 0.25);
+        subOsc.stop(now + 0.25);
+        break;
+      }
       default:
         osc.stop(now);
     }
@@ -96,8 +132,6 @@ export function playSound(type) {
     // Silently fail if audio not available
   }
 }
-
-
 /* ─────────────────────────────────────────────────────────────
    DOM REFERENCES
 ───────────────────────────────────────────────────────────── */
@@ -111,7 +145,6 @@ const floatCont    = document.getElementById('desktop-floating-container');
 const splitPane    = document.getElementById('tty-split-pane');
 const resizeSplit  = document.getElementById('resize-split');
 const body         = document.body;
-
 /* ─────────────────────────────────────────────────────────────
    APP REGISTRY
    Maps file extensions → app factory functions
@@ -124,21 +157,18 @@ const APP_REGISTRY = {
   dir:   (path, title) => createFileExpApp(path, title),
   other: (path, title) => createMarkdownApp(path, title), // raw text fallback
 };
-
 function getAppForFile(node) {
   if (!node) return null;
   if (node.type === 'dir') return 'dir';
   const ft = node.fileType || 'other';
   return ft in APP_REGISTRY ? ft : 'other';
 }
-
 /* ─────────────────────────────────────────────────────────────
    PUBLIC: openApp
    Opens any named app (browser, fileExplorer) or a file node.
 ───────────────────────────────────────────────────────────── */
 export function openApp(appNameOrNode, pathArg, titleArg) {
   let appFactory, filePath, title;
-
   if (typeof appNameOrNode === 'string' && !pathArg) {
     // Named app with no file (e.g. 'browser', 'fileExplorer')
     switch (appNameOrNode) {
@@ -176,11 +206,9 @@ export function openApp(appNameOrNode, pathArg, titleArg) {
     title      = titleArg || pathArg;
     filePath   = pathArg;
   }
-
   const id = ++windowIdCounter;
   const appEl = appFactory();
   if (!appEl) return;
-
   if (currentMode === 'desktop') {
     _openFloating(id, appEl, title, filePath);
   } else {
@@ -188,7 +216,6 @@ export function openApp(appNameOrNode, pathArg, titleArg) {
     _openSplit(id, appEl, title, filePath);
   }
 }
-
 /* ─────────────────────────────────────────────────────────────
    WINDOW CREATION HELPERS
 ───────────────────────────────────────────────────────────── */
@@ -197,25 +224,21 @@ function _buildWindow(id, appEl, title, filePath, state) {
   win.className = `window window--${state}`;
   win.dataset.windowId = id;
   win.id = `win-${id}`;
-
   // Build title bar
   const tbar = document.createElement('div');
   tbar.className = 'window-titlebar';
   tbar.setAttribute('role', 'toolbar');
-
   // Icon
   const iconEl = document.createElement('span');
   iconEl.className = 'window-titlebar-icon';
   iconEl.innerHTML = _getAppIcon(title, filePath);
   tbar.appendChild(iconEl);
-
   // Title
   const titleEl = document.createElement('span');
   titleEl.className = 'window-titlebar-title';
   titleEl.textContent = title;
   titleEl.setAttribute('aria-label', `Window: ${title}`);
   tbar.appendChild(titleEl);
-
   // Path (if file)
   if (filePath && filePath !== '/') {
     const pathEl = document.createElement('span');
@@ -223,11 +246,9 @@ function _buildWindow(id, appEl, title, filePath, state) {
     pathEl.textContent = `› ${filePath}`;
     tbar.appendChild(pathEl);
   }
-
   // Buttons
   const btns = document.createElement('div');
   btns.className = 'window-titlebar-btns';
-
   // Pop-out: only in TTY split state
   if (state === 'split') {
     const popupBtn = document.createElement('button');
@@ -238,7 +259,6 @@ function _buildWindow(id, appEl, title, filePath, state) {
     popupBtn.addEventListener('click', () => popUp(id));
     btns.appendChild(popupBtn);
   }
-
   // Pop-in: only for floating windows in TTY mode
   if (state === 'floating' && currentMode === 'tty') {
     const popinBtn = document.createElement('button');
@@ -250,7 +270,6 @@ function _buildWindow(id, appEl, title, filePath, state) {
     popinBtn.addEventListener('click', () => popIn(id));
     btns.appendChild(popinBtn);
   }
-
   // Floating-only: maximize and minimize buttons
   if (state === 'floating') {
     const minBtn = document.createElement('button');
@@ -260,7 +279,6 @@ function _buildWindow(id, appEl, title, filePath, state) {
     minBtn.textContent = '[_]';
     minBtn.addEventListener('click', (e) => { e.stopPropagation(); minimizeWindow(id); });
     btns.appendChild(minBtn);
-
     const maxBtn = document.createElement('button');
     maxBtn.className = 'window-btn window-btn--maximize';
     maxBtn.title = 'Maximize / Restore';
@@ -269,7 +287,6 @@ function _buildWindow(id, appEl, title, filePath, state) {
     maxBtn.addEventListener('click', (e) => { e.stopPropagation(); maximizeWindow(id); });
     btns.appendChild(maxBtn);
   }
-
   // Close button (always)
   const closeBtn = document.createElement('button');
   closeBtn.className = 'window-btn window-btn--close';
@@ -278,20 +295,21 @@ function _buildWindow(id, appEl, title, filePath, state) {
   closeBtn.textContent = '[X]';
   closeBtn.addEventListener('click', () => closeWindow(id));
   btns.appendChild(closeBtn);
-
   tbar.appendChild(btns);
   win.appendChild(tbar);
-
   // Body
   const winBody = document.createElement('div');
   winBody.className = 'window-body';
   winBody.appendChild(appEl);
+  if (state === 'floating') {
+    const overlay = document.createElement('div');
+    overlay.className = 'window-iframe-overlay';
+    winBody.appendChild(overlay);
+  }
   win.appendChild(winBody);
-
   // Drag (floating only)
   if (state === 'floating') {
     _makeDraggable(win, tbar);
-
     // Resize handles
     ['e','s','se'].forEach(dir => {
       const handle = document.createElement('div');
@@ -300,13 +318,10 @@ function _buildWindow(id, appEl, title, filePath, state) {
       _makeResizeHandle(win, handle, dir);
     });
   }
-
   // Click to focus
   win.addEventListener('mousedown', () => focusWindow(id), true);
-
   return win;
 }
-
 function _getAppIcon(title, filePath) {
   const t = (title || '').toLowerCase();
   const p = (filePath || '').toLowerCase();
@@ -328,41 +343,33 @@ function _getAppIcon(title, filePath) {
   // Console/Terminal
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`;
 }
-
 function _openFloating(id, appEl, title, filePath) {
   const win = _buildWindow(id, appEl, title, filePath, 'floating');
-
   // Default size & centered position
   const W = Math.min(900, window.innerWidth  - 80);
   const H = Math.min(640, window.innerHeight - 80);
   const L = Math.round((window.innerWidth  - W) / 2) + (id % 5) * 20;
   const T = Math.round((window.innerHeight - H) / 2) + (id % 5) * 20 - 20;
-
   win.style.width  = `${W}px`;
   win.style.height = `${H}px`;
   win.style.left   = `${L}px`;
   win.style.top    = `${T}px`;
-
   floatCont.appendChild(win);
   playSound('open');
-
   openWindows.set(id, { el: win, state: 'floating', appName: title, title, filePath });
   focusWindow(id);
   _addAppTab(id, title);
 }
-
 function _openSplit(id, appEl, title, filePath) {
   // If there's already a split window, convert it to floating first
   if (splitWindowId !== null) {
     popUp(splitWindowId);
   }
-
   const win = _buildWindow(id, appEl, title, filePath, 'split');
   splitPane.innerHTML = '';
   splitPane.appendChild(win);
   splitPane.classList.add('visible');
   resizeSplit.classList.remove('hidden');
-
   // Default: cap split pane at 50% of available TTY area width
   const totalW = window.innerWidth;
   const navW = document.getElementById('tty-nav-pane')?.offsetWidth || 280;
@@ -370,19 +377,16 @@ function _openSplit(id, appEl, title, filePath) {
   const maxHalf = Math.floor(available * 0.5);
   splitPane.style.width = `${maxHalf}px`;
   splitPane.style.flex = 'none';
-
   splitWindowId = id;
   openWindows.set(id, { el: win, state: 'split', appName: title, title, filePath });
   _addAppTab(id, title);
 }
-
 /* ─────────────────────────────────────────────────────────────
    POP UP / POP IN
 ───────────────────────────────────────────────────────────── */
 export function popUp(id) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'split') return;
-
   // Remove from split
   const appBody = info.el.querySelector('.window-body');
   const appContent = appBody?.firstElementChild;
@@ -390,7 +394,6 @@ export function popUp(id) {
   splitPane.classList.remove('visible');
   resizeSplit.classList.add('hidden');
   splitWindowId = null;
-
   // Re-create as floating
   if (appContent) {
     const newId = ++windowIdCounter;
@@ -399,33 +402,28 @@ export function popUp(id) {
     _openFloating(newId, appContent, info.title, info.filePath);
   }
 }
-
 export function popIn(id) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'floating' || currentMode !== 'tty') return;
-
   const winBody = info.el.querySelector('.window-body');
   const appContent = winBody?.firstElementChild;
-
   // Remove floating
   info.el.remove();
   openWindows.delete(id);
   _removeAppTab(id);
-
   // Re-open in split
   if (appContent) {
     const newId = ++windowIdCounter;
     _openSplit(newId, appContent, info.title, info.filePath);
   }
 }
-
 /* ─────────────────────────────────────────────────────────────
    MAXIMIZE / MINIMIZE
 ───────────────────────────────────────────────────────────── */
 export function maximizeWindow(id) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'floating') return;
-
+  playSound('maximize');
   const win = info.el;
   if (win.dataset.maximized === '1') {
     // Restore
@@ -441,8 +439,10 @@ export function maximizeWindow(id) {
     win.dataset.prevH = win.style.height;
     win.dataset.prevL = win.style.left;
     win.dataset.prevT = win.style.top;
-    win.style.width  = `${window.innerWidth}px`;
-    win.style.height = `${window.innerHeight - 34}px`; // above statusbar
+    win.style.width  = '100%';
+    win.style.height = 'calc(100% - var(--status-bar-h))';
+    win.style.width  = '100%';
+    win.style.height = 'calc(100% - var(--status-bar-h))';
     win.style.left   = '0px';
     win.style.top    = '0px';
     win.dataset.maximized = '1';
@@ -450,14 +450,11 @@ export function maximizeWindow(id) {
   }
   focusWindow(id);
 }
-
 export function minimizeWindow(id) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'floating') return;
-
   const win = info.el;
   const isMinimized = win.classList.contains('window--minimized');
-
   if (isMinimized) {
     // Restore
     win.classList.remove('window--minimized');
@@ -476,17 +473,13 @@ export function minimizeWindow(id) {
     playSound('minimize');
   }
 }
-
-
 /* ─────────────────────────────────────────────────────────────
    CLOSE WINDOW
 ───────────────────────────────────────────────────────────── */
 export function closeWindow(id) {
   const info = openWindows.get(id);
   if (!info) return;
-
   playSound('close');
-
   if (info.state === 'split') {
     splitPane.innerHTML = '';
     splitPane.classList.remove('visible');
@@ -503,11 +496,9 @@ export function closeWindow(id) {
       info.el.remove();
     }, 80);
   }
-
   openWindows.delete(id);
   _removeAppTab(id);
 }
-
 /* ─────────────────────────────────────────────────────────────
    FOCUS WINDOW
 ───────────────────────────────────────────────────────────── */
@@ -515,81 +506,65 @@ export function focusWindow(id) {
   // Remove focused class from all
   document.querySelectorAll('.window--floating.focused').forEach(w => w.classList.remove('focused'));
   document.querySelectorAll('.statusbar-app-tab.focused').forEach(t => t.classList.remove('focused'));
-
   const info = openWindows.get(id);
   if (!info || info.state !== 'floating') return;
-
   info.el.style.zIndex = ++topZ;
   info.el.classList.add('focused');
-
   const tab = document.getElementById(`apptab-${id}`);
   if (tab) tab.classList.add('focused');
 }
-
 /* ─────────────────────────────────────────────────────────────
    DRAG & RESIZE
 ───────────────────────────────────────────────────────────── */
 function _makeDraggable(win, handle) {
   let startX, startY, origLeft, origTop;
-
   handle.addEventListener('mousedown', e => {
     if (e.target.closest('.window-btn')) return; // don't drag on button clicks
     e.preventDefault();
     document.body.classList.add('resize-active');
-
     startX   = e.clientX;
     startY   = e.clientY;
     origLeft = parseInt(win.style.left) || 0;
     origTop  = parseInt(win.style.top)  || 0;
-
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
       win.style.left = `${Math.max(0, origLeft + dx)}px`;
       win.style.top  = `${Math.max(0, Math.min(window.innerHeight - 40, origTop + dy))}px`;
     }
-
     function onUp() {
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onUp);
       document.body.classList.remove('resize-active');
     }
-
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onUp);
   });
 }
-
-
 function _makeResizeHandle(win, handle, dir) {
   handle.addEventListener('mousedown', e => {
     e.preventDefault();
     e.stopPropagation();
     document.body.classList.add('resize-active');
-
     const startX  = e.clientX;
     const startY  = e.clientY;
     const origW   = win.offsetWidth;
     const origH   = win.offsetHeight;
-
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
       if (dir === 'e'  || dir === 'se') win.style.width  = `${Math.max(300, origW + dx)}px`;
       if (dir === 's'  || dir === 'se') win.style.height = `${Math.max(200, origH + dy)}px`;
     }
-
     function onUp() {
       document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onUp);
       document.body.classList.remove('resize-active');
     }
-
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onUp);
   });
 }
-
 /* ─────────────────────────────────────────────────────────────
    STATUS BAR APP TABS
 ───────────────────────────────────────────────────────────── */
@@ -611,22 +586,31 @@ function _addAppTab(id, title) {
   });
   activeApps.appendChild(tab);
 }
-
 function _removeAppTab(id) {
   document.getElementById(`apptab-${id}`)?.remove();
 }
-
 /* ─────────────────────────────────────────────────────────────
    MODE SWITCHING
 ───────────────────────────────────────────────────────────── */
 function switchMode(mode) {
+  // Minimize open apps on mobile when switching to desktop or tty shell mode
+  // We do this at the start so that if an app is open, clicking the current active tab still minimizes it
+  if (window.innerWidth <= 768) {
+    for (const [id, info] of openWindows.entries()) {
+      if (info.state === 'floating') {
+        const isMinimized = info.el.classList.contains('window--minimized');
+        if (!isMinimized) {
+          minimizeWindow(id);
+        }
+      }
+    }
+  }
+
   if (mode === currentMode) return;
   currentMode = mode;
   localStorage.setItem('v3-mode', mode);
-
   modeDesktop.classList.toggle('active', mode === 'desktop');
   modeTTY.classList.toggle('active',     mode === 'tty');
-
   tabDesktop.classList.toggle('active', mode === 'desktop');
   tabTTY.classList.toggle('active',     mode === 'tty');
   tabDesktop.setAttribute('aria-selected', String(mode === 'desktop'));
@@ -641,7 +625,6 @@ function switchMode(mode) {
     modeDesktop.appendChild(floatCont);
   }
 }
-
 /* ─────────────────────────────────────────────────────────────
    CRT TOGGLE
 ───────────────────────────────────────────────────────────── */
@@ -652,7 +635,6 @@ function toggleCRT() {
   crtToggle.setAttribute('aria-pressed', String(crtActive));
   localStorage.setItem('v3-crt', crtActive ? '1' : '0');
 }
-
 /* ─────────────────────────────────────────────────────────────
    STATUS BAR: CLOCK & STATS
 ───────────────────────────────────────────────────────────── */
@@ -667,7 +649,6 @@ function updateClock() {
   document.getElementById('clock-time').textContent = `${hh}:${mm} ${ampm}`;
   document.getElementById('clock-date').textContent = `${days[now.getDay()]} ${now.getDate()}, ${now.getFullYear()}`;
 }
-
 // Fake stats for immersion — fluctuate around realistic baselines
 let _cpuBase = 8, _gpuBase = 5, _memBase = 4.2, _satBase = 87;
 function updateStats() {
@@ -676,13 +657,11 @@ function updateStats() {
   const gpu  = Math.round(jitter(_gpuBase, 6));
   const mem  = (jitter(_memBase, 0.4)).toFixed(1);
   const sat  = Math.round(jitter(_satBase, 4));
-
   document.getElementById('stat-cpu').textContent = `${String(cpu).padStart(2,'0')}%`;
   document.getElementById('stat-gpu').textContent = `${String(gpu).padStart(2,'0')}%`;
   document.getElementById('stat-mem').textContent = `${mem}G`;
   document.getElementById('stat-sat').textContent = `${String(sat).padStart(2,'0')}%`;
 }
-
 /* ─────────────────────────────────────────────────────────────
    PANE RESIZE (nav pane drag handle)
 ───────────────────────────────────────────────────────────── */
@@ -690,9 +669,7 @@ function initPaneResize() {
   const navPane   = document.getElementById('tty-nav-pane');
   const navHandle = document.getElementById('resize-nav');
   const ttyMode   = document.getElementById('mode-tty');
-
   if (!navPane || !navHandle) return;
-
   let dragging = false;
   navHandle.addEventListener('mousedown', e => {
     dragging = true;
@@ -700,7 +677,6 @@ function initPaneResize() {
     document.body.classList.add('resize-active');
     e.preventDefault();
   });
-
   document.addEventListener('mousemove', e => {
     if (!dragging) return;
     const rect = ttyMode.getBoundingClientRect();
@@ -708,19 +684,16 @@ function initPaneResize() {
     navPane.style.width = `${newW}px`;
     document.documentElement.style.setProperty('--nav-pane-w', `${newW}px`);
   });
-
   document.addEventListener('mouseup', () => {
     dragging = false;
     navHandle.classList.remove('dragging');
     document.body.classList.remove('resize-active');
   });
-
   // Split pane resize handle — use rAF to prevent layout thrash
   const splitHandle = document.getElementById('resize-split');
   let splitDragging = false;
   let splitRafId = null;
   let lastSplitClientX = 0;
-
   splitHandle?.addEventListener('mousedown', e => {
     splitDragging = true;
     splitHandle.classList.add('dragging');
@@ -728,7 +701,6 @@ function initPaneResize() {
     splitPane.style.willChange = 'width';
     e.preventDefault();
   });
-
   document.addEventListener('mousemove', e => {
     if (!splitDragging) return;
     lastSplitClientX = e.clientX;
@@ -743,7 +715,6 @@ function initPaneResize() {
       splitPane.style.flex  = 'none';
     });
   });
-
   document.addEventListener('mouseup', () => {
     if (!splitDragging) return;
     splitDragging = false;
@@ -752,17 +723,14 @@ function initPaneResize() {
     splitPane.style.willChange = '';
   });
 }
-
 /* ─────────────────────────────────────────────────────────────
    FLOATING TERMINAL (for desktop mode console icon)
 ───────────────────────────────────────────────────────────── */
 function createTerminalFloatApp() {
   const el = document.createElement('div');
   el.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;';
-
   const out = document.createElement('div');
   out.style.cssText = 'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);';
-
   // Initial draw from buffer
   const renderBuffer = () => {
     out.innerHTML = '';
@@ -779,21 +747,16 @@ function createTerminalFloatApp() {
     out.scrollTop = out.scrollHeight;
   };
   renderBuffer();
-
   const row = document.createElement('div');
   row.style.cssText = 'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
-
   const prompt = document.createElement('span');
   prompt.style.cssText = 'color:var(--cp-green);font-size:12px;white-space:nowrap;';
   const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
   prompt.textContent = `guest@portfolio:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
-
   const inp = document.createElement('input');
   inp.style.cssText = 'flex:1;background:transparent;border:none;color:var(--cp-white);font-family:var(--font-mono);font-size:12px;outline:none;';
   inp.placeholder = 'type a command...';
-
   let histIdx = -1;
-
   // Subscribe to changes
   const unsubscribe = window.__TERMINAL_SESSION__.subscribe(event => {
     if (event.type === 'clear') {
@@ -810,21 +773,17 @@ function createTerminalFloatApp() {
       out.scrollTop = out.scrollHeight;
     }
   });
-
   // Attach cleanup to DOM node
   el.cleanup = unsubscribe;
-
   inp.addEventListener('keydown', async e => {
     if (e.key === 'Enter') {
       const cmd = inp.value.trim();
       inp.value = '';
       if (!cmd) return;
-      
-      histIdx = -1;
 
+      histIdx = -1;
       // Run unified execution on shared session
       await window.__TERMINAL_SESSION__.execute(cmd);
-
       // Update prompt label in case directory changed
       const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
       prompt.textContent = `guest@portfolio:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
@@ -842,16 +801,13 @@ function createTerminalFloatApp() {
       inp.value = histIdx < 0 ? '' : window.__TERMINAL_SESSION__.history[histIdx];
     }
   });
-
   row.appendChild(prompt);
   row.appendChild(inp);
   el.appendChild(out);
   el.appendChild(row);
-
   setTimeout(() => inp.focus(), 100);
   return el;
 }
-
 /* ─────────────────────────────────────────────────────────────
    KEYBOARD SHORTCUTS
 ───────────────────────────────────────────────────────────── */
@@ -868,7 +824,6 @@ function initKeyboard() {
     }
   });
 }
-
 /* ─────────────────────────────────────────────────────────────
    BOOT SCREEN SEQUENCE
 ───────────────────────────────────────────────────────────── */
@@ -877,9 +832,7 @@ function initBootScreen() {
   const bootLogs = document.getElementById('boot-logs');
   const bootProgress = document.getElementById('boot-progress');
   const statusPct = document.getElementById('boot-status-pct');
-
   if (!bootScreen) return;
-
   const bootLines = [
     "// ROM BIOS INTEL SANDBOX TX_OS V4.0.5-95638D",
     "",
@@ -892,13 +845,11 @@ function initBootScreen() {
     ">> SYS_READY: BOOT LOAD COMPLETED SUCCESSFULLY.",
     ">>"
   ];
-
   let lineIndex = 0;
   let logText = "";
   let progress = 0;
   let isSkipped = false;
   let logInterval, progressInterval;
-
   function skipBoot() {
     if (isSkipped) return;
     isSkipped = true;
@@ -909,10 +860,8 @@ function initBootScreen() {
       bootScreen.remove();
     }, 450);
   }
-
   // Click anywhere to skip
   bootScreen.addEventListener('click', skipBoot);
-
   // Print lines
   logInterval = setInterval(() => {
     if (lineIndex < bootLines.length) {
@@ -926,41 +875,35 @@ function initBootScreen() {
       clearInterval(logInterval);
     }
   }, 180);
-
   // Animate progress bar (takes ~2.2 seconds)
   progressInterval = setInterval(() => {
     progress += 2;
     if (progress > 100) progress = 100;
-    
+
     if (bootProgress) bootProgress.style.width = `${progress}%`;
     if (statusPct) statusPct.textContent = `LOAD STATUS: ${progress}% COMPLETE`;
-
     if (progress >= 100) {
       clearInterval(progressInterval);
       setTimeout(skipBoot, 400);
     }
   }, 40);
 }
-
 /* ─────────────────────────────────────────────────────────────
    INIT
 ───────────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   // Start boot screen animation
   initBootScreen();
-
   // Apply saved CRT state
   if (crtActive) {
     body.classList.add('crt-active');
     crtToggle.classList.add('active');
     crtToggle.setAttribute('aria-pressed', 'true');
   }
-
   // Apply saved mode
   const initialMode = currentMode;
   currentMode = null;
   switchMode(initialMode);
-
   // Status bar events
   tabDesktop.addEventListener('click',  () => { playSound('click'); switchMode('desktop'); });
   tabTTY.addEventListener('click',      () => { playSound('click'); switchMode('tty'); });
@@ -968,25 +911,20 @@ document.addEventListener('DOMContentLoaded', () => {
   tabTTY.addEventListener('keydown',     e => e.key === 'Enter' && (playSound('click'), switchMode('tty')));
   crtToggle.addEventListener('click',   () => { playSound('click'); toggleCRT(); });
   crtToggle.addEventListener('keydown', e => e.key === 'Enter' && (playSound('click'), toggleCRT()));
-
   // Clock & stats
   updateClock();
   updateStats();
   setInterval(updateClock,  1000);
   setInterval(updateStats, 2500);
-
   // Pane resize handles
   initPaneResize();
-
   // Keyboard shortcuts
   initKeyboard();
-
   // Initialize sub-systems
   initDesktop({ openApp });
   initNavPane({ openApp });
   initTerminal({ openApp });
 });
-
 // Expose openApp and playSound globally so apps can open other apps and play sounds
 window.playSound = playSound;
 window.__shell__ = { openApp, closeWindow, popUp, popIn, maximizeWindow, minimizeWindow, playSound };

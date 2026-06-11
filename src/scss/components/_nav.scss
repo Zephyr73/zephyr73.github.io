@@ -202,6 +202,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     text-align: center;
     transition: 0.3s ease;
 
@@ -209,6 +213,16 @@
       right: 0;
       margin: 0;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    & > ul {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    & > .site-nav__theme-toggle--drawer {
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
     ul {
@@ -233,6 +247,9 @@
     flex-direction: column;
     opacity: 0;
     pointer-events: none;
+    max-height: 50vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   li.theme-picker__drawer-options {

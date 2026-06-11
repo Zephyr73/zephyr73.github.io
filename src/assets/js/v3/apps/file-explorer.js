@@ -173,20 +173,23 @@ export function createFileExpApp(initialPath = '/') {
       item.appendChild(icon);
       item.appendChild(name);
 
-      // Selection handling
+      // Selection handling & double click/tap to open
+      let lastClick = 0;
       item.addEventListener('click', (e) => {
         window.playSound?.('click');
         e.stopPropagation();
-        document.querySelectorAll('.fileexp-item.selected').forEach(el => el.classList.remove('selected'));
-        item.classList.add('selected');
-        selectedItemNode = node;
-        updateStatusbar();
-      });
+        const now = Date.now();
+        const isDoubleClick = (now - lastClick) < 300;
+        lastClick = now;
 
-      // Double click to open folder/file
-      item.addEventListener('dblclick', () => {
-        window.playSound?.('click');
-        openItem(node);
+        if (isDoubleClick || item.classList.contains('selected')) {
+          openItem(node);
+        } else {
+          document.querySelectorAll('.fileexp-item.selected').forEach(el => el.classList.remove('selected'));
+          item.classList.add('selected');
+          selectedItemNode = node;
+          updateStatusbar();
+        }
       });
 
       item.addEventListener('keydown', (e) => {

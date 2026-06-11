@@ -51,15 +51,15 @@ window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
 
 const BANNER = `
 <div class="console-banner">
-██████╗  ██████╗ ██████╗ ████████╗███████╗ ██████╗ ██╗     ██╗ ██████╗ 
+<span class="console-banner-art">██████╗  ██████╗ ██████╗ ████████╗███████╗ ██████╗ ██╗     ██╗ ██████╗ 
 ██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝██╔═══██╗██║     ██║██╔═══██╗
 ██████╔╝██║   ██║██████╔╝   ██║   █████╗  ██║   ██║██║     ██║██║   ██║
 ██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══╝  ██║   ██║██║     ██║██║   ██║
 ██║     ╚██████╔╝██║  ██║   ██║   ██║     ╚██████╔╝███████╗██║╚██████╔╝
 ╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚═╝ ╚═════╝ 
-                                                          
+</span><span class="console-banner-text">
 Welcome to TX_OS v3.0 terminal emulator.
-Type 'help' to list available commands.
+Type 'help' to list available commands.</span>
 </div>`;
 
 export function initTerminal({ openApp }) {
@@ -113,8 +113,17 @@ export function initTerminal({ openApp }) {
   });
 
   // Focus input when clicking console
-  consolePane?.addEventListener('click', () => {
+  consolePane?.addEventListener('click', (e) => {
+    if (e.target.closest('#console-nav-toggle')) return;
+    document.getElementById('mode-tty')?.classList.remove('nav-pane-open');
     consoleInput.focus();
+  });
+
+  const navToggle = document.getElementById('console-nav-toggle');
+  navToggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    document.getElementById('mode-tty')?.classList.toggle('nav-pane-open');
   });
 
   // Event handler for Enter/Arrow keys/Tab
@@ -351,7 +360,7 @@ Available commands:
         : `${uptimeSec}s`;
 
       return `
-<div style="display:flex;gap:20px;line-height:1.4;">
+<div class="neofetch-output" style="display:flex;gap:20px;line-height:1.4;">
 <span style="color:var(--cp-green);font-family:monospace;white-space:pre;">
    /\\___/\\ 
   (  o o  )

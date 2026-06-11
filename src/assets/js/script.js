@@ -36,6 +36,9 @@ function applyTheme(themeKey) {
   // Re-dither the avatar using the new theme's colours
   ditherAvatar();
 }
+window.applyTheme = applyTheme;
+window.applyTheme = applyTheme;
+window.applyTheme = applyTheme;
 
 // Desktop theme dropdown
 if (themeSwitch && themeMenu) {
