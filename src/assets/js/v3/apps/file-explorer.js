@@ -90,7 +90,7 @@ export function createFileExpApp(initialPath = '/') {
   // Render Breadcrumbs
   function renderBreadcrumbs() {
     pathBar.innerHTML = '';
-    
+
     // Add root
     const rootBread = document.createElement('span');
     rootBread.className = 'fileexp-breadcrumb';
@@ -105,10 +105,10 @@ export function createFileExpApp(initialPath = '/') {
 
     const parts = currentPath.split('/').filter(Boolean);
     let accumPath = '';
-    
-    parts.forEach(part => {
+
+    parts.forEach((part) => {
       accumPath += '/' + part;
-      
+
       const sep = document.createElement('span');
       sep.className = 'fileexp-breadcrumb-sep';
       sep.textContent = '›';
@@ -132,7 +132,7 @@ export function createFileExpApp(initialPath = '/') {
     const entries = ls(currentPath);
     if (!entries) return;
 
-    entries.forEach(node => {
+    entries.forEach((node) => {
       const item = document.createElement('div');
       item.className = 'fileexp-item';
       item.setAttribute('tabindex', '0');
@@ -177,7 +177,9 @@ export function createFileExpApp(initialPath = '/') {
       item.addEventListener('click', (e) => {
         window.playSound?.('click');
         e.stopPropagation();
-        document.querySelectorAll('.fileexp-item.selected').forEach(el => el.classList.remove('selected'));
+        document
+          .querySelectorAll('.fileexp-item.selected')
+          .forEach((el) => el.classList.remove('selected'));
         item.classList.add('selected');
         selectedItemNode = node;
         updateStatusbar();
@@ -212,9 +214,10 @@ export function createFileExpApp(initialPath = '/') {
   function updateStatusbar() {
     const entries = ls(currentPath) || [];
     const count = entries.length;
-    
+
     if (selectedItemNode) {
-      const sizeStr = selectedItemNode.type === 'file' ? ` (${selectedItemNode.size || '0 B'})` : '';
+      const sizeStr =
+        selectedItemNode.type === 'file' ? ` (${selectedItemNode.size || '0 B'})` : '';
       statusbar.textContent = `Selected: "${selectedItemNode.name}"${sizeStr}`;
     } else {
       statusbar.textContent = `${count} item${count === 1 ? '' : 's'}`;
@@ -223,7 +226,9 @@ export function createFileExpApp(initialPath = '/') {
 
   // Click background to deselect
   body.addEventListener('click', () => {
-    document.querySelectorAll('.fileexp-item.selected').forEach(el => el.classList.remove('selected'));
+    document
+      .querySelectorAll('.fileexp-item.selected')
+      .forEach((el) => el.classList.remove('selected'));
     selectedItemNode = null;
     updateStatusbar();
   });

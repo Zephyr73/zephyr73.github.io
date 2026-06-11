@@ -12,14 +12,14 @@ let cwd = '/';
  */
 export function resolvePath(targetPath) {
   if (!targetPath) return cwd;
-  
+
   let parts;
   if (targetPath.startsWith('/')) {
     parts = targetPath.split('/');
   } else {
     parts = (cwd === '/' ? '' : cwd).split('/').concat(targetPath.split('/'));
   }
-  
+
   const stack = [];
   for (const part of parts) {
     if (part === '' || part === '.') continue;
@@ -29,7 +29,7 @@ export function resolvePath(targetPath) {
       stack.push(part);
     }
   }
-  
+
   return '/' + stack.join('/');
 }
 
@@ -43,17 +43,17 @@ export function getNodeByPath(absPath) {
   if (normalized === '/') {
     return window.__FS_TREE__;
   }
-  
+
   const parts = normalized.split('/').filter(Boolean);
   let curr = window.__FS_TREE__;
-  
+
   for (const part of parts) {
     if (!curr || !curr.children) return null;
-    const next = curr.children.find(child => child.name.toLowerCase() === part.toLowerCase());
+    const next = curr.children.find((child) => child.name.toLowerCase() === part.toLowerCase());
     if (!next) return null;
     curr = next;
   }
-  
+
   return curr;
 }
 
@@ -105,7 +105,7 @@ export async function getFileContent(path) {
   if (!node || node.type !== 'file') {
     throw new Error(`File not found: ${absPath}`);
   }
-  
+
   // Fetch from the server/public URL
   try {
     const response = await fetch(absPath);

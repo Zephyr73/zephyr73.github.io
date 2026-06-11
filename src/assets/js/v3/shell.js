@@ -4,19 +4,19 @@
  */
 
 import { initDesktop } from './desktop.js';
-import { initNavPane  } from './navigation-pane.js';
+import { initNavPane } from './navigation-pane.js';
 import { initTerminal } from './terminal.js';
-import { createBrowserApp    } from './apps/browser.js';
-import { createFileExpApp    } from './apps/file-explorer.js';
-import { createMarkdownApp   } from './apps/markdown-viewer.js';
-import { createGalleryApp    } from './apps/gallery.js';
-import { createPdfApp        } from './apps/pdf-viewer.js';
+import { createBrowserApp } from './apps/browser.js';
+import { createFileExpApp } from './apps/file-explorer.js';
+import { createMarkdownApp } from './apps/markdown-viewer.js';
+import { createGalleryApp } from './apps/gallery.js';
+import { createPdfApp } from './apps/pdf-viewer.js';
 
 /* ─────────────────────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────────────────────── */
 let currentMode = localStorage.getItem('v3-mode') || 'desktop';
-let crtActive   = localStorage.getItem('v3-crt')  === '1';
+let crtActive = localStorage.getItem('v3-crt') === '1';
 let windowIdCounter = 0;
 const openWindows = new Map(); // id → { el, state, appName, title }
 let topZ = 200;
@@ -97,31 +97,30 @@ export function playSound(type) {
   }
 }
 
-
 /* ─────────────────────────────────────────────────────────────
    DOM REFERENCES
 ───────────────────────────────────────────────────────────── */
-const modeDesktop  = document.getElementById('mode-desktop');
-const modeTTY      = document.getElementById('mode-tty');
-const tabDesktop   = document.getElementById('tab-desktop');
-const tabTTY       = document.getElementById('tab-tty');
-const crtToggle    = document.getElementById('crt-toggle');
-const activeApps   = document.getElementById('statusbar-active-apps');
-const floatCont    = document.getElementById('desktop-floating-container');
-const splitPane    = document.getElementById('tty-split-pane');
-const resizeSplit  = document.getElementById('resize-split');
-const body         = document.body;
+const modeDesktop = document.getElementById('mode-desktop');
+const modeTTY = document.getElementById('mode-tty');
+const tabDesktop = document.getElementById('tab-desktop');
+const tabTTY = document.getElementById('tab-tty');
+const crtToggle = document.getElementById('crt-toggle');
+const activeApps = document.getElementById('statusbar-active-apps');
+const floatCont = document.getElementById('desktop-floating-container');
+const splitPane = document.getElementById('tty-split-pane');
+const resizeSplit = document.getElementById('resize-split');
+const body = document.body;
 
 /* ─────────────────────────────────────────────────────────────
    APP REGISTRY
    Maps file extensions → app factory functions
 ───────────────────────────────────────────────────────────── */
 const APP_REGISTRY = {
-  md:    (path, title) => createMarkdownApp(path, title),
-  html:  (path, title) => createBrowserApp(path, title),
-  pdf:   (path, title) => createPdfApp(path, title),
-  img:   (path, title) => createGalleryApp(path, title),
-  dir:   (path, title) => createFileExpApp(path, title),
+  md: (path, title) => createMarkdownApp(path, title),
+  html: (path, title) => createBrowserApp(path, title),
+  pdf: (path, title) => createPdfApp(path, title),
+  img: (path, title) => createGalleryApp(path, title),
+  dir: (path, title) => createFileExpApp(path, title),
   other: (path, title) => createMarkdownApp(path, title), // raw text fallback
 };
 
@@ -144,19 +143,19 @@ export function openApp(appNameOrNode, pathArg, titleArg) {
     switch (appNameOrNode) {
       case 'browser':
         appFactory = () => createBrowserApp('/v2/', 'Portfolio');
-        title      = 'Portfolio Browser';
-        filePath   = '/v2/';
+        title = 'Portfolio Browser';
+        filePath = '/v2/';
         break;
       case 'fileExplorer':
         appFactory = () => createFileExpApp('/', 'File Explorer');
-        title      = 'File Explorer';
-        filePath   = '/';
+        title = 'File Explorer';
+        filePath = '/';
         break;
       case 'terminal':
         // Open a floating terminal in desktop mode
         appFactory = () => createTerminalFloatApp();
-        title      = 'Console';
-        filePath   = null;
+        title = 'Console';
+        filePath = null;
         break;
       default:
         console.warn('Unknown app:', appNameOrNode);
@@ -167,14 +166,15 @@ export function openApp(appNameOrNode, pathArg, titleArg) {
     const node = appNameOrNode;
     const appType = getAppForFile(node);
     appFactory = () => APP_REGISTRY[appType](node.path, node.name);
-    title      = node.name;
-    filePath   = node.path;
+    title = node.name;
+    filePath = node.path;
   } else {
     // Explicit app + path
     const appType = appNameOrNode;
-    appFactory = () => APP_REGISTRY[appType]?.(pathArg, titleArg) ?? createMarkdownApp(pathArg, titleArg);
-    title      = titleArg || pathArg;
-    filePath   = pathArg;
+    appFactory = () =>
+      APP_REGISTRY[appType]?.(pathArg, titleArg) ?? createMarkdownApp(pathArg, titleArg);
+    title = titleArg || pathArg;
+    filePath = pathArg;
   }
 
   const id = ++windowIdCounter;
@@ -258,7 +258,10 @@ function _buildWindow(id, appEl, title, filePath, state) {
     minBtn.title = 'Minimize';
     minBtn.setAttribute('aria-label', 'Minimize window');
     minBtn.textContent = '[_]';
-    minBtn.addEventListener('click', (e) => { e.stopPropagation(); minimizeWindow(id); });
+    minBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      minimizeWindow(id);
+    });
     btns.appendChild(minBtn);
 
     const maxBtn = document.createElement('button');
@@ -266,7 +269,10 @@ function _buildWindow(id, appEl, title, filePath, state) {
     maxBtn.title = 'Maximize / Restore';
     maxBtn.setAttribute('aria-label', 'Maximize window');
     maxBtn.textContent = '[M]';
-    maxBtn.addEventListener('click', (e) => { e.stopPropagation(); maximizeWindow(id); });
+    maxBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      maximizeWindow(id);
+    });
     btns.appendChild(maxBtn);
   }
 
@@ -293,7 +299,7 @@ function _buildWindow(id, appEl, title, filePath, state) {
     _makeDraggable(win, tbar);
 
     // Resize handles
-    ['e','s','se'].forEach(dir => {
+    ['e', 's', 'se'].forEach((dir) => {
       const handle = document.createElement('div');
       handle.className = `window-resize-${dir}`;
       win.appendChild(handle);
@@ -333,15 +339,15 @@ function _openFloating(id, appEl, title, filePath) {
   const win = _buildWindow(id, appEl, title, filePath, 'floating');
 
   // Default size & centered position
-  const W = Math.min(900, window.innerWidth  - 80);
+  const W = Math.min(900, window.innerWidth - 80);
   const H = Math.min(640, window.innerHeight - 80);
-  const L = Math.round((window.innerWidth  - W) / 2) + (id % 5) * 20;
+  const L = Math.round((window.innerWidth - W) / 2) + (id % 5) * 20;
   const T = Math.round((window.innerHeight - H) / 2) + (id % 5) * 20 - 20;
 
-  win.style.width  = `${W}px`;
+  win.style.width = `${W}px`;
   win.style.height = `${H}px`;
-  win.style.left   = `${L}px`;
-  win.style.top    = `${T}px`;
+  win.style.left = `${L}px`;
+  win.style.top = `${T}px`;
 
   floatCont.appendChild(win);
   playSound('open');
@@ -429,10 +435,10 @@ export function maximizeWindow(id) {
   const win = info.el;
   if (win.dataset.maximized === '1') {
     // Restore
-    win.style.width  = win.dataset.prevW  || '900px';
-    win.style.height = win.dataset.prevH  || '640px';
-    win.style.left   = win.dataset.prevL  || '80px';
-    win.style.top    = win.dataset.prevT  || '60px';
+    win.style.width = win.dataset.prevW || '900px';
+    win.style.height = win.dataset.prevH || '640px';
+    win.style.left = win.dataset.prevL || '80px';
+    win.style.top = win.dataset.prevT || '60px';
     win.dataset.maximized = '0';
     win.querySelector('.window-btn--maximize').textContent = '[M]';
   } else {
@@ -441,10 +447,10 @@ export function maximizeWindow(id) {
     win.dataset.prevH = win.style.height;
     win.dataset.prevL = win.style.left;
     win.dataset.prevT = win.style.top;
-    win.style.width  = `${window.innerWidth}px`;
+    win.style.width = `${window.innerWidth}px`;
     win.style.height = `${window.innerHeight - 34}px`; // above statusbar
-    win.style.left   = '0px';
-    win.style.top    = '0px';
+    win.style.left = '0px';
+    win.style.top = '0px';
     win.dataset.maximized = '1';
     win.querySelector('.window-btn--maximize').textContent = '[R]';
   }
@@ -476,7 +482,6 @@ export function minimizeWindow(id) {
     playSound('minimize');
   }
 }
-
 
 /* ─────────────────────────────────────────────────────────────
    CLOSE WINDOW
@@ -513,8 +518,12 @@ export function closeWindow(id) {
 ───────────────────────────────────────────────────────────── */
 export function focusWindow(id) {
   // Remove focused class from all
-  document.querySelectorAll('.window--floating.focused').forEach(w => w.classList.remove('focused'));
-  document.querySelectorAll('.statusbar-app-tab.focused').forEach(t => t.classList.remove('focused'));
+  document
+    .querySelectorAll('.window--floating.focused')
+    .forEach((w) => w.classList.remove('focused'));
+  document
+    .querySelectorAll('.statusbar-app-tab.focused')
+    .forEach((t) => t.classList.remove('focused'));
 
   const info = openWindows.get(id);
   if (!info || info.state !== 'floating') return;
@@ -532,21 +541,21 @@ export function focusWindow(id) {
 function _makeDraggable(win, handle) {
   let startX, startY, origLeft, origTop;
 
-  handle.addEventListener('mousedown', e => {
+  handle.addEventListener('mousedown', (e) => {
     if (e.target.closest('.window-btn')) return; // don't drag on button clicks
     e.preventDefault();
     document.body.classList.add('resize-active');
 
-    startX   = e.clientX;
-    startY   = e.clientY;
+    startX = e.clientX;
+    startY = e.clientY;
     origLeft = parseInt(win.style.left) || 0;
-    origTop  = parseInt(win.style.top)  || 0;
+    origTop = parseInt(win.style.top) || 0;
 
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
       win.style.left = `${Math.max(0, origLeft + dx)}px`;
-      win.style.top  = `${Math.max(0, Math.min(window.innerHeight - 40, origTop + dy))}px`;
+      win.style.top = `${Math.max(0, Math.min(window.innerHeight - 40, origTop + dy))}px`;
     }
 
     function onUp() {
@@ -560,23 +569,22 @@ function _makeDraggable(win, handle) {
   });
 }
 
-
 function _makeResizeHandle(win, handle, dir) {
-  handle.addEventListener('mousedown', e => {
+  handle.addEventListener('mousedown', (e) => {
     e.preventDefault();
     e.stopPropagation();
     document.body.classList.add('resize-active');
 
-    const startX  = e.clientX;
-    const startY  = e.clientY;
-    const origW   = win.offsetWidth;
-    const origH   = win.offsetHeight;
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const origW = win.offsetWidth;
+    const origH = win.offsetHeight;
 
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      if (dir === 'e'  || dir === 'se') win.style.width  = `${Math.max(300, origW + dx)}px`;
-      if (dir === 's'  || dir === 'se') win.style.height = `${Math.max(200, origH + dy)}px`;
+      if (dir === 'e' || dir === 'se') win.style.width = `${Math.max(300, origW + dx)}px`;
+      if (dir === 's' || dir === 'se') win.style.height = `${Math.max(200, origH + dy)}px`;
     }
 
     function onUp() {
@@ -625,12 +633,12 @@ function switchMode(mode) {
   localStorage.setItem('v3-mode', mode);
 
   modeDesktop.classList.toggle('active', mode === 'desktop');
-  modeTTY.classList.toggle('active',     mode === 'tty');
+  modeTTY.classList.toggle('active', mode === 'tty');
 
   tabDesktop.classList.toggle('active', mode === 'desktop');
-  tabTTY.classList.toggle('active',     mode === 'tty');
+  tabTTY.classList.toggle('active', mode === 'tty');
   tabDesktop.setAttribute('aria-selected', String(mode === 'desktop'));
-  tabTTY.setAttribute('aria-selected',     String(mode === 'tty'));
+  tabTTY.setAttribute('aria-selected', String(mode === 'tty'));
 
   // Move any floating windows into the correct container
   if (mode === 'tty') {
@@ -657,51 +665,55 @@ function toggleCRT() {
    STATUS BAR: CLOCK & STATS
 ───────────────────────────────────────────────────────────── */
 function updateClock() {
-  const now  = new Date();
-  let h      = now.getHours();
+  const now = new Date();
+  let h = now.getHours();
   const ampm = h >= 12 ? 'PM' : 'AM';
   h = h % 12 || 12;
-  const hh   = String(h).padStart(2, '0');
-  const mm   = String(now.getMinutes()).padStart(2, '0');
-  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const hh = String(h).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   document.getElementById('clock-time').textContent = `${hh}:${mm} ${ampm}`;
-  document.getElementById('clock-date').textContent = `${days[now.getDay()]} ${now.getDate()}, ${now.getFullYear()}`;
+  document.getElementById('clock-date').textContent =
+    `${days[now.getDay()]} ${now.getDate()}, ${now.getFullYear()}`;
 }
 
 // Fake stats for immersion — fluctuate around realistic baselines
-let _cpuBase = 8, _gpuBase = 5, _memBase = 4.2, _satBase = 87;
+let _cpuBase = 8,
+  _gpuBase = 5,
+  _memBase = 4.2,
+  _satBase = 87;
 function updateStats() {
   const jitter = (base, range) => Math.max(0, Math.min(99, base + (Math.random() - 0.5) * range));
-  const cpu  = Math.round(jitter(_cpuBase, 8));
-  const gpu  = Math.round(jitter(_gpuBase, 6));
-  const mem  = (jitter(_memBase, 0.4)).toFixed(1);
-  const sat  = Math.round(jitter(_satBase, 4));
+  const cpu = Math.round(jitter(_cpuBase, 8));
+  const gpu = Math.round(jitter(_gpuBase, 6));
+  const mem = jitter(_memBase, 0.4).toFixed(1);
+  const sat = Math.round(jitter(_satBase, 4));
 
-  document.getElementById('stat-cpu').textContent = `${String(cpu).padStart(2,'0')}%`;
-  document.getElementById('stat-gpu').textContent = `${String(gpu).padStart(2,'0')}%`;
+  document.getElementById('stat-cpu').textContent = `${String(cpu).padStart(2, '0')}%`;
+  document.getElementById('stat-gpu').textContent = `${String(gpu).padStart(2, '0')}%`;
   document.getElementById('stat-mem').textContent = `${mem}G`;
-  document.getElementById('stat-sat').textContent = `${String(sat).padStart(2,'0')}%`;
+  document.getElementById('stat-sat').textContent = `${String(sat).padStart(2, '0')}%`;
 }
 
 /* ─────────────────────────────────────────────────────────────
    PANE RESIZE (nav pane drag handle)
 ───────────────────────────────────────────────────────────── */
 function initPaneResize() {
-  const navPane   = document.getElementById('tty-nav-pane');
+  const navPane = document.getElementById('tty-nav-pane');
   const navHandle = document.getElementById('resize-nav');
-  const ttyMode   = document.getElementById('mode-tty');
+  const ttyMode = document.getElementById('mode-tty');
 
   if (!navPane || !navHandle) return;
 
   let dragging = false;
-  navHandle.addEventListener('mousedown', e => {
+  navHandle.addEventListener('mousedown', (e) => {
     dragging = true;
     navHandle.classList.add('dragging');
     document.body.classList.add('resize-active');
     e.preventDefault();
   });
 
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', (e) => {
     if (!dragging) return;
     const rect = ttyMode.getBoundingClientRect();
     const newW = Math.max(140, Math.min(400, e.clientX - rect.left));
@@ -721,7 +733,7 @@ function initPaneResize() {
   let splitRafId = null;
   let lastSplitClientX = 0;
 
-  splitHandle?.addEventListener('mousedown', e => {
+  splitHandle?.addEventListener('mousedown', (e) => {
     splitDragging = true;
     splitHandle.classList.add('dragging');
     document.body.classList.add('resize-active');
@@ -729,18 +741,21 @@ function initPaneResize() {
     e.preventDefault();
   });
 
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', (e) => {
     if (!splitDragging) return;
     lastSplitClientX = e.clientX;
     if (splitRafId) return; // already scheduled
     splitRafId = requestAnimationFrame(() => {
       splitRafId = null;
-      const rect   = ttyMode.getBoundingClientRect();
-      const navW   = navPane.offsetWidth + 4;
+      const rect = ttyMode.getBoundingClientRect();
+      const navW = navPane.offsetWidth + 4;
       const totalW = rect.width;
-      const splitW = Math.max(200, Math.min(totalW - navW - 200, totalW - (lastSplitClientX - rect.left)));
+      const splitW = Math.max(
+        200,
+        Math.min(totalW - navW - 200, totalW - (lastSplitClientX - rect.left)),
+      );
       splitPane.style.width = `${splitW}px`;
-      splitPane.style.flex  = 'none';
+      splitPane.style.flex = 'none';
     });
   });
 
@@ -761,12 +776,13 @@ function createTerminalFloatApp() {
   el.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;';
 
   const out = document.createElement('div');
-  out.style.cssText = 'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);';
+  out.style.cssText =
+    'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);';
 
   // Initial draw from buffer
   const renderBuffer = () => {
     out.innerHTML = '';
-    window.__TERMINAL_SESSION__.buffer.forEach(event => {
+    window.__TERMINAL_SESSION__.buffer.forEach((event) => {
       const div = document.createElement('div');
       div.className = `console-line ${event.type}`;
       if (/<[a-z][\s\S]*>/i.test(event.text)) {
@@ -781,7 +797,8 @@ function createTerminalFloatApp() {
   renderBuffer();
 
   const row = document.createElement('div');
-  row.style.cssText = 'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
+  row.style.cssText =
+    'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
 
   const prompt = document.createElement('span');
   prompt.style.cssText = 'color:var(--cp-green);font-size:12px;white-space:nowrap;';
@@ -789,13 +806,14 @@ function createTerminalFloatApp() {
   prompt.textContent = `guest@portfolio:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
 
   const inp = document.createElement('input');
-  inp.style.cssText = 'flex:1;background:transparent;border:none;color:var(--cp-white);font-family:var(--font-mono);font-size:12px;outline:none;';
+  inp.style.cssText =
+    'flex:1;background:transparent;border:none;color:var(--cp-white);font-family:var(--font-mono);font-size:12px;outline:none;';
   inp.placeholder = 'type a command...';
 
   let histIdx = -1;
 
   // Subscribe to changes
-  const unsubscribe = window.__TERMINAL_SESSION__.subscribe(event => {
+  const unsubscribe = window.__TERMINAL_SESSION__.subscribe((event) => {
     if (event.type === 'clear') {
       out.innerHTML = '';
     } else if (event.type === 'write') {
@@ -814,12 +832,12 @@ function createTerminalFloatApp() {
   // Attach cleanup to DOM node
   el.cleanup = unsubscribe;
 
-  inp.addEventListener('keydown', async e => {
+  inp.addEventListener('keydown', async (e) => {
     if (e.key === 'Enter') {
       const cmd = inp.value.trim();
       inp.value = '';
       if (!cmd) return;
-      
+
       histIdx = -1;
 
       // Run unified execution on shared session
@@ -856,12 +874,21 @@ function createTerminalFloatApp() {
    KEYBOARD SHORTCUTS
 ───────────────────────────────────────────────────────────── */
 function initKeyboard() {
-  document.addEventListener('keydown', e => {
+  document.addEventListener('keydown', (e) => {
     // Alt+1 = Desktop, Alt+2 = TTY
-    if (e.altKey && e.key === '1') { e.preventDefault(); switchMode('desktop'); }
-    if (e.altKey && e.key === '2') { e.preventDefault(); switchMode('tty'); }
+    if (e.altKey && e.key === '1') {
+      e.preventDefault();
+      switchMode('desktop');
+    }
+    if (e.altKey && e.key === '2') {
+      e.preventDefault();
+      switchMode('tty');
+    }
     // Alt+C = Toggle CRT
-    if (e.altKey && e.key === 'c') { e.preventDefault(); toggleCRT(); }
+    if (e.altKey && e.key === 'c') {
+      e.preventDefault();
+      toggleCRT();
+    }
     // Escape = focus console input in TTY
     if (e.key === 'Escape' && currentMode === 'tty') {
       document.getElementById('console-input')?.focus();
@@ -881,20 +908,20 @@ function initBootScreen() {
   if (!bootScreen) return;
 
   const bootLines = [
-    "// ROM BIOS INTEL SANDBOX TX_OS V4.0.5-95638D",
-    "",
-    ">> SYSTEM_BOOT: SEARCHING FOR CORE LOGIC IMAGE...",
-    ">> RAM_CONF: ALLOCATING STORAGE POOLS... 8385",
-    ">> DISK_MNT: COMPILING PHYSICAL LOCALSTORAGE SECTOR",
-    ">> DISK_MNT: RECOVERY MOUNTING SYSTEM COMPILATION BLOCKS... DONE",
-    ">> NET_CONN: LOCAL_IP LOOPBACK VERIFIED AT 127.0.0.1",
-    ">> SECURITY: TRIPLE SANDBOX INTEGRITY BUFFER ACTIVE",
-    ">> SYS_READY: BOOT LOAD COMPLETED SUCCESSFULLY.",
-    ">>"
+    '// ROM BIOS INTEL SANDBOX TX_OS V4.0.5-95638D',
+    '',
+    '>> SYSTEM_BOOT: SEARCHING FOR CORE LOGIC IMAGE...',
+    '>> RAM_CONF: ALLOCATING STORAGE POOLS... 8385',
+    '>> DISK_MNT: COMPILING PHYSICAL LOCALSTORAGE SECTOR',
+    '>> DISK_MNT: RECOVERY MOUNTING SYSTEM COMPILATION BLOCKS... DONE',
+    '>> NET_CONN: LOCAL_IP LOOPBACK VERIFIED AT 127.0.0.1',
+    '>> SECURITY: TRIPLE SANDBOX INTEGRITY BUFFER ACTIVE',
+    '>> SYS_READY: BOOT LOAD COMPLETED SUCCESSFULLY.',
+    '>>',
   ];
 
   let lineIndex = 0;
-  let logText = "";
+  let logText = '';
   let progress = 0;
   let isSkipped = false;
   let logInterval, progressInterval;
@@ -916,7 +943,7 @@ function initBootScreen() {
   // Print lines
   logInterval = setInterval(() => {
     if (lineIndex < bootLines.length) {
-      logText += bootLines[lineIndex] + "\n";
+      logText += bootLines[lineIndex] + '\n';
       if (bootLogs) {
         bootLogs.textContent = logText;
         bootLogs.scrollTop = bootLogs.scrollHeight;
@@ -931,7 +958,7 @@ function initBootScreen() {
   progressInterval = setInterval(() => {
     progress += 2;
     if (progress > 100) progress = 100;
-    
+
     if (bootProgress) bootProgress.style.width = `${progress}%`;
     if (statusPct) statusPct.textContent = `LOAD STATUS: ${progress}% COMPLETE`;
 
@@ -962,17 +989,35 @@ document.addEventListener('DOMContentLoaded', () => {
   switchMode(initialMode);
 
   // Status bar events
-  tabDesktop.addEventListener('click',  () => { playSound('click'); switchMode('desktop'); });
-  tabTTY.addEventListener('click',      () => { playSound('click'); switchMode('tty'); });
-  tabDesktop.addEventListener('keydown', e => e.key === 'Enter' && (playSound('click'), switchMode('desktop')));
-  tabTTY.addEventListener('keydown',     e => e.key === 'Enter' && (playSound('click'), switchMode('tty')));
-  crtToggle.addEventListener('click',   () => { playSound('click'); toggleCRT(); });
-  crtToggle.addEventListener('keydown', e => e.key === 'Enter' && (playSound('click'), toggleCRT()));
+  tabDesktop.addEventListener('click', () => {
+    playSound('click');
+    switchMode('desktop');
+  });
+  tabTTY.addEventListener('click', () => {
+    playSound('click');
+    switchMode('tty');
+  });
+  tabDesktop.addEventListener(
+    'keydown',
+    (e) => e.key === 'Enter' && (playSound('click'), switchMode('desktop')),
+  );
+  tabTTY.addEventListener(
+    'keydown',
+    (e) => e.key === 'Enter' && (playSound('click'), switchMode('tty')),
+  );
+  crtToggle.addEventListener('click', () => {
+    playSound('click');
+    toggleCRT();
+  });
+  crtToggle.addEventListener(
+    'keydown',
+    (e) => e.key === 'Enter' && (playSound('click'), toggleCRT()),
+  );
 
   // Clock & stats
   updateClock();
   updateStats();
-  setInterval(updateClock,  1000);
+  setInterval(updateClock, 1000);
   setInterval(updateStats, 2500);
 
   // Pane resize handles
@@ -989,4 +1034,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Expose openApp and playSound globally so apps can open other apps and play sounds
 window.playSound = playSound;
-window.__shell__ = { openApp, closeWindow, popUp, popIn, maximizeWindow, minimizeWindow, playSound };
+window.__shell__ = {
+  openApp,
+  closeWindow,
+  popUp,
+  popIn,
+  maximizeWindow,
+  minimizeWindow,
+  playSound,
+};
