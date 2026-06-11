@@ -2,7 +2,6 @@
  * navigation-pane.js — TTY Navigation Pane (File System Tree)
  */
 
-
 let sortType = 'alpha'; // 'alpha' or 'type'
 let onFileSelectCallback = null;
 
@@ -114,7 +113,7 @@ function renderTree() {
 
   // Cache open folders paths
   const openPaths = new Set(
-    Array.from(container.querySelectorAll('.tree-node.open')).map(el => el.dataset.path)
+    Array.from(container.querySelectorAll('.tree-node.open')).map((el) => el.dataset.path),
   );
   window.__OPEN_PATHS__ = openPaths;
 
@@ -124,7 +123,7 @@ function renderTree() {
   if (fsRoot && fsRoot.children) {
     const sorted = sortNodes(fsRoot.children);
     const fragment = document.createDocumentFragment();
-    sorted.forEach(child => {
+    sorted.forEach((child) => {
       fragment.appendChild(createNodeEl(child));
     });
     container.appendChild(fragment);
@@ -135,15 +134,15 @@ function renderTree() {
 
 // ASCII icon map — no emojis, cyberpunk style
 const FILE_ICONS = {
-  dir:   '[D]',
-  md:    'MD',
-  html:  'WB',
-  img:   'IM',
-  pdf:   'PD',
-  txt:   'TX',
-  js:    'JS',
-  json:  'JS',
-  css:   'CS',
+  dir: '[D]',
+  md: 'MD',
+  html: 'WB',
+  img: 'IM',
+  pdf: 'PD',
+  txt: 'TX',
+  js: 'JS',
+  json: 'JS',
+  css: 'CS',
   other: '--',
 };
 
@@ -195,7 +194,7 @@ function createNodeEl(node) {
     // Eagerly render sorted children (ensures sort always applies immediately)
     if (node.children && node.children.length > 0) {
       const sortedChildren = sortNodes(node.children);
-      sortedChildren.forEach(child => {
+      sortedChildren.forEach((child) => {
         childrenCont.appendChild(createNodeEl(child));
       });
     }
@@ -207,14 +206,18 @@ function createNodeEl(node) {
       e.stopPropagation();
       const isOpen = nodeEl.classList.toggle('open');
       toggleEl.textContent = isOpen ? '[-]' : '[+]';
-      document.querySelectorAll('.tree-node__row.selected').forEach(el => el.classList.remove('selected'));
+      document
+        .querySelectorAll('.tree-node__row.selected')
+        .forEach((el) => el.classList.remove('selected'));
       rowEl.classList.add('selected');
     });
   } else {
     rowEl.addEventListener('click', (e) => {
       window.playSound?.('click');
       e.stopPropagation();
-      document.querySelectorAll('.tree-node__row.selected').forEach(el => el.classList.remove('selected'));
+      document
+        .querySelectorAll('.tree-node__row.selected')
+        .forEach((el) => el.classList.remove('selected'));
       rowEl.classList.add('selected');
       if (onFileSelectCallback) {
         onFileSelectCallback(node);
