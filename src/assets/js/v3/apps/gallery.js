@@ -118,7 +118,7 @@ export function createGalleryApp(filePath, fileTitle) {
     currentTitle = node ? node.name : vPath.split('/').pop();
 
     headerTitle.textContent = currentTitle;
-    
+
     const realSrc = getRealSrc(vPath);
     mainImg.src = realSrc;
     downloadBtn.href = realSrc;
@@ -126,7 +126,7 @@ export function createGalleryApp(filePath, fileTitle) {
     // Reset resolution and fetch dynamically
     const resVal = infoPanel.querySelector('#meta-res');
     resVal.textContent = 'Loading...';
-    
+
     const imgObj = new Image();
     imgObj.src = realSrc;
     imgObj.onload = () => {
@@ -135,7 +135,7 @@ export function createGalleryApp(filePath, fileTitle) {
 
     // Fill metadata panel fields
     infoPanel.querySelector('#meta-name').textContent = currentTitle;
-    
+
     // Category mapping
     let category = 'General';
     let device = 'Unknown Camera';
@@ -170,12 +170,12 @@ export function createGalleryApp(filePath, fileTitle) {
   function getFolderImages() {
     const parentPath = currentFilePath.substring(0, currentFilePath.lastIndexOf('/')) || '/';
     const siblings = ls(parentPath) || [];
-    return siblings.filter(node => node.type === 'file' && node.fileType === 'img');
+    return siblings.filter((node) => node.type === 'file' && node.fileType === 'img');
   }
 
   function updateNavigation() {
     const images = getFolderImages();
-    const idx = images.findIndex(node => node.path === currentFilePath);
+    const idx = images.findIndex((node) => node.path === currentFilePath);
 
     if (idx === -1 || images.length === 0) {
       prevBtn.disabled = true;

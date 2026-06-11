@@ -16,12 +16,12 @@ const IMAGE_RE = /\.(jpe?g|png|webp)$/i;
 function getCategories() {
   try {
     if (fs.existsSync(GALLERY_ROOT)) {
-      return fs.readdirSync(GALLERY_ROOT).filter(f => {
+      return fs.readdirSync(GALLERY_ROOT).filter((f) => {
         return fs.statSync(path.join(GALLERY_ROOT, f)).isDirectory();
       });
     }
   } catch (e) {
-    console.error("Error reading gallery categories: ", e);
+    console.error('Error reading gallery categories: ', e);
   }
   return ['photography', 'ai', 'forza'];
 }

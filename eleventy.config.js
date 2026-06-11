@@ -9,7 +9,7 @@ export default function (eleventyConfig) {
   // 1. Copy the 'assets' folder exactly as is to the output
   eleventyConfig.addPassthroughCopy('src/assets');
   // Passthrough-copy raw .md sources so the v3 markdown viewer can fetch them
-  eleventyConfig.addPassthroughCopy("src/**/*.md");
+  eleventyConfig.addPassthroughCopy('src/**/*.md');
 
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
   eleventyConfig.addWatchTarget('./src/assets/');

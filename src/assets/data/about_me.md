@@ -37,17 +37,20 @@ I have a passion for building software, exploring new technologies, and game dev
 ## Education
 
 ### Laguardia Community College
-**Computer Science** | *Present*
+
+**Computer Science** | _Present_
 
 Currently pursuing a degree in Computer Science, focusing on software engineering principles, data structures, and algorithms.
 
 ### Cambridge University — A Levels
-**GPA: 5.0** | *Graduated*
+
+**GPA: 5.0** | _Graduated_
 
 Advanced Level qualifications in Mathematics, Physics, and Computer Science. Ranked top tier in curriculum performance.
 
 ### Cambridge University — O Levels
-**GPA: 4.14** | *Graduated*
+
+**GPA: 4.14** | _Graduated_
 
 Ordinary Level qualifications in Mathematics-D, Additional Mathematics, Physics, Computer Science, Chemistry and English.
 
@@ -63,7 +66,7 @@ Ordinary Level qualifications in Mathematics-D, Additional Mathematics, Physics,
 ## Contact
 
 - **GitHub**: [github.com/zephyr73](https://github.com/zephyr73)
-- **Twitter / X**: [@Zephyr73_](https://twitter.com/Zephyr73_)
+- **Twitter / X**: [@Zephyr73\_](https://twitter.com/Zephyr73_)
 - **Pixiv**: [pixiv.net/users/28541154](https://pixiv.net/users/28541154)
 
 ---
@@ -74,5 +77,5 @@ When I am not coding, I explore digital art through AI generation, capture stree
 
 ---
 
-*This file is rendered by the Portfolio 3.0 Markdown Viewer.*
-*Open the Browser app to see the full styled portfolio.*
+_This file is rendered by the Portfolio 3.0 Markdown Viewer._
+_Open the Browser app to see the full styled portfolio._

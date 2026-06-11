@@ -1,6 +1,10 @@
 /**
  * navigation-pane.js — TTY Navigation Pane (File System Tree)
  */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5f2c9920115485e87ae3240ed2abfe76c01c2b56
 let sortType = 'alpha'; // 'alpha' or 'type'
 let onFileSelectCallback = null;
 // Initialize Navigation Pane
@@ -105,7 +109,7 @@ function renderTree() {
   if (!container) return;
   // Cache open folders paths
   const openPaths = new Set(
-    Array.from(container.querySelectorAll('.tree-node.open')).map(el => el.dataset.path)
+    Array.from(container.querySelectorAll('.tree-node.open')).map((el) => el.dataset.path),
   );
   window.__OPEN_PATHS__ = openPaths;
   container.innerHTML = '';
@@ -113,7 +117,7 @@ function renderTree() {
   if (fsRoot && fsRoot.children) {
     const sorted = sortNodes(fsRoot.children);
     const fragment = document.createDocumentFragment();
-    sorted.forEach(child => {
+    sorted.forEach((child) => {
       fragment.appendChild(createNodeEl(child));
     });
     container.appendChild(fragment);
@@ -122,15 +126,15 @@ function renderTree() {
 }
 // ASCII icon map — no emojis, cyberpunk style
 const FILE_ICONS = {
-  dir:   '[D]',
-  md:    'MD',
-  html:  'WB',
-  img:   'IM',
-  pdf:   'PD',
-  txt:   'TX',
-  js:    'JS',
-  json:  'JS',
-  css:   'CS',
+  dir: '[D]',
+  md: 'MD',
+  html: 'WB',
+  img: 'IM',
+  pdf: 'PD',
+  txt: 'TX',
+  js: 'JS',
+  json: 'JS',
+  css: 'CS',
   other: '--',
 };
 function createNodeEl(node) {
@@ -173,7 +177,7 @@ function createNodeEl(node) {
     // Eagerly render sorted children (ensures sort always applies immediately)
     if (node.children && node.children.length > 0) {
       const sortedChildren = sortNodes(node.children);
-      sortedChildren.forEach(child => {
+      sortedChildren.forEach((child) => {
         childrenCont.appendChild(createNodeEl(child));
       });
     }
@@ -183,14 +187,18 @@ function createNodeEl(node) {
       e.stopPropagation();
       const isOpen = nodeEl.classList.toggle('open');
       toggleEl.textContent = isOpen ? '[-]' : '[+]';
-      document.querySelectorAll('.tree-node__row.selected').forEach(el => el.classList.remove('selected'));
+      document
+        .querySelectorAll('.tree-node__row.selected')
+        .forEach((el) => el.classList.remove('selected'));
       rowEl.classList.add('selected');
     });
   } else {
     rowEl.addEventListener('click', (e) => {
       window.playSound?.('click');
       e.stopPropagation();
-      document.querySelectorAll('.tree-node__row.selected').forEach(el => el.classList.remove('selected'));
+      document
+        .querySelectorAll('.tree-node__row.selected')
+        .forEach((el) => el.classList.remove('selected'));
       rowEl.classList.add('selected');
       // Dismiss navigation drawer on mobile selection
       document.getElementById('mode-tty')?.classList.remove('nav-pane-open');
