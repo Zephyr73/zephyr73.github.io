@@ -39,7 +39,7 @@ function applyTheme(theme) {
   localStorage.setItem('v3-theme', theme);
   localStorage.setItem('theme', theme);
 
-  document.querySelectorAll('.browser-viewport iframe').forEach(iframe => {
+  document.querySelectorAll('.browser-viewport iframe').forEach((iframe) => {
     try {
       iframe.contentWindow?.applyTheme?.(theme);
     } catch {
