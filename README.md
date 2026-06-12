@@ -1,6 +1,6 @@
 # Zephyr73 Portfolio
 
-<video src="media/demo.mp4" width="100%" controls autoplay muted loop></video>
+<video src="https://github.com/Zephyr73/zephyr73.github.io/raw/main/media/demo.mp4" width="100%" controls autoplay muted loop></video>
 
 - [**Live Site**](https://zephyr73.github.io)
 
