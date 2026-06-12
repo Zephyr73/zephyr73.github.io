@@ -58,7 +58,7 @@ export function initDesktop({ openApp }) {
       window.playSound?.('click');
       e.stopPropagation();
       const now = Date.now();
-      const isDoubleClick = (now - lastClick) < 300;
+      const isDoubleClick = now - lastClick < 300;
       lastClick = now;
 
       if (isDoubleClick || iconEl.classList.contains('selected')) {
@@ -140,7 +140,7 @@ export function initDesktop({ openApp }) {
         // Check intersection with each desktop icon
         const marqueeRect = marquee.getBoundingClientRect();
         const icons = modeDesktop.querySelectorAll('.desktop-icon');
-        icons.forEach(icon => {
+        icons.forEach((icon) => {
           const iconRect = icon.getBoundingClientRect();
           const intersect = !(
             marqueeRect.right < iconRect.left ||
