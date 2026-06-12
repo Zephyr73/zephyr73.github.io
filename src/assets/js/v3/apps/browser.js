@@ -32,29 +32,29 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
 
   const backBtn = document.createElement('button');
   backBtn.className = 'browser-nav-btn';
-  backBtn.innerHTML = '◀';
+  backBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><polyline points="15 18 9 12 15 6"/></svg>`;
   backBtn.title = 'Back';
   backBtn.disabled = true;
 
   const forwardBtn = document.createElement('button');
   forwardBtn.className = 'browser-nav-btn';
-  forwardBtn.innerHTML = '▶';
+  forwardBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><polyline points="9 18 15 12 9 6"/></svg>`;
   forwardBtn.title = 'Forward';
   forwardBtn.disabled = true;
 
   const reloadBtn = document.createElement('button');
   reloadBtn.className = 'browser-nav-btn';
-  reloadBtn.innerHTML = '⟳';
+  reloadBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>`;
   reloadBtn.title = 'Reload page';
 
   const homeBtn = document.createElement('button');
   homeBtn.className = 'browser-nav-btn';
-  homeBtn.innerHTML = '🏠';
+  homeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`;
   homeBtn.title = 'Home';
 
   const lockIcon = document.createElement('span');
   lockIcon.className = 'browser-lock-icon';
-  lockIcon.textContent = '🔒';
+  lockIcon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
 
   const urlInput = document.createElement('input');
   urlInput.className = 'browser-urlbar';

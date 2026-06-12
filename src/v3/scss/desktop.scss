@@ -330,6 +330,7 @@ body.crt-active .tty-split-pane {
   align-items: stretch;
   height: 100%;
   border-left: 1px solid var(--cp-border-2);
+  position: relative;
 }
 
 .tray-item {
@@ -378,7 +379,7 @@ body.crt-active .tty-split-pane {
 .style-menu {
   position: absolute;
   bottom: calc(var(--status-bar-h) + 6px);
-  right: 12px;
+  left: 0;
   width: 240px;
   background: var(--cp-panel);
   border: 1px solid var(--cp-border-2);
@@ -389,6 +390,11 @@ body.crt-active .tty-split-pane {
     0 0 15px var(--cp-green-glow);
   z-index: var(--z-modal);
   pointer-events: auto;
+
+  @media (max-width: 768px) {
+    left: auto;
+    right: 0;
+  }
 }
 
 .style-menu.hidden {
@@ -1021,7 +1027,16 @@ body.crt-active .tty-split-pane {
   resize: none;
   transition:
     transform 0.18s ease,
-    opacity 0.18s ease;
+    opacity 0.18s ease,
+    width 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    height 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    left 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    top 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Disable layout transitions when actively dragging or resizing */
+body.resize-active .window--floating {
+  transition: none !important;
 }
 
 /* Minimized state */
@@ -1316,8 +1331,17 @@ body.crt-active .tty-split-pane {
   justify-content: center;
   color: var(--cp-muted);
   border: 1px solid transparent;
+  background: transparent;
   font-size: 14px;
   flex-shrink: 0;
+  cursor: pointer;
+  padding: 0;
+  
+  svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+  }
 }
 
 .browser-nav-btn:hover {
@@ -1332,10 +1356,18 @@ body.crt-active .tty-split-pane {
 }
 
 .browser-lock-icon {
-  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--cp-green);
   flex-shrink: 0;
   padding: 0 4px;
+  
+  svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+  }
 }
 
 .browser-urlbar {

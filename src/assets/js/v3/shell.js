@@ -655,6 +655,7 @@ function _makeDraggable(win, handle) {
   let startX, startY, origLeft, origTop;
   handle.addEventListener('mousedown', e => {
     if (e.target.closest('.window-btn')) return; // don't drag on button clicks
+    if (win.dataset.maximized === '1') return;   // don't drag if maximized
     e.preventDefault();
     document.body.classList.add('resize-active');
     startX   = e.clientX;
@@ -678,6 +679,7 @@ function _makeDraggable(win, handle) {
 }
 function _makeResizeHandle(win, handle, dir) {
   handle.addEventListener('mousedown', (e) => {
+    if (win.dataset.maximized === '1') return; // don't resize if maximized
     e.preventDefault();
     e.stopPropagation();
     document.body.classList.add('resize-active');
