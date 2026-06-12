@@ -5,11 +5,11 @@
 import { initDesktop } from './desktop.js';
 import { initNavPane, applyTheme } from './navigation-pane.js';
 import { initTerminal } from './terminal.js';
-import { createBrowserApp    } from './apps/browser.js';
-import { createFileExpApp    } from './apps/file-explorer.js';
-import { createMarkdownApp   } from './apps/markdown-viewer.js';
-import { createGalleryApp    } from './apps/gallery.js';
-import { createPdfApp        } from './apps/pdf-viewer.js';
+import { createBrowserApp } from './apps/browser.js';
+import { createFileExpApp } from './apps/file-explorer.js';
+import { createMarkdownApp } from './apps/markdown-viewer.js';
+import { createGalleryApp } from './apps/gallery.js';
+import { createPdfApp } from './apps/pdf-viewer.js';
 /* ─────────────────────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────────────────────── */
@@ -262,17 +262,17 @@ export function playSound(type) {
 /* ─────────────────────────────────────────────────────────────
    DOM REFERENCES
 ───────────────────────────────────────────────────────────── */
-const modeDesktop  = document.getElementById('mode-desktop');
-const modeTTY      = document.getElementById('mode-tty');
-const tabDesktop   = document.getElementById('tab-desktop');
-const tabTTY       = document.getElementById('tab-tty');
-const styleToggle  = document.getElementById('style-toggle');
-const styleMenu    = document.getElementById('style-menu');
-const activeApps   = document.getElementById('statusbar-active-apps');
-const floatCont    = document.getElementById('desktop-floating-container');
-const splitPane    = document.getElementById('tty-split-pane');
-const resizeSplit  = document.getElementById('resize-split');
-const body         = document.body;
+const modeDesktop = document.getElementById('mode-desktop');
+const modeTTY = document.getElementById('mode-tty');
+const tabDesktop = document.getElementById('tab-desktop');
+const tabTTY = document.getElementById('tab-tty');
+const styleToggle = document.getElementById('style-toggle');
+const styleMenu = document.getElementById('style-menu');
+const activeApps = document.getElementById('statusbar-active-apps');
+const floatCont = document.getElementById('desktop-floating-container');
+const splitPane = document.getElementById('tty-split-pane');
+const resizeSplit = document.getElementById('resize-split');
+const body = document.body;
 /* ─────────────────────────────────────────────────────────────
    APP REGISTRY
    Maps file extensions → app factory functions
@@ -485,10 +485,10 @@ function _openFloating(id, appEl, title, filePath) {
   const H = Math.min(640, window.innerHeight - 80);
   const L = Math.round((window.innerWidth - W) / 2) + (id % 5) * 20;
   const T = Math.round((window.innerHeight - H) / 2) + (id % 5) * 20 - 20;
-  win.style.width  = `${W}px`;
+  win.style.width = `${W}px`;
   win.style.height = `${H}px`;
-  win.style.left   = `${L}px`;
-  win.style.top    = `${T}px`;
+  win.style.left = `${L}px`;
+  win.style.top = `${T}px`;
   floatCont.appendChild(win);
   playSound('open');
   openWindows.set(id, { el: win, state: 'floating', appName: title, title, filePath });
@@ -502,14 +502,14 @@ function rootMatchesDir(el, dir) {
 
 function _openSplit(id, appEl, title, filePath) {
   const win = _buildWindow(id, appEl, title, filePath, 'split');
-  
+
   // Set up splitPane visibility & initial width if this is the first pane being opened
   const isFirst = !splitPane.classList.contains('visible');
   if (isFirst) {
     splitPane.innerHTML = '';
     splitPane.classList.add('visible');
     resizeSplit.classList.remove('hidden');
-    
+
     // Default: cap split pane at 50% of available TTY area width
     const totalW = window.innerWidth;
     const navW = document.getElementById('tty-nav-pane')?.offsetWidth || 280;
@@ -522,14 +522,14 @@ function _openSplit(id, appEl, title, filePath) {
 
   // Find where to place the new split window
   let targetEl = null;
-  
+
   if (activeSplitWindowId !== null) {
     const targetInfo = openWindows.get(activeSplitWindowId);
     if (targetInfo && targetInfo.state === 'split' && splitPane.contains(targetInfo.el)) {
       targetEl = targetInfo.el;
     }
   }
-  
+
   if (!targetEl) {
     // Fallback: split the last window currently inside the split pane
     const allWindows = splitPane.querySelectorAll('.window--split');
@@ -543,22 +543,23 @@ function _openSplit(id, appEl, title, filePath) {
     const rect = targetEl.getBoundingClientRect();
     const splitDir = rect.width >= rect.height ? 'row' : 'column';
     const targetParent = targetEl.parentElement;
-    
+
     // If the parent container has the exact class/direction we want,
     // we insert next to it to prevent redundant nested containers.
-    const isParentMatching = targetParent.classList.contains(`split-container--${splitDir}`) || 
-                            (targetParent === splitPane && rootMatchesDir(splitPane, splitDir));
-    
+    const isParentMatching =
+      targetParent.classList.contains(`split-container--${splitDir}`) ||
+      (targetParent === splitPane && rootMatchesDir(splitPane, splitDir));
+
     if (isParentMatching) {
       targetParent.insertBefore(win, targetEl.nextSibling);
     } else {
       // Create a sub-container
       const container = document.createElement('div');
       container.className = `split-container split-container--${splitDir}`;
-      
+
       // Swap targetEl with container in its parent
       targetParent.replaceChild(container, targetEl);
-      
+
       // Put targetEl and win inside container
       container.appendChild(targetEl);
       container.appendChild(win);
@@ -570,7 +571,7 @@ function _openSplit(id, appEl, title, filePath) {
 
   openWindows.set(id, { el: win, state: 'split', appName: title, title, filePath });
   _addAppTab(id, title);
-  
+
   // Focus the newly opened split window
   focusWindow(id);
 }
@@ -582,23 +583,27 @@ function _cleanupSplitTree(parentEl) {
   if (!parentEl || parentEl === root) {
     // If the root itself has only one child and that child is a split-container,
     // we flatten it by promoting its children to the root.
-    if (root && root.children.length === 1 && root.firstElementChild.classList.contains('split-container')) {
+    if (
+      root &&
+      root.children.length === 1 &&
+      root.firstElementChild.classList.contains('split-container')
+    ) {
       const subContainer = root.firstElementChild;
       const children = Array.from(subContainer.children);
-      
+
       // Update root flex direction to match sub-container
       if (subContainer.classList.contains('split-container--row')) {
         root.style.flexDirection = 'row';
       } else if (subContainer.classList.contains('split-container--column')) {
         root.style.flexDirection = 'column';
       }
-      
+
       for (const child of children) {
         root.appendChild(child);
       }
       subContainer.remove();
     }
-    
+
     // If root is empty, hide split pane
     if (root && root.children.length === 0) {
       root.classList.remove('visible');
@@ -626,20 +631,20 @@ function _cleanupSplitTree(parentEl) {
 export function popUp(id) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'split') return;
-  
+
   const winEl = info.el;
   const parentEl = winEl.parentElement;
-  
+
   // Extract content
   const appBody = winEl.querySelector('.window-body');
   const appContent = appBody?.firstElementChild;
-  
+
   // Remove window from DOM
   winEl.remove();
-  
+
   // Clean up the split tree
   _cleanupSplitTree(parentEl);
-  
+
   // Re-create as floating
   if (appContent) {
     const newId = ++windowIdCounter;
@@ -685,12 +690,12 @@ export function maximizeWindow(id) {
     win.dataset.prevH = win.style.height;
     win.dataset.prevL = win.style.left;
     win.dataset.prevT = win.style.top;
-    win.style.width  = '100%';
+    win.style.width = '100%';
     win.style.height = 'calc(100% - var(--status-bar-h))';
-    win.style.width  = '100%';
+    win.style.width = '100%';
     win.style.height = 'calc(100% - var(--status-bar-h))';
-    win.style.left   = '0px';
-    win.style.top    = '0px';
+    win.style.left = '0px';
+    win.style.top = '0px';
     win.dataset.maximized = '1';
     win.querySelector('.window-btn--maximize').textContent = '[R]';
   }
@@ -726,18 +731,18 @@ export function closeWindow(id) {
   const info = openWindows.get(id);
   if (!info) return;
   playSound('close');
-  
+
   if (info.state === 'split') {
     const winEl = info.el;
     const parentEl = winEl.parentElement;
-    
+
     // Call cleanup if app has it
     const appBody = winEl.querySelector('.window-body');
     const appContent = appBody?.firstElementChild;
     if (appContent && typeof appContent.cleanup === 'function') {
       appContent.cleanup();
     }
-    
+
     winEl.remove();
     _cleanupSplitTree(parentEl);
   } else {
@@ -759,18 +764,20 @@ export function closeWindow(id) {
 ───────────────────────────────────────────────────────────── */
 export function focusWindow(id) {
   // Remove focused class from all windows and tabs
-  document.querySelectorAll('.window.focused').forEach(w => w.classList.remove('focused'));
-  document.querySelectorAll('.statusbar-app-tab.focused').forEach(t => t.classList.remove('focused'));
-  
+  document.querySelectorAll('.window.focused').forEach((w) => w.classList.remove('focused'));
+  document
+    .querySelectorAll('.statusbar-app-tab.focused')
+    .forEach((t) => t.classList.remove('focused'));
+
   const info = openWindows.get(id);
   if (!info) return;
-  
+
   if (info.state === 'floating') {
     info.el.style.zIndex = ++topZ;
   } else if (info.state === 'split') {
     activeSplitWindowId = id;
   }
-  
+
   info.el.classList.add('focused');
   const tab = document.getElementById(`apptab-${id}`);
   if (tab) tab.classList.add('focused');
@@ -780,15 +787,15 @@ export function focusWindow(id) {
 ───────────────────────────────────────────────────────────── */
 function _makeDraggable(win, handle) {
   let startX, startY, origLeft, origTop;
-  handle.addEventListener('mousedown', e => {
+  handle.addEventListener('mousedown', (e) => {
     if (e.target.closest('.window-btn')) return; // don't drag on button clicks
-    if (win.dataset.maximized === '1') return;   // don't drag if maximized
+    if (win.dataset.maximized === '1') return; // don't drag if maximized
     e.preventDefault();
     document.body.classList.add('resize-active');
-    startX   = e.clientX;
-    startY   = e.clientY;
+    startX = e.clientX;
+    startY = e.clientY;
     origLeft = parseInt(win.style.left) || 0;
-    origTop  = parseInt(win.style.top)  || 0;
+    origTop = parseInt(win.style.top) || 0;
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
@@ -810,10 +817,10 @@ function _makeResizeHandle(win, handle, dir) {
     e.preventDefault();
     e.stopPropagation();
     document.body.classList.add('resize-active');
-    const startX  = e.clientX;
-    const startY  = e.clientY;
-    const origW   = win.offsetWidth;
-    const origH   = win.offsetHeight;
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const origW = win.offsetWidth;
+    const origH = win.offsetHeight;
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
@@ -874,7 +881,7 @@ function switchMode(mode) {
   currentMode = mode;
   localStorage.setItem('v3-mode', mode);
   modeDesktop.classList.toggle('active', mode === 'desktop');
-  modeTTY.classList.toggle('active',     mode === 'tty');
+  modeTTY.classList.toggle('active', mode === 'tty');
   tabDesktop.classList.toggle('active', mode === 'desktop');
   tabTTY.classList.toggle('active', mode === 'tty');
   tabDesktop.setAttribute('aria-selected', String(mode === 'desktop'));
@@ -903,7 +910,8 @@ function toggleCRT() {
 const WALLPAPERS = [
   {
     name: 'Cyber Grid',
-    background: 'radial-gradient(ellipse at 20% 80%, rgba(0, 255, 65, 0.03) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0, 229, 255, 0.02) 0%, transparent 60%), var(--cp-bg)',
+    background:
+      'radial-gradient(ellipse at 20% 80%, rgba(0, 255, 65, 0.03) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0, 229, 255, 0.02) 0%, transparent 60%), var(--cp-bg)',
     showGrid: true,
   },
   {
@@ -915,7 +923,7 @@ const WALLPAPERS = [
     name: 'Deep Space',
     background: 'radial-gradient(circle at center, #0a1b2a 0%, #030810 100%)',
     showGrid: false,
-  }
+  },
 ];
 
 let currentWallpaperIdx = 0;
@@ -932,7 +940,7 @@ function setWallpaper(idx) {
     modeDesktop.classList.toggle('hide-grid', !wp.showGrid);
   }
   localStorage.setItem('v3-wallpaper', currentWallpaperIdx);
-  
+
   // Update status text in style menu
   const statusEl = document.getElementById('style-wallpaper-status');
   if (statusEl) {
@@ -957,7 +965,11 @@ function initStyleMenu() {
 
   // Click outside to dismiss menu
   document.addEventListener('click', (e) => {
-    if (!styleMenu.classList.contains('hidden') && !styleMenu.contains(e.target) && e.target !== styleToggle) {
+    if (
+      !styleMenu.classList.contains('hidden') &&
+      !styleMenu.contains(e.target) &&
+      e.target !== styleToggle
+    ) {
       styleMenu.classList.add('hidden');
     }
   });
@@ -969,7 +981,7 @@ function initStyleMenu() {
     themeSelect.addEventListener('change', (e) => {
       playSound('click');
       const theme = e.target.value;
-      
+
       themeSelect.value = theme;
       applyTheme(theme);
     });
@@ -983,9 +995,9 @@ function initStyleMenu() {
       crtStatus.style.borderColor = crtActive ? 'var(--cp-green)' : 'var(--cp-border-2)';
     }
   };
-  
+
   updateCrtStatusUI();
-  
+
   crtBtn?.addEventListener('click', () => {
     playSound('click');
     toggleCRT();
@@ -1024,12 +1036,12 @@ let _cpuBase = 8,
   _satBase = 87;
 function updateStats() {
   const jitter = (base, range) => Math.max(0, Math.min(99, base + (Math.random() - 0.5) * range));
-  const cpu  = Math.round(jitter(_cpuBase, 8));
-  const gpu  = Math.round(jitter(_gpuBase, 6));
-  const mem  = (jitter(_memBase, 0.4)).toFixed(1);
-  const sat  = Math.round(jitter(_satBase, 4));
-  document.getElementById('stat-cpu').textContent = `${String(cpu).padStart(2,'0')}%`;
-  document.getElementById('stat-gpu').textContent = `${String(gpu).padStart(2,'0')}%`;
+  const cpu = Math.round(jitter(_cpuBase, 8));
+  const gpu = Math.round(jitter(_gpuBase, 6));
+  const mem = jitter(_memBase, 0.4).toFixed(1);
+  const sat = Math.round(jitter(_satBase, 4));
+  document.getElementById('stat-cpu').textContent = `${String(cpu).padStart(2, '0')}%`;
+  document.getElementById('stat-gpu').textContent = `${String(gpu).padStart(2, '0')}%`;
   document.getElementById('stat-mem').textContent = `${mem}G`;
   document.getElementById('stat-sat').textContent = `${String(sat).padStart(2, '0')}%`;
 }
@@ -1039,7 +1051,7 @@ function updateStats() {
 function initPaneResize() {
   const navPane = document.getElementById('tty-nav-pane');
   const navHandle = document.getElementById('resize-nav');
-  const ttyMode   = document.getElementById('mode-tty');
+  const ttyMode = document.getElementById('mode-tty');
   if (!navPane || !navHandle) return;
   let dragging = false;
   navHandle.addEventListener('mousedown', (e) => {
@@ -1048,7 +1060,7 @@ function initPaneResize() {
     document.body.classList.add('resize-active');
     e.preventDefault();
   });
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', (e) => {
     if (!dragging) return;
     const rect = ttyMode.getBoundingClientRect();
     const newW = Math.max(140, Math.min(400, e.clientX - rect.left));
@@ -1065,14 +1077,14 @@ function initPaneResize() {
   let splitDragging = false;
   let splitRafId = null;
   let lastSplitClientX = 0;
-  splitHandle?.addEventListener('mousedown', e => {
+  splitHandle?.addEventListener('mousedown', (e) => {
     splitDragging = true;
     splitHandle.classList.add('dragging');
     document.body.classList.add('resize-active');
     splitPane.style.willChange = 'width';
     e.preventDefault();
   });
-  document.addEventListener('mousemove', e => {
+  document.addEventListener('mousemove', (e) => {
     if (!splitDragging) return;
     lastSplitClientX = e.clientX;
     if (splitRafId) return; // already scheduled
@@ -1104,7 +1116,8 @@ function createTerminalFloatApp() {
   const el = document.createElement('div');
   el.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;';
   const out = document.createElement('div');
-  out.style.cssText = 'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);';
+  out.style.cssText =
+    'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);';
   // Initial draw from buffer
   const renderBuffer = () => {
     out.innerHTML = '';
@@ -1122,7 +1135,8 @@ function createTerminalFloatApp() {
   };
   renderBuffer();
   const row = document.createElement('div');
-  row.style.cssText = 'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
+  row.style.cssText =
+    'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
   const prompt = document.createElement('span');
   prompt.style.cssText = 'color:var(--cp-green);font-size:12px;white-space:nowrap;';
   const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
@@ -1150,7 +1164,7 @@ function createTerminalFloatApp() {
   });
   // Attach cleanup to DOM node
   el.cleanup = unsubscribe;
-  inp.addEventListener('keydown', async e => {
+  inp.addEventListener('keydown', async (e) => {
     if (e.key === 'Enter') {
       const cmd = inp.value.trim();
       inp.value = '';
@@ -1287,10 +1301,22 @@ document.addEventListener('DOMContentLoaded', () => {
   currentMode = null;
   switchMode(initialMode);
   // Status bar events
-  tabDesktop.addEventListener('click',  () => { playSound('click'); switchMode('desktop'); });
-  tabTTY.addEventListener('click',      () => { playSound('click'); switchMode('tty'); });
-  tabDesktop.addEventListener('keydown', e => e.key === 'Enter' && (playSound('click'), switchMode('desktop')));
-  tabTTY.addEventListener('keydown',     e => e.key === 'Enter' && (playSound('click'), switchMode('tty')));
+  tabDesktop.addEventListener('click', () => {
+    playSound('click');
+    switchMode('desktop');
+  });
+  tabTTY.addEventListener('click', () => {
+    playSound('click');
+    switchMode('tty');
+  });
+  tabDesktop.addEventListener(
+    'keydown',
+    (e) => e.key === 'Enter' && (playSound('click'), switchMode('desktop')),
+  );
+  tabTTY.addEventListener(
+    'keydown',
+    (e) => e.key === 'Enter' && (playSound('click'), switchMode('tty')),
+  );
   // Clock & stats
   updateClock();
   updateStats();

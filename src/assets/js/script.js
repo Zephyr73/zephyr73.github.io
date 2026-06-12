@@ -25,12 +25,22 @@ function applyTheme(themeKey) {
   if (!themeKey) {
     return;
   }
-  
-  const isV3Theme = ['green', 'amber', 'cyan', 'magenta', 'red', 'purple', 'notebook', 'slate', 'sunset'].includes(themeKey);
+
+  const isV3Theme = [
+    'green',
+    'amber',
+    'cyan',
+    'magenta',
+    'red',
+    'purple',
+    'notebook',
+    'slate',
+    'sunset',
+  ].includes(themeKey);
   const currentSaved = localStorage.getItem('theme');
-  
+
   let targetClass = themeKey;
-  
+
   if (themeKey === 'system') {
     targetClass = localStorage.getItem('v3-theme') || 'green';
     localStorage.setItem('theme', 'system');

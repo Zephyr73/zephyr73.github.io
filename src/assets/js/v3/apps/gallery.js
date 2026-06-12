@@ -351,22 +351,30 @@ export function createGalleryApp(filePath, fileTitle) {
   });
 
   // Panning & Dragging event listeners (Touch/Mobile)
-  mainImg.addEventListener('touchstart', (e) => {
-    if (scale <= 1) return;
-    const touch = e.touches[0];
-    isDragging = true;
-    startX = touch.clientX - translateX;
-    startY = touch.clientY - translateY;
-    updateImgTransform();
-  }, { passive: true });
+  mainImg.addEventListener(
+    'touchstart',
+    (e) => {
+      if (scale <= 1) return;
+      const touch = e.touches[0];
+      isDragging = true;
+      startX = touch.clientX - translateX;
+      startY = touch.clientY - translateY;
+      updateImgTransform();
+    },
+    { passive: true },
+  );
 
-  window.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    const touch = e.touches[0];
-    translateX = touch.clientX - startX;
-    translateY = touch.clientY - startY;
-    updateImgTransform();
-  }, { passive: true });
+  window.addEventListener(
+    'touchmove',
+    (e) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      translateX = touch.clientX - startX;
+      translateY = touch.clientY - startY;
+      updateImgTransform();
+    },
+    { passive: true },
+  );
 
   window.addEventListener('touchend', () => {
     if (isDragging) {

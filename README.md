@@ -2,13 +2,14 @@
 
 <video src="media/demo.mp4" width="100%" controls autoplay muted loop></video>
 
-*   [**Live Site**](https://zephyr73.github.io)
+- [**Live Site**](https://zephyr73.github.io)
 
 ---
 
 ## Sparse-Checkout Clone (For Laptops)
 
 To clone only the content folders onto your laptop to publish content on the go:
+
 1.  Initialize a sparse checkout:
     ```bash
     git clone --no-checkout https://github.com/Zephyr73/zephyr73.github.io.git
@@ -30,7 +31,7 @@ To clone only the content folders onto your laptop to publish content on the go:
 
 Run commands from the repository root:
 
-*   **Start Dev Server**: `npm run dev` (Runs eleventy server and watches SCSS).
-*   **Compile CSS**: `npm run build:css` (Compiles styling manually).
-*   **Production Build**: `npm run build` (Generates the static site inside `_site/`).
-*   **Lint Check**: `npm run lint:js` (Checks JavaScript files for errors).
+- **Start Dev Server**: `npm run dev` (Runs eleventy server and watches SCSS).
+- **Compile CSS**: `npm run build:css` (Compiles styling manually).
+- **Production Build**: `npm run build` (Generates the static site inside `_site/`).
+- **Lint Check**: `npm run lint:js` (Checks JavaScript files for errors).
