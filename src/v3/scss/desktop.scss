@@ -1340,7 +1340,7 @@ body.resize-active .window--floating {
   flex-shrink: 0;
   cursor: pointer;
   padding: 0;
-  
+
   svg {
     width: 14px;
     height: 14px;
@@ -1366,7 +1366,7 @@ body.resize-active .window--floating {
   color: var(--cp-green);
   flex-shrink: 0;
   padding: 0 4px;
-  
+
   svg {
     width: 14px;
     height: 14px;
@@ -1573,13 +1573,13 @@ body.resize-active .window--floating {
   font-size: 11px;
   line-height: 1.4;
   transition: all var(--t-fast);
-  
+
   &:hover {
     background: rgba(0, 255, 65, 0.04);
     border-color: var(--cp-border);
     color: var(--cp-white);
   }
-  
+
   &.active {
     background: rgba(0, 255, 65, 0.1);
     border-color: var(--cp-green-dim);
@@ -1601,11 +1601,11 @@ body.resize-active .window--floating {
   cursor: pointer;
   flex-shrink: 0;
   padding: 0;
-  
+
   &:hover {
     color: var(--cp-green);
   }
-  
+
   &:focus-visible {
     outline: none;
   }
@@ -1625,7 +1625,7 @@ body.resize-active .window--floating {
   width: 14px;
   height: 14px;
   color: var(--cp-cyan);
-  
+
   svg {
     width: 14px;
     height: 14px;
@@ -1664,7 +1664,7 @@ body.resize-active .window--floating {
   cursor: pointer;
   white-space: nowrap;
   margin-left: 6px;
-  
+
   &:hover {
     border-color: var(--cp-border-2);
     background: var(--cp-bg-3);
@@ -1711,12 +1711,12 @@ body.resize-active .window--floating {
   font-size: 11px;
   transition: all var(--t-fast);
   outline: none;
-  
+
   &:hover {
     background: rgba(0, 255, 65, 0.06);
     border-color: var(--cp-border);
   }
-  
+
   &.selected {
     background: rgba(0, 255, 65, 0.12);
     border-color: var(--cp-green-dim);
@@ -1732,7 +1732,7 @@ body.resize-active .window--floating {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--cp-white);
-  
+
   svg {
     width: 16px;
     height: 16px;
