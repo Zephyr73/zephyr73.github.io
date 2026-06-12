@@ -124,7 +124,7 @@ export default function (eleventyConfig) {
 
   return {
     dir: {
-      input: 'src',    // Look for files in the src folder
+      input: 'src', // Look for files in the src folder
       output: '_site', // Output the built site to '_site' folder
       includes: 'v2/_includes', // V2 layouts & partials (V3 uses layout: false)
     },
