@@ -25,6 +25,9 @@
     <script>
       (function () {
         var t = localStorage.getItem('theme');
+        if (t === 'system') {
+          t = localStorage.getItem('v3-theme') || 'green';
+        }
         if (t) document.documentElement.className = t;
       })();
     </script>

@@ -12,7 +12,7 @@ const DESKTOP_ICONS = [
   },
   {
     id: 'about_me',
-    label: 'about_me.md',
+    label: 'About Me',
     type: 'app',
     appName: 'about',
     icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`,

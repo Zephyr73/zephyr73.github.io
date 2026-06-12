@@ -25,14 +25,32 @@ function applyTheme(themeKey) {
   if (!themeKey) {
     return;
   }
+  
+  const isV3Theme = ['green', 'amber', 'cyan', 'magenta', 'red', 'purple', 'notebook', 'slate', 'sunset'].includes(themeKey);
+  const currentSaved = localStorage.getItem('theme');
+  
+  let targetClass = themeKey;
+  
+  if (themeKey === 'system') {
+    targetClass = localStorage.getItem('v3-theme') || 'green';
+    localStorage.setItem('theme', 'system');
+  } else if (isV3Theme) {
+    if (currentSaved === 'system') {
+      targetClass = themeKey;
+    } else {
+      return; // Ignore V3 sync if not set to System
+    }
+  } else {
+    localStorage.setItem('theme', themeKey);
+  }
+
   // Remove any existing theme classes without touching unrelated classes (e.g. no-scroll).
   // Snapshot first (Array.from) because DOMTokenList is live — mutating it while
   // iterating with forEach can cause entries to be skipped.
   Array.from(document.documentElement.classList)
     .filter((cls) => cls !== 'no-scroll')
     .forEach((cls) => document.documentElement.classList.remove(cls));
-  document.documentElement.classList.add(themeKey);
-  localStorage.setItem('theme', themeKey);
+  document.documentElement.classList.add(targetClass);
   // Re-dither the avatar using the new theme's colours
   ditherAvatar();
 }

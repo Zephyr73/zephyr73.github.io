@@ -28,8 +28,35 @@ export function createGalleryApp(filePath, fileTitle) {
   headerTitle.className = 'gallery-header-info';
   headerTitle.textContent = currentTitle;
 
+  // Zoom & Drag State
+  let scale = 1;
+  const scaleStep = 0.25;
+  const maxScale = 4.0;
+  const minScale = 0.5;
+
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let translateX = 0;
+  let translateY = 0;
+
   const actions = document.createElement('div');
   actions.className = 'gallery-header-actions';
+
+  const zoomInBtn = document.createElement('button');
+  zoomInBtn.className = 'gallery-action-btn';
+  zoomInBtn.innerHTML = '🔍+ IN';
+  zoomInBtn.title = 'Zoom In';
+
+  const zoomOutBtn = document.createElement('button');
+  zoomOutBtn.className = 'gallery-action-btn';
+  zoomOutBtn.innerHTML = '🔍- OUT';
+  zoomOutBtn.title = 'Zoom Out';
+
+  const zoomResetBtn = document.createElement('button');
+  zoomResetBtn.className = 'gallery-action-btn';
+  zoomResetBtn.innerHTML = '⟲ RESET';
+  zoomResetBtn.title = 'Reset Zoom';
 
   const infoBtn = document.createElement('button');
   infoBtn.className = 'gallery-action-btn';
@@ -42,6 +69,9 @@ export function createGalleryApp(filePath, fileTitle) {
   downloadBtn.title = 'Download original image';
   downloadBtn.setAttribute('download', '');
 
+  actions.appendChild(zoomInBtn);
+  actions.appendChild(zoomOutBtn);
+  actions.appendChild(zoomResetBtn);
   actions.appendChild(infoBtn);
   actions.appendChild(downloadBtn);
   header.appendChild(headerTitle);
@@ -118,6 +148,12 @@ export function createGalleryApp(filePath, fileTitle) {
     currentTitle = node ? node.name : vPath.split('/').pop();
 
     headerTitle.textContent = currentTitle;
+
+    // Reset zoom and panning state on load
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    updateImgTransform();
 
     const realSrc = getRealSrc(vPath);
     mainImg.src = realSrc;
@@ -210,6 +246,132 @@ export function createGalleryApp(filePath, fileTitle) {
     if (e.target !== infoBtn && !infoPanel.contains(e.target)) {
       infoPanel.classList.remove('visible');
       infoBtn.classList.remove('active');
+    }
+  });
+
+  function clampOffsets() {
+    const W_con = imageArea.clientWidth;
+    const H_con = imageArea.clientHeight;
+    const W_img = mainImg.offsetWidth * scale;
+    const H_img = mainImg.offsetHeight * scale;
+
+    if (W_img > W_con) {
+      const maxTranslateX = (W_img - W_con) / 2;
+      translateX = Math.max(-maxTranslateX, Math.min(translateX, maxTranslateX));
+    } else {
+      translateX = 0;
+    }
+
+    if (H_img > H_con) {
+      const maxTranslateY = (H_img - H_con) / 2;
+      translateY = Math.max(-maxTranslateY, Math.min(translateY, maxTranslateY));
+    } else {
+      translateY = 0;
+    }
+  }
+
+  function updateImgTransform() {
+    clampOffsets();
+    mainImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    if (scale > 1) {
+      mainImg.style.cursor = isDragging ? 'grabbing' : 'grab';
+    } else {
+      mainImg.style.cursor = 'default';
+    }
+  }
+
+  // Zoom Button listeners
+  zoomInBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    if (scale < maxScale) {
+      scale = Math.min(scale + scaleStep, maxScale);
+      updateImgTransform();
+    }
+  });
+
+  zoomOutBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    if (scale > minScale) {
+      scale = Math.max(scale - scaleStep, minScale);
+      if (scale <= 1) {
+        translateX = 0;
+        translateY = 0;
+      }
+      updateImgTransform();
+    }
+  });
+
+  zoomResetBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    updateImgTransform();
+  });
+
+  // Double click zoom toggle
+  mainImg.addEventListener('dblclick', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    if (scale > 1) {
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+    } else {
+      scale = 2.0;
+    }
+    updateImgTransform();
+  });
+
+  // Panning & Dragging event listeners (Mouse)
+  mainImg.addEventListener('mousedown', (e) => {
+    if (scale <= 1) return;
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX - translateX;
+    startY = e.clientY - translateY;
+    updateImgTransform();
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    translateX = e.clientX - startX;
+    translateY = e.clientY - startY;
+    updateImgTransform();
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      updateImgTransform();
+    }
+  });
+
+  // Panning & Dragging event listeners (Touch/Mobile)
+  mainImg.addEventListener('touchstart', (e) => {
+    if (scale <= 1) return;
+    const touch = e.touches[0];
+    isDragging = true;
+    startX = touch.clientX - translateX;
+    startY = touch.clientY - translateY;
+    updateImgTransform();
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    translateX = touch.clientX - startX;
+    translateY = touch.clientY - startY;
+    updateImgTransform();
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    if (isDragging) {
+      isDragging = false;
+      updateImgTransform();
     }
   });
 

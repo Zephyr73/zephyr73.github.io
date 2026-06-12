@@ -120,18 +120,7 @@ eleventyExcludeFromCollections: true
       <div class="nav-pane__footer">
         <div id="nav-stats">Folders: — | Files: —</div>
         <div class="vol-info">Volume: — / —</div>
-        <div style="margin-top:4px;font-size:11px;color:var(--cp-dim);">THEME ENGINE</div>
-        <select class="nav-pane__theme-select" id="nav-theme-select" aria-label="Terminal theme">
-          <option value="green">Matrix Green</option>
-          <option value="amber">Amber</option>
-          <option value="cyan">Cyan Hacker</option>
-          <option value="magenta">Magenta Wave</option>
-          <option value="red">Crimson Red</option>
-          <option value="purple">Hacker Purple</option>
-          <option value="notebook">Paper Notebook</option>
-          <option value="slate">Slate Modern</option>
-          <option value="sunset">Cyber Sunset</option>
-        </select>
+        <div style="margin-top:12px;font-size:11px;color:var(--cp-dim);letter-spacing:0.5px;">© 2026 ZEPHYR73</div>
       </div>
     </div>
 
@@ -211,8 +200,39 @@ eleventyExcludeFromCollections: true
   <!-- System tray -->
   <div class="statusbar-tray">
 
-    <div class="tray-item crt-btn" id="crt-toggle" role="button" tabindex="0" aria-pressed="false" aria-label="Toggle CRT bloom effect">
-      ⬡ CRT BLOOM
+    <div class="tray-item style-btn" id="style-toggle" role="button" tabindex="0" aria-label="Open style options menu">
+      ⬡ STYLE
+    </div>
+
+    <!-- Style Popover Menu -->
+    <div class="style-menu hidden" id="style-menu" role="dialog" aria-label="Style settings">
+      <div class="style-menu__header">STYLE OPTIONS</div>
+      <div class="style-menu__section">
+        <div class="style-menu__label">THEME:</div>
+        <select class="style-menu__select" id="style-theme-select" aria-label="Select desktop theme">
+          <option value="green">Matrix Green</option>
+          <option value="amber">Amber</option>
+          <option value="cyan">Cyan Hacker</option>
+          <option value="magenta">Magenta Wave</option>
+          <option value="red">Crimson Red</option>
+          <option value="purple">Hacker Purple</option>
+          <option value="notebook">Paper Notebook</option>
+          <option value="slate">Slate Modern</option>
+          <option value="sunset">Cyber Sunset</option>
+        </select>
+      </div>
+      <div class="style-menu__section">
+        <button class="style-menu__btn" id="style-crt-btn">
+          <span>CRT BLOOM FILTER</span>
+          <span class="style-menu__status" id="style-crt-status">OFF</span>
+        </button>
+      </div>
+      <div class="style-menu__section">
+        <button class="style-menu__btn" id="style-wallpaper-btn">
+          <span>CYCLE WALLPAPER</span>
+          <span class="style-menu__status" id="style-wallpaper-status">Cyber Grid</span>
+        </button>
+      </div>
     </div>
 
     <div class="tray-item" title="CPU Usage">
