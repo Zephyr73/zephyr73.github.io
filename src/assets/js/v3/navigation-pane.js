@@ -8,7 +8,6 @@ export function initNavPane({ openApp }) {
   onFileSelectCallback = openApp;
   const treeContainer = document.getElementById('nav-tree');
   const sortBtn = document.getElementById('nav-sort-btn');
-  const themeSelect = document.getElementById('nav-theme-select');
   if (!treeContainer) return;
   // Render initial tree
   renderTree();
@@ -19,22 +18,13 @@ export function initNavPane({ openApp }) {
     sortBtn.textContent = sortType === 'alpha' ? 'SORT:A-Z' : 'SORT:TYPE';
     renderTree();
   });
-  // Setup theme changer
-  if (themeSelect) {
-    const savedTheme = localStorage.getItem('v3-theme') || 'green';
-    themeSelect.value = savedTheme;
-    applyTheme(savedTheme);
-    themeSelect.addEventListener('change', (e) => {
-      window.playSound?.('click');
-      const theme = e.target.value;
-      localStorage.setItem('v3-theme', theme);
-      applyTheme(theme);
-    });
-  }
+  // Apply theme on startup
+  const savedTheme = localStorage.getItem('v3-theme') || 'green';
+  applyTheme(savedTheme);
   // Set up stats & volume info
   updateStatsAndVolume();
 }
-function applyTheme(theme) {
+export function applyTheme(theme) {
   document.body.dataset.theme = theme;
   localStorage.setItem('v3-theme', theme);
   localStorage.setItem('theme', theme);

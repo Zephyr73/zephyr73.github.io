@@ -3,7 +3,7 @@
  * Manages: modes, window manager, status bar, CRT, app registry
  */
 import { initDesktop } from './desktop.js';
-import { initNavPane } from './navigation-pane.js';
+import { initNavPane, applyTheme } from './navigation-pane.js';
 import { initTerminal } from './terminal.js';
 import { createBrowserApp    } from './apps/browser.js';
 import { createFileExpApp    } from './apps/file-explorer.js';
@@ -18,7 +18,7 @@ let crtActive = localStorage.getItem('v3-crt') === '1';
 let windowIdCounter = 0;
 const openWindows = new Map(); // id → { el, state, appName, title }
 let topZ = 200;
-let splitWindowId = null; // current window docked in TTY split pane
+let activeSplitWindowId = null; // tracks the currently focused split window
 /* ─────────────────────────────────────────────────────────────
    SOUND ENGINE (Web Audio API — procedural, no files needed)
 ───────────────────────────────────────────────────────────── */
@@ -139,7 +139,8 @@ const modeDesktop  = document.getElementById('mode-desktop');
 const modeTTY      = document.getElementById('mode-tty');
 const tabDesktop   = document.getElementById('tab-desktop');
 const tabTTY       = document.getElementById('tab-tty');
-const crtToggle    = document.getElementById('crt-toggle');
+const styleToggle  = document.getElementById('style-toggle');
+const styleMenu    = document.getElementById('style-menu');
 const activeApps   = document.getElementById('statusbar-active-apps');
 const floatCont    = document.getElementById('desktop-floating-container');
 const splitPane    = document.getElementById('tty-split-pane');
@@ -367,26 +368,130 @@ function _openFloating(id, appEl, title, filePath) {
   focusWindow(id);
   _addAppTab(id, title);
 }
+function rootMatchesDir(el, dir) {
+  const currentDir = el.style.flexDirection || 'column';
+  return currentDir === dir;
+}
+
 function _openSplit(id, appEl, title, filePath) {
-  // If there's already a split window, convert it to floating first
-  if (splitWindowId !== null) {
-    popUp(splitWindowId);
-  }
   const win = _buildWindow(id, appEl, title, filePath, 'split');
-  splitPane.innerHTML = '';
-  splitPane.appendChild(win);
-  splitPane.classList.add('visible');
-  resizeSplit.classList.remove('hidden');
-  // Default: cap split pane at 50% of available TTY area width
-  const totalW = window.innerWidth;
-  const navW = document.getElementById('tty-nav-pane')?.offsetWidth || 280;
-  const available = totalW - navW - 8; // subtract nav + handles
-  const maxHalf = Math.floor(available * 0.5);
-  splitPane.style.width = `${maxHalf}px`;
-  splitPane.style.flex = 'none';
-  splitWindowId = id;
+  
+  // Set up splitPane visibility & initial width if this is the first pane being opened
+  const isFirst = !splitPane.classList.contains('visible');
+  if (isFirst) {
+    splitPane.innerHTML = '';
+    splitPane.classList.add('visible');
+    resizeSplit.classList.remove('hidden');
+    
+    // Default: cap split pane at 50% of available TTY area width
+    const totalW = window.innerWidth;
+    const navW = document.getElementById('tty-nav-pane')?.offsetWidth || 280;
+    const available = totalW - navW - 8; // subtract nav + handles
+    const maxHalf = Math.floor(available * 0.5);
+    splitPane.style.width = `${maxHalf}px`;
+    splitPane.style.flex = 'none';
+    splitPane.style.flexDirection = 'column'; // Root layout default is column (stacked rows)
+  }
+
+  // Find where to place the new split window
+  let targetEl = null;
+  
+  if (activeSplitWindowId !== null) {
+    const targetInfo = openWindows.get(activeSplitWindowId);
+    if (targetInfo && targetInfo.state === 'split' && splitPane.contains(targetInfo.el)) {
+      targetEl = targetInfo.el;
+    }
+  }
+  
+  if (!targetEl) {
+    // Fallback: split the last window currently inside the split pane
+    const allWindows = splitPane.querySelectorAll('.window--split');
+    if (allWindows.length > 0) {
+      targetEl = allWindows[allWindows.length - 1];
+    }
+  }
+
+  if (targetEl) {
+    // Determine optimal split direction based on the target element's client dimensions
+    const rect = targetEl.getBoundingClientRect();
+    const splitDir = rect.width >= rect.height ? 'row' : 'column';
+    const targetParent = targetEl.parentElement;
+    
+    // If the parent container has the exact class/direction we want,
+    // we insert next to it to prevent redundant nested containers.
+    const isParentMatching = targetParent.classList.contains(`split-container--${splitDir}`) || 
+                            (targetParent === splitPane && rootMatchesDir(splitPane, splitDir));
+    
+    if (isParentMatching) {
+      targetParent.insertBefore(win, targetEl.nextSibling);
+    } else {
+      // Create a sub-container
+      const container = document.createElement('div');
+      container.className = `split-container split-container--${splitDir}`;
+      
+      // Swap targetEl with container in its parent
+      targetParent.replaceChild(container, targetEl);
+      
+      // Put targetEl and win inside container
+      container.appendChild(targetEl);
+      container.appendChild(win);
+    }
+  } else {
+    // If it's the absolute first window, append directly to splitPane
+    splitPane.appendChild(win);
+  }
+
   openWindows.set(id, { el: win, state: 'split', appName: title, title, filePath });
   _addAppTab(id, title);
+  
+  // Focus the newly opened split window
+  focusWindow(id);
+}
+/* ─────────────────────────────────────────────────────────────
+   SPLIT TREE CLEANUP HELPER
+───────────────────────────────────────────────────────────── */
+function _cleanupSplitTree(parentEl) {
+  const root = splitPane;
+  if (!parentEl || parentEl === root) {
+    // If the root itself has only one child and that child is a split-container,
+    // we flatten it by promoting its children to the root.
+    if (root && root.children.length === 1 && root.firstElementChild.classList.contains('split-container')) {
+      const subContainer = root.firstElementChild;
+      const children = Array.from(subContainer.children);
+      
+      // Update root flex direction to match sub-container
+      if (subContainer.classList.contains('split-container--row')) {
+        root.style.flexDirection = 'row';
+      } else if (subContainer.classList.contains('split-container--column')) {
+        root.style.flexDirection = 'column';
+      }
+      
+      for (const child of children) {
+        root.appendChild(child);
+      }
+      subContainer.remove();
+    }
+    
+    // If root is empty, hide split pane
+    if (root && root.children.length === 0) {
+      root.classList.remove('visible');
+      resizeSplit?.classList.add('hidden');
+      activeSplitWindowId = null;
+    }
+    return;
+  }
+
+  const grandParent = parentEl.parentElement;
+
+  if (parentEl.children.length === 0) {
+    parentEl.remove();
+    _cleanupSplitTree(grandParent);
+  } else if (parentEl.children.length === 1) {
+    const soleChild = parentEl.firstElementChild;
+    // Replace parentEl with soleChild in grandParent
+    grandParent.replaceChild(soleChild, parentEl);
+    _cleanupSplitTree(grandParent);
+  }
 }
 /* ─────────────────────────────────────────────────────────────
    POP UP / POP IN
@@ -394,13 +499,20 @@ function _openSplit(id, appEl, title, filePath) {
 export function popUp(id) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'split') return;
-  // Remove from split
-  const appBody = info.el.querySelector('.window-body');
+  
+  const winEl = info.el;
+  const parentEl = winEl.parentElement;
+  
+  // Extract content
+  const appBody = winEl.querySelector('.window-body');
   const appContent = appBody?.firstElementChild;
-  splitPane.innerHTML = '';
-  splitPane.classList.remove('visible');
-  resizeSplit.classList.add('hidden');
-  splitWindowId = null;
+  
+  // Remove window from DOM
+  winEl.remove();
+  
+  // Clean up the split tree
+  _cleanupSplitTree(parentEl);
+  
   // Re-create as floating
   if (appContent) {
     const newId = ++windowIdCounter;
@@ -487,11 +599,20 @@ export function closeWindow(id) {
   const info = openWindows.get(id);
   if (!info) return;
   playSound('close');
+  
   if (info.state === 'split') {
-    splitPane.innerHTML = '';
-    splitPane.classList.remove('visible');
-    resizeSplit.classList.add('hidden');
-    splitWindowId = null;
+    const winEl = info.el;
+    const parentEl = winEl.parentElement;
+    
+    // Call cleanup if app has it
+    const appBody = winEl.querySelector('.window-body');
+    const appContent = appBody?.firstElementChild;
+    if (appContent && typeof appContent.cleanup === 'function') {
+      appContent.cleanup();
+    }
+    
+    winEl.remove();
+    _cleanupSplitTree(parentEl);
   } else {
     info.el.style.animation = 'win-close 80ms ease-in forwards';
     setTimeout(() => {
@@ -510,12 +631,19 @@ export function closeWindow(id) {
    FOCUS WINDOW
 ───────────────────────────────────────────────────────────── */
 export function focusWindow(id) {
-  // Remove focused class from all
-  document.querySelectorAll('.window--floating.focused').forEach(w => w.classList.remove('focused'));
+  // Remove focused class from all windows and tabs
+  document.querySelectorAll('.window.focused').forEach(w => w.classList.remove('focused'));
   document.querySelectorAll('.statusbar-app-tab.focused').forEach(t => t.classList.remove('focused'));
+  
   const info = openWindows.get(id);
-  if (!info || info.state !== 'floating') return;
-  info.el.style.zIndex = ++topZ;
+  if (!info) return;
+  
+  if (info.state === 'floating') {
+    info.el.style.zIndex = ++topZ;
+  } else if (info.state === 'split') {
+    activeSplitWindowId = id;
+  }
+  
   info.el.classList.add('focused');
   const tab = document.getElementById(`apptab-${id}`);
   if (tab) tab.classList.add('focused');
@@ -638,9 +766,112 @@ function switchMode(mode) {
 function toggleCRT() {
   crtActive = !crtActive;
   body.classList.toggle('crt-active', crtActive);
-  crtToggle.classList.toggle('active', crtActive);
-  crtToggle.setAttribute('aria-pressed', String(crtActive));
   localStorage.setItem('v3-crt', crtActive ? '1' : '0');
+}
+/* ─────────────────────────────────────────────────────────────
+   STYLE MENU & WALLPAPER CYCLING
+───────────────────────────────────────────────────────────── */
+const WALLPAPERS = [
+  {
+    name: 'Cyber Grid',
+    background: 'radial-gradient(ellipse at 20% 80%, rgba(0, 255, 65, 0.03) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0, 229, 255, 0.02) 0%, transparent 60%), var(--cp-bg)',
+    showGrid: true,
+  },
+  {
+    name: 'Synth Wave',
+    background: 'linear-gradient(135deg, #2b0830 0%, #080f30 100%)',
+    showGrid: true,
+  },
+  {
+    name: 'Deep Space',
+    background: 'radial-gradient(circle at center, #0a1b2a 0%, #030810 100%)',
+    showGrid: false,
+  }
+];
+
+let currentWallpaperIdx = 0;
+
+function setWallpaper(idx) {
+  if (idx < 0 || idx >= WALLPAPERS.length) {
+    idx = 0;
+  }
+  currentWallpaperIdx = idx;
+  const wp = WALLPAPERS[currentWallpaperIdx];
+  const modeDesktop = document.getElementById('mode-desktop');
+  if (modeDesktop) {
+    modeDesktop.style.background = wp.background;
+    modeDesktop.classList.toggle('hide-grid', !wp.showGrid);
+  }
+  localStorage.setItem('v3-wallpaper', currentWallpaperIdx);
+  
+  // Update status text in style menu
+  const statusEl = document.getElementById('style-wallpaper-status');
+  if (statusEl) {
+    statusEl.textContent = wp.name;
+  }
+}
+
+function initStyleMenu() {
+  const themeSelect = document.getElementById('style-theme-select');
+  const crtBtn = document.getElementById('style-crt-btn');
+  const crtStatus = document.getElementById('style-crt-status');
+  const wallpaperBtn = document.getElementById('style-wallpaper-btn');
+
+  if (!styleToggle || !styleMenu) return;
+
+  // Toggle menu visibility
+  styleToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    playSound('click');
+    styleMenu.classList.toggle('hidden');
+  });
+
+  // Click outside to dismiss menu
+  document.addEventListener('click', (e) => {
+    if (!styleMenu.classList.contains('hidden') && !styleMenu.contains(e.target) && e.target !== styleToggle) {
+      styleMenu.classList.add('hidden');
+    }
+  });
+
+  // Initialize and Sync active theme
+  const activeTheme = localStorage.getItem('v3-theme') || 'green';
+  if (themeSelect) {
+    themeSelect.value = activeTheme;
+    themeSelect.addEventListener('change', (e) => {
+      playSound('click');
+      const theme = e.target.value;
+      
+      themeSelect.value = theme;
+      applyTheme(theme);
+    });
+  }
+
+  // Initialize and Toggle CRT bloom state
+  const updateCrtStatusUI = () => {
+    if (crtStatus) {
+      crtStatus.textContent = crtActive ? 'ON' : 'OFF';
+      crtStatus.style.color = crtActive ? 'var(--cp-green)' : 'var(--cp-amber)';
+      crtStatus.style.borderColor = crtActive ? 'var(--cp-green)' : 'var(--cp-border-2)';
+    }
+  };
+  
+  updateCrtStatusUI();
+  
+  crtBtn?.addEventListener('click', () => {
+    playSound('click');
+    toggleCRT();
+    updateCrtStatusUI();
+  });
+
+  // Initialize Wallpaper state on startup
+  const savedWpIdx = parseInt(localStorage.getItem('v3-wallpaper')) || 0;
+  setWallpaper(savedWpIdx);
+
+  wallpaperBtn?.addEventListener('click', () => {
+    playSound('click');
+    const nextIdx = (currentWallpaperIdx + 1) % WALLPAPERS.length;
+    setWallpaper(nextIdx);
+  });
 }
 /* ─────────────────────────────────────────────────────────────
    STATUS BAR: CLOCK & STATS
@@ -921,8 +1152,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Apply saved CRT state
   if (crtActive) {
     body.classList.add('crt-active');
-    crtToggle.classList.add('active');
-    crtToggle.setAttribute('aria-pressed', 'true');
   }
   // Apply saved mode
   const initialMode = currentMode;
@@ -933,8 +1162,6 @@ document.addEventListener('DOMContentLoaded', () => {
   tabTTY.addEventListener('click',      () => { playSound('click'); switchMode('tty'); });
   tabDesktop.addEventListener('keydown', e => e.key === 'Enter' && (playSound('click'), switchMode('desktop')));
   tabTTY.addEventListener('keydown',     e => e.key === 'Enter' && (playSound('click'), switchMode('tty')));
-  crtToggle.addEventListener('click',   () => { playSound('click'); toggleCRT(); });
-  crtToggle.addEventListener('keydown', e => e.key === 'Enter' && (playSound('click'), toggleCRT()));
   // Clock & stats
   updateClock();
   updateStats();
@@ -944,6 +1171,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initPaneResize();
   // Keyboard shortcuts
   initKeyboard();
+  // Initialize style menu
+  initStyleMenu();
   // Initialize sub-systems
   initDesktop({ openApp });
   initNavPane({ openApp });
