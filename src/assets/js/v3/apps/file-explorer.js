@@ -100,15 +100,24 @@ export function createFileExpApp(initialPath = '/') {
     if (node.type === 'dir') return 'Folder';
     const fileType = node.fileType || 'other';
     switch (fileType) {
-      case 'md': return 'Markdown Document';
-      case 'html': return 'HTML Document';
-      case 'img': return 'Image Asset';
-      case 'pdf': return 'PDF Document';
-      case 'js': return 'JavaScript File';
-      case 'json': return 'JSON File';
-      case 'css': return 'CSS Stylesheet';
-      case 'txt': return 'Text Document';
-      default: return 'File';
+      case 'md':
+        return 'Markdown Document';
+      case 'html':
+        return 'HTML Document';
+      case 'img':
+        return 'Image Asset';
+      case 'pdf':
+        return 'PDF Document';
+      case 'js':
+        return 'JavaScript File';
+      case 'json':
+        return 'JSON File';
+      case 'css':
+        return 'CSS Stylesheet';
+      case 'txt':
+        return 'Text Document';
+      default:
+        return 'File';
     }
   }
 
@@ -196,7 +205,7 @@ export function createFileExpApp(initialPath = '/') {
   function buildTreeHTML(node) {
     if (node.type !== 'dir') return null;
 
-    const subdirs = (node.children || []).filter(c => c.type === 'dir');
+    const subdirs = (node.children || []).filter((c) => c.type === 'dir');
     const hasSubdirs = subdirs.length > 0;
     const isExpanded = expandedPaths.has(node.path);
     const isActive = currentPath === node.path;
@@ -257,7 +266,7 @@ export function createFileExpApp(initialPath = '/') {
     if (hasSubdirs) {
       const childrenContainer = document.createElement('div');
       childrenContainer.className = 'fileexp-tree-children';
-      subdirs.forEach(child => {
+      subdirs.forEach((child) => {
         const childEl = buildTreeHTML(child);
         if (childEl) {
           childrenContainer.appendChild(childEl);
@@ -309,13 +318,15 @@ export function createFileExpApp(initialPath = '/') {
           window.playSound?.('click');
           e.stopPropagation();
           const now = Date.now();
-          const isDoubleClick = (now - lastClick) < 300;
+          const isDoubleClick = now - lastClick < 300;
           lastClick = now;
 
           if (isDoubleClick || item.classList.contains('selected')) {
             openItem(node);
           } else {
-            contentArea.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+            contentArea
+              .querySelectorAll('.selected')
+              .forEach((el) => el.classList.remove('selected'));
             item.classList.add('selected');
             selectedItemNode = node;
             updateStatusbar();
@@ -357,7 +368,7 @@ export function createFileExpApp(initialPath = '/') {
 
         const sizeCol = document.createElement('div');
         sizeCol.className = 'fileexp-col-size';
-        sizeCol.textContent = node.type === 'file' ? (node.size || '0 B') : '--';
+        sizeCol.textContent = node.type === 'file' ? node.size || '0 B' : '--';
 
         row.appendChild(nameCol);
         row.appendChild(typeCol);
@@ -368,13 +379,15 @@ export function createFileExpApp(initialPath = '/') {
           window.playSound?.('click');
           e.stopPropagation();
           const now = Date.now();
-          const isDoubleClick = (now - lastClick) < 300;
+          const isDoubleClick = now - lastClick < 300;
           lastClick = now;
 
           if (isDoubleClick || row.classList.contains('selected')) {
             openItem(node);
           } else {
-            contentArea.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+            contentArea
+              .querySelectorAll('.selected')
+              .forEach((el) => el.classList.remove('selected'));
             row.classList.add('selected');
             selectedItemNode = node;
             updateStatusbar();
