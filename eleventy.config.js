@@ -8,11 +8,18 @@ import exifReader from 'exif-reader';
 export default function (eleventyConfig) {
   // 1. Copy the 'assets' folder exactly as is to the output
   eleventyConfig.addPassthroughCopy('src/assets');
-  // Passthrough-copy raw .md sources so the v3 markdown viewer can fetch them
-  eleventyConfig.addPassthroughCopy('src/**/*.md');
+
+  // Copy raw v2 markdown files to their original paths so the v3 markdown viewer can fetch them
+  eleventyConfig.addPassthroughCopy({
+    'src/v2/blog/blogs': 'blog/blogs',
+    'src/v2/projects/wallpapersync': 'projects/wallpapersync',
+  });
 
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
   eleventyConfig.addWatchTarget('./src/assets/');
+  // Watch V2 and V3 SCSS sources
+  eleventyConfig.addWatchTarget('./src/v2/scss/');
+  eleventyConfig.addWatchTarget('./src/v3/scss/');
 
   // 3. Add Plugins
   eleventyConfig.addPlugin(syntaxHighlight);
@@ -117,9 +124,9 @@ export default function (eleventyConfig) {
 
   return {
     dir: {
-      input: 'src', // Look for files in the src folder
+      input: 'src',    // Look for files in the src folder
       output: '_site', // Output the built site to '_site' folder
-      includes: '_includes', // Where we will keep your HTML layouts (relative to input)
+      includes: 'v2/_includes', // V2 layouts & partials (V3 uses layout: false)
     },
   };
 }

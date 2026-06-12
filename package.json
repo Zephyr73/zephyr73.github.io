@@ -1,21 +1,16 @@
 {
   "name": "zephyr73.github.io",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "type": "module",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
     "build": "npx @11ty/eleventy",
-    "build:css": "sass src/scss:src/assets/css --no-source-map",
-    "watch:css": "sass --watch src/scss:src/assets/css",
+    "build:css": "sass src/v2/scss/style.scss:src/assets/css/style.css src/v3/scss/desktop.scss:src/assets/css/desktop.css --no-source-map",
+    "watch:css": "sass --watch src/v2/scss/style.scss:src/assets/css/style.css src/v3/scss/desktop.scss:src/assets/css/desktop.css",
     "dev": "concurrently \"npm:start\" \"npm:watch:css\"",
     "format": "prettier --write \"**/*.{html,js,css,scss,md}\"",
     "lint:js": "eslint \"**/*.js\"",
     "lint": "npm run lint:js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx @11ty/eleventy --serve"
   },
   "keywords": [],

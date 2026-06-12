@@ -1,5 +1,6 @@
 ---
 layout: base.njk
+permalink: /projects/wallpapersync/
 title: WallpaperSync
 description:
   WallpaperSync is a Python script that dynamically adjusts the color of connected RGB LED

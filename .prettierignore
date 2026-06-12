@@ -2,3 +2,4 @@ node_modules
 _site
 package-lock.json
 src/assets/css/style.css
+src/assets/css/desktop.css

@@ -1,5 +1,6 @@
 ---
 layout: base.njk
+permalink: /blog/blogs/windows-setup/
 title: How I setup my windows 11 desktop
 description: This is a step by step process on how I configure my windows 11 desktop and some network configurations. This is in case I forget how I set them up
 pageId: 3

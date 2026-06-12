@@ -23,6 +23,7 @@ const HIDDEN = new Set([
   '.venv',
   '__pycache__',
   'v2',
+  'v3', // V3 desktop SPA — not exposed in virtual filesystem
 ]);
 
 const EXT_MAP = {
@@ -117,13 +118,29 @@ export default function () {
   // Inject gallery assets from src/assets/img/gallery into the virtual filesystem
   const galleryChildren = scanDir('./src/assets/img/gallery', '/gallery');
   if (galleryChildren && galleryChildren.length > 0) {
-    rootChildren.unshift({
+    rootChildren.push({
       name: 'gallery',
       type: 'dir',
       path: '/gallery',
       children: galleryChildren,
     });
   }
+
+  // Inject V2 content pages into the virtual filesystem root
+  const v2ContentDirs = ['about', 'blog', 'projects'];
+  for (const dir of v2ContentDirs) {
+    const realPath = `./src/v2/${dir}`;
+    const children = scanDir(realPath, `/${dir}`);
+    rootChildren.push({
+      name: dir,
+      type: 'dir',
+      path: `/${dir}`,
+      children,
+    });
+  }
+
+  // Sort root children alphabetically by name
+  rootChildren.sort((a, b) => a.name.localeCompare(b.name));
 
   return {
     root: '/',
