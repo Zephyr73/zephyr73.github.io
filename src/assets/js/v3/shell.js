@@ -30,103 +30,230 @@ function _getAudioCtx() {
 export function playSound(type) {
   try {
     const ctx = _getAudioCtx();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
     const now = ctx.currentTime;
     switch (type) {
-      case 'click':
-        // Warm mechanical thock keyboard click
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(180, now);
-        osc.frequency.exponentialRampToValueAtTime(60, now + 0.05);
-        gain.gain.setValueAtTime(0.35, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-        osc.start(now);
-        osc.stop(now + 0.06);
-        break;
-      case 'open':
-        // Rising double mechanical click/pop
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(140, now);
-        osc.frequency.exponentialRampToValueAtTime(90, now + 0.05);
-        
-        // Second popup click
-        osc.frequency.setValueAtTime(190, now + 0.06);
-        osc.frequency.exponentialRampToValueAtTime(110, now + 0.12);
-        
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-        gain.gain.setValueAtTime(0.25, now + 0.06);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-        
-        osc.start(now);
-        osc.stop(now + 0.14);
-        break;
-      case 'close':
-        // Deep mechanical key drop thud
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(130, now);
-        osc.frequency.exponentialRampToValueAtTime(45, now + 0.12);
-        gain.gain.setValueAtTime(0.35, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
-        osc.start(now);
-        osc.stop(now + 0.14);
-        break;
-      case 'minimize':
-        // Bouncy hollow mechanical pop
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(200, now);
-        osc.frequency.exponentialRampToValueAtTime(80, now + 0.08);
-        gain.gain.setValueAtTime(0.25, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-        osc.start(now);
-        osc.stop(now + 0.1);
-        break;
-      case 'maximize':
-        // A crisp double mechanical tap
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(160, now);
-        osc.frequency.exponentialRampToValueAtTime(100, now + 0.04);
-        osc.frequency.setValueAtTime(220, now + 0.05);
-        osc.frequency.exponentialRampToValueAtTime(130, now + 0.10);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
-        gain.gain.setValueAtTime(0.25, now + 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.10);
-        osc.start(now);
-        osc.stop(now + 0.10);
-        break;
-      case 'error': {
-        // Double oscillator warning key-thud/buzz
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(100, now);
-        osc.frequency.exponentialRampToValueAtTime(50, now + 0.25);
-        
-        const subOsc = ctx.createOscillator();
-        const subGain = ctx.createGain();
-        subOsc.type = 'sawtooth';
-        subOsc.frequency.setValueAtTime(90, now);
-        subOsc.frequency.exponentialRampToValueAtTime(45, now + 0.22);
-        
-        subOsc.connect(subGain);
-        subGain.connect(ctx.destination);
-        
-        gain.gain.setValueAtTime(0.35, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-        
-        subGain.gain.setValueAtTime(0.05, now);
-        subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
-        
-        osc.start(now);
-        subOsc.start(now);
-        osc.stop(now + 0.25);
-        subOsc.stop(now + 0.25);
+      case 'click': {
+        // Warm low-frequency thock keyboard click with a transient
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(380, now);
+        filter.Q.setValueAtTime(3.5, now);
+
+        const oscBody = ctx.createOscillator();
+        oscBody.type = 'triangle';
+        oscBody.frequency.setValueAtTime(125, now);
+        oscBody.frequency.exponentialRampToValueAtTime(80, now + 0.05);
+
+        const gainBody = ctx.createGain();
+        gainBody.gain.setValueAtTime(0.4, now);
+        gainBody.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+        // Click transient to simulate keyboard mechanical impact
+        const oscClick = ctx.createOscillator();
+        oscClick.type = 'sine';
+        oscClick.frequency.setValueAtTime(750, now);
+        oscClick.frequency.exponentialRampToValueAtTime(150, now + 0.006);
+
+        const gainClick = ctx.createGain();
+        gainClick.gain.setValueAtTime(0.25, now);
+        gainClick.gain.exponentialRampToValueAtTime(0.001, now + 0.008);
+
+        oscBody.connect(gainBody);
+        oscClick.connect(gainClick);
+
+        gainBody.connect(filter);
+        gainClick.connect(filter);
+        filter.connect(ctx.destination);
+
+        oscBody.start(now);
+        oscBody.stop(now + 0.06);
+        oscClick.start(now);
+        oscClick.stop(now + 0.008);
         break;
       }
-      default:
-        osc.stop(now);
+      case 'open': {
+        // Double bubbly mechanical keyboard pops
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(450, now);
+        filter.Q.setValueAtTime(4.0, now);
+
+        // First pop
+        const osc1 = ctx.createOscillator();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(140, now);
+        osc1.frequency.exponentialRampToValueAtTime(85, now + 0.04);
+
+        const gain1 = ctx.createGain();
+        gain1.gain.setValueAtTime(0.3, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+        // Second pop (slightly higher frequency, overlapping)
+        const delay = 0.045;
+        const osc2 = ctx.createOscillator();
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(190, now + delay);
+        osc2.frequency.exponentialRampToValueAtTime(110, now + delay + 0.055);
+
+        const gain2 = ctx.createGain();
+        gain2.gain.setValueAtTime(0.25, now + delay);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.055);
+
+        osc1.connect(gain1);
+        osc2.connect(gain2);
+
+        gain1.connect(filter);
+        gain2.connect(filter);
+        filter.connect(ctx.destination);
+
+        osc1.start(now);
+        osc1.stop(now + 0.04);
+        osc2.start(now + delay);
+        osc2.stop(now + delay + 0.055);
+        break;
+      }
+      case 'close': {
+        // Deep spacebar bottom-out style thud (warm, low-frequency drop)
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(220, now);
+        filter.Q.setValueAtTime(2.5, now);
+
+        const oscBody = ctx.createOscillator();
+        oscBody.type = 'triangle';
+        oscBody.frequency.setValueAtTime(95, now);
+        oscBody.frequency.exponentialRampToValueAtTime(50, now + 0.12);
+
+        const gainBody = ctx.createGain();
+        gainBody.gain.setValueAtTime(0.5, now);
+        gainBody.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+        // Soft mechanical bottom-out contact click
+        const oscClick = ctx.createOscillator();
+        oscClick.type = 'sine';
+        oscClick.frequency.setValueAtTime(380, now);
+        oscClick.frequency.exponentialRampToValueAtTime(90, now + 0.01);
+
+        const gainClick = ctx.createGain();
+        gainClick.gain.setValueAtTime(0.15, now);
+        gainClick.gain.exponentialRampToValueAtTime(0.001, now + 0.012);
+
+        oscBody.connect(gainBody);
+        oscClick.connect(gainClick);
+
+        gainBody.connect(filter);
+        gainClick.connect(filter);
+        filter.connect(ctx.destination);
+
+        oscBody.start(now);
+        oscBody.stop(now + 0.14);
+        oscClick.start(now);
+        oscClick.stop(now + 0.012);
+        break;
+      }
+      case 'minimize': {
+        // Bouncy hollow mechanical pong
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(170, now);
+        filter.Q.setValueAtTime(7.0, now);
+
+        const osc = ctx.createOscillator();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(175, now);
+        osc.frequency.exponentialRampToValueAtTime(125, now + 0.12);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.45, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+        osc.connect(gain);
+        gain.connect(filter);
+        filter.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.15);
+        break;
+      }
+      case 'maximize': {
+        // Crisp double rising pop/pong
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(500, now);
+        filter.Q.setValueAtTime(5.0, now);
+
+        // First click/pop
+        const osc1 = ctx.createOscillator();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(150, now);
+        osc1.frequency.exponentialRampToValueAtTime(105, now + 0.055);
+
+        const gain1 = ctx.createGain();
+        gain1.gain.setValueAtTime(0.3, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.055);
+
+        // Second pop (higher frequency)
+        const delay = 0.05;
+        const osc2 = ctx.createOscillator();
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(210, now + delay);
+        osc2.frequency.exponentialRampToValueAtTime(140, now + delay + 0.075);
+
+        const gain2 = ctx.createGain();
+        gain2.gain.setValueAtTime(0.25, now + delay);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.075);
+
+        osc1.connect(gain1);
+        osc2.connect(gain2);
+
+        gain1.connect(filter);
+        gain2.connect(filter);
+        filter.connect(ctx.destination);
+
+        osc1.start(now);
+        osc1.stop(now + 0.055);
+        osc2.start(now + delay);
+        osc2.stop(now + delay + 0.075);
+        break;
+      }
+      case 'error': {
+        // Double oscillator warm, low-frequency minor-second warning thud
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(200, now);
+        filter.Q.setValueAtTime(2.0, now);
+
+        const osc1 = ctx.createOscillator();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(90, now);
+        osc1.frequency.exponentialRampToValueAtTime(45, now + 0.25);
+
+        const osc2 = ctx.createOscillator();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(73, now);
+        osc2.frequency.exponentialRampToValueAtTime(37, now + 0.22);
+
+        const gain1 = ctx.createGain();
+        gain1.gain.setValueAtTime(0.4, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+        const gain2 = ctx.createGain();
+        gain2.gain.setValueAtTime(0.2, now);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+        osc1.connect(gain1);
+        osc2.connect(gain2);
+
+        gain1.connect(filter);
+        gain2.connect(filter);
+        filter.connect(ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.25);
+        osc2.stop(now + 0.25);
+        break;
+      }
     }
   } catch {
     // Silently fail if audio not available
