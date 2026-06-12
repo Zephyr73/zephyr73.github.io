@@ -37,8 +37,6 @@ function applyTheme(themeKey) {
   ditherAvatar();
 }
 window.applyTheme = applyTheme;
-window.applyTheme = applyTheme;
-window.applyTheme = applyTheme;
 
 // Desktop theme dropdown
 if (themeSwitch && themeMenu) {
