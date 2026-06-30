@@ -309,36 +309,6 @@ function initGalleryDetail() {
     });
   });
 
-  // Clamp wrap width to image's rendered width so panel stays adjacent
-  const wrap = document.querySelector('.gallery-detail__image-wrap');
-  const img = wrap?.querySelector('img');
-  if (!wrap || !img) {
-    return;
-  }
-
-  function clampWrap() {
-    // getBoundingClientRect gives the actual rendered size after CSS constraints
-    const renderedWidth = img.getBoundingClientRect().width;
-    if (renderedWidth > 0) {
-      wrap.style.maxWidth = renderedWidth + 'px';
-    } else {
-      // Image not yet rendered (e.g. background tab); clear so layout reflows correctly
-      wrap.style.maxWidth = '';
-    }
-  }
-
-  if (img.complete && img.naturalWidth > 0) {
-    clampWrap();
-  } else {
-    img.addEventListener('load', clampWrap);
-  }
-
-  // Re-clamp on resize in case the viewport changes
-  window.addEventListener('resize', () => {
-    // Remove the clamp so the layout reflows naturally first, then re-measure
-    wrap.style.maxWidth = '';
-    requestAnimationFrame(clampWrap);
-  });
 }
 
 // ---- Avatar Dithering (About/Resume page) ----
