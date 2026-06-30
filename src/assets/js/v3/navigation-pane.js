@@ -62,14 +62,31 @@ function updateStatsAndVolume() {
   if (fsRoot && fsRoot.children) {
     fsRoot.children.forEach(traverse);
   }
-  const statsEl = document.getElementById('nav-stats');
-  if (statsEl) {
-    statsEl.textContent = `Folders: ${foldersCount} | Files: ${filesCount}`;
+  
+  // Update folders & files count
+  const foldersVal = document.getElementById('nav-folders-val');
+  if (foldersVal) foldersVal.textContent = foldersCount;
+  
+  const filesVal = document.getElementById('nav-files-val');
+  if (filesVal) filesVal.textContent = filesCount;
+
+  // Update volume info and progress bar
+  const usedMb = (totalSizeBytes / (1024 * 1024)).toFixed(1);
+  const totalMb = 250.0;
+  const volText = document.getElementById('nav-vol-text');
+  if (volText) {
+    volText.textContent = `${usedMb}MB / ${totalMb}MB`;
   }
-  const volEl = document.querySelector('.nav-pane__footer .vol-info');
-  if (volEl) {
-    const usedMb = (totalSizeBytes / (1024 * 1024)).toFixed(1);
-    volEl.textContent = `Volume: ${usedMb}MB / 50.0MB`;
+  
+  const volBar = document.getElementById('nav-vol-bar');
+  if (volBar) {
+    const pct = (totalSizeBytes / (totalMb * 1024 * 1024)) * 100;
+    volBar.style.width = `${Math.min(100, pct)}%`;
+    if (pct > 100) {
+      volBar.classList.add('overflow');
+    } else {
+      volBar.classList.remove('overflow');
+    }
   }
 }
 function sortNodes(nodes) {
@@ -77,16 +94,16 @@ function sortNodes(nodes) {
   if (sortType === 'alpha') {
     return list.sort((a, b) => {
       if (a.type !== b.type) return a.type === 'dir' ? -1 : 1;
-      return a.name.localeCompare(b.name);
+      return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
     });
   } else {
     return list.sort((a, b) => {
       if (a.type !== b.type) return a.type === 'dir' ? -1 : 1;
-      if (a.type === 'dir') return a.name.localeCompare(b.name);
+      if (a.type === 'dir') return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
       const extA = (a.fileType || '').toLowerCase();
       const extB = (b.fileType || '').toLowerCase();
-      if (extA !== extB) return extA.localeCompare(extB);
-      return a.name.localeCompare(b.name);
+      if (extA !== extB) return extA.localeCompare(extB, undefined, { numeric: true, sensitivity: 'base' });
+      return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
     });
   }
 }
@@ -125,7 +142,7 @@ const FILE_ICONS = {
 };
 function createNodeEl(node) {
   const nodeEl = document.createElement('div');
-  nodeEl.className = 'tree-node';
+  nodeEl.className = `tree-node tree-node--${node.type}`;
   nodeEl.dataset.path = node.path;
   const rowEl = document.createElement('div');
   rowEl.className = 'tree-node__row';

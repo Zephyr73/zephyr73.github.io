@@ -31,7 +31,7 @@ export default function (eleventyConfig) {
   //    - loading defaults to "lazy"; fetchpriority only set when passed
   eleventyConfig.addNunjucksAsyncShortcode(
     'gimg',
-    async function (src, alt, loading, fetchpriority) {
+    async function (src, alt, loading, fetchpriority, order) {
       const srcPath = `./src/assets/img/gallery/${src}`;
       // Keep processed images in the same subdirectory (photography/, ai/, forza/)
       const subdir = src.split('/')[0];
@@ -103,7 +103,8 @@ export default function (eleventyConfig) {
       const slug = `${subdir}-${baseName}`;
       const detailUrl = `/gallery/image/${slug}/`;
 
-      return `<div class="gallery-item">
+      const orderStyle = (order !== undefined && order !== null && order !== '') ? ` style="order: ${order};"` : '';
+      return `<div class="gallery-item"${orderStyle}>
   ${pictureHtml}
   <div class="gallery-item__overlay">
     <div class="gallery-item__meta">${
