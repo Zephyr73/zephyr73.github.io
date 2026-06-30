@@ -103,7 +103,8 @@ export default function (eleventyConfig) {
       const slug = `${subdir}-${baseName}`;
       const detailUrl = `/gallery/image/${slug}/`;
 
-      const orderStyle = (order !== undefined && order !== null && order !== '') ? ` style="order: ${order};"` : '';
+      const orderStyle =
+        order !== undefined && order !== null && order !== '' ? ` style="order: ${order};"` : '';
       return `<div class="gallery-item"${orderStyle}>
   ${pictureHtml}
   <div class="gallery-item__overlay">

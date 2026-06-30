@@ -308,7 +308,6 @@ function initGalleryDetail() {
       }
     });
   });
-
 }
 
 // ---- Avatar Dithering (About/Resume page) ----

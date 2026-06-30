@@ -944,7 +944,7 @@ body.crt-active .tty-split-pane {
   background: var(--cp-green);
   width: 0%;
   transition: width 0.3s ease;
-  
+
   &.overflow {
     background: var(--cp-red);
     animation: flash-red 1s infinite alternate;
@@ -952,8 +952,12 @@ body.crt-active .tty-split-pane {
 }
 
 @keyframes flash-red {
-  0% { opacity: 0.6; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .footer-bottom-row {
@@ -2768,7 +2772,7 @@ body[data-theme='cyan'] {
   --cp-border-2: #006c80;
 
   /* Accent overrides to avoid clashing with the cyan theme */
-  --cp-cyan: #00ff41;  /* Use Green for links/folders/info lines in Cyan theme */
+  --cp-cyan: #00ff41; /* Use Green for links/folders/info lines in Cyan theme */
   --cp-cyan-glow: rgba(0, 255, 65, 0.2);
   --ic-dir: #00ff41;
   --ic-md: #ffb800;
@@ -2841,7 +2845,7 @@ body[data-theme='cyberpunk2077'] {
   /* Accent overrides based on the remaining palette colors */
   --cp-amber: #50ebd4; /* Column 5: Neon Teal/Cyan for headers/titlebars */
   --cp-amber-glow: rgba(80, 235, 212, 0.25);
-  --cp-cyan: #d80041;  /* Column 2: Hot Crimson Red for links/folders */
+  --cp-cyan: #d80041; /* Column 2: Hot Crimson Red for links/folders */
   --cp-cyan-glow: rgba(216, 0, 65, 0.2);
   --ic-dir: #d80041;
   --ic-md: #50ebd4;

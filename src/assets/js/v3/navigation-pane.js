@@ -62,11 +62,11 @@ function updateStatsAndVolume() {
   if (fsRoot && fsRoot.children) {
     fsRoot.children.forEach(traverse);
   }
-  
+
   // Update folders & files count
   const foldersVal = document.getElementById('nav-folders-val');
   if (foldersVal) foldersVal.textContent = foldersCount;
-  
+
   const filesVal = document.getElementById('nav-files-val');
   if (filesVal) filesVal.textContent = filesCount;
 
@@ -77,7 +77,7 @@ function updateStatsAndVolume() {
   if (volText) {
     volText.textContent = `${usedMb}MB / ${totalMb}MB`;
   }
-  
+
   const volBar = document.getElementById('nav-vol-bar');
   if (volBar) {
     const pct = (totalSizeBytes / (totalMb * 1024 * 1024)) * 100;
@@ -99,10 +99,12 @@ function sortNodes(nodes) {
   } else {
     return list.sort((a, b) => {
       if (a.type !== b.type) return a.type === 'dir' ? -1 : 1;
-      if (a.type === 'dir') return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+      if (a.type === 'dir')
+        return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
       const extA = (a.fileType || '').toLowerCase();
       const extB = (b.fileType || '').toLowerCase();
-      if (extA !== extB) return extA.localeCompare(extB, undefined, { numeric: true, sensitivity: 'base' });
+      if (extA !== extB)
+        return extA.localeCompare(extB, undefined, { numeric: true, sensitivity: 'base' });
       return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
     });
   }

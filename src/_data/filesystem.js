@@ -68,8 +68,14 @@ function scanDir(dirPath, virtualPath = '/') {
   // Folders first, then files, both alphabetical
   const dirs = entries
     .filter((e) => e.isDirectory() && !HIDDEN.has(e.name))
-    .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
-  const files = entries.filter((e) => e.isFile()).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+    .sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }),
+    );
+  const files = entries
+    .filter((e) => e.isFile())
+    .sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }),
+    );
 
   for (const dirent of dirs) {
     const childVirtual = virtualPath === '/' ? `/${dirent.name}` : `${virtualPath}/${dirent.name}`;
@@ -140,7 +146,9 @@ export default function () {
   }
 
   // Sort root children alphabetically by name (natural order)
-  rootChildren.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+  rootChildren.sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }),
+  );
 
   return {
     root: '/',
