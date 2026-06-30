@@ -35,6 +35,15 @@
   --cp-dim: #3a5a3a;
   --cp-muted: #4a7a4a;
 
+  /* Icon colors */
+  --ic-dir: var(--cp-cyan);
+  --ic-md: var(--cp-cyan);
+  --ic-html: var(--cp-amber);
+  --ic-img: var(--cp-magenta);
+  --ic-pdf: var(--cp-red);
+  --ic-txt: var(--cp-white);
+  --ic-other: var(--cp-muted);
+
   /* Typography */
   --font-mono: 'JetBrains Mono', 'Share Tech Mono', 'Courier New', monospace;
   --font-ui: 'JetBrains Mono', 'Share Tech Mono', monospace;
@@ -724,6 +733,7 @@ body.crt-active .tty-split-pane {
 .tree-node {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .tree-node__row {
@@ -732,22 +742,34 @@ body.crt-active .tty-split-pane {
   gap: 5px;
   padding: 4px 10px;
   cursor: pointer;
-  transition: background var(--t-fast);
   white-space: nowrap;
-  overflow: hidden;
+  position: relative; /* Positioning context for full-width highlight */
 }
 
-.tree-node__row:hover {
-  background: rgba(0, 255, 65, 0.06);
+.tree-node__row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1000px; /* Extend all the way to the left of the pane */
+  right: -1000px; /* Extend all the way to the right of the pane */
+  z-index: -1; /* Place highlight behind the row text content */
+  background: transparent;
+  pointer-events: none; /* Let clicks pass through to the row */
+  transition: background var(--t-fast);
 }
-.tree-node__row.selected {
-  background: rgba(0, 255, 65, 0.12);
+
+.tree-node__row:hover::before {
+  background: color-mix(in srgb, var(--cp-green) 6%, transparent);
+}
+.tree-node__row.selected::before {
+  background: color-mix(in srgb, var(--cp-green) 12%, transparent);
 }
 
 .tree-node__toggle {
-  color: var(--cp-dim);
+  color: color-mix(in srgb, var(--cp-white) 50%, transparent);
   font-size: 12px;
-  width: 12px;
+  width: 20px;
   flex-shrink: 0;
   text-align: center;
 }
@@ -757,6 +779,7 @@ body.crt-active .tty-split-pane {
   flex-shrink: 0;
   width: 20px;
   text-align: center;
+  margin-left: 0; /* Separate toggle [+][-] and icon [D] brackets */
 }
 
 .tree-node__name {
@@ -768,60 +791,186 @@ body.crt-active .tty-split-pane {
 
 .tree-node__children {
   display: none;
-  padding-left: 14px;
+  padding-left: 26px; /* Indent to align branch lines under parent toggle center */
+  position: relative;
 }
 
 .tree-node.open > .tree-node__children {
   display: block;
 }
 
+/* Branch lines connector containers */
+.tree-node__children > .tree-node {
+  position: relative;
+}
+
+/* Horizontal branch connector line - for directories (connects to toggle start) */
+.tree-node__children > .tree-node--dir::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 14px; /* Align vertically with the center of the item row */
+  width: 16px;
+  height: 1px;
+  border-top: 1px solid var(--cp-border-2);
+  opacity: 0.7;
+}
+
+/* Horizontal branch connector line - for files (connects all the way to file icon) */
+.tree-node__children > .tree-node--file::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 14px; /* Align vertically with the center of the item row */
+  width: 41px;
+  height: 1px;
+  border-top: 1px solid var(--cp-border-2);
+  opacity: 0.7;
+}
+
+/* Vertical trunk line */
+.tree-node__children > .tree-node::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px solid var(--cp-border-2);
+  opacity: 0.7;
+}
+
+/* Last child vertical line stops at its horizontal branch */
+.tree-node__children > .tree-node:last-child::after {
+  bottom: auto;
+  height: 14px;
+}
+
 /* Color by type */
 .icon-dir {
-  color: var(--cp-cyan);
+  color: var(--ic-dir);
 }
 .icon-md {
-  color: var(--cp-green);
+  color: var(--ic-md);
 }
 .icon-html {
-  color: var(--cp-amber);
+  color: var(--ic-html);
 }
 .icon-img {
-  color: var(--cp-magenta);
+  color: var(--ic-img);
 }
 .icon-pdf {
-  color: var(--cp-red);
+  color: var(--ic-pdf);
 }
 .icon-txt {
-  color: var(--cp-white);
+  color: var(--ic-txt);
 }
 .icon-other {
-  color: var(--cp-muted);
+  color: var(--ic-other);
 }
 
 .nav-pane__footer {
-  padding: 8px 12px;
+  padding: 12px 14px;
   border-top: 1px solid var(--cp-border-2);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--cp-dim);
   flex-shrink: 0;
   background: var(--cp-bg-2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.nav-pane__footer .vol-info {
-  color: var(--cp-muted);
-  margin-top: 2px;
+.footer-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
 }
 
-.nav-pane__theme-select {
-  width: 100%;
-  background: var(--cp-bg);
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.2;
+}
+
+.stat-lbl {
+  color: color-mix(in srgb, var(--cp-white) 50%, transparent);
+}
+
+.stat-val {
   color: var(--cp-green);
-  border: 1px solid var(--cp-border);
-  padding: 4px 8px;
-  font-size: 12px;
   font-family: var(--font-mono);
-  margin-top: 4px;
-  cursor: pointer;
+}
+
+.stat-val.sec-ok {
+  color: var(--cp-green);
+  font-weight: bold;
+  &::before {
+    content: '● ';
+    font-size: 8px;
+    vertical-align: middle;
+  }
+}
+
+.vol-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vol-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.vol-lbl {
+  color: color-mix(in srgb, var(--cp-white) 50%, transparent);
+}
+
+.vol-val {
+  color: var(--cp-amber);
+}
+
+.vol-bar-container {
+  height: 6px;
+  background: var(--cp-bg-3);
+  border: 1px solid var(--cp-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.vol-bar-fill {
+  height: 100%;
+  background: var(--cp-green);
+  width: 0%;
+  transition: width 0.3s ease;
+  
+  &.overflow {
+    background: var(--cp-red);
+    animation: flash-red 1s infinite alternate;
+  }
+}
+
+@keyframes flash-red {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.footer-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px dashed var(--cp-border);
+  padding-top: 8px;
+  font-size: 10px;
+}
+
+.footer-lic {
+  color: color-mix(in srgb, var(--cp-white) 55%, transparent);
+  font-weight: bold;
+}
+
+.footer-copy {
+  color: color-mix(in srgb, var(--cp-white) 35%, transparent);
 }
 
 /* Resize handle between panes */
@@ -2601,40 +2750,28 @@ body.resize-active .window--floating {
 /* ============================================================
    16. CUSTOM TERMINAL THEMES (Overrides)
    ============================================================ */
-body[data-theme='amber'] {
-  --cp-green: #ffb800;
-  --cp-green-dim: #cc9300;
-  --cp-green-glow: rgba(255, 184, 0, 0.25);
-  --cp-crt-glow: rgba(255, 184, 0, 0.08);
-  --cp-white: #ffeec8;
-  --cp-dim: #6e4c00;
-  --cp-muted: #a37c00;
-  --cp-border: #4a3600;
-  --cp-border-2: #6e4e00;
-}
-
 body[data-theme='cyan'] {
+  --cp-bg: #000a0f;
+  --cp-bg-1: #000f14;
+  --cp-bg-2: #00141a;
+  --cp-bg-3: #002330;
+  --cp-panel: #00141a;
+  --cp-panel-2: #001a24;
   --cp-green: #00e5ff;
   --cp-green-dim: #00b8cc;
   --cp-green-glow: rgba(0, 229, 255, 0.25);
   --cp-crt-glow: rgba(0, 229, 255, 0.08);
   --cp-white: #c8faff;
   --cp-dim: #005d6e;
-  --cp-muted: #008b80;
+  --cp-muted: #008899;
   --cp-border: #004754;
   --cp-border-2: #006c80;
-}
 
-body[data-theme='magenta'] {
-  --cp-green: #ff00ff;
-  --cp-green-dim: #cc00cc;
-  --cp-green-glow: rgba(255, 0, 255, 0.25);
-  --cp-crt-glow: rgba(255, 0, 255, 0.08);
-  --cp-white: #ffe8ff;
-  --cp-dim: #6e006e;
-  --cp-muted: #a300a3;
-  --cp-border: #4a004a;
-  --cp-border-2: #6e006e;
+  /* Accent overrides to avoid clashing with the cyan theme */
+  --cp-cyan: #00ff41;  /* Use Green for links/folders/info lines in Cyan theme */
+  --cp-cyan-glow: rgba(0, 255, 65, 0.2);
+  --ic-dir: #00ff41;
+  --ic-md: #ffb800;
 }
 
 body[data-theme='red'] {
@@ -2653,76 +2790,9 @@ body[data-theme='red'] {
   --cp-muted: #a3001e;
   --cp-border: #4a000d;
   --cp-border-2: #6e0014;
-}
 
-body[data-theme='purple'] {
-  --cp-bg: #08050a;
-  --cp-bg-1: #0c0a0f;
-  --cp-bg-2: #150f1a;
-  --cp-bg-3: #1f1624;
-  --cp-panel: #150c1a;
-  --cp-panel-2: #1a111f;
-  --cp-green: #b026ff;
-  --cp-green-dim: #8a1ecc;
-  --cp-green-glow: rgba(176, 38, 255, 0.25);
-  --cp-crt-glow: rgba(176, 38, 255, 0.08);
-  --cp-white: #f5e8ff;
-  --cp-dim: #4c007a;
-  --cp-muted: #7100b3;
-  --cp-border: #330052;
-  --cp-border-2: #4c007a;
-}
-
-body[data-theme='notebook'] {
-  --cp-bg: #faf6e8;
-  --cp-bg-1: #f3ede0;
-  --cp-bg-2: #eae2d2;
-  --cp-bg-3: #dfd7c5;
-  --cp-panel: #fffdf5;
-  --cp-panel-2: #fcfaf0;
-  --cp-border: #dcd3bd;
-  --cp-border-2: #c9beab;
-
-  --cp-green: #102a43; /* Indigo ink */
-  --cp-green-dim: #243b53; /* Graphite blue */
-  --cp-green-glow: rgba(16, 42, 67, 0.12);
-  --cp-crt-glow: rgba(16, 42, 67, 0.03);
-  --cp-white: #243b53; /* Ink text */
-  --cp-dim: #627d98; /* Pencil dim */
-  --cp-muted: #829ab1; /* Pencil muted */
-
-  --cp-cyan: #09738a; /* Slate teal */
-  --cp-cyan-glow: rgba(9, 115, 138, 0.12);
-  --cp-amber: #cc4400; /* Ruler margin red */
-  --cp-amber-glow: rgba(204, 68, 0, 0.12);
-  --cp-red: #cc1111;
-  --cp-red-glow: rgba(204, 17, 17, 0.12);
-}
-
-body[data-theme='slate'] {
-  --cp-bg: #0f172a;
-  --cp-bg-1: #1e293b;
-  --cp-bg-2: #334155;
-  --cp-bg-3: #475569;
-  --cp-panel: #1e293b;
-  --cp-panel-2: #0f172a;
-  --cp-border: #334155;
-  --cp-border-2: #475569;
-
-  --cp-green: #38bdf8; /* Sky-blue */
-  --cp-green-dim: #0284c7;
-  --cp-green-glow: rgba(56, 189, 248, 0.25);
-  --cp-crt-glow: rgba(56, 189, 248, 0.08);
-  --cp-white: #f8fafc;
-  --cp-dim: #94a3b8;
-  --cp-muted: #64748b;
-
-  --cp-cyan: #00e5ff;
-  --cp-cyan-glow: rgba(0, 229, 255, 0.2);
-  --cp-amber: #ffb800;
-  --cp-amber-glow: rgba(255, 184, 0, 0.2);
-  --cp-red: #ef4444;
-  --cp-red-glow: rgba(239, 68, 68, 0.2);
+  /* Accent overrides to avoid clashing with the red theme */
+  --ic-md: #00ff41;
 }
 
 body[data-theme='sunset'] {
@@ -2749,6 +2819,34 @@ body[data-theme='sunset'] {
   --cp-amber-glow: rgba(255, 184, 0, 0.25);
   --cp-red: #ff0055;
   --cp-red-glow: rgba(255, 0, 85, 0.2);
+}
+
+body[data-theme='cyberpunk2077'] {
+  --cp-bg: #050507; /* Column 1: Matte Black/Charcoal background */
+  --cp-bg-1: #0a0a0e;
+  --cp-bg-2: #121218;
+  --cp-bg-3: #1c1c24;
+  --cp-panel: #09090c;
+  --cp-panel-2: #101016;
+  --cp-green: #fcee0a; /* Column 4: Neon Yellow (prompts / active texts) */
+  --cp-green-dim: #c9be00;
+  --cp-green-glow: rgba(252, 238, 10, 0.25);
+  --cp-crt-glow: rgba(252, 238, 10, 0.08);
+  --cp-white: #ffffff; /* Crisp white body text */
+  --cp-dim: #960627; /* Column 3: Dark Blood Maroon */
+  --cp-muted: #610419;
+  --cp-border: #63051b; /* Column 3: Deep Maroon border */
+  --cp-border-2: #8a0c29;
+
+  /* Accent overrides based on the remaining palette colors */
+  --cp-amber: #50ebd4; /* Column 5: Neon Teal/Cyan for headers/titlebars */
+  --cp-amber-glow: rgba(80, 235, 212, 0.25);
+  --cp-cyan: #d80041;  /* Column 2: Hot Crimson Red for links/folders */
+  --cp-cyan-glow: rgba(216, 0, 65, 0.2);
+  --ic-dir: #d80041;
+  --ic-md: #50ebd4;
+  --ic-html: #fcee0a;
+  --ic-img: #d80041;
 }
 
 /* Disable pointer events on iframes during drag/resize */

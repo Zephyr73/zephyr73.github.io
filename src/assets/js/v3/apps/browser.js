@@ -183,6 +183,23 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
         const loc = iframe.contentWindow.location;
         const relativePath = loc.pathname + loc.search + loc.hash;
 
+        // Intercept links inside the iframe to open external or target="_blank" links in the actual browser
+        const iframeDoc = iframe.contentWindow.document;
+        iframeDoc.addEventListener('click', (e) => {
+          const anchor = e.target.closest('a');
+          if (anchor) {
+            const href = anchor.getAttribute('href');
+            if (href) {
+              const isExternal = href.startsWith('http://') || href.startsWith('https://');
+              const isTargetBlank = anchor.getAttribute('target') === '_blank';
+              if (isExternal || isTargetBlank) {
+                e.preventDefault();
+                window.open(href, '_blank');
+              }
+            }
+          }
+        });
+
         // Update tab model
         const tab = tabs.find((t) => t.id === tabId);
         if (tab) {
@@ -211,6 +228,11 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
   function navigateActiveTab(url) {
     const activeIframe = iframesMap.get(activeTabId);
     if (activeIframe) {
+      const isExternal = url.startsWith('http://') || url.startsWith('https://');
+      if (isExternal) {
+        window.open(url, '_blank');
+        return;
+      }
       activeIframe.src = url;
       urlInput.value = url;
 

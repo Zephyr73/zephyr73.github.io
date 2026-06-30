@@ -1528,7 +1528,7 @@ tr:hover td {
   .page--gallery .page__content .gallery-grid--photography .gallery-grid__column,
   .page--gallery .page__content .gallery-grid--ai .gallery-grid__column,
   .page--gallery .page__content .gallery-grid--forza .gallery-grid__column {
-    width: 100%;
+    display: contents;
   }
   .page--gallery .site-nav__hamburger.active {
     display: block;
@@ -1748,3 +1748,5 @@ pre[class*=language-] {
 .token.attr-name {
   color: var(--clr-code-keyword);
 }
+
+/*# sourceMappingURL=style.css.map */

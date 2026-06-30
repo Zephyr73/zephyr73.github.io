@@ -118,9 +118,43 @@ eleventyExcludeFromCollections: true
         <!-- Populated by navigation-pane.js -->
       </div>
       <div class="nav-pane__footer">
-        <div id="nav-stats">Folders: — | Files: —</div>
-        <div class="vol-info">Volume: — / —</div>
-        <div style="margin-top:12px;font-size:11px;color:var(--cp-dim);letter-spacing:0.5px;">© 2026 ZEPHYR73</div>
+        <div class="footer-stats-grid">
+          <div class="stat-row">
+            <span class="stat-lbl">FILESYSTEM</span>
+            <span class="stat-val">RETRO_FS v1.2</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-lbl">FOLDERS</span>
+            <span class="stat-val" id="nav-folders-val">—</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-lbl">FILES</span>
+            <span class="stat-val" id="nav-files-val">—</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-lbl">MOUNT_PT</span>
+            <span class="stat-val">/dev/sda1</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-lbl">SECURITY</span>
+            <span class="stat-val sec-ok">SECURE</span>
+          </div>
+        </div>
+
+        <div class="vol-section">
+          <div class="vol-row">
+            <span class="vol-lbl">VOLUME INFO</span>
+            <span class="vol-val" id="nav-vol-text">— / —</span>
+          </div>
+          <div class="vol-bar-container">
+            <div class="vol-bar-fill" id="nav-vol-bar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="footer-bottom-row">
+          <span class="footer-lic">CODE: MIT | ART: ALL RIGHTS RESERVED</span>
+          <span class="footer-copy">© 2026 ZEPHYR73</span>
+        </div>
       </div>
     </div>
 
@@ -193,9 +227,7 @@ eleventyExcludeFromCollections: true
   </div>
 
   <!-- Center info -->
-  <div class="statusbar-center" id="statusbar-center">
-    TX_OS v3.0 — ACTIVE WORKSPACE SANDBOX
-  </div>
+  <div class="statusbar-center" id="statusbar-center"></div>
 
   <!-- System tray -->
   <div class="statusbar-tray">
@@ -211,14 +243,10 @@ eleventyExcludeFromCollections: true
         <div class="style-menu__label">THEME:</div>
         <select class="style-menu__select" id="style-theme-select" aria-label="Select desktop theme">
           <option value="green">Matrix Green</option>
-          <option value="amber">Amber</option>
           <option value="cyan">Cyan Hacker</option>
-          <option value="magenta">Magenta Wave</option>
           <option value="red">Crimson Red</option>
-          <option value="purple">Hacker Purple</option>
-          <option value="notebook">Paper Notebook</option>
-          <option value="slate">Slate Modern</option>
           <option value="sunset">Cyber Sunset</option>
+          <option value="cyberpunk2077">Cyberpunk 2077</option>
         </select>
       </div>
       <div class="style-menu__section">

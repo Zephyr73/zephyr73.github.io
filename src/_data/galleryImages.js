@@ -43,15 +43,22 @@ function formatShutterSpeed(expTime) {
   return `1/${denom}s`;
 }
 
-/** Parse an EXIF date string "YYYY:MM:DD HH:MM:SS" into a JS Date */
+/** Parse an EXIF date string "YYYY:MM:DD HH:MM:SS" or Date object into a JS Date */
 function parseExifDate(str) {
   if (!str) {
     return null;
   }
+  if (str instanceof Date) {
+    return str;
+  }
   const s = str.toString();
-  const [datePart, timePart] = s.split(' ');
-  const [y, m, d] = datePart.split(':');
-  const parsed = new Date(`${y}-${m}-${d}T${timePart || '00:00:00'}`);
+  if (s.includes(':') && s.includes(' ')) {
+    const [datePart, timePart] = s.split(' ');
+    const [y, m, d] = datePart.split(':');
+    const parsed = new Date(`${y}-${m}-${d}T${timePart || '00:00:00'}`);
+    return isNaN(parsed.getTime()) ? null : parsed;
+  }
+  const parsed = new Date(s);
   return isNaN(parsed.getTime()) ? null : parsed;
 }
 
@@ -105,6 +112,7 @@ export default async function () {
       let focalLength = '';
 
       const fileDate = stats.birthtime < stats.mtime ? stats.birthtime : stats.mtime;
+      let resolvedDate = fileDate;
 
       if (meta.exif) {
         try {
@@ -146,7 +154,7 @@ export default async function () {
             parseExifDate(photo.DateTimeOriginal) ??
             parseExifDate(photo.DateTimeDigitized) ??
             parseExifDate(img.DateTime);
-          const resolvedDate = exifDate && exifDate < fileDate ? exifDate : fileDate;
+          resolvedDate = exifDate && exifDate < fileDate ? exifDate : fileDate;
           date = formatDate(resolvedDate, true);
         } catch {
           date = formatDate(fileDate, true);
@@ -180,9 +188,14 @@ export default async function () {
         aperture,
         iso,
         focalLength,
+        _timestamp: resolvedDate ? resolvedDate.getTime() : 0,
       });
     }
   }
+
+  // Sort descending chronologically (newest first)
+  images.sort((a, b) => b._timestamp - a._timestamp);
+  images.forEach((img) => delete img._timestamp);
 
   return images;
 }

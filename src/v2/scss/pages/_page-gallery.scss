@@ -217,7 +217,7 @@
       flex-direction: column;
 
       .gallery-grid__column {
-        width: 100%;
+        display: contents;
       }
     }
   }
