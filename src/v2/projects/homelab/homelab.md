@@ -8,12 +8,6 @@ date: 2026-09-09
 tags: project
 bodyClass: page--project
 pageId: project-homelab
-extraHead: >-
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    const isDark = !document.documentElement.classList.contains('light');
-    mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', fontFamily: 'JetBrains Mono, monospace' });
-  </script>
 ---
 
 # Homelab Architecture
@@ -40,7 +34,7 @@ A self-hosted infrastructure ecosystem running on a single mini PC, designed aro
 
 All services sit on a flat private LAN. A Tailscale overlay connects every device — desktop, laptop, phone, server — into a secure mesh. Two subnet routers (the Proxmox host and a Raspberry Pi Zero) expose the full LAN to the tailnet, so remote access to any internal service requires no port forwarding.
 
-```mermaid
+<pre class="mermaid">
 flowchart TB
   subgraph WAN["Internet / WAN"]
     router["Router\n(only torrent ports forwarded)"]
@@ -71,7 +65,7 @@ flowchart TB
   vault -.-> tailnet
   pi -.-> tailnet
   archive -.-> tailnet
-```
+</pre>
 
 ## Reverse Proxy Configuration
 
@@ -129,3 +123,9 @@ Network-attached storage (NFS/SMB) introduces latency and an extra service depen
 **Docker inside LXC** requires `nesting=1` and appropriate AppArmor settings in the Proxmox container config. Without this, the Docker daemon fails silently or produces misleading permission errors. This cost significant debugging time and is not well-documented.
 
 **Keeping documentation honest**: Network state drifts. Services get updated, IPs change, containers get rebuilt. I now maintain a verified `NETWORK.md` that is only updated alongside a live scan, plus separate visual diagrams. The discipline of keeping three documents in sync (source of truth, visual, and ASCII topology) taught me that documentation that isn't regularly verified becomes actively misleading.
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  const isDark = !document.documentElement.classList.contains('light');
+  mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', fontFamily: 'JetBrains Mono, monospace' });
+</script>
