@@ -214,6 +214,31 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
           updateActiveMenuHighlight(relativePath);
         }
         renderTabs();
+
+        // ── Mermaid diagram support ──
+        // Pages loaded inside this iframe browser may contain <pre class="mermaid">
+        // blocks. Detect unrendered diagrams and render them.
+        const unrenderedMermaid = iframeDoc.querySelectorAll('pre.mermaid:not([data-processed])');
+        if (unrenderedMermaid.length > 0) {
+          const iframeWin = iframe.contentWindow;
+          if (iframeWin.mermaid) {
+            // Mermaid loaded but didn't auto-run — trigger it now
+            iframeWin.mermaid.run({ nodes: unrenderedMermaid });
+          } else {
+            // Mermaid CDN didn't load in the iframe — inject and run it
+            const mermaidScript = iframeDoc.createElement('script');
+            mermaidScript.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
+            mermaidScript.onload = function () {
+              iframeWin.mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                fontFamily: 'JetBrains Mono, monospace',
+              });
+              iframeWin.mermaid.run({ nodes: unrenderedMermaid });
+            };
+            iframeDoc.head.appendChild(mermaidScript);
+          }
+        }
       } catch (err) {
         // Fallback for cross-origin or load errors
         console.warn('Iframe load error or cross-origin access restricted: ', err);
