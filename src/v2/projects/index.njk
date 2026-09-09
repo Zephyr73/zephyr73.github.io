@@ -8,7 +8,7 @@ pageId: projects-index
 
 <div class="project-list">
     <!-- Loop through the collection named 'project' -->
-    {% for project in collections.project %}
+    {% for project in collections.project | reverse %}
         <article class="project-preview">
             <h2>
                 <a href="{{ project.url }}">{{ project.data.title }}</a>
