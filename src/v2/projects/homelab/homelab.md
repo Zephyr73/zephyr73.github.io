@@ -124,8 +124,11 @@ Network-attached storage (NFS/SMB) introduces latency and an extra service depen
 
 **Keeping documentation honest**: Network state drifts. Services get updated, IPs change, containers get rebuilt. I now maintain a verified `NETWORK.md` that is only updated alongside a live scan, plus separate visual diagrams. The discipline of keeping three documents in sync (source of truth, visual, and ASCII topology) taught me that documentation that isn't regularly verified becomes actively misleading.
 
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-  const isDark = !document.documentElement.classList.contains('light');
-  mermaid.initialize({ startOnLoad: true, theme: isDark ? 'dark' : 'default', fontFamily: 'JetBrains Mono, monospace' });
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var isDark = !document.documentElement.classList.contains('light');
+    mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'default', fontFamily: 'JetBrains Mono, monospace' });
+    mermaid.run({ nodes: document.querySelectorAll('.mermaid') });
+  });
 </script>
