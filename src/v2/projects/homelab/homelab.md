@@ -22,19 +22,19 @@ A self-hosted infrastructure ecosystem running on a single mini PC, designed aro
 
 ## Tech Stack
 
-| Layer | Technology | Role |
-|---|---|---|
-| Hypervisor | Proxmox VE | Hosts and manages all LXC containers |
-| Containerization | LXC (Linux Containers) | Isolated, single-purpose service environments |
-| Reverse Proxy | Caddy | Internal TLS termination and traffic routing |
-| VPN Overlay | Tailscale (WireGuard) | Zero Trust mesh network across all devices |
-| DNS / Adblock | AdGuard Home (dual) | Network-wide DNS, primary on Pi + secondary on Proxmox |
-| Media Server | Jellyfin + QuickSync | HW-accelerated video transcoding via Intel iGPU |
-| Photo Library | Immich + PostgreSQL | Self-hosted Google Photos alternative |
-| Container Mgmt | Dockhand | Centralized Docker daemon management UI |
-| File Sync | Syncthing | Continuous P2P file synchronization |
-| Privacy VPN | Mullvad | Split-tunnel privacy for public internet traffic |
-| Hardware | Dell OptiPlex (mini PC) | Low-power, always-on server host |
+| Layer            | Technology              | Role                                                   |
+| ---------------- | ----------------------- | ------------------------------------------------------ |
+| Hypervisor       | Proxmox VE              | Hosts and manages all LXC containers                   |
+| Containerization | LXC (Linux Containers)  | Isolated, single-purpose service environments          |
+| Reverse Proxy    | Caddy                   | Internal TLS termination and traffic routing           |
+| VPN Overlay      | Tailscale (WireGuard)   | Zero Trust mesh network across all devices             |
+| DNS / Adblock    | AdGuard Home (dual)     | Network-wide DNS, primary on Pi + secondary on Proxmox |
+| Media Server     | Jellyfin + QuickSync    | HW-accelerated video transcoding via Intel iGPU        |
+| Photo Library    | Immich + PostgreSQL     | Self-hosted Google Photos alternative                  |
+| Container Mgmt   | Dockhand                | Centralized Docker daemon management UI                |
+| File Sync        | Syncthing               | Continuous P2P file synchronization                    |
+| Privacy VPN      | Mullvad                 | Split-tunnel privacy for public internet traffic       |
+| Hardware         | Dell OptiPlex (mini PC) | Low-power, always-on server host                       |
 
 ## Network Architecture
 

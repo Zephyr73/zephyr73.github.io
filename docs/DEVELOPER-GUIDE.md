@@ -165,6 +165,7 @@ export default function (eleventyConfig) {
 ```
 
 **Key Points:**
+
 - Assets are copied directly (passthrough)
 - Live reload watches asset changes
 - Syntax highlighting for code blocks
@@ -188,6 +189,7 @@ export default function (eleventyConfig) {
 ```
 
 **Usage:**
+
 - `npm run dev` - Development mode (Eleventy server + SCSS watcher)
 - `npm run build` - Production build (run `build:css` first!)
 - `npm run build:css` - Compile SCSS only
@@ -203,6 +205,7 @@ export default function (eleventyConfig) {
 The main layout template that wraps all pages.
 
 **Features:**
+
 1. **Font Preloading:** Preloads JetBrains Mono fonts
 2. **Theme Script:** Inline script prevents FOUC (Flash of Unstyled Content)
 3. **Dynamic Body Classes:** `page page--{pageId}`
@@ -210,14 +213,15 @@ The main layout template that wraps all pages.
 5. **Includes:** Navbar, drawer, footer
 
 **Front Matter Variables:**
+
 ```yaml
 ---
-layout: base.njk           # Use this template
-title: "Page Title"        # Browser tab title
-bodyClass: "page--custom"  # Additional body class
-pageId: "custom"           # Used for data-page attribute
-noMarkdownWrapper: true    # Skip markdown-content wrapper (optional)
-description: "SEO desc"    # Meta description (optional)
+layout: base.njk # Use this template
+title: 'Page Title' # Browser tab title
+bodyClass: 'page--custom' # Additional body class
+pageId: 'custom' # Used for data-page attribute
+noMarkdownWrapper: true # Skip markdown-content wrapper (optional)
+description: 'SEO desc' # Meta description (optional)
 ---
 ```
 
@@ -233,11 +237,12 @@ Eleventy automatically creates collections based on tags:
 
 ```markdown
 ---
-tags: blogpost    # Creates collections.blogpost
+tags: blogpost # Creates collections.blogpost
 ---
 ```
 
 **Collection Usage in Templates:**
+
 ```nunjucks
 {% for post in collections.blogpost | reverse %}
   <h2>{{ post.data.title }}</h2>
@@ -292,6 +297,7 @@ scss/
 ```
 
 **Usage in Components:**
+
 ```scss
 body {
   background-color: var(--clr-body-bg);
@@ -302,6 +308,7 @@ body {
 ### Adding a New Theme
 
 1. Add theme class in `_variables.scss`:
+
    ```scss
    .my-theme {
      --clr-body-bg: #...;
@@ -323,6 +330,7 @@ body {
 ### Main Script (`src/assets/js/script.js`)
 
 **Sections:**
+
 1. Navigation (hamburger menu)
 2. Theme system (dropdown & drawer, localStorage)
 3. Gallery tabs (photography/AI/Forza)
@@ -343,12 +351,14 @@ hamTrigger.addEventListener('click', () => {
 ### Theme System
 
 **Flow:**
+
 1. Inline script in `<head>` reads localStorage
 2. Sets `data-theme-pending` before CSS loads (prevents FOUC)
 3. On DOMContentLoaded, applies theme to `body.className`
 4. User selection saves to localStorage
 
 **Key Function:**
+
 ```javascript
 function applyTheme(themeKey) {
   document.body.className = getBodyPageClass() + ' ' + themeKey;
@@ -359,6 +369,7 @@ function applyTheme(themeKey) {
 ### Gallery Tabs
 
 **HTML Structure:**
+
 ```html
 <button class="gallery-tabs__btn">Photography</button>
 <!-- Three gallery-grid containers -->
@@ -368,6 +379,7 @@ function applyTheme(themeKey) {
 ```
 
 **JavaScript:**
+
 - Shows/hides grids with `.is-visible` class
 - Adds `.is-active` to current tab button
 - Supports URL hash (`#ai-container`)
@@ -381,6 +393,7 @@ function applyTheme(themeKey) {
 1. **Create Markdown file:** `src/blog/blogs/my-post.md`
 
 2. **Add front matter:**
+
    ```markdown
    ---
    layout: base.njk
@@ -402,6 +415,7 @@ function applyTheme(themeKey) {
 1. **Create Markdown file:** `src/projects/my-project/my-project.md`
 
 2. **Add front matter:**
+
    ```markdown
    ---
    layout: base.njk
@@ -423,6 +437,7 @@ function applyTheme(themeKey) {
 1. **Create file:** `src/contact/index.html`
 
 2. **Use base layout:**
+
    ```html
    ---
    layout: base.njk
@@ -449,6 +464,7 @@ function applyTheme(themeKey) {
 ### How It Works
 
 The gallery uses a Python script to automatically:
+
 1. Sort images by date (EXIF for photography, mtime for AI/Forza)
 2. Rename to sequential numbers (1.jpg, 2.jpg, ...)
 3. Regenerate HTML in `gallery/index.html`
@@ -457,6 +473,7 @@ The gallery uses a Python script to automatically:
 ### Adding Gallery Images
 
 1. **Add images to folder:**
+
    ```
    src/assets/img/gallery/photography/  (for EXIF sorting)
    src/assets/img/gallery/ai/           (for mtime sorting)
@@ -464,6 +481,7 @@ The gallery uses a Python script to automatically:
    ```
 
 2. **Run sort script from repo root:**
+
    ```bash
    python src/scripts/sort.py
    ```
@@ -480,6 +498,7 @@ The gallery uses a Python script to automatically:
 ### Gallery Script Details (`src/scripts/sort.py`)
 
 **Functions:**
+
 - `get_image_exif_date()` - Extracts EXIF date from photo
 - `sort_images_by_date()` - Sorts photography by EXIF
 - `sort_images_by_modification_date()` - Sorts AI/Forza by mtime
@@ -488,6 +507,7 @@ The gallery uses a Python script to automatically:
 - `update_gallery_html()` - Replaces sections in gallery/index.html
 
 **Important:** The script uses regex to find and replace sections between:
+
 ```html
 <!-- START: photography -->
 ...
@@ -516,20 +536,24 @@ npm run dev
 ### Making Changes
 
 **HTML/Nunjucks:**
+
 - Edit files in `src/`
 - Eleventy auto-rebuilds on save
 - Browser auto-reloads
 
 **SCSS:**
+
 - Edit files in `src/scss/`
 - Sass watcher auto-compiles to `src/assets/css/style.css`
 - Browser auto-reloads (Eleventy watches `src/assets/`)
 
 **JavaScript:**
+
 - Edit `src/assets/js/script.js`
 - Browser auto-reloads (Eleventy watches `src/assets/`)
 
 **Gallery Images:**
+
 - Add images to `src/assets/img/gallery/[photography|ai|forza]/`
 - Run `python src/scripts/sort.py`
 - Reload browser manually
@@ -565,13 +589,17 @@ See **[docs/NAMING.md](NAMING.md)** for complete BEM guidelines.
 **Quick Reference:**
 
 ### Page Classes
+
 ```html
 <body class="page page--home" data-page="home">
-<body class="page page--gallery" data-page="gallery">
-<body class="page page--blog" data-page="blog">
+  <body class="page page--gallery" data-page="gallery">
+    <body class="page page--blog" data-page="blog"></body>
+  </body>
+</body>
 ```
 
 ### Component Classes (BEM)
+
 ```
 Block:              .site-nav
 Element:            .site-nav__brand
@@ -582,6 +610,7 @@ State class:        .is-active, .is-visible, .is-open
 ```
 
 ### File Naming
+
 - Layouts: `base.njk`, `navbar.njk`
 - SCSS partials: `_variables.scss`, `_nav.scss`
 - Pages: `index.html`, `index.njk`
@@ -591,6 +620,7 @@ State class:        .is-active, .is-visible, .is-open
 ## Adding New Content
 
 ### New Blog Post
+
 ```bash
 # 1. Create file
 src/blog/blogs/my-new-post.md
@@ -600,6 +630,7 @@ src/blog/blogs/my-new-post.md
 ```
 
 ### New Project
+
 ```bash
 # 1. Create folder and file
 src/projects/my-project/my-project.md
@@ -609,6 +640,7 @@ src/projects/my-project/my-project.md
 ```
 
 ### New Theme
+
 ```scss
 // 1. Add theme class in src/scss/abstracts/_variables.scss
 .my-new-theme {
@@ -622,6 +654,7 @@ src/projects/my-project/my-project.md
 ```
 
 ### New Page-Specific Styles
+
 ```bash
 # 1. Create SCSS partial
 src/scss/pages/_page-mypage.scss
@@ -640,6 +673,7 @@ npm run build:css
 ### Issue: Changes not showing up
 
 **Solutions:**
+
 1. Clear browser cache (Ctrl+Shift+R / Cmd+Shift+R)
 2. Check terminal for build errors
 3. Verify file is in `src/` (not `_site/`)
@@ -648,6 +682,7 @@ npm run build:css
 ### Issue: SCSS not compiling
 
 **Solutions:**
+
 1. Check for syntax errors in SCSS files
 2. Restart watcher: Stop dev server, run `npm run dev` again
 3. Manual compile: `npm run build:css`
@@ -656,6 +691,7 @@ npm run build:css
 ### Issue: Theme not persisting
 
 **Solutions:**
+
 1. Check browser localStorage (DevTools > Application > Local Storage)
 2. Verify theme key matches class name exactly
 3. Check console for JavaScript errors
@@ -664,6 +700,7 @@ npm run build:css
 ### Issue: Gallery images in wrong order
 
 **Solutions:**
+
 1. Re-run `python src/scripts/sort.py`
 2. Check EXIF data exists for photography (use `exiftool` to verify)
 3. For AI/Forza, check file modification times
@@ -672,6 +709,7 @@ npm run build:css
 ### Issue: Blog post not appearing
 
 **Checklist:**
+
 - [ ] File is `.md` in `src/blog/blogs/`
 - [ ] Has `tags: blogpost` in front matter
 - [ ] Has valid front matter YAML (check for syntax errors)
@@ -680,6 +718,7 @@ npm run build:css
 ### Issue: Navigation links not working
 
 **Solutions:**
+
 1. Check URL paths use root-relative paths (`/gallery` not `gallery`)
 2. Verify page exists in `_site/` after build
 3. Check Eleventy output for errors during build
@@ -692,17 +731,18 @@ npm run build:css
 
 ```html
 <!-- ✅ Correct -->
-<link href="/assets/css/style.css" rel="stylesheet">
-<img src="/assets/img/photo.jpg" alt="Photo">
+<link href="/assets/css/style.css" rel="stylesheet" />
+<img src="/assets/img/photo.jpg" alt="Photo" />
 <a href="/blog">Blog</a>
 
 <!-- ❌ Wrong -->
-<link href="assets/css/style.css" rel="stylesheet">
-<img src="../assets/img/photo.jpg" alt="Photo">
+<link href="assets/css/style.css" rel="stylesheet" />
+<img src="../assets/img/photo.jpg" alt="Photo" />
 <a href="blog">Blog</a>
 ```
 
 **Why?** Root-relative paths work from any page depth:
+
 - `/` (home)
 - `/blog/` (blog index)
 - `/blog/my-post/` (blog post)
@@ -735,18 +775,18 @@ npm update               # Update dependencies
 
 ## Key Files to Know
 
-| File | Purpose |
-|------|---------|
-| `eleventy.config.js` | Eleventy configuration |
-| `package.json` | Scripts, dependencies |
-| `src/_includes/base.njk` | Main layout template |
-| `src/_includes/navbar.njk` | Desktop navigation |
-| `src/_includes/drawer.njk` | Mobile menu |
-| `src/assets/js/script.js` | All JavaScript features |
-| `src/scss/style.scss` | SCSS entry point |
-| `src/scss/abstracts/_variables.scss` | Theme variables |
-| `src/scripts/sort.py` | Gallery image manager |
-| `docs/NAMING.md` | BEM naming conventions |
+| File                                 | Purpose                 |
+| ------------------------------------ | ----------------------- |
+| `eleventy.config.js`                 | Eleventy configuration  |
+| `package.json`                       | Scripts, dependencies   |
+| `src/_includes/base.njk`             | Main layout template    |
+| `src/_includes/navbar.njk`           | Desktop navigation      |
+| `src/_includes/drawer.njk`           | Mobile menu             |
+| `src/assets/js/script.js`            | All JavaScript features |
+| `src/scss/style.scss`                | SCSS entry point        |
+| `src/scss/abstracts/_variables.scss` | Theme variables         |
+| `src/scripts/sort.py`                | Gallery image manager   |
+| `docs/NAMING.md`                     | BEM naming conventions  |
 
 ---
 

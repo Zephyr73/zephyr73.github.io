@@ -103,6 +103,7 @@ python src/scripts/sort.py   # Sort & rename gallery images (if script exists)
 ### Working on V2 (traditional portfolio)
 
 All V2 source files are under **`src/v2/`**:
+
 - **Templates/pages**: `src/v2/{about,blog,gallery,projects}/`
 - **Layouts**: `src/v2/_includes/`
 - **Styles**: `src/v2/scss/` (edit SCSS, run `npm run build:css` to compile)
@@ -111,6 +112,7 @@ All V2 source files are under **`src/v2/`**:
 ### Working on V3 (OS desktop)
 
 All V3 source files are under **`src/v3/`** and **`src/assets/js/v3/`**:
+
 - **Entry page**: `src/v3/index.njk`
 - **Styles**: `src/v3/scss/desktop.scss`
 - **App logic**: `src/assets/js/v3/`
@@ -178,13 +180,13 @@ All V3 source files are under **`src/v3/`** and **`src/assets/js/v3/`**:
 
 ```html
 <!-- ✅ Correct -->
-<link href="/assets/css/style.css" rel="stylesheet">
-<img src="/assets/img/photo.jpg" alt="Photo">
+<link href="/assets/css/style.css" rel="stylesheet" />
+<img src="/assets/img/photo.jpg" alt="Photo" />
 <a href="/blog">Blog</a>
 
 <!-- ❌ Wrong -->
-<link href="assets/css/style.css" rel="stylesheet">
-<img src="../assets/img/photo.jpg" alt="Photo">
+<link href="assets/css/style.css" rel="stylesheet" />
+<img src="../assets/img/photo.jpg" alt="Photo" />
 ```
 
 ### Page Classes
@@ -193,7 +195,8 @@ Use BEM-style classes for pages:
 
 ```html
 <body class="page page--home" data-page="home">
-<body class="page page--gallery" data-page="gallery">
+  <body class="page page--gallery" data-page="gallery"></body>
+</body>
 ```
 
 See [docs/NAMING.md](docs/NAMING.md) for complete conventions.
@@ -212,17 +215,17 @@ All pages under `src/v2/` **must** have an explicit `permalink` in their front m
 
 ## URL Map
 
-| Source File | Output URL |
-|-------------|-----------|
-| `src/v3/index.njk` | `/` |
-| `src/v2/index.html` | `/v2/` |
-| `src/v2/about/index.html` | `/about/` |
-| `src/v2/gallery/index.njk` | `/gallery/` |
-| `src/v2/gallery/image.njk` | `/gallery/image/{slug}/` |
-| `src/v2/blog/index.njk` | `/blog/` |
-| `src/v2/blog/blogs/*.md` | `/blog/blogs/{name}/` |
-| `src/v2/projects/index.njk` | `/projects/` |
-| `src/v2/projects/**/*.md` | `/projects/{name}/` |
+| Source File                 | Output URL               |
+| --------------------------- | ------------------------ |
+| `src/v3/index.njk`          | `/`                      |
+| `src/v2/index.html`         | `/v2/`                   |
+| `src/v2/about/index.html`   | `/about/`                |
+| `src/v2/gallery/index.njk`  | `/gallery/`              |
+| `src/v2/gallery/image.njk`  | `/gallery/image/{slug}/` |
+| `src/v2/blog/index.njk`     | `/blog/`                 |
+| `src/v2/blog/blogs/*.md`    | `/blog/blogs/{name}/`    |
+| `src/v2/projects/index.njk` | `/projects/`             |
+| `src/v2/projects/**/*.md`   | `/projects/{name}/`      |
 
 ## Need More Help?
 

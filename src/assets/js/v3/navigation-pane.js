@@ -99,12 +99,14 @@ function sortNodes(nodes) {
   } else {
     return list.sort((a, b) => {
       if (a.type !== b.type) return a.type === 'dir' ? -1 : 1;
-      if (a.type === 'dir')
-        {return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });}
+      if (a.type === 'dir') {
+        return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+      }
       const extA = (a.fileType || '').toLowerCase();
       const extB = (b.fileType || '').toLowerCase();
-      if (extA !== extB)
-        {return extA.localeCompare(extB, undefined, { numeric: true, sensitivity: 'base' });}
+      if (extA !== extB) {
+        return extA.localeCompare(extB, undefined, { numeric: true, sensitivity: 'base' });
+      }
       return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
     });
   }
