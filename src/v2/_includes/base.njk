@@ -33,6 +33,7 @@
     </script>
 
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+    {% if extraHead %}{{ extraHead | safe }}{% endif %}
   </head>
 
   <!-- DYNAMIC BODY CLASSES: Allows you to style specific pages differently -->

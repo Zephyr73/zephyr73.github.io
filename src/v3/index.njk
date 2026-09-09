@@ -46,8 +46,8 @@ eleventyExcludeFromCollections: true
       if (localStorage.getItem('v3-crt') === '1') {
         document.documentElement.classList.add('crt-pre');
       }
-      if (localStorage.getItem('v3-mode')) {
-        document.documentElement.dataset.mode = localStorage.getItem('v3-mode');
+      if (sessionStorage.getItem('v3-mode')) {
+        document.documentElement.dataset.mode = sessionStorage.getItem('v3-mode');
       }
     })();
   </script>

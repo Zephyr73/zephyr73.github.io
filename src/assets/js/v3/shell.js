@@ -13,7 +13,7 @@ import { createPdfApp } from './apps/pdf-viewer.js';
 /* ─────────────────────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────────────────────── */
-let currentMode = localStorage.getItem('v3-mode') || 'desktop';
+let currentMode = sessionStorage.getItem('v3-mode') || 'desktop';
 let crtActive = localStorage.getItem('v3-crt') === '1';
 let windowIdCounter = 0;
 const openWindows = new Map(); // id → { el, state, appName, title }
@@ -879,7 +879,7 @@ function switchMode(mode) {
 
   if (mode === currentMode) return;
   currentMode = mode;
-  localStorage.setItem('v3-mode', mode);
+  sessionStorage.setItem('v3-mode', mode);
   modeDesktop.classList.toggle('active', mode === 'desktop');
   modeTTY.classList.toggle('active', mode === 'tty');
   tabDesktop.classList.toggle('active', mode === 'desktop');

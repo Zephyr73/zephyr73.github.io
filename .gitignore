@@ -20,3 +20,6 @@ src/assets/css/desktop.css
 src/assets/css/desktop.css.map
 
 *.code-workspace
+
+# v2-test is a local development sandbox — exclude from version control
+src/v2-test/
