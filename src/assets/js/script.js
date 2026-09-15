@@ -3,23 +3,31 @@ const hamTrigger = document.querySelector('.site-nav__hamburger');
 const drawer = document.querySelector('.site-nav__drawer');
 
 if (hamTrigger && drawer) {
+  function closeDrawer() {
+    hamTrigger.classList.remove('active');
+    drawer.classList.remove('active');
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
+  }
+
   hamTrigger.addEventListener('click', () => {
-    hamTrigger.classList.toggle('active');
-    drawer.classList.toggle('active');
-    // Lock page scrolling when drawer is open
-    const isDrawerOpen = drawer.classList.contains('active');
-    document.documentElement.classList.toggle('no-scroll', isDrawerOpen);
-    document.body.classList.toggle('no-scroll', isDrawerOpen);
+    const isOpening = !drawer.classList.contains('active');
+    hamTrigger.classList.toggle('active', isOpening);
+    drawer.classList.toggle('active', isOpening);
+    document.documentElement.classList.toggle('no-scroll', isOpening);
+    document.body.classList.toggle('no-scroll', isOpening);
   });
 
   // Close drawer on link click
   drawer.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      hamTrigger.classList.remove('active');
-      drawer.classList.remove('active');
-      document.documentElement.classList.remove('no-scroll');
-      document.body.classList.remove('no-scroll');
-    });
+    link.addEventListener('click', closeDrawer);
+  });
+
+  // Close drawer on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('active')) {
+      closeDrawer();
+    }
   });
 }
 
@@ -37,36 +45,72 @@ if (siteNav) {
   handleNavScroll();
 }
 
-// Theme: dropdown (desktop), drawer theme panel, persistence
+// Theme: mode toggle, dropdown (desktop), drawer theme panel, persistence
 const themeMenu = document.querySelector('.theme-picker__menu');
 const themeSwitch = document.querySelector('.site-nav__theme-toggle');
+const modeToggle = document.querySelector('.site-nav__mode-toggle');
 const themeOptions = document.querySelectorAll('.theme-picker__menu a[data-theme]');
+const modeOptions = document.querySelectorAll('[data-mode]');
 const drawerThemeButtons = document.querySelectorAll('.drawer-theme-btn[data-theme]');
 
-function applyTheme(themeKey) {
-  if (!themeKey) {
-    return;
+function updateThemeUI(mode, accent) {
+  if (modeToggle) {
+    const nextMode = mode === 'light' ? 'dark' : 'light';
+    modeToggle.setAttribute('aria-label', `Switch to ${nextMode} mode`);
+    modeToggle.setAttribute('title', `Switch to ${nextMode} mode`);
   }
 
-  let targetClass = themeKey;
+  document.querySelectorAll('[data-mode]').forEach((el) => {
+    const m = el.getAttribute('data-mode');
+    el.classList.toggle('active', m === mode);
+  });
+
+  document.querySelectorAll('[data-theme]').forEach((el) => {
+    const t = el.getAttribute('data-theme');
+    el.classList.toggle('active', t === accent);
+  });
+}
+
+function applyTheme(themeKey, modeKey) {
   const isEmbedded = window.self !== window.top;
+  let currentMode =
+    localStorage.getItem('v2-mode') ||
+    (document.documentElement.classList.contains('light') ? 'light' : 'dark');
+  let currentAccent = localStorage.getItem('v2-accent') || 'lavender';
 
-  if (themeKey === 'system') {
-    targetClass = localStorage.getItem('v3-theme') || 'green';
-    localStorage.setItem('theme', 'system');
-  } else if (isEmbedded) {
-    targetClass = themeKey;
-  } else {
-    localStorage.setItem('v2-theme', themeKey);
-    localStorage.setItem('theme', themeKey);
+  if (modeKey) {
+    currentMode = modeKey;
+  } else if (themeKey === 'light' || themeKey === 'dark') {
+    currentMode = themeKey;
+  } else if (themeKey === 'system') {
+    currentAccent = localStorage.getItem('v3-theme') || 'green';
+  } else if (themeKey) {
+    currentAccent = themeKey;
   }
 
-  // Remove any existing theme classes without touching unrelated classes (e.g. no-scroll).
-  Array.from(document.documentElement.classList)
-    .filter((cls) => cls !== 'no-scroll')
-    .forEach((cls) => document.documentElement.classList.remove(cls));
+  if (isEmbedded) {
+    currentAccent = localStorage.getItem('v3-theme') || currentAccent;
+  }
 
-  document.documentElement.classList.add(targetClass);
+  localStorage.setItem('v2-mode', currentMode);
+  localStorage.setItem('v2-accent', currentAccent);
+  localStorage.setItem('v2-theme', currentMode === 'light' ? 'light' : currentAccent);
+  localStorage.setItem('theme', currentMode === 'light' ? 'light' : currentAccent);
+
+  // Preserve unrelated classes like 'no-scroll'
+  const isNoScroll = document.documentElement.classList.contains('no-scroll');
+  document.documentElement.className = '';
+  if (isNoScroll) {
+    document.documentElement.classList.add('no-scroll');
+  }
+  if (currentMode === 'light') {
+    document.documentElement.classList.add('light');
+  }
+  if (currentAccent) {
+    document.documentElement.classList.add(currentAccent);
+  }
+
+  updateThemeUI(currentMode, currentAccent);
 
   // Update theme toggle UI if present
   if (themeMenu) {
@@ -82,6 +126,34 @@ function applyTheme(themeKey) {
   }
 }
 window.applyTheme = applyTheme;
+
+// Initialize theme UI active states
+const initialMode = document.documentElement.classList.contains('light') ? 'light' : 'dark';
+const initialAccent = localStorage.getItem('v2-accent') || 'lavender';
+updateThemeUI(initialMode, initialAccent);
+
+// Mode toggle button (Sun / Moon)
+if (modeToggle) {
+  modeToggle.addEventListener('click', () => {
+    const isLight = document.documentElement.classList.contains('light');
+    applyTheme(null, isLight ? 'dark' : 'light');
+  });
+}
+
+// Mode options in dropdown and drawer
+modeOptions.forEach((option) => {
+  option.addEventListener('click', (e) => {
+    e.preventDefault();
+    const m = option.getAttribute('data-mode');
+    applyTheme(null, m);
+    if (option.classList.contains('drawer-mode-btn') && hamTrigger && drawer) {
+      hamTrigger.classList.remove('active');
+      drawer.classList.remove('active');
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+    }
+  });
+});
 
 // Desktop theme dropdown
 if (themeSwitch && themeMenu) {
@@ -190,7 +262,7 @@ function initGallery() {
 
         // Show and fade in new
         if (newEl) {
-          newEl.style.display = 'flex';
+          newEl.style.display = '';
           // Force reflow
           newEl.offsetHeight;
           newEl.classList.add('is-visible');
@@ -204,7 +276,7 @@ function initGallery() {
     } else {
       // Initial load (no old element to fade out)
       if (newEl) {
-        newEl.style.display = 'flex';
+        newEl.style.display = '';
         newEl.offsetHeight;
         newEl.classList.add('is-visible');
         newEl.style.opacity = '1';
@@ -510,3 +582,105 @@ document.querySelectorAll('.resume-contact__copy[data-copy]').forEach((btn) => {
       });
   });
 });
+
+// Markdown Table of Contents (Left-side Header Navigation Tree)
+function initMarkdownToc() {
+  const tocList = document.querySelector('.markdown-toc__list');
+  const markdownContent = document.querySelector('.markdown-content');
+  const tocAside = document.querySelector('.markdown-toc');
+  if (!tocList || !markdownContent || !tocAside) {
+    return;
+  }
+
+  const headings = Array.from(markdownContent.querySelectorAll('h2, h3'));
+  if (headings.length < 2) {
+    tocAside.style.display = 'none';
+    const layout = document.querySelector('.markdown-layout');
+    if (layout) {
+      layout.style.display = 'block';
+    }
+    return;
+  }
+
+  const usedSlugs = new Set();
+  function generateSlug(text) {
+    let slug = text
+      .toLowerCase()
+      .replace(/^[/\s#]+/, '')
+      .replace(/[^\w\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-');
+    if (!slug) {
+      slug = 'section';
+    }
+    let uniqueSlug = slug;
+    let counter = 1;
+    while (usedSlugs.has(uniqueSlug) || document.getElementById(uniqueSlug)) {
+      uniqueSlug = `${slug}-${counter}`;
+      counter++;
+    }
+    usedSlugs.add(uniqueSlug);
+    return uniqueSlug;
+  }
+
+  const tocLinks = [];
+
+  headings.forEach((heading) => {
+    let id = heading.id;
+    if (!id) {
+      id = generateSlug(heading.textContent);
+      heading.id = id;
+    }
+
+    const level = heading.tagName.toLowerCase();
+    const cleanText = heading.textContent.replace(/^\/\/\s*/, '').trim();
+
+    const li = document.createElement('li');
+    li.className = `markdown-toc__item markdown-toc__item--${level}`;
+
+    const a = document.createElement('a');
+    a.href = `#${id}`;
+    a.className = 'markdown-toc__link';
+    a.textContent = cleanText;
+
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.pushState(null, '', `#${id}`);
+      tocLinks.forEach(({ link }) => link.classList.remove('active'));
+      a.classList.add('active');
+    });
+
+    li.appendChild(a);
+    tocList.appendChild(li);
+    tocLinks.push({ heading, link: a });
+  });
+
+  // Active section scrollspy
+  if ('IntersectionObserver' in window && tocLinks.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const currentId = entry.target.id;
+            tocLinks.forEach(({ link }) => {
+              link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
+            });
+          }
+        });
+      },
+      {
+        rootMargin: '-80px 0px -70% 0px',
+        threshold: 0,
+      }
+    );
+
+    headings.forEach((h) => observer.observe(h));
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initMarkdownToc);
+} else {
+  initMarkdownToc();
+}

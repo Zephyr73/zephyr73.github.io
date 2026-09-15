@@ -6,6 +6,8 @@
   html.no-scroll,
   body.no-scroll {
     overflow: hidden;
+    overflow-x: hidden;
+    touch-action: none;
   }
 
   /* ── Opacity-based hide (used for progressive reveal) ─────────────────── */

@@ -22,23 +22,35 @@
       crossorigin
     />
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     {% if description %}<meta name="description" content="{{ description }}" />{% endif %}
 
     <title>{{ title | default("Zephyr — Software Developer & Portfolio") }}</title>
 
-    <!-- Restore saved theme before CSS loads to prevent FOUC -->
+    <!-- Restore saved theme & mode before CSS loads to prevent FOUC -->
     <script>
       (function () {
         var isEmbedded = window.self !== window.top;
-        var t = localStorage.getItem('v2-theme') || localStorage.getItem('theme');
-        if (isEmbedded || t === 'system') {
-          t = localStorage.getItem('v3-theme') || 'green';
+        var mode = localStorage.getItem('v2-mode');
+        var theme = localStorage.getItem('v2-theme') || localStorage.getItem('theme');
+        if (!mode) {
+          mode = theme === 'light' ? 'light' : 'dark';
         }
-        if (!t) {
-          t = 'lavender';
+        var accent = localStorage.getItem('v2-accent') || theme || 'lavender';
+        if (accent === 'light' || accent === 'dark') {
+          accent = 'lavender';
         }
-        document.documentElement.className = t;
+        if (isEmbedded || theme === 'system') {
+          accent = localStorage.getItem('v3-theme') || 'green';
+        }
+        var classes = [];
+        if (mode === 'light') {
+          classes.push('light');
+        }
+        if (accent) {
+          classes.push(accent);
+        }
+        document.documentElement.className = classes.join(' ');
       })();
     </script>
 
@@ -59,9 +71,21 @@
       {% if noMarkdownWrapper %}
         {{ content | safe }}
       {% else %}
-        <!-- This wrapper ensures markdown styles apply to blog/project content -->
-        <div class="markdown-content">
-          {{ content | safe }}
+        <!-- This wrapper ensures markdown styles apply to blog/project content with wide-screen TOC -->
+        <div class="markdown-layout">
+          <aside class="markdown-toc" aria-label="Table of contents">
+            <div class="markdown-toc__inner">
+              <div class="markdown-toc__header">
+                <span class="toc-header__prefix">//</span> ON THIS PAGE
+              </div>
+              <nav class="markdown-toc__nav">
+                <ul class="markdown-toc__list"></ul>
+              </nav>
+            </div>
+          </aside>
+          <div class="markdown-content">
+            {{ content | safe }}
+          </div>
         </div>
       {% endif %}
     </main>

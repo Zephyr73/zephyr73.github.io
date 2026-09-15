@@ -6,7 +6,7 @@
 
 ## whoami
 
-I am a student at **Laguardia Community College** with a strong foundation in computer science principles completed through the Cambridge University curriculum.
+I am a Computer Science undergraduate at **Queens College (CUNY)**, having completed an Associate in Science in Computer Science at **LaGuardia Community College** (3.62 CGPA, July 2026). I have a strong foundation in computer science principles and mathematics completed through the Cambridge University curriculum.
 
 I have a passion for building software, exploring new technologies, and game development. I focus on creating clean, efficient code and exploring creative technical workflows.
 
@@ -36,11 +36,17 @@ I have a passion for building software, exploring new technologies, and game dev
 
 ## Education
 
-### Laguardia Community College
+### Queens College (CUNY)
 
-**Computer Science** | _Present_
+**B.S. in Computer Science** | _Started Aug 2026 – Present_
 
-Currently pursuing a degree in Computer Science, focusing on software engineering principles, data structures, and algorithms.
+Currently pursuing a Bachelor of Science in Computer Science, deepening knowledge in systems programming, computing theory, and modern software development.
+
+### LaGuardia Community College (CUNY)
+
+**A.S. in Computer Science** | _Completed July 2026 • 3.62 CGPA_
+
+Graduated with an Associate in Science in Computer Science. Core coursework in Data Structures & Algorithms, Computer Architecture, Discrete Math, Linear Algebra, and OOP (C++, Java).
 
 ### Cambridge University — A Levels
 

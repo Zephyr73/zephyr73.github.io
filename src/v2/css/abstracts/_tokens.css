@@ -27,6 +27,8 @@
     --clr-accent-dim: #7c3aed;
     --clr-accent-glow: rgba(167, 139, 250, 0.15);
     --clr-link-visited: var(--clr-accent);
+    --clr-accent-text: #0c0c0e;
+    --clr-bold-text: #ffffff;
 
     /* Typography */
     --font-heading: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

@@ -166,6 +166,16 @@
     width: fit-content;
   }
 
+  .resume-contact-print,
+  .resume-summary-print,
+  .print-only {
+    display: none;
+  }
+
+  .screen-only {
+    display: inline;
+  }
+
   .resume-bio p {
     font-family: var(--font-regular);
     font-size: 0.95rem;
@@ -547,40 +557,341 @@
     }
   }
 
-  /* ── Print Styles ──────────────────────────────────────────────────────── */
+  /* ── Print Styles (Industry Standard 1-Column ATS & Recruiter Clean) ────── */
+  @page {
+    size: letter portrait;
+    margin: 0.45in 0.5in;
+  }
+
   @media print {
+    /* Hide navigation, footers, buttons, screen-only decoration, and secondary details */
     .site-nav,
     .site-footer,
+    .resume-sidebar,
+    .avatar-frame,
     .resume-links,
-    .avatar-badge {
+    .resume-eyebrow,
+    .resume-role-tag,
+    .resume-bio,
+    .resume-quick-meta,
+    .section-rule,
+    .resume-section--interests,
+    .timeline-item--olevels,
+    .screen-only {
       display: none !important;
     }
 
+    .print-only {
+      display: inline !important;
+    }
+
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+    }
+
+    html,
     body,
-    .page {
-      background: white !important;
-      color: black !important;
+    .page,
+    .page__content {
+      background: #ffffff !important;
+      color: #111111 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      max-width: 100% !important;
+      font-size: 8.5pt !important;
+      line-height: 1.3 !important;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     }
 
     .resume-container {
       max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
     }
 
+    /* Clean 1-Column Header */
     .resume-header {
-      border-bottom: 2px solid #ccc !important;
+      display: block !important;
+      border-bottom: 1.5pt solid #111111 !important;
+      padding-bottom: 5pt !important;
+      margin-bottom: 7pt !important;
+      text-align: center !important;
+    }
+
+    .resume-intro {
+      text-align: center !important;
+    }
+
+    .resume-headline {
+      text-align: center !important;
+    }
+
+    .resume-name {
+      font-size: 18pt !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.02em !important;
+      margin: 0 0 3pt 0 !important;
+      color: #000000 !important;
+      text-align: center !important;
+      line-height: 1.1 !important;
+    }
+
+    .resume-contact-print {
+      display: block !important;
+      font-size: 8.5pt !important;
+      color: #333333 !important;
+      text-align: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .resume-contact-print a {
+      color: #111111 !important;
+      text-decoration: underline !important;
+    }
+
+    /* 2-3 Line Professional Summary */
+    .resume-summary-print {
+      display: block !important;
+      font-size: 8.5pt !important;
+      line-height: 1.32 !important;
+      color: #222222 !important;
+      text-align: left !important;
+      margin: 5pt 0 0 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Sections */
+    .resume-section {
+      margin-bottom: 7pt !important;
+      page-break-inside: avoid;
+    }
+
+    .section-title-wrap {
+      margin-bottom: 3.5pt !important;
+      border-bottom: 1pt solid #222222 !important;
+      padding-bottom: 1pt !important;
+      display: block !important;
+    }
+
+    .section-heading {
+      font-size: 9.5pt !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+      color: #000000 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Technical Skills: Clean Compact Matrix */
+    .skills-category-group {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2.5pt !important;
+    }
+
+    .skill-category {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: baseline !important;
+      gap: 4pt !important;
+      margin: 0 !important;
+    }
+
+    .skill-cat-title {
+      font-size: 8.5pt !important;
+      font-weight: 700 !important;
+      color: #000000 !important;
+      min-width: 145pt !important;
+      margin: 0 !important;
+      text-transform: none !important;
+      letter-spacing: normal !important;
+    }
+
+    .skills-pill-grid {
+      display: inline !important;
+      gap: 0 !important;
+    }
+
+    .skill-tag {
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      font-size: 8.5pt !important;
+      color: #222222 !important;
+      display: inline !important;
+      margin: 0 !important;
+    }
+
+    .skill-tag .tag-accent {
+      display: none !important;
+    }
+
+    .skill-tag:not(:last-child)::after {
+      content: ", " !important;
+      color: #444444 !important;
+    }
+
+    /* Experience / Projects List: Standard Format */
+    .resume-projects-list {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 5pt !important;
+    }
+
+    .resume-project-item {
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      page-break-inside: avoid;
+    }
+
+    .project-item-top {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: baseline !important;
+      margin-bottom: 1pt !important;
+    }
+
+    .project-item-name {
+      font-size: 9pt !important;
+      font-weight: 700 !important;
+      color: #000000 !important;
+      margin: 0 !important;
+    }
+
+    .project-item-name a {
+      color: #000000 !important;
+      text-decoration: underline !important;
+    }
+
+    .project-item-date {
+      font-size: 8pt !important;
+      font-weight: 600 !important;
+      color: #333333 !important;
+      white-space: nowrap !important;
+    }
+
+    .project-item-tags {
+      display: inline-block !important;
+      margin-bottom: 1pt !important;
+    }
+
+    .stack-pill {
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      font-size: 8pt !important;
+      font-style: italic !important;
+      color: #555555 !important;
+      display: inline !important;
+    }
+
+    .stack-pill:not(:last-child)::after {
+      content: ", " !important;
+    }
+
+    .project-bullet-list {
+      margin: 1.5pt 0 0 13pt !important;
+      padding: 0 !important;
+      list-style-type: disc !important;
+    }
+
+    .project-bullet-list li {
+      font-size: 8pt !important;
+      line-height: 1.32 !important;
+      color: #222222 !important;
+      margin-bottom: 1.5pt !important;
+    }
+
+    .project-bullet-list li::marker {
+      color: #111111 !important;
+    }
+
+    /* Education Timeline: Clean 1-Column */
+    .timeline {
+      padding-left: 0 !important;
+      border-left: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 4.5pt !important;
+      margin: 0 !important;
+    }
+
+    .timeline-item {
+      margin-bottom: 0 !important;
+      page-break-inside: avoid;
     }
 
     .timeline-marker {
-      background: black !important;
-      box-shadow: none !important;
+      display: none !important;
     }
 
-    .resume-project-item,
-    .skill-tag,
-    .meta-cell,
-    .interests-box {
-      border-color: #ddd !important;
-      background: white !important;
+    .timeline-content {
+      padding: 0 !important;
+    }
+
+    .timeline-header {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: baseline !important;
+      margin-bottom: 1pt !important;
+    }
+
+    .timeline-degree {
+      font-size: 9pt !important;
+      font-weight: 700 !important;
+      color: #000000 !important;
+      margin: 0 !important;
+    }
+
+    .timeline-institution {
+      font-size: 8.5pt !important;
+      color: #333333 !important;
+      font-style: italic !important;
+      margin-bottom: 1pt !important;
+    }
+
+    .timeline-date {
+      font-size: 8pt !important;
+      font-weight: 600 !important;
+      color: #333333 !important;
+      white-space: nowrap !important;
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    .timeline-badges {
+      margin: 0 0 1pt 0 !important;
+      gap: 6pt !important;
+      display: inline !important;
+    }
+
+    .badge {
+      background: none !important;
+      border: none !important;
+      padding: 0 !important;
+      font-size: 8pt !important;
+      color: #222222 !important;
+      font-weight: 600 !important;
+      display: inline !important;
+    }
+
+    .badge:not(:last-child)::after {
+      content: " • " !important;
+      color: #666666 !important;
+    }
+
+    .timeline-desc {
+      font-size: 8pt !important;
+      color: #333333 !important;
+      line-height: 1.3 !important;
+      margin: 1pt 0 0 0 !important;
     }
   }
 }

@@ -22,7 +22,7 @@
 
   .btn--primary {
     background-color: var(--clr-accent);
-    color: #0c0c0e;
+    color: var(--clr-accent-text, #0c0c0e);
     border-color: var(--clr-accent);
     font-weight: 700;
   }
@@ -187,6 +187,13 @@
     }
   }
 
+  /* 2x2 grid on foldables unfolded, tablets, and portrait monitors (up to 1200px in portrait) */
+  @media (max-width: 920px), (orientation: portrait) and (max-width: 1200px) {
+    .hero-metrics {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 480px) {
     .hero-actions {
       flex-direction: column;
@@ -261,7 +268,7 @@
   /* ── Projects Grid ─────────────────────────────────────────────────────── */
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: 1.5rem;
   }
 
@@ -280,6 +287,12 @@
     flex-direction: column;
     box-sizing: border-box;
     transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  @media (max-width: 480px) {
+    .project-card {
+      padding: 16px 14px;
+    }
   }
 
   .project-card:hover {

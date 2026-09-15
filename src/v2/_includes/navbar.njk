@@ -21,47 +21,78 @@
           <button
             class="site-nav__theme-toggle"
             type="button"
-            aria-label="Choose accent theme"
+            aria-label="Choose appearance theme"
             aria-haspopup="true"
             aria-expanded="false"
-            title="Switch accent color"
+            title="Switch theme or accent color"
           >
             <span class="theme-toggle__dot" aria-hidden="true"></span>
-            <span class="theme-toggle__label">Accent</span>
+            <span class="theme-toggle__label">Theme</span>
             <svg class="theme-toggle__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
             </svg>
           </button>
 
           <div class="theme-picker__menu" role="menu">
-            <div class="theme-picker__header">Select Accent</div>
+            <div class="theme-picker__header">Mode</div>
+            <a href="#" role="menuitem" data-mode="dark">
+              <svg class="theme-mode-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <span>Dark</span>
+            </a>
+            <a href="#" role="menuitem" data-mode="light">
+              <svg class="theme-mode-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              <span>Light</span>
+            </a>
+            <div class="theme-picker__header" style="margin-top: 6px;">Accent</div>
             <a href="#" role="menuitem" data-theme="lavender">
               <span class="theme-swatch swatch--lavender"></span>
-              Lavender <span class="theme-default-tag">(Default)</span>
+              <span>Lavender</span>
             </a>
             <a href="#" role="menuitem" data-theme="white">
               <span class="theme-swatch swatch--white"></span>
-              Monochrome
+              <span>Monochrome</span>
             </a>
             <a href="#" role="menuitem" data-theme="catppuccin">
               <span class="theme-swatch swatch--catppuccin"></span>
-              Catppuccin
+              <span>Catppuccin</span>
             </a>
             <a href="#" role="menuitem" data-theme="red">
               <span class="theme-swatch swatch--red"></span>
-              Crimson
+              <span>Crimson</span>
             </a>
             <a href="#" role="menuitem" data-theme="coral">
               <span class="theme-swatch swatch--coral"></span>
-              Coral
+              <span>Coral</span>
             </a>
             <a href="#" role="menuitem" data-theme="emerald">
               <span class="theme-swatch swatch--emerald"></span>
-              Emerald
+              <span>Emerald</span>
             </a>
           </div>
         </div>
       </div>
+
+      <button
+        class="site-nav__mode-toggle"
+        type="button"
+        aria-label="Toggle light/dark mode"
+        title="Toggle light/dark mode"
+      >
+        <svg class="mode-icon mode-icon--sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="mode-icon mode-icon--moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
 
       <div class="site-nav__hamburger" aria-label="Open menu" role="button" tabindex="0">
         <span class="site-nav__hamburger-bar"></span>
