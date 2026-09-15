@@ -5,6 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 2.5rem;
   }
 
   .page--gallery .page__content .gallery-tabs a {
@@ -13,24 +14,37 @@
   }
 
   .page--gallery .page__content .gallery-tabs ul {
-    display: flex;
+    display: inline-flex;
     list-style-type: none;
-    gap: 20px;
-    padding-inline-start: 0;
+    gap: 4px;
+    padding: 4px;
+    background-color: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    margin: 0;
   }
 
   .page--gallery .page__content .gallery-tabs__btn {
     background-color: transparent;
-    border: none;
-    color: var(--clr-body-text);
+    border: 1px solid transparent;
+    color: var(--clr-text-muted);
     font-family: var(--font-regular);
-    font-size: 16px;
+    font-size: 0.825rem;
+    font-weight: 600;
+    padding: 8px 18px;
     cursor: pointer;
+    border-radius: 0;
+    letter-spacing: 0.03em;
+    transition: all 0.15s ease;
+  }
+
+  .page--gallery .page__content .gallery-tabs__btn:hover {
+    color: var(--clr-body-text);
   }
 
   .page--gallery .page__content .gallery-tabs__btn.is-active {
-    background-color: var(--clr-body-text);
-    color: var(--clr-container-bg);
+    background-color: var(--clr-surface-2);
+    border-color: var(--clr-border);
+    color: var(--clr-accent);
   }
 
   .page--gallery .page__content .gallery-grid--photography,
@@ -159,50 +173,6 @@
       max-width: calc(100vw - 10%);
     }
 
-    /* Nav expands with the gallery page via is-expanded (transition from _nav.css applies normally).
-       On the detail page the nav is always wide from first paint, so transition: none
-       prevents it animating on load or when navigating back to gallery. */
-    body.is-expanded.page--gallery .site-nav {
-      max-width: calc(100vw - 10%);
-    }
-
-    body.page--gallery-detail .site-nav {
-      max-width: calc(100vw - 10%);
-      transition: none;
-    }
-
-    /* Opt the content box into View Transitions — GPU compositor handles the size morph,
-       no layout recalculations on every frame (the cause of Chromium jank).
-       The nav is intentionally excluded: fixed/positioned elements captured in VT layers
-       lose stacking context and produce visual artifacts during the transition. */
-    body.page--gallery .page__content {
-      view-transition-name: gallery-content;
-    }
-  }
-
-  /* Control View Transition animation duration & easing */
-  ::view-transition-group(gallery-content) {
-    animation-duration: 0.5s;
-    animation-timing-function: ease;
-  }
-
-  /* Kill the root cross-fade — root contains everything outside the named group
-     (including the nav). Old + new root render simultaneously during the default
-     fade, which causes a double-nav. Hiding old root and freezing new root means
-     the nav instantly shows its final state while only gallery-content animates. */
-  ::view-transition-old(root) {
-    display: none;
-  }
-  ::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal;
-  }
-
-  /* Suppress the cross-fade on gallery-content image layers — size morph only */
-  ::view-transition-old(gallery-content),
-  ::view-transition-new(gallery-content) {
-    animation: none;
-    mix-blend-mode: normal;
   }
 
   /* ── Mobile gallery ───────────────────────────────────────────────────── */

@@ -1,29 +1,49 @@
 /* Abstract: Design tokens — CSS custom properties (runtime theming).
-   Theme overrides (.light, .midnight, .catppuccin-dark, ...) live in themes/_themes.css */
+   Lavender is the default accent for V2.
+   Accent overrides (.lavender, .white, .catppuccin, .red, .coral, .emerald) and
+   V3 theme mappings live in themes/_themes.css */
 
 @layer base {
   :root {
-    --clr-body-bg: #0f0f0f;
-    --clr-body-text: #cacaca;
-    --clr-navbar-bg: #0f0f0f;
-    --clr-navbar-text: #cacaca;
-    --clr-container-bg: #1b1b1b;
-    --clr-hamburger-bg: #cacaca;
-    --clr-off-screen-menu-txt: #cacaca;
-    --clr-link-visited: #b71c1c;
+    /* Backgrounds & Surfaces (Clean, deep modern dark) */
+    --clr-body-bg: #0c0c0e;
+    --clr-body-text: #e8e8ed;
+    --clr-text-muted: #888896;
+    --clr-text-subtle: #565666;
 
-    --font-regular: JetBrains Mono;
-    --font-bold: JetBrains Mono Bold;
+    --clr-surface: #141418;
+    --clr-surface-2: #1b1b22;
+    --clr-border: #24242c;
+    --clr-border-hover: #3d3d4a;
 
-    --clr-code-bg: #161616;
-    --clr-code-text: #cacaca;
-    --clr-code-comment: #767676;
-    --clr-code-keyword: #d57bdd;
-    --clr-code-string: #98c379;
-    --clr-code-func: #61afef;
-    --clr-code-number: #e5c07b;
+    --clr-navbar-bg: rgba(12, 12, 14, 0.85);
+    --clr-navbar-text: #e8e8ed;
+    --clr-container-bg: #141418;
+    --clr-hamburger-bg: #e8e8ed;
+    --clr-off-screen-menu-txt: #e8e8ed;
 
-    --clr-inline-code-bg: #262626;
-    --clr-inline-code-text: #e0e0e0;
+    /* Accent System — Lavender Default */
+    --clr-accent: #a78bfa;
+    --clr-accent-dim: #7c3aed;
+    --clr-accent-glow: rgba(167, 139, 250, 0.15);
+    --clr-link-visited: var(--clr-accent);
+
+    /* Typography */
+    --font-heading: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-regular: 'JetBrains Mono', monospace;
+    --font-bold: 'JetBrains Mono Bold', monospace;
+    --font-code: 'JetBrains Mono', monospace;
+
+    /* Syntax Highlighting */
+    --clr-code-bg: #141418;
+    --clr-code-text: #e8e8ed;
+    --clr-code-comment: #656577;
+    --clr-code-keyword: #c084fc;
+    --clr-code-string: #86efac;
+    --clr-code-func: #60a5fa;
+    --clr-code-number: #fde047;
+
+    --clr-inline-code-bg: #1e1e26;
+    --clr-inline-code-text: #e8e8ed;
   }
 }

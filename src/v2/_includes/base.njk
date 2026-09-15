@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="preload"
       href="/assets/fonts/JetBrainsMono-Regular.woff2"
@@ -19,16 +25,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% if description %}<meta name="description" content="{{ description }}" />{% endif %}
 
-    <title>{{ title | default("Portfolio") }}</title>
+    <title>{{ title | default("Zephyr — Software Developer & Portfolio") }}</title>
 
     <!-- Restore saved theme before CSS loads to prevent FOUC -->
     <script>
       (function () {
-        var t = localStorage.getItem('theme');
-        if (t === 'system') {
+        var isEmbedded = window.self !== window.top;
+        var t = localStorage.getItem('v2-theme') || localStorage.getItem('theme');
+        if (isEmbedded || t === 'system') {
           t = localStorage.getItem('v3-theme') || 'green';
         }
-        if (t) document.documentElement.className = t;
+        if (!t) {
+          t = 'lavender';
+        }
+        document.documentElement.className = t;
       })();
     </script>
 
@@ -60,14 +70,5 @@
     {% include "footer.njk" %}
 
     <script src="/assets/js/script.js"></script>
-
-    <!-- Pre-expand gallery pages arriving from within the gallery zone.
-         Runs synchronously before first paint so there is no narrow→wide flash. -->
-    <script>
-      if (sessionStorage.getItem('gallery-keep-expanded')) {
-        sessionStorage.removeItem('gallery-keep-expanded');
-        document.body.classList.add('is-expanded');
-      }
-    </script>
   </body>
 </html>

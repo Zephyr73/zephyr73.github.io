@@ -1,21 +1,55 @@
 ---
 layout: base.njk
 permalink: /projects/
-title: Projects | My Portfolio
+title: Projects &bull; Zephyr — Software Engineering
 bodyClass: page--projects
 pageId: projects-index
+noMarkdownWrapper: true
+description: 'Software development, systems architecture, and engineering projects by Zephyr.'
 ---
 
-<div class="project-list">
-    <!-- Loop through the collection named 'project' sorted by date (latest first) -->
+<div class="projects-page">
+  <div class="page-intro">
+    <span class="page-intro__eyebrow">// ENGINEERING &amp; SYSTEMS</span>
+    <h1 class="page-intro__title">Software &amp; Technical Projects</h1>
+    <p class="page-intro__desc">
+      A collection of personal systems, infrastructure engineering, and automation utilities built with Python, Linux, Docker, and modern web technologies.
+    </p>
+  </div>
+
+  <div class="project-list">
     {% for project in collections.project | sortByDate %}
-        <article class="project-preview">
-            <h2>
-                <a href="{{ project.url }}">{{ project.data.title }}</a>
-            </h2>
-            <p class="project-description">
-                {{ project.data.description }}
-            </p>
-            <a href="{{ project.url }}" class="read-more">Read More →</a>
-        </article>
+      <article class="project-card">
+        <div class="project-card__header">
+          <span class="project-card__tag">
+            {% if 'home-network' in project.url %}
+              Infrastructure &bull; High Availability
+            {% elseif 'wallpapersync' in project.url %}
+              Python &bull; Linux Automation
+            {% else %}
+              Engineering Project
+            {% endif %}
+          </span>
+          <span class="project-card__status">{{ project.date | formatDate if project.date else 'Recent' }}</span>
+        </div>
+
+        <h2 class="project-card__title">
+          <a href="{{ project.url }}">{{ project.data.title }}</a>
+        </h2>
+
+        <p class="project-card__desc">
+          {{ project.data.description }}
+        </p>
+
+        <div class="project-card__footer">
+          <a href="{{ project.url }}" class="project-card__action">
+            Read Case Study
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/>
+            </svg>
+          </a>
+        </div>
+      </article>
     {% endfor %}
+  </div>
+</div>

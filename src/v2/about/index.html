@@ -1,116 +1,252 @@
 ---
 layout: base.njk
 permalink: /about/
-title: Resume | Zephyr
+title: Resume &bull; Zephyr — Software Developer
 bodyClass: page--resume
 pageId: resume
 noMarkdownWrapper: true
-description: 'Software Developer and Computer Science student. View my skills, education, and creative portfolio.'
+description: 'Software Developer and Computer Science student resume. View technical skills, education timeline, systems background, and contact information.'
 ---
 
 <div class="resume-container">
-  <header class="resume-hero">
-    <div class="hero-sidebar">
-      <img class="resume-avatar" src="/assets/img/profile.png" alt="Zephyr" />
-      <div class="resume-contact">
-        <button class="resume-contact__copy" data-copy="email@example.com" aria-label="Copy email address">
-          email@example.com
+  <!-- ── RESUME HEADER ─────────────────────────────────────────────────── -->
+  <header class="resume-header">
+    <div class="resume-sidebar">
+      <div class="avatar-frame">
+        <img class="resume-avatar" src="/assets/img/profile.png" alt="Zephyr avatar" />
+        <span class="avatar-badge">NYC &bull; DEVELOPER</span>
+      </div>
+      
+      <div class="resume-links">
+        <button class="resume-btn resume-contact__copy" data-copy="email@example.com" type="button" aria-label="Copy email">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="2" y="4" width="20" height="16"/><path d="M22 6L12 13L2 6"/></svg>
+          <span class="btn-text">Copy Email</span>
         </button>
-        <a href="https://github.com/zephyr73" target="_blank" rel="noopener noreferrer">Github ↗</a>
-        <a href="https://twitter.com/Zephyr73_" target="_blank" rel="noopener noreferrer">Twitter ↗</a>
-        <a href="https://pixiv.net/users/28541154" target="_blank" rel="noopener noreferrer">Pixiv ↗</a>
+        <a href="https://github.com/zephyr73" target="_blank" rel="noopener noreferrer" class="resume-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub ↗
+        </a>
+        <a href="https://twitter.com/Zephyr73_" target="_blank" rel="noopener noreferrer" class="resume-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          Twitter / X ↗
+        </a>
+        <a href="https://pixiv.net/users/28541154" target="_blank" rel="noopener noreferrer" class="resume-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          Pixiv Art ↗
+        </a>
+        <button onclick="window.print()" class="resume-btn resume-btn--print" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print / PDF
+        </button>
       </div>
     </div>
 
-    <div class="hero-main">
-      <h1>Zephyr</h1>
-      <span class="role-title">Software Developer</span>
-      <div class="hero-bio">
+    <div class="resume-intro">
+      <div class="resume-headline">
+        <span class="resume-eyebrow">// RESUME &amp; DOSSIER</span>
+        <h1 class="resume-name">Zephyr</h1>
+        <div class="resume-role-tag">Software Developer &bull; Computer Science</div>
+      </div>
+
+      <div class="resume-bio">
         <p>
-          I am a student at Laguardia Community College with a strong foundation in computer science
-          principles completed through the Cambridge University curriculum.
+          Computer Science student at <strong>LaGuardia Community College</strong> (CGPA: 3.6) with solid foundations in algorithmic problem solving, Cambridge University mathematics curriculum, and hands-on systems programming.
         </p>
         <p>
-          I have a passion for building software, exploring new technologies, and game development.
-          I focus on creating clean, efficient code and exploring creative technical workflows.
+          Experienced in building Linux-based network infrastructure, Python automation tools, and full-stack web applications. Passionate about software architecture, performance optimization, and creative applications of generative AI.
         </p>
+      </div>
+
+      <div class="resume-quick-meta">
+        <div class="meta-cell">
+          <span class="meta-label">Location</span>
+          <span class="meta-value">New York, NY</span>
+        </div>
+        <div class="meta-cell">
+          <span class="meta-label">Status</span>
+          <span class="meta-value text-accent">Open to Opportunities</span>
+        </div>
+        <div class="meta-cell">
+          <span class="meta-label">Focus</span>
+          <span class="meta-value">Systems, Backend &amp; Tools</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <div class="resume-details">
-    <h3 class="resume-section-title">Programming &amp; Development</h3>
-    <div class="skills-grid">
-      <div class="skill-box sk-blue">Python</div>
-      <div class="skill-box sk-green">HTML / CSS</div>
-      <div class="skill-box sk-yellow">JavaScript</div>
-      <div class="skill-box sk-blue">C++</div>
-      <div class="skill-box sk-orange">Java</div>
-      <div class="skill-box sk-red">Git</div>
-      <div class="skill-box sk-purple">Linux</div>
+  <!-- ── TECHNICAL SKILLS MATRIX ──────────────────────────────────────── -->
+  <section class="resume-section">
+    <div class="section-title-wrap">
+      <h2 class="section-heading">Technical Skills</h2>
+      <span class="section-rule"></span>
     </div>
 
-    <h3 class="resume-section-title">Creative &amp; Tools</h3>
-    <div class="skills-grid">
-      <div class="skill-box sk-blue">Adobe Photoshop</div>
-      <div class="skill-box sk-purple">Adobe Premiere</div>
-      <div class="skill-box sk-purple">After Effects</div>
-      <div class="skill-box sk-pink">Stable Diffusion</div>
-      <div class="skill-box sk-red">Photography</div>
+    <div class="skills-category-group">
+      <div class="skill-category">
+        <h3 class="skill-cat-title">Programming Languages</h3>
+        <div class="skills-pill-grid">
+          <div class="skill-tag"><span class="tag-accent">#</span> Python</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> C++</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> JavaScript (ES6+)</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Java</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> HTML5 / Modern CSS</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Bash / Shell Scripting</div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <h3 class="skill-cat-title">Systems, Tools &amp; Infrastructure</h3>
+        <div class="skills-pill-grid">
+          <div class="skill-tag"><span class="tag-accent">#</span> Linux (Arch, Debian, Ubuntu)</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Git &amp; GitHub Version Control</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Docker &amp; Containerization</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> WireGuard VPN &amp; Networking</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Pi-hole DNS &amp; Local Servers</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Vite &amp; Eleventy (11ty)</div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <h3 class="skill-cat-title">Creative &amp; Generative AI Tools</h3>
+        <div class="skills-pill-grid">
+          <div class="skill-tag"><span class="tag-accent">#</span> Stable Diffusion (Automatic1111 / ComfyUI)</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> ControlNet &amp; OpenPose Workflows</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Adobe Lightroom Classic</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Adobe Photoshop</div>
+          <div class="skill-tag"><span class="tag-accent">#</span> Adobe Premiere &amp; After Effects</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EDUCATION TIMELINE ────────────────────────────────────────────── -->
+  <section class="resume-section">
+    <div class="section-title-wrap">
+      <h2 class="section-heading">Education</h2>
+      <span class="section-rule"></span>
     </div>
 
-    <h3 class="resume-section-title">Education</h3>
-    <div class="resume-item">
-      <div class="item-header">
-        <h4>Associate in Science</h4>
+    <div class="timeline">
+      <!-- Degree 1 -->
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <h3 class="timeline-degree">Associate in Science &bull; Computer Science</h3>
+              <div class="timeline-institution">LaGuardia Community College (CUNY) &bull; Long Island City, NY</div>
+            </div>
+            <div class="timeline-date">Graduated 2026</div>
+          </div>
+          <div class="timeline-badges">
+            <span class="badge">Major: Computer Science</span>
+            <span class="badge badge--accent">CGPA: 3.6 / 4.0</span>
+          </div>
+          <p class="timeline-desc">
+            Core coursework: Object-Oriented Programming (C++, Java), Data Structures &amp; Algorithms, Computer Architecture, Discrete Mathematics, Linear Algebra, and Software Engineering.
+          </p>
+        </div>
       </div>
-      <div class="item-meta-row">
-        <span class="meta-badge">LaGuardia Community College</span>
-        <span class="meta-badge">Long Island City, NY</span>
-        <span class="meta-badge">CGPA: 3.6</span>
-        <span class="meta-badge">Graduated 2026</span>
+
+      <!-- Degree 2 -->
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <h3 class="timeline-degree">GCE Advanced Levels (A Levels)</h3>
+              <div class="timeline-institution">Sydney International School &bull; Dhaka, Bangladesh</div>
+            </div>
+            <div class="timeline-date">Graduated 2021</div>
+          </div>
+          <div class="timeline-badges">
+            <span class="badge">Cambridge Assessment International Education</span>
+            <span class="badge badge--accent">CGPA: 5.0 / 5.0</span>
+          </div>
+          <p class="timeline-desc">
+            Rigorous advanced curriculum with focus in Mathematics, Physics, and Computer Science.
+          </p>
+        </div>
       </div>
+
+      <!-- Degree 3 -->
+      <div class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <h3 class="timeline-degree">GCE Ordinary Levels (O Levels)</h3>
+              <div class="timeline-institution">Cambridge University International Curriculum</div>
+            </div>
+            <div class="timeline-date">Graduated 2019</div>
+          </div>
+          <div class="timeline-badges">
+            <span class="badge badge--accent">CGPA: 4.16 / 5.0</span>
+          </div>
+          <p class="timeline-desc">
+            Completed core subjects: Mathematics, Additional Mathematics, Physics, Computer Science, Chemistry, and English Language.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HIGHLIGHTED PROJECTS ON RESUME ────────────────────────────────── -->
+  <section class="resume-section">
+    <div class="section-title-wrap">
+      <h2 class="section-heading">Key Technical Projects</h2>
+      <span class="section-rule"></span>
+    </div>
+
+    <div class="resume-projects-list">
+      <div class="resume-project-item">
+        <div class="project-item-top">
+          <h3 class="project-item-name"><a href="/projects/home-network/">Home Network Lab Infrastructure</a></h3>
+          <span class="project-item-date">2024 &ndash; Present</span>
+        </div>
+        <div class="project-item-tags">
+          <span class="stack-pill">Linux</span>
+          <span class="stack-pill">Docker</span>
+          <span class="stack-pill">Pi-hole</span>
+          <span class="stack-pill">WireGuard VPN</span>
+          <span class="stack-pill">Networking</span>
+        </div>
+        <ul class="project-bullet-list">
+          <li>Architected and deployed a Linux-based home server infrastructure hosting containerized network services.</li>
+          <li>Implemented DNS sinkhole filtering and local caching with Pi-hole, reducing local bandwidth waste by ~20%.</li>
+          <li>Configured encrypted WireGuard VPN tunnels for secure remote administration across internal and external networks.</li>
+        </ul>
+      </div>
+
+      <div class="resume-project-item">
+        <div class="project-item-top">
+          <h3 class="project-item-name"><a href="/projects/wallpapersync/">WallpaperSync Automation Daemon</a></h3>
+          <span class="project-item-date">2023 &ndash; 2024</span>
+        </div>
+        <div class="project-item-tags">
+          <span class="stack-pill">Python</span>
+          <span class="stack-pill">Pillow</span>
+          <span class="stack-pill">Systemd</span>
+          <span class="stack-pill">Linux API</span>
+        </div>
+        <ul class="project-bullet-list">
+          <li>Engineered a modular Python service that dynamically scales, stitches, and rotates wallpapers across multi-monitor setups with mismatched resolutions.</li>
+          <li>Integrated with systemd user units to run unobtrusively in background with minimal CPU/RAM footprint.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INTERESTS & PURSUITS ─────────────────────────────────────────── -->
+  <section class="resume-section">
+    <div class="section-title-wrap">
+      <h2 class="section-heading">Interests &amp; Creative Research</h2>
+      <span class="section-rule"></span>
+    </div>
+    <div class="interests-box">
       <p>
-        <strong>Major:</strong> Computer Science
+        Beyond software engineering, I actively practice mobile photography with a Samsung Galaxy S22 Ultra, post-processing RAW compositions in Adobe Lightroom. I also experiment with latent diffusion models and local machine learning pipelines, testing ControlNet architectures and custom inference workflows.
       </p>
     </div>
-
-    <div class="resume-item">
-      <div class="item-header">
-        <h4>GCE A Levels</h4>
-      </div>
-      <div class="item-meta-row">
-        <span class="meta-badge">Sydney International School</span>
-        <span class="meta-badge">Dhaka, Bangladesh</span>
-        <span class="meta-badge">CGPA: 5.0</span>
-        <span class="meta-badge">Graduated 2021</span>
-      </div>
-      <p>
-        <strong>Subjects:</strong> Mathematics, Physics, Computer Science
-      </p>
-    </div>
-
-    <div class="resume-item">
-      <div class="item-header">
-        <h4>GCE O Levels</h4>
-      </div>
-      <div class="item-meta-row">
-        <span class="meta-badge">Cambridge University</span>
-        <span class="meta-badge">Cambridge, UK</span>
-        <span class="meta-badge">CGPA: 4.16</span>
-        <span class="meta-badge">Graduated 2019</span>
-      </div>
-      <p>
-        <strong>Subjects:</strong> Mathematics, Additional Mathematics, Physics, Computer Science, Chemistry, English
-        Language, Bengali
-      </p>
-    </div>
-
-    <h3 class="resume-section-title">Interests</h3>
-    <p>
-      When I am not coding, I explore digital art through AI generation, capture street photography
-      using my Galaxy S22 Ultra, and participate in competitive gaming. I am also researching
-      Machine Learning plugins for creative workflows.
-    </p>
-  </div>
+  </section>
 </div>

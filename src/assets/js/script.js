@@ -11,58 +11,82 @@ if (hamTrigger && drawer) {
     document.documentElement.classList.toggle('no-scroll', isDrawerOpen);
     document.body.classList.toggle('no-scroll', isDrawerOpen);
   });
+
+  // Close drawer on link click
+  drawer.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      hamTrigger.classList.remove('active');
+      drawer.classList.remove('active');
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+    });
+  });
+}
+
+// Navigation: Glassmorphism blur on scroll
+const siteNav = document.querySelector('.site-nav');
+if (siteNav) {
+  const handleNavScroll = () => {
+    if (window.scrollY > 16) {
+      siteNav.classList.add('scrolled');
+    } else {
+      siteNav.classList.remove('scrolled');
+    }
+  };
+  window.addEventListener('scroll', handleNavScroll, { passive: true });
+  handleNavScroll();
 }
 
 // Theme: dropdown (desktop), drawer theme panel, persistence
 const themeMenu = document.querySelector('.theme-picker__menu');
 const themeSwitch = document.querySelector('.site-nav__theme-toggle');
-const themeSwitchHam = document.querySelector('.site-nav__theme-toggle--drawer');
-const themeOptions = document.querySelectorAll('.theme-picker__menu a');
-const themeDrawerOptions = document.querySelector('.theme-picker__drawer-options');
-const drawerNavItems = document.querySelectorAll('.site-nav__drawer-item');
+const themeOptions = document.querySelectorAll('.theme-picker__menu a[data-theme]');
+const drawerThemeButtons = document.querySelectorAll('.drawer-theme-btn[data-theme]');
 
 function applyTheme(themeKey) {
   if (!themeKey) {
     return;
   }
 
-  const isV3Theme = [
-    'green',
-    'amber',
-    'cyan',
-    'magenta',
-    'red',
-    'purple',
-    'notebook',
-    'slate',
-    'sunset',
-  ].includes(themeKey);
   let targetClass = themeKey;
+  const isEmbedded = window.self !== window.top;
 
   if (themeKey === 'system') {
     targetClass = localStorage.getItem('v3-theme') || 'green';
     localStorage.setItem('theme', 'system');
-  } else if (isV3Theme) {
+  } else if (isEmbedded) {
     targetClass = themeKey;
   } else {
+    localStorage.setItem('v2-theme', themeKey);
     localStorage.setItem('theme', themeKey);
   }
 
   // Remove any existing theme classes without touching unrelated classes (e.g. no-scroll).
-  // Snapshot first (Array.from) because DOMTokenList is live — mutating it while
-  // iterating with forEach can cause entries to be skipped.
   Array.from(document.documentElement.classList)
     .filter((cls) => cls !== 'no-scroll')
     .forEach((cls) => document.documentElement.classList.remove(cls));
+
   document.documentElement.classList.add(targetClass);
+
+  // Update theme toggle UI if present
+  if (themeMenu) {
+    themeMenu.style.display = 'none';
+    if (themeSwitch) {
+      themeSwitch.setAttribute('aria-expanded', 'false');
+    }
+  }
+
   // Re-dither the avatar using the new theme's colours
-  ditherAvatar();
+  if (typeof ditherAvatar === 'function') {
+    ditherAvatar();
+  }
 }
 window.applyTheme = applyTheme;
 
 // Desktop theme dropdown
 if (themeSwitch && themeMenu) {
-  themeSwitch.addEventListener('click', () => {
+  themeSwitch.addEventListener('click', (e) => {
+    e.stopPropagation();
     const isOpen = themeMenu.style.display === 'block';
     themeMenu.style.display = isOpen ? 'none' : 'block';
     themeSwitch.setAttribute('aria-expanded', String(!isOpen));
@@ -85,39 +109,27 @@ window.addEventListener('click', (e) => {
 themeOptions.forEach((option) => {
   option.addEventListener('click', (e) => {
     e.preventDefault();
-    applyTheme(e.target.getAttribute('data-theme'));
+    const t = option.getAttribute('data-theme');
+    applyTheme(t);
   });
 });
 
-// Drawer: toggle between nav links and theme options
-let themePanelVisible = false;
-if (themeSwitchHam && themeDrawerOptions && drawerNavItems.length) {
-  themeSwitchHam.addEventListener('click', () => {
-    themePanelVisible = !themePanelVisible;
-    drawerNavItems.forEach((item) => {
-      item.style.display = themePanelVisible ? 'none' : 'block';
-    });
-    themeDrawerOptions.style.display = themePanelVisible ? 'block' : 'none';
-    themeDrawerOptions.style.opacity = themePanelVisible ? '1' : '0';
-    themeDrawerOptions.style.pointerEvents = themePanelVisible ? 'auto' : 'none';
-  });
-}
-
-document.querySelectorAll('.theme-picker__drawer-options a').forEach((option) => {
-  option.addEventListener('click', (e) => {
+drawerThemeButtons.forEach((btn) => {
+  btn.addEventListener('click', (e) => {
     e.preventDefault();
-    applyTheme(e.target.getAttribute('data-theme'));
-    if (themeDrawerOptions) {
-      themeDrawerOptions.style.display = 'none';
+    const t = btn.getAttribute('data-theme');
+    applyTheme(t);
+    // close drawer after selecting theme
+    if (hamTrigger && drawer) {
+      hamTrigger.classList.remove('active');
+      drawer.classList.remove('active');
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
     }
-    themePanelVisible = false;
-    drawerNavItems.forEach((item) => {
-      item.style.display = 'block';
-    });
   });
 });
 
-// Gallery Page: Width Animation and Tabs
+// Gallery Page: Tabs switching
 const GALLERY_SECTIONS = {
   Photography: '.gallery-grid--photography',
   'AI-Generations': '.gallery-grid--ai',
@@ -130,59 +142,7 @@ function initGallery() {
     return;
   }
 
-  // 1. Width Animation
-  // Use View Transitions API so the max-width change is handled by the GPU compositor
-  // (avoids layout recalculations on every frame — the cause of Chromium jank).
-  //
-  // If the inline script in base.njk already applied is-expanded (arriving from
-  // the gallery detail page), skip the animation entirely — it was handled before
-  // first paint so there is nothing left to animate.
-  if (!document.body.classList.contains('is-expanded')) {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        if (document.startViewTransition) {
-          document.startViewTransition(() => {
-            document.body.classList.add('is-expanded');
-          });
-        } else {
-          document.body.classList.add('is-expanded');
-        }
-      });
-    });
-  }
-
-  // Intercept internal links to animate width back before navigating.
-  // Exception: links into the gallery detail zone share the same width,
-  // so we navigate directly without collapsing first.
-  document.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      // Internal navigation link (not a hash anchor, not external, not empty)
-      if (href && href.startsWith('/') && !href.startsWith('#')) {
-        // Navigating within the gallery zone — preserve expanded width
-        if (href.startsWith('/gallery/')) {
-          return; // let the browser navigate normally, no collapse
-        }
-        e.preventDefault();
-        if (document.startViewTransition) {
-          // transition.finished resolves when the exit animation completes
-          const transition = document.startViewTransition(() => {
-            document.body.classList.remove('is-expanded');
-          });
-          transition.finished.then(() => {
-            window.location.href = href;
-          });
-        } else {
-          document.body.classList.remove('is-expanded');
-          setTimeout(() => {
-            window.location.href = href;
-          }, 500);
-        }
-      }
-    });
-  });
-
-  // 2. Tabs Fade Animation
+  // Tabs Fade Animation
   const buttons = document.querySelectorAll('.gallery-tabs__btn');
   if (!buttons.length) {
     return;

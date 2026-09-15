@@ -1,68 +1,148 @@
-/* Layout: Page content container.
-   Table styles      → components/_tables.css
-   h1/h2/h3, p       → base/_typography.css
-   .about__hobbies,
-     .about__avatar  → pages/_about.css
-   .u-warning        → base/_utilities.css */
+/* Layout: Main page container, grid systems, and footer.
+   Modern, spacious layout with sharp corners and optimized mobile flow. */
 
 @layer components {
-  .page__content {
-    background-color: var(--clr-container-bg);
-    outline: 1px solid var(--clr-navbar-text);
-    border-radius: 0;
-    box-sizing: border-box;
-    padding: 35px;
-    max-width: 800px;
+  .page {
     width: 100%;
     min-height: 100vh;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--clr-body-bg);
+    color: var(--clr-body-text);
+  }
+
+  .page__content {
+    max-width: 960px;
+    width: 100%;
+    margin-top: 76px;
+    padding: 2.5rem 1.5rem 5rem 1.5rem;
+    box-sizing: border-box;
     position: relative;
     z-index: 1;
-    margin-top: 100px;
-    /* View Transitions handles the expand animation (GPU composited, no layout jank) */
-    view-transition-name: none;
+    min-height: calc(100vh - 180px);
+    transition: max-width 0.3s ease;
+  }
+
+  /* Wide container on gallery pages */
+  body.page--gallery .page__content,
+  body.page--gallery-detail .page__content {
+    max-width: 1360px;
   }
 
   @media (max-width: 768px) {
     .page__content {
-      height: 100%;
-      max-width: 800px;
-      padding-bottom: 30px;
-      outline: none;
-      box-shadow: none;
+      margin-top: 60px;
+      padding: 1.5rem 1rem 3.5rem 1rem;
+      width: 100%;
     }
   }
 
+  /* ── Site Footer ──────────────────────────────────────────────────────── */
   .site-footer {
     width: 100%;
-    max-width: 800px;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    font-size: 0.5rem;
+    max-width: 960px;
+    margin: 2rem auto 3rem auto;
+    padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+    border-top: 1px solid var(--clr-border);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  body.page--gallery .site-footer {
+    max-width: 1360px;
+  }
+
+  .site-footer__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .site-footer__brand {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
     color: var(--clr-body-text);
-    opacity: 0.7;
   }
 
-  .site-footer p {
-    margin: 0.25rem 0;
-    font-size: 0.85rem;
+  .site-footer__socials {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
   }
 
-  .site-footer a {
-    color: var(--clr-body-text);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 2px;
-    transition: all 0.2s ease;
-  }
-
-  .site-footer a:hover {
-    background-color: var(--clr-body-text);
-    color: var(--clr-body-bg);
+  .site-footer__socials a {
+    color: var(--clr-text-muted);
+    font-size: 0.825rem;
+    font-family: var(--font-regular);
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.15s ease;
+  }
+
+  .site-footer__socials a:hover {
+    color: var(--clr-accent);
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--clr-text-muted);
+    font-family: var(--font-regular);
+  }
+
+  .site-footer__bottom p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--clr-text-muted);
+  }
+
+  .site-footer__bottom a {
+    color: var(--clr-text-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .site-footer__bottom a:hover {
+    color: var(--clr-accent);
+  }
+
+  @media (max-width: 768px) {
+    .site-footer {
+      padding: 1.75rem 1rem 1.5rem 1rem;
+      margin: 1.5rem auto 2rem auto;
+      gap: 1.25rem;
+    }
+
+    .site-footer__top {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .site-footer__socials {
+      gap: 0.75rem 1.25rem;
+    }
+
+    .site-footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
   }
 }

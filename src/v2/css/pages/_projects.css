@@ -1,0 +1,72 @@
+/* Pages: Projects & Blog Listings */
+
+@layer components {
+  .projects-page,
+  .blog-page {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .page-intro {
+    padding-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--clr-border);
+  }
+
+  .page-intro__eyebrow {
+    display: block;
+    font-family: var(--font-regular);
+    font-size: 0.725rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--clr-accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .page-intro__title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.5vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    color: var(--clr-body-text);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .page-intro__desc {
+    font-family: var(--font-regular);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--clr-text-muted);
+    max-width: 700px;
+    margin: 0;
+  }
+
+  .project-list,
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .page-intro {
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .page-intro__title {
+      font-size: clamp(1.75rem, 6.5vw, 2.25rem);
+    }
+
+    .page-intro__desc {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .project-list,
+    .blog-list {
+      gap: 1.25rem;
+    }
+  }
+}
