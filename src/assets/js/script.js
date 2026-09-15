@@ -37,19 +37,13 @@ function applyTheme(themeKey) {
     'slate',
     'sunset',
   ].includes(themeKey);
-  const currentSaved = localStorage.getItem('theme');
-
   let targetClass = themeKey;
 
   if (themeKey === 'system') {
     targetClass = localStorage.getItem('v3-theme') || 'green';
     localStorage.setItem('theme', 'system');
   } else if (isV3Theme) {
-    if (currentSaved === 'system') {
-      targetClass = themeKey;
-    } else {
-      return; // Ignore V3 sync if not set to System
-    }
+    targetClass = themeKey;
   } else {
     localStorage.setItem('theme', themeKey);
   }

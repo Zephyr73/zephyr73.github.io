@@ -3,12 +3,12 @@
 
 @layer components {
   html {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   @media (max-width: 768px) {
     html {
-      font-size: 14px;
+      font-size: 13px;
     }
   }
 
@@ -20,30 +20,33 @@
   h6 {
     font-family: var(--font-bold);
     color: var(--clr-body-text);
+    line-height: 1.05;
+    letter-spacing: -0.5px;
   }
 
   /* Default heading size scale — overridden by page- and component-level rules */
   h1 {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
   h2 {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
   }
   h3 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
   }
   h4 {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
   h5 {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
   h6 {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   p {
     font-family: var(--font-regular);
-    font-size: 16px;
+    font-size: 0.95rem;
+    line-height: 1.65;
   }
 }

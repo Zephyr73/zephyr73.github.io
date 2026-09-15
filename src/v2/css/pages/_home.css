@@ -2,10 +2,10 @@
 
 @layer components {
   .page--home .page__content h1 {
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2rem, 4vw, 3.5rem);
     line-height: 0.9;
     text-transform: uppercase;
-    letter-spacing: -2px;
+    letter-spacing: -3px;
     margin-bottom: 1.5rem;
     margin-top: 0;
   }
@@ -18,9 +18,12 @@
   }
 
   .page--home .page__content .u-warning {
-    border-left: 3px solid var(--clr-link-visited);
+    border-left: 4px solid var(--clr-link-visited);
     padding-left: 1rem;
-    font-style: italic;
+    font-style: normal;
+    font-family: var(--font-bold);
+    font-size: 0.85rem;
+    opacity: 0.85;
     margin-bottom: 3rem;
   }
 
@@ -68,7 +71,7 @@
     font-family: var(--font-bold);
     font-size: 1.1rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     text-decoration: none;
     background: var(--clr-body-text);
     color: var(--clr-body-bg);

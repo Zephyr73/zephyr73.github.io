@@ -35,12 +35,14 @@
   .markdown-content h2,
   .markdown-content h3,
   .markdown-content h4,
-  .markdown-content h5 {
+  .markdown-content h5,
+  .markdown-content h6 {
     font-family: var(--font-bold);
     text-transform: uppercase;
     line-height: 1.2;
     margin-top: clamp(2rem, 5vw, 3.5rem);
     margin-bottom: 1rem;
+    scroll-margin-top: 2rem;
   }
 
   .markdown-content h1 {
@@ -48,7 +50,7 @@
     overflow-wrap: anywhere;
     word-break: break-word;
     hyphens: auto;
-    border-bottom: 4px solid var(--clr-body-text);
+    border-bottom: 3px solid var(--clr-body-text);
     padding-bottom: 10px;
     letter-spacing: -1px;
   }
@@ -63,6 +65,7 @@
     max-width: 100%;
     box-sizing: border-box;
     position: relative;
+    letter-spacing: 1px;
     transition:
       background-color 0.2s ease,
       color 0.2s ease;
@@ -102,7 +105,7 @@
 
   .markdown-content h3 {
     font-size: 1.2rem;
-    border-bottom: 2px solid var(--clr-navbar-text);
+    border-bottom: 2px solid var(--clr-body-text);
     padding-bottom: 5px;
     display: inline-block;
     padding-right: 1rem;
@@ -118,7 +121,7 @@
 
   .markdown-content p {
     margin-bottom: 1.5rem;
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .markdown-content a {
@@ -169,9 +172,11 @@
 
   .markdown-content blockquote {
     margin: 2rem 0;
+    margin-left: 0;
     padding: 1rem 1.5rem;
-    border: 2px solid var(--clr-body-text);
-    border-left-width: 8px;
+    border: none;
+    border-left: 4px solid var(--clr-body-text);
+    background-color: var(--clr-container-bg);
     font-style: italic;
   }
 
@@ -179,13 +184,15 @@
     /* Code blocks with wrapping */
     background: var(--code-bg);
     color: var(--code-text);
-    border: 1px solid var(--clr-body-text);
+    border: 1px solid color-mix(in srgb, var(--clr-body-text) 15%, transparent);
+    border-left: 3px solid var(--clr-body-text);
     padding: 1.25rem;
     margin: 2rem 0;
     width: 100%;
     box-sizing: border-box;
     line-height: 1.5;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: var(--font-regular);
+    font-size: 0.875rem;
     white-space: pre-wrap;
     word-break: break-word;
     overflow-wrap: anywhere;
@@ -200,37 +207,92 @@
   }
 
   .markdown-content :not(pre) > code {
-    /* Inline code with scrolling */
-    font-family: 'Courier New', Courier, monospace;
+    /* Inline code chips that wrap naturally in prose */
+    font-family: var(--font-regular);
     background: var(--code-inline-bg);
     color: var(--code-inline-text);
     padding: 0.2rem 0.4rem;
     font-size: 0.9em;
     display: inline-block;
-    vertical-align: middle;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow-x: auto;
+    vertical-align: baseline;
     box-sizing: border-box;
-    scrollbar-width: thin;
-    scrollbar-color: var(--code-inline-text) var(--code-inline-bg);
+    border: 1px solid color-mix(in srgb, var(--code-inline-text) 25%, transparent);
+    line-height: 1.4;
   }
 
-  .markdown-content :not(pre) > code::-webkit-scrollbar {
-    height: 4px;
-    background: transparent;
+  .markdown-content hr {
+    border: none;
+    border-top: 1px solid color-mix(in srgb, var(--clr-body-text) 20%, transparent);
+    margin: 2.5rem 0;
   }
 
-  .markdown-content :not(pre) > code::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.02);
-    border-radius: 0px;
+  .markdown-content strong,
+  .markdown-content b {
+    font-family: var(--font-bold);
+    font-weight: normal;
   }
 
-  .markdown-content :not(pre) > code::-webkit-scrollbar-thumb {
-    background: var(--clr-body-text);
+  .markdown-content kbd {
+    font-family: var(--font-bold);
+    font-weight: normal;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 1px solid color-mix(in srgb, var(--clr-body-text) 30%, transparent);
+    border-bottom-width: 2px;
   }
 
-  .markdown-content :not(pre) > code::-webkit-scrollbar-thumb:hover {
-    background-color: color-mix(in srgb, var(--clr-body-text), white 10%);
+  .markdown-content li > ul,
+  .markdown-content li > ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .markdown-content li p {
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Data Tables ────────────────────────────────────────────────────────── */
+  .markdown-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    border: 1px solid color-mix(in srgb, var(--clr-body-text) 22%, transparent);
+    background-color: color-mix(in srgb, var(--clr-container-bg) 60%, transparent);
+  }
+
+  .markdown-content thead {
+    background-color: color-mix(in srgb, var(--clr-body-text) 10%, var(--clr-container-bg));
+  }
+
+  .markdown-content th {
+    font-family: var(--font-bold);
+    font-weight: normal;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid color-mix(in srgb, var(--clr-body-text) 30%, transparent);
+    color: var(--clr-body-text);
+  }
+
+  .markdown-content td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--clr-body-text) 12%, transparent);
+    vertical-align: top;
+  }
+
+  .markdown-content tr:last-child td {
+    border-bottom: none;
+  }
+
+  .markdown-content tr:hover td {
+    background-color: color-mix(in srgb, var(--clr-body-text) 5%, transparent);
+  }
+
+  .markdown-content td code,
+  .markdown-content th code {
+    white-space: nowrap;
   }
 }

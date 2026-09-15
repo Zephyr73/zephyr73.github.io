@@ -13,6 +13,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     'src/v2/blog/blogs': 'blog/blogs',
     'src/v2/projects/wallpapersync': 'projects/wallpapersync',
+    'src/v2/projects/home-network': 'projects/home-network',
   });
 
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
@@ -21,8 +22,26 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget('./src/v2/css/');
   eleventyConfig.addWatchTarget('./src/v3/css/');
 
-  // 3. Add Plugins
+  // 3. Add Plugins & Filters
   eleventyConfig.addPlugin(syntaxHighlight);
+
+  // Filter to sort collection items by date descending (latest first)
+  eleventyConfig.addFilter('sortByDate', function (items) {
+    if (!items || !Array.isArray(items)) return [];
+    return [...items].sort((a, b) => new Date(b.date) - new Date(a.date));
+  });
+
+  // Filter to format dates consistently (e.g. "Sep 8, 2026")
+  eleventyConfig.addFilter('formatDate', function (dateVal) {
+    if (!dateVal) return '';
+    const d = new Date(dateVal);
+    return d.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+  });
 
   // 4. Gallery image shortcode
   //    Usage: {% gimg "photography/1.jpg", "alt text", "eager", "high" %}

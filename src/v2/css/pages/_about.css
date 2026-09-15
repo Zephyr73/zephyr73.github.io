@@ -115,7 +115,7 @@
     font-size: clamp(2rem, 8vw, 5rem);
     line-height: 0.9;
     text-transform: uppercase;
-    letter-spacing: -3px;
+    letter-spacing: -4px;
     margin: 0;
     position: relative;
     max-width: 100%;
@@ -133,7 +133,7 @@
     font-size: 1rem;
     text-transform: uppercase;
     font-family: var(--font-bold);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     background: var(--clr-body-text);
     color: var(--clr-body-bg);
     padding: 4px 10px;
@@ -208,10 +208,10 @@
     font-family: var(--font-regular);
     font-size: 0.75rem;
     background-color: var(--clr-container-bg);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--clr-body-text);
     padding: 3px 8px;
     color: var(--clr-body-text);
-    opacity: 0.85;
+    opacity: 0.5;
     text-transform: none;
   }
 
@@ -233,6 +233,7 @@
     font-size: 0.85rem;
     font-family: var(--font-bold);
     text-transform: uppercase;
+    letter-spacing: 1px;
     transition: 0.2s ease;
   }
 
