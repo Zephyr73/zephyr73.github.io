@@ -28,7 +28,7 @@ async function getImageDate(filePath, isPhotography) {
                 parseInt(parts[3], 10),
                 parseInt(parts[4], 10),
                 parseInt(parts[5], 10),
-                parseInt(parts[6], 10)
+                parseInt(parts[6], 10),
               );
             }
           }

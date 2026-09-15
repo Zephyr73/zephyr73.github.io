@@ -13,7 +13,7 @@ body.page--gallery-detail {
   flex-direction: column;
   box-sizing: border-box;
   padding: 20px;
-  
+
   .gallery-detail {
     display: flex;
     flex-direction: column;
@@ -21,7 +21,7 @@ body.page--gallery-detail {
     margin-top: 20px;
     margin-bottom: 40px;
     width: 100%;
-    
+
     &__back {
       font-family: var(--font-regular);
       font-size: 13px;
@@ -35,20 +35,20 @@ body.page--gallery-detail {
         opacity: 1;
       }
     }
-    
+
     &__layout {
       display: flex;
       flex-direction: column;
       gap: 30px;
       width: 100%;
     }
-    
+
     &__image-wrap {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      
+
       img {
         display: block;
         max-width: 100%;
@@ -59,7 +59,7 @@ body.page--gallery-detail {
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
     }
-    
+
     &__panel {
       width: 100%;
       background-color: var(--clr-container-bg);
@@ -70,7 +70,7 @@ body.page--gallery-detail {
       gap: 24px;
       box-sizing: border-box;
     }
-    
+
     &__title {
       font-family: var(--font-bold);
       font-size: 16px;
@@ -79,38 +79,38 @@ body.page--gallery-detail {
       line-height: 1.4;
       opacity: 0.9;
     }
-    
+
     &__table {
       width: 100%;
       border-collapse: collapse;
       font-family: var(--font-regular);
       font-size: 13px;
-      
+
       tr {
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        
+
         &:first-child {
           border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
       }
-      
+
       td {
         padding: 12px 8px;
         color: var(--clr-body-text);
         vertical-align: middle;
-        
+
         &:first-child {
           width: 40%;
           opacity: 0.5;
           font-family: var(--font-bold);
         }
-        
+
         &:last-child {
           text-align: right;
         }
       }
     }
-    
+
     &__download {
       display: block;
       width: 100%;
@@ -125,7 +125,7 @@ body.page--gallery-detail {
       border: 1px solid var(--clr-body-text);
       transition: all 0.2s ease;
       cursor: pointer;
-      
+
       &:hover {
         background-color: transparent;
         color: var(--clr-body-text);
@@ -140,18 +140,18 @@ body.page--gallery-detail {
     height: 100vh;
     overflow: hidden;
   }
-  
+
   .page--gallery-detail .page__content {
     flex: 1;
     height: auto;
     min-height: 0;
     overflow: hidden;
     padding: 30px;
-    
+
     .gallery-detail {
       flex: 1;
       min-height: 0;
-      
+
       &__layout {
         flex: 1;
         min-height: 0;
@@ -160,18 +160,18 @@ body.page--gallery-detail {
         align-items: stretch;
         overflow: hidden;
       }
-      
+
       &__image-wrap {
         flex: 1;
         height: 100%;
         min-width: 0;
-        
+
         img {
           max-height: 100%;
           max-width: 100%;
         }
       }
-      
+
       &__panel {
         flex: 0 0 380px;
         width: 380px;
@@ -180,7 +180,7 @@ body.page--gallery-detail {
         scrollbar-width: thin;
         scrollbar-color: var(--clr-body-text) transparent;
       }
-      
+
       &__download {
         width: auto;
         align-self: flex-start;
