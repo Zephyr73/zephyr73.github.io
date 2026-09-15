@@ -17,9 +17,9 @@ export default function (eleventyConfig) {
 
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
   eleventyConfig.addWatchTarget('./src/assets/');
-  // Watch V2 and V3 SCSS sources
-  eleventyConfig.addWatchTarget('./src/v2/scss/');
-  eleventyConfig.addWatchTarget('./src/v3/scss/');
+  // Watch V2 and V3 CSS sources (compiled via Tailwind CLI, not Eleventy)
+  eleventyConfig.addWatchTarget('./src/v2/css/');
+  eleventyConfig.addWatchTarget('./src/v3/css/');
 
   // 3. Add Plugins
   eleventyConfig.addPlugin(syntaxHighlight);

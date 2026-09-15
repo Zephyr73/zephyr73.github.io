@@ -1,0 +1,63 @@
+/* Utility classes: glows, hidden/invisible, blink, pulse, selection, focus. */
+
+@layer components {
+  .glow-green {
+    text-shadow: 0 0 8px var(--cp-green-glow);
+  }
+  .glow-amber {
+    text-shadow: 0 0 8px var(--cp-amber-glow);
+  }
+  .glow-cyan {
+    text-shadow: 0 0 8px var(--cp-cyan-glow);
+  }
+
+  .hidden {
+    display: none !important;
+  }
+  .invisible {
+    visibility: hidden;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 4px var(--cp-green-glow);
+    }
+    50% {
+      box-shadow:
+        0 0 12px var(--cp-green-glow),
+        0 0 24px rgba(0, 255, 65, 0.1);
+    }
+  }
+  .pulse-border {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes scanline-move {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 0 100px;
+    }
+  }
+
+  ::selection {
+    background: rgba(0, 255, 65, 0.25);
+    color: var(--cp-white);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--cp-green);
+    outline-offset: 1px;
+  }
+}

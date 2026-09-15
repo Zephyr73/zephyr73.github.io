@@ -1,0 +1,35 @@
+/* V3 entry point — Tailwind CSS + cyberpunk desktop component styles.
+   Google Fonts (Share Tech Mono) loaded via <link> in index.njk. */
+
+@import 'tailwindcss';
+
+@import './_tokens.css';
+@import './_base.css';
+@import './_crt.css';
+@import './_statusbar.css';
+@import './_desktop.css';
+@import './_tty.css';
+@import './_window.css';
+@import './_apps.css';
+@import './_utility.css';
+@import './_responsive.css';
+@import './_themes.css';
+@import './_boot.css';
+
+@source './src/v3';
+
+@theme {
+  --font-mono: var(--font-mono);
+  --font-ui: var(--font-ui);
+
+  --color-cp-bg: var(--cp-bg);
+  --color-cp-fg: var(--cp-green);
+  --color-cp-panel: var(--cp-panel);
+  --color-cp-border: var(--cp-border);
+  --color-cp-amber: var(--cp-amber);
+  --color-cp-cyan: var(--cp-cyan);
+  --color-cp-red: var(--cp-red);
+  --color-cp-magenta: var(--cp-magenta);
+  --color-cp-white: var(--cp-white);
+  --color-cp-dim: var(--cp-dim);
+}

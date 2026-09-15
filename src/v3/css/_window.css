@@ -1,0 +1,246 @@
+/* Window system: floating/split windows, titlebar, buttons, resize handles, open animation. */
+
+@layer components {
+  .window {
+    display: flex;
+    flex-direction: column;
+    background: var(--cp-panel);
+    border: 1px solid var(--cp-border-2);
+    overflow: hidden;
+    min-width: 200px;
+    min-height: 150px;
+    pointer-events: auto;
+  }
+
+  .window--split {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+  }
+
+  .window--floating {
+    position: fixed;
+    z-index: var(--z-window);
+    border: 1px solid var(--cp-green-dim);
+    box-shadow:
+      0 0 0 1px var(--cp-border-2),
+      0 4px 40px rgba(0, 0, 0, 0.8),
+      0 0 20px rgba(0, 255, 65, 0.05);
+    resize: none;
+    transition:
+      transform 0.18s ease,
+      opacity 0.18s ease,
+      width 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      height 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      left 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      top 0.16s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  body.resize-active .window--floating {
+    transition: none !important;
+  }
+
+  .window--floating.window--minimized {
+    animation: none !important;
+    opacity: 0 !important;
+    transform: translateY(calc(100vh + 100px)) !important;
+    pointer-events: none !important;
+  }
+
+  .window.focused {
+    border-color: var(--cp-green);
+  }
+
+  .window--floating.focused {
+    box-shadow:
+      0 0 0 1px var(--cp-border-2),
+      0 4px 40px rgba(0, 0, 0, 0.9),
+      0 0 30px rgba(0, 255, 65, 0.1);
+  }
+
+  .window-titlebar {
+    display: flex;
+    align-items: center;
+    height: var(--titlebar-h);
+    background: var(--cp-bg-2);
+    border-bottom: 1px solid var(--cp-border-2);
+    padding: 0 8px;
+    gap: 6px;
+    flex-shrink: 0;
+    cursor: default;
+  }
+
+  .window--floating .window-titlebar {
+    cursor: move;
+  }
+
+  .window-titlebar-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: var(--cp-green);
+    display: flex;
+    align-items: center;
+  }
+
+  .window-titlebar-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .window-titlebar-title {
+    font-size: 11px;
+    color: var(--cp-amber);
+    letter-spacing: 0.08em;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .window-titlebar-path {
+    font-size: 9px;
+    color: var(--cp-dim);
+    letter-spacing: 0.05em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+  }
+
+  .window-titlebar-btns {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .window-btn {
+    min-width: 28px;
+    height: 20px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    border: 1px solid transparent;
+    color: var(--cp-muted);
+    transition: all var(--t-fast);
+    white-space: nowrap;
+  }
+
+  .window-btn:hover {
+    border-color: var(--cp-border-2);
+    background: var(--cp-bg-3);
+  }
+
+  .window-btn--popup {
+    color: var(--cp-cyan);
+  }
+  .window-btn--popup:hover {
+    color: var(--cp-cyan);
+    border-color: var(--cp-cyan);
+  }
+
+  .window-btn--popin {
+    color: var(--cp-green);
+  }
+  .window-btn--popin:hover {
+    color: var(--cp-green);
+    border-color: var(--cp-green);
+  }
+
+  .window-btn--minimize {
+    color: var(--cp-amber);
+  }
+  .window-btn--minimize:hover {
+    color: var(--cp-amber);
+    border-color: var(--cp-amber);
+  }
+
+  .window-btn--maximize {
+    color: var(--cp-cyan);
+  }
+  .window-btn--maximize:hover {
+    color: var(--cp-cyan);
+    border-color: var(--cp-cyan);
+  }
+
+  .window-btn--close {
+    color: var(--cp-red);
+  }
+  .window-btn--close:hover {
+    color: #fff;
+    background: var(--cp-red);
+    border-color: var(--cp-red);
+  }
+
+  .window-resize-e,
+  .window-resize-s,
+  .window-resize-se {
+    position: absolute;
+    z-index: 10;
+  }
+
+  .window-resize-e {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 4px;
+    cursor: e-resize;
+  }
+
+  .window-resize-s {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    cursor: s-resize;
+  }
+
+  .window-resize-se {
+    bottom: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    cursor: se-resize;
+    background: var(--cp-border);
+  }
+
+  .window-body {
+    flex: 1;
+    overflow: auto;
+    position: relative;
+  }
+
+  .window-iframe-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10000;
+    background: transparent;
+    pointer-events: auto;
+    display: block;
+  }
+
+  .window.focused .window-iframe-overlay {
+    display: none;
+    pointer-events: none;
+  }
+
+  @keyframes win-open {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .window--floating {
+    animation: win-open 120ms ease-out;
+  }
+}

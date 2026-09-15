@@ -1,0 +1,45 @@
+/* V2 entry point — Tailwind CSS + layered component styles.
+   Order: Tailwind (theme/base/components/utilities) then custom layers. */
+
+@import 'tailwindcss';
+
+/* ── Site CSS (7-1 architecture, CSS-native) ────────────────────────────── */
+@import './abstracts/_tokens.css';
+@import './base/_reset.css';
+@import './base/_fonts.css';
+@import './base/_base.css';
+@import './base/_typography.css';
+@import './base/_utilities.css';
+
+@import './components/_tables.css';
+@import './components/_nav.css';
+@import './components/_markdown.css';
+
+@import './layout/_layout.css';
+@import './themes/_themes.css';
+
+@import './pages/_home.css';
+@import './pages/_about.css';
+@import './pages/_wallpapersync.css';
+@import './pages/_gallery.css';
+@import './pages/_gallery-detail.css';
+
+@import './vendors/_syntax.css';
+
+/* ── Content scanning ───────────────────────────────────────────────────── */
+@source './src';
+
+/* ── Design tokens mapped for Tailwind utilities ──────────────────────────
+   Values forward-reference the runtime theme vars so utilities follow the
+   active V2 theme. */
+@theme {
+  --font-regular: var(--font-regular);
+  --font-heading: var(--font-bold);
+
+  --color-bg: var(--clr-body-bg);
+  --color-fg: var(--clr-body-text);
+  --color-container: var(--clr-container-bg);
+  --color-accent: var(--clr-link-visited);
+  --color-code-bg: var(--clr-code-bg);
+  --color-code-fg: var(--clr-code-text);
+}

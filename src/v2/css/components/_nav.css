@@ -1,0 +1,260 @@
+/* Component: Navigation.
+   BEM blocks: .site-nav, .theme-picker, .site-nav__theme-toggle.
+   Mobile drawer styles are co-located here in their media query. */
+
+@layer components {
+  /* ── Off-screen drawer (hidden on desktop) ───────────────────────────── */
+  .site-nav__drawer {
+    display: none;
+  }
+
+  /* ── Desktop nav ─────────────────────────────────────────────────────── */
+  .site-nav {
+    width: 100%;
+    max-width: 800px;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 36px;
+    transition: max-width 0.5s ease;
+    will-change: max-width;
+  }
+
+  .site-nav__brand {
+    white-space: nowrap;
+    font-family: var(--font-regular);
+    font-weight: bold;
+  }
+
+  .site-nav__brand p {
+    margin: 0;
+    padding: 0 15px;
+  }
+
+  .site-nav__brand a {
+    font-family: var(--font-bold);
+  }
+
+  .site-nav__brand a,
+  .site-nav__actions a,
+  .theme-picker__menu a {
+    color: var(--clr-navbar-text);
+    text-decoration: none;
+    font-family: var(--font-regular);
+  }
+
+  .site-nav__actions {
+    padding: 0 15px;
+  }
+
+  .site-nav__actions ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-nav__actions li {
+    margin: 0 5px;
+  }
+
+  .site-nav__actions a:hover {
+    text-decoration: underline;
+  }
+
+  .site-nav__links {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .site-nav__links ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-nav__links li {
+    margin: 0 10px;
+  }
+
+  /* Hamburger trigger button */
+  .site-nav__hamburger {
+    display: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 3;
+  }
+
+  /* Hamburger bars (BEM element of site-nav__hamburger) */
+  .site-nav__hamburger-bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    transition: all 0.3s ease-in-out;
+    background-color: var(--clr-hamburger-bg);
+  }
+
+  /* ── Theme-picker dropdown (desktop) ─────────────────────────────────── */
+  .theme-picker__menu {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: var(--clr-body-bg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+    min-width: 160px;
+  }
+
+  .theme-picker__menu a {
+    outline: 1px solid var(--clr-navbar-text);
+    padding: 12px 16px;
+    display: block;
+  }
+
+  .theme-picker__menu a:hover {
+    background-color: var(--clr-container-bg);
+    color: var(--clr-body-text);
+  }
+
+  /* ── Theme toggle buttons (desktop + drawer) ──────────────────────────── */
+  /* BEM: .site-nav__theme-toggle  (was #theme-switch)
+          .site-nav__theme-toggle--drawer  (was #theme-switch-ham) */
+  .site-nav__theme-toggle,
+  .site-nav__theme-toggle--drawer {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .site-nav__theme-toggle svg,
+  .site-nav__theme-toggle--drawer svg {
+    fill: var(--clr-navbar-text);
+  }
+
+  /* ── Fieldset reset ──────────────────────────────────────────────────── */
+  .theme-selector > fieldset {
+    border: 0;
+  }
+
+  /* ── Mobile ≤ 768px: drawer + hamburger ──────────────────────────────── */
+  @media (max-width: 768px) {
+    .site-nav__hamburger {
+      display: block;
+    }
+
+    .site-nav__links {
+      display: none;
+    }
+
+    /* Hamburger → X animation */
+    .site-nav__hamburger.active .site-nav__hamburger-bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .site-nav__hamburger.active .site-nav__hamburger-bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .site-nav__hamburger.active .site-nav__hamburger-bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Nav dimensions */
+    .site-nav {
+      height: 100px;
+      top: 0;
+    }
+
+    .site-nav__brand {
+      padding-left: 5px;
+    }
+
+    .site-nav__actions {
+      padding-right: 20px;
+    }
+
+    /* Drawer item states */
+    .site-nav__drawer-item {
+      opacity: 1;
+    }
+
+    /* Drawer: full-screen off-canvas panel */
+    .site-nav__drawer {
+      z-index: 2;
+      text-decoration: none;
+      background-color: var(--clr-body-bg);
+      height: 100vh;
+      width: 100%;
+      max-width: 90%;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      text-align: center;
+      transition: 0.3s ease;
+    }
+
+    .site-nav__drawer.active {
+      right: 0;
+      margin: 0;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .site-nav__drawer > ul {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    .site-nav__drawer > .site-nav__theme-toggle--drawer {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .site-nav__drawer ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .site-nav__drawer a {
+      color: var(--clr-off-screen-menu-txt);
+    }
+
+    .site-nav__drawer li {
+      margin: 35px 0;
+    }
+
+    /* Theme options panel inside drawer */
+    .theme-picker__drawer-options {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      max-height: 50vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    li.theme-picker__drawer-options {
+      margin: 0;
+    }
+  }
+}

@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "npx @11ty/eleventy",
-    "build:css": "sass src/v2/scss/style.scss:src/assets/css/style.css src/v3/scss/desktop.scss:src/assets/css/desktop.css --no-source-map",
-    "watch:css": "sass --watch src/v2/scss/style.scss:src/assets/css/style.css src/v3/scss/desktop.scss:src/assets/css/desktop.css",
+    "build:css": "tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css && tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css",
+    "watch:css": "concurrently \"tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css --watch\" \"tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css --watch\"",
     "dev": "concurrently \"npm:start\" \"npm:watch:css\"",
-    "format": "prettier --write \"**/*.{html,js,css,scss,md}\"",
+    "format": "prettier --write \"**/*.{html,js,css,md}\"",
     "lint:js": "eslint \"**/*.js\"",
     "lint": "npm run lint:js",
     "start": "npx @11ty/eleventy --serve"
@@ -21,11 +21,12 @@
     "@11ty/eleventy-img": "^6.0.4",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@eslint/js": "^9.0.0",
+    "@tailwindcss/cli": "^4.3.3",
     "concurrently": "^9.0.0",
     "eslint": "^9.0.0",
     "exif-reader": "^2.0.3",
     "globals": "^17.3.0",
     "prettier": "^3.8.1",
-    "sass": "^1.97.3"
+    "tailwindcss": "^4.3.3"
   }
 }

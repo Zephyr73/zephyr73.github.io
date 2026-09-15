@@ -1,0 +1,216 @@
+/* Responsive & mobile optimizations. */
+
+@layer components {
+  @media (max-width: 768px) {
+    .tty-nav-pane {
+      display: flex !important;
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      bottom: var(--status-bar-h);
+      width: 280px !important;
+      z-index: 1500 !important;
+      transform: translateX(-100%);
+      transition: transform var(--t-med) ease;
+      background: var(--cp-bg-2) !important;
+      border-right: 1px solid var(--cp-border) !important;
+    }
+
+    #mode-tty.nav-pane-open .tty-nav-pane {
+      transform: translateX(0) !important;
+    }
+
+    .console-nav-toggle {
+      display: inline-block !important;
+      background: var(--cp-bg-3);
+      border: 1px solid var(--cp-border-2);
+      color: var(--cp-green);
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      margin-left: 10px;
+      border-radius: var(--radius);
+      text-shadow: 0 0 4px var(--cp-green-glow);
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+      transition: all var(--t-fast) ease-in-out;
+    }
+
+    .console-nav-toggle:hover,
+    .console-nav-toggle:focus-visible {
+      border-color: var(--cp-green);
+      background: rgba(0, 255, 65, 0.1);
+      box-shadow: 0 0 8px var(--cp-green-glow);
+    }
+
+    .console-nav-toggle:active {
+      background: var(--cp-green-dim);
+      color: var(--cp-bg);
+    }
+
+    .console-header-status {
+      display: none !important;
+    }
+
+    :root {
+      --nav-pane-w: 0px;
+    }
+
+    .window--floating {
+      position: fixed !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 100% !important;
+      height: calc(100% - var(--status-bar-h)) !important;
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      border-bottom: 1px solid var(--cp-border-2) !important;
+    }
+    .window-resize-e,
+    .window-resize-s,
+    .window-resize-se,
+    .window-btn--minimize,
+    .window-btn--maximize,
+    .window-btn--popup,
+    .window-btn--popin {
+      display: none !important;
+    }
+    .window-titlebar {
+      height: 40px !important;
+      padding: 0 10px !important;
+    }
+    .window-btn--close {
+      min-width: 36px !important;
+      height: 24px !important;
+      font-size: 11px !important;
+      border: 1px solid var(--cp-border-2) !important;
+    }
+    .tty-split-pane.visible {
+      position: fixed !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 100% !important;
+      height: calc(100% - var(--status-bar-h)) !important;
+      z-index: 150 !important;
+      border: none !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .desktop-notification {
+      display: none !important;
+    }
+    .desktop-icons {
+      padding: 16px 10px !important;
+      width: 100px !important;
+    }
+    .desktop-icon {
+      width: 80px !important;
+      padding: 6px 4px !important;
+    }
+    .desktop-icon__img {
+      width: 36px !important;
+      height: 36px !important;
+    }
+    .desktop-icon__img svg {
+      width: 30px !important;
+      height: 30px !important;
+    }
+    .statusbar-center {
+      display: none !important;
+    }
+    .statusbar-tray .tray-item:not(.style-btn) {
+      display: none !important;
+    }
+    .tray-clock {
+      min-width: 70px !important;
+      padding: 0 8px !important;
+    }
+    .tray-clock .clock-date {
+      display: none !important;
+    }
+    .statusbar-tab {
+      padding: 0 8px !important;
+    }
+    .statusbar-app-tab {
+      padding: 0 8px !important;
+      max-width: 120px !important;
+    }
+    .statusbar-left-scroll {
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      min-width: 0 !important;
+    }
+    .statusbar-left-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .statusbar-active-apps {
+      flex: none !important;
+    }
+
+    .console-banner-art {
+      font-size: 1.3vw !important;
+      line-height: 1.1 !important;
+      margin-bottom: 6px;
+    }
+
+    .console-banner-text {
+      font-size: 15px !important;
+      line-height: 1.6 !important;
+    }
+
+    .neofetch-output {
+      font-size: 2.6vw !important;
+      gap: 10px !important;
+    }
+
+    .neofetch-output span[style*='white-space:pre'],
+    .neofetch-output pre {
+      font-size: 2.6vw !important;
+    }
+
+    .neofetch-output div {
+      font-size: 2.8vw !important;
+    }
+
+    .console-output {
+      overflow-x: hidden !important;
+      padding: 8px 10px !important;
+      font-size: 15px !important;
+    }
+
+    .console-input-row {
+      padding: 4px 10px !important;
+      gap: 6px !important;
+    }
+
+    .console-prompt-label {
+      font-size: 15px !important;
+    }
+
+    .console-input {
+      font-size: 15px !important;
+    }
+
+    .gallery-viewer-header {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 6px !important;
+    }
+    .gallery-header-actions {
+      justify-content: space-between !important;
+      flex-wrap: wrap !important;
+      gap: 4px !important;
+    }
+    .gallery-action-btn {
+      flex: 1 !important;
+      justify-content: center !important;
+      padding: 4px 6px !important;
+      font-size: 9px !important;
+    }
+  }
+}

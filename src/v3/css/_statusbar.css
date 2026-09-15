@@ -1,0 +1,288 @@
+/* Status bar (bottom): tabs, active apps, clock, tray, style menu. */
+
+@layer components {
+  .status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--status-bar-h);
+    background: var(--cp-panel);
+    border-top: 1px solid var(--cp-border-2);
+    display: flex;
+    align-items: center;
+    z-index: var(--z-statusbar);
+    gap: 0;
+  }
+
+  .statusbar-left-scroll {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .statusbar-tabs {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    border-right: 1px solid var(--cp-border-2);
+    flex-shrink: 0;
+  }
+
+  .statusbar-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--cp-muted);
+    border-right: 1px solid var(--cp-border);
+    cursor: pointer;
+    transition:
+      background var(--t-fast),
+      color var(--t-fast);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .statusbar-tab:hover {
+    background: var(--cp-bg-2);
+    color: var(--cp-green);
+  }
+
+  .statusbar-tab.active {
+    background: var(--cp-bg-2);
+    color: var(--cp-green);
+    border-bottom: 2px solid var(--cp-green);
+  }
+
+  .statusbar-tab.active-amber {
+    color: var(--cp-amber);
+    border-bottom: 2px solid var(--cp-amber);
+  }
+
+  .statusbar-tab svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .statusbar-active-apps {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .statusbar-app-tab {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 12px;
+    font-size: 11px;
+    color: var(--cp-amber);
+    border-right: 1px solid var(--cp-border);
+    cursor: pointer;
+    transition: background var(--t-fast);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .statusbar-app-tab:hover {
+    background: var(--cp-bg-2);
+  }
+  .statusbar-app-tab.focused {
+    background: var(--cp-bg-3);
+  }
+
+  .statusbar-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--cp-dim);
+    letter-spacing: 0.06em;
+  }
+
+  .statusbar-tray {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+    border-left: 1px solid var(--cp-border-2);
+    position: relative;
+  }
+
+  .tray-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 10px;
+    font-size: 10px;
+    color: var(--cp-muted);
+    border-left: 1px solid var(--cp-border);
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background var(--t-fast),
+      color var(--t-fast);
+  }
+
+  .tray-item:hover {
+    background: var(--cp-bg-2);
+    color: var(--cp-green);
+  }
+
+  .tray-item .tray-label {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--cp-dim);
+  }
+
+  .tray-item .tray-value {
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .tray-item.style-btn {
+    color: var(--cp-amber);
+    border-left: 1px solid var(--cp-border);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .tray-item.style-btn:hover {
+    color: var(--cp-green);
+    background: var(--cp-bg-2);
+  }
+
+  .style-menu {
+    position: absolute;
+    bottom: calc(var(--status-bar-h) + 6px);
+    left: 0;
+    width: 240px;
+    background: var(--cp-panel);
+    border: 1px solid var(--cp-border-2);
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 -4px 30px rgba(0, 0, 0, 0.85),
+      0 0 15px var(--cp-green-glow);
+    z-index: var(--z-modal);
+    pointer-events: auto;
+  }
+
+  @media (max-width: 768px) {
+    .style-menu {
+      left: auto;
+      right: 0;
+    }
+  }
+
+  .style-menu.hidden {
+    display: none;
+  }
+
+  .style-menu__header {
+    background: var(--cp-bg-2);
+    border-bottom: 1px solid var(--cp-border-2);
+    padding: 6px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--cp-amber);
+    letter-spacing: 0.08em;
+  }
+
+  .style-menu__section {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--cp-border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .style-menu__section:last-child {
+    border-bottom: none;
+  }
+
+  .style-menu__label {
+    font-size: 9px;
+    color: var(--cp-dim);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .style-menu__select {
+    width: 100%;
+    background: var(--cp-bg);
+    color: var(--cp-green);
+    border: 1px solid var(--cp-border-2);
+    padding: 4px 8px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    outline: none;
+    cursor: pointer;
+  }
+  .style-menu__select:focus {
+    border-color: var(--cp-green);
+  }
+
+  .style-menu__btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-align: left;
+    font-size: 11px;
+    color: var(--cp-white);
+    padding: 4px 0;
+    cursor: pointer;
+  }
+  .style-menu__btn:hover {
+    color: var(--cp-green);
+  }
+
+  .style-menu__status {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--cp-amber);
+    background: var(--cp-bg);
+    border: 1px solid var(--cp-border-2);
+    padding: 1px 6px;
+    min-width: 60px;
+    text-align: center;
+  }
+  .style-menu__btn:hover .style-menu__status {
+    border-color: var(--cp-green);
+    color: var(--cp-green);
+  }
+
+  .tray-clock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 12px;
+    border-left: 1px solid var(--cp-border-2);
+    min-width: 90px;
+    gap: 1px;
+  }
+
+  .tray-clock .clock-time {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cp-green);
+    letter-spacing: 0.04em;
+  }
+
+  .tray-clock .clock-date {
+    font-size: 9px;
+    color: var(--cp-dim);
+    letter-spacing: 0.05em;
+  }
+}

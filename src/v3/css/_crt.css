@@ -1,0 +1,86 @@
+/* CRT effects: scanlines, vignette, phosphor bloom, flicker animation. */
+
+@layer components {
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.12) 2px,
+      rgba(0, 0, 0, 0.12) 4px
+    );
+    opacity: 0;
+    transition: opacity var(--t-med);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at center, var(--cp-crt-glow) 0%, transparent 50%),
+      radial-gradient(circle at center, transparent 70%, rgba(0, 0, 0, 0.35) 100%);
+    opacity: 0;
+    transition: opacity var(--t-med);
+  }
+
+  body.crt-active::before {
+    opacity: 1;
+  }
+  body.crt-active::after {
+    opacity: 1;
+  }
+
+  body.crt-active {
+    animation: crt-flicker 8s infinite;
+  }
+
+  body.crt-active * {
+    text-shadow:
+      0 0 3px var(--cp-green-glow),
+      0 0 8px var(--cp-green-glow);
+  }
+
+  body.crt-active .window-titlebar,
+  body.crt-active .status-bar {
+    text-shadow: 0 0 5px var(--cp-green-glow);
+  }
+
+  body.crt-active .window,
+  body.crt-active .status-bar,
+  body.crt-active .console-header,
+  body.crt-active .tty-nav-pane,
+  body.crt-active .tty-split-pane {
+    box-shadow:
+      0 0 8px var(--cp-green-glow),
+      inset 0 0 8px var(--cp-green-glow);
+  }
+
+  @keyframes crt-flicker {
+    0% {
+      filter: brightness(1);
+    }
+    92% {
+      filter: brightness(1);
+    }
+    93% {
+      filter: brightness(0.96);
+    }
+    94% {
+      filter: brightness(1.02);
+    }
+    95% {
+      filter: brightness(0.97);
+    }
+    100% {
+      filter: brightness(1);
+    }
+  }
+}

@@ -1,0 +1,29 @@
+/* Abstract: Design tokens — CSS custom properties (runtime theming).
+   Theme overrides (.light, .midnight, .catppuccin-dark, ...) live in themes/_themes.css */
+
+@layer base {
+  :root {
+    --clr-body-bg: #0f0f0f;
+    --clr-body-text: #cacaca;
+    --clr-navbar-bg: #0f0f0f;
+    --clr-navbar-text: #cacaca;
+    --clr-container-bg: #1b1b1b;
+    --clr-hamburger-bg: #cacaca;
+    --clr-off-screen-menu-txt: #cacaca;
+    --clr-link-visited: #b71c1c;
+
+    --font-regular: JetBrains Mono;
+    --font-bold: JetBrains Mono Bold;
+
+    --clr-code-bg: #161616;
+    --clr-code-text: #cacaca;
+    --clr-code-comment: #767676;
+    --clr-code-keyword: #d57bdd;
+    --clr-code-string: #98c379;
+    --clr-code-func: #61afef;
+    --clr-code-number: #e5c07b;
+
+    --clr-inline-code-bg: #262626;
+    --clr-inline-code-text: #e0e0e0;
+  }
+}

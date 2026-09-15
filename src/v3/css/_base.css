@@ -1,0 +1,73 @@
+/* Base: reset, html/body, scrollbar, form elements, links, pointer-events fix. */
+
+@layer components {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--cp-bg);
+    color: var(--cp-green);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    cursor: default;
+    user-select: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--cp-bg-1);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--cp-border-2);
+    border: none;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--cp-green-dim);
+  }
+
+  button {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    color: inherit;
+  }
+
+  input,
+  textarea {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    outline: none;
+    border: none;
+    background: transparent;
+    color: var(--cp-green);
+  }
+
+  a {
+    color: var(--cp-cyan);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  body.resize-active iframe {
+    pointer-events: none !important;
+  }
+}

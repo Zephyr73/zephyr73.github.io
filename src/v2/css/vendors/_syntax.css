@@ -1,0 +1,75 @@
+/* Vendor: Syntax Highlighting Styles (Prism.js / 11ty-plugin-syntaxhighlight) */
+
+@layer components {
+  pre[class*='language-'],
+  code[class*='language-'] {
+    background-color: var(--clr-code-bg);
+    color: var(--clr-code-text);
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    line-height: 1.5;
+    tab-size: 4;
+    hyphens: none;
+    border-radius: 0px;
+  }
+
+  pre[class*='language-'] {
+    padding: 1em;
+    overflow: auto;
+  }
+
+  /* Token Rendering */
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: var(--clr-code-comment);
+    font-style: italic;
+  }
+
+  .token.keyword,
+  .token.atrule,
+  .token.selector,
+  .token.important {
+    color: var(--clr-code-keyword);
+    font-weight: bold;
+  }
+
+  .token.string,
+  .token.attr-value,
+  .token.char {
+    color: var(--clr-code-string);
+  }
+
+  .token.function,
+  .token.class-name {
+    color: var(--clr-code-func);
+  }
+
+  .token.number,
+  .token.boolean,
+  .token.constant,
+  .token.symbol {
+    color: var(--clr-code-number);
+  }
+
+  .token.operator,
+  .token.punctuation {
+    color: var(--clr-code-text);
+    opacity: 0.7;
+  }
+
+  .token.tag,
+  .token.tag .token.punctuation,
+  .token.doctype {
+    color: var(--clr-code-func);
+  }
+
+  .token.attr-name {
+    color: var(--clr-code-keyword);
+  }
+}

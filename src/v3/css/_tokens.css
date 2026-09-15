@@ -1,0 +1,60 @@
+/* Tokens: CSS custom properties (design system). */
+
+@layer components {
+  :root {
+    /* Core palette */
+    --cp-bg: #050a05;
+    --cp-bg-1: #0a0f0a;
+    --cp-bg-2: #0f1a0f;
+    --cp-bg-3: #162416;
+    --cp-panel: #0c1a0c;
+    --cp-panel-2: #111f11;
+    --cp-border: #1a3a1a;
+    --cp-border-2: #234823;
+
+    /* Accent colours */
+    --cp-green: #00ff41;
+    --cp-green-dim: #00b830;
+    --cp-green-glow: rgba(0, 255, 65, 0.25);
+    --cp-crt-glow: rgba(0, 255, 65, 0.08);
+    --cp-amber: #ffb800;
+    --cp-amber-glow: rgba(255, 184, 0, 0.2);
+    --cp-cyan: #00e5ff;
+    --cp-cyan-glow: rgba(0, 229, 255, 0.2);
+    --cp-magenta: #ff00ff;
+    --cp-red: #ff0033;
+    --cp-red-glow: rgba(255, 0, 51, 0.2);
+    --cp-white: #c8ffc8;
+    --cp-dim: #3a5a3a;
+    --cp-muted: #4a7a4a;
+
+    /* Icon colors */
+    --ic-dir: var(--cp-cyan);
+    --ic-md: var(--cp-cyan);
+    --ic-html: var(--cp-amber);
+    --ic-img: var(--cp-magenta);
+    --ic-pdf: var(--cp-red);
+    --ic-txt: var(--cp-white);
+    --ic-other: var(--cp-muted);
+
+    /* Typography */
+    --font-mono: 'JetBrains Mono', 'Share Tech Mono', 'Courier New', monospace;
+    --font-ui: 'JetBrains Mono', 'Share Tech Mono', monospace;
+
+    /* Sizing */
+    --status-bar-h: 42px;
+    --nav-pane-w: 280px;
+    --titlebar-h: 38px;
+    --radius: 0px;
+
+    /* Window z-index base */
+    --z-desktop: 10;
+    --z-window: 100;
+    --z-modal: 900;
+    --z-statusbar: 1000;
+
+    /* Transitions */
+    --t-fast: 80ms;
+    --t-med: 180ms;
+  }
+}
