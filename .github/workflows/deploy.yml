@@ -46,13 +46,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Auto-format and lint fix
+      - name: Code style & linting
         run: |
           npm run format || true
           npm run lint:fix || true
-
-      - name: Lint JavaScript (report only)
-        run: npm run lint:js || true
 
       - name: Build CSS
         run: npm run build:css

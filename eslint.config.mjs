@@ -18,7 +18,7 @@ export default [
         },
         rules: {
             'no-unused-vars': 'warn',
-            'no-console': 'warn',
+            'no-console': ['warn', { allow: ['warn', 'error'] }],
             'eqeqeq': 'error',
             'curly': ['error', 'multi-line'],
             'no-undef': 'error',
