@@ -102,6 +102,42 @@
     color: #34d399;
   }
 
+  .resume-contact__copy {
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  .resume-contact__copy .mail-icon {
+    flex-shrink: 0;
+    color: var(--clr-accent);
+  }
+
+  .resume-contact__copy .btn-text {
+    font-size: 0.76rem;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .resume-contact__copy .copy-icon {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--clr-text-muted);
+    transition:
+      color 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .resume-contact__copy:hover .copy-icon {
+    color: var(--clr-accent);
+    transform: scale(1.1);
+  }
+
+  .resume-btn.copied .copy-icon {
+    color: #34d399;
+  }
+
   .resume-btn--print {
     color: var(--clr-text-muted);
   }

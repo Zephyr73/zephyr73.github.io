@@ -121,7 +121,7 @@
     .statusbar-center {
       display: none !important;
     }
-    .statusbar-tray .tray-item:not(.style-btn) {
+    .statusbar-tray .tray-item:not(.style-btn):not(.tray-v2-btn) {
       display: none !important;
     }
     .tray-clock {

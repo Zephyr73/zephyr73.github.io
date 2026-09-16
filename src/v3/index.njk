@@ -1,6 +1,6 @@
 ---
 layout: false
-permalink: /
+permalink: /v3/
 eleventyExcludeFromCollections: true
 ---
 <!doctype html>
@@ -45,7 +45,7 @@ eleventyExcludeFromCollections: true
   <script>
     (function() {
       if (window.top !== window.self) {
-        window.location.replace('/v2/');
+        window.location.replace('/');
         return;
       }
       if (localStorage.getItem('v3-crt') === '1') {
@@ -252,6 +252,19 @@ eleventyExcludeFromCollections: true
 
   <!-- System tray -->
   <div class="statusbar-tray">
+
+    <a
+      href="/"
+      class="tray-item tray-v2-btn"
+      id="btn-switch-v2"
+      title="Switch back to V2 Portfolio (Classic Site)"
+      aria-label="Switch to V2 Portfolio"
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      <span>V2 SITE</span>
+    </a>
 
     <div class="tray-item style-btn" id="style-toggle" role="button" tabindex="0" aria-label="Open style options menu">
       ⬡ STYLE

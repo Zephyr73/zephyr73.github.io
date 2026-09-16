@@ -2,7 +2,7 @@
  * browser.js — Browser App (Firefox-mimicking)
  */
 
-export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio') {
+export function createBrowserApp(initialPath = '/', initialTitle = 'Portfolio') {
   const container = document.createElement('div');
   container.className = 'app-browser';
 
@@ -78,7 +78,7 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
   menubar.className = 'browser-menubar';
 
   const menuItems = [
-    { label: 'Home', path: '/v2/' },
+    { label: 'Home', path: '/' },
     { label: 'Gallery', path: '/gallery' },
     { label: 'Projects', path: '/projects' },
     { label: 'Blog', path: '/blog' },
@@ -300,9 +300,9 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
   // Event Listeners
   newTabBtn.addEventListener('click', () => {
     tabIdCounter++;
-    const newTab = { id: tabIdCounter, title: 'New Tab', path: '/v2/' };
+    const newTab = { id: tabIdCounter, title: 'New Tab', path: '/' };
     tabs.push(newTab);
-    createTabIframe(tabIdCounter, '/v2/');
+    createTabIframe(tabIdCounter, '/');
     switchTab(tabIdCounter);
   });
 
@@ -336,7 +336,7 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
   });
 
   homeBtn.addEventListener('click', () => {
-    navigateActiveTab('/v2/');
+    navigateActiveTab('/');
   });
 
   urlInput.addEventListener('keydown', (e) => {

@@ -2,14 +2,14 @@
 
 ## Project
 
-Eleventy 3.x static site (ESM). Dual-version personal portfolio: **V2** (traditional NJK pages at `/v2/`) and **V3** (interactive virtual desktop SPA at `/`).
+Eleventy 3.x static site (ESM). Dual-version personal portfolio: **V2** (traditional NJK pages at `/`) and **V3** (interactive virtual desktop SPA at `/v3/`).
 
 ## Structure
 
 - `src/` — source root (Eleventy `input`)
-- `src/v2/` — V2 pages, layouts in `src/v2/_includes/`, default layout via `v2.11tydata.json`
+- `src/v2/` — V2 pages, layouts in `src/v2/_includes/`, default layout via `v2.11tydata.json` (homepage permalinks to `/`)
 - `src/v2/css/` — V2 Tailwind entrypoint (`style.css`) + layered CSS partials (7-1 architecture)
-- `src/v3/` — V3 entrypoint (`index.njk`, `layout: false`, permalinks to `/`)
+- `src/v3/` — V3 entrypoint (`index.njk`, `layout: false`, permalinks to `/v3/`)
 - `src/v3/css/` — V3 Tailwind entrypoint (`desktop.css`) + cyberpunk desktop partials
 - `src/_data/` — Eleventy global data (`filesystem.js` generates virtual FS tree for V3)
 - `src/assets/` — static assets (JS, CSS, images, fonts) copied through via passthrough

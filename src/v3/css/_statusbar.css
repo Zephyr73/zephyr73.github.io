@@ -156,6 +156,30 @@
     color: var(--cp-green);
   }
 
+  .tray-v2-btn {
+    color: var(--cp-amber) !important;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-family: var(--font-mono);
+    text-decoration: none;
+    transition: all var(--t-fast);
+  }
+
+  .tray-v2-btn:hover {
+    background: var(--cp-bg-3) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 0 10px rgba(255, 176, 0, 0.25);
+  }
+
+  .tray-v2-btn svg {
+    color: var(--cp-amber);
+    transition: transform var(--t-fast);
+  }
+
+  .tray-v2-btn:hover svg {
+    transform: translateX(-2px);
+  }
+
   .tray-item .tray-label {
     font-size: 9px;
     letter-spacing: 0.06em;

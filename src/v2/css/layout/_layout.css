@@ -67,7 +67,8 @@
     gap: 1.25rem;
   }
 
-  body.page--gallery .site-footer {
+  body.page--gallery .site-footer,
+  body.page--gallery-detail .site-footer {
     max-width: 1360px;
   }
 

@@ -1,7 +1,7 @@
 <nav class="site-nav" aria-label="Main navigation">
   <div class="site-nav__inner">
     <div class="site-nav__brand">
-      <a href="/v2/">
+      <a href="/">
         <span class="site-nav__brand-name">ZEPHYR</span>
         <span class="site-nav__brand-badge">V2</span>
       </a>
@@ -10,7 +10,7 @@
     <div class="site-nav__actions">
       <div class="site-nav__links">
         <ul>
-          <li><a href="/v2/" {% if page.url == '/v2/' %}aria-current="page"{% endif %}>Home</a></li>
+          <li><a href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a></li>
           <li><a href="/projects/" {% if '/projects' in page.url %}aria-current="page"{% endif %}>Projects</a></li>
           <li><a href="/gallery/" {% if '/gallery' in page.url %}aria-current="page"{% endif %}>Gallery</a></li>
           <li><a href="/blog/" {% if '/blog' in page.url %}aria-current="page"{% endif %}>Blog</a></li>
@@ -75,6 +75,20 @@
           </div>
         </div>
       </div>
+
+      <a
+        href="/v3/"
+        class="site-nav__v3-btn"
+        title="Launch Interactive Virtual Desktop (V3)"
+        aria-label="Launch V3 Desktop"
+      >
+        <svg class="v3-btn__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+          <line x1="8" y1="21" x2="16" y2="21"/>
+          <line x1="12" y1="17" x2="12" y2="21"/>
+        </svg>
+        <span>V3 Desktop</span>
+      </a>
 
       <button
         class="site-nav__mode-toggle"

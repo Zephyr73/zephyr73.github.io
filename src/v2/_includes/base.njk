@@ -54,6 +54,9 @@
         if (accent) {
           classes.push(accent);
         }
+        if (isEmbedded) {
+          classes.push('is-embedded');
+        }
         document.documentElement.className = classes.join(' ');
       })();
     </script>

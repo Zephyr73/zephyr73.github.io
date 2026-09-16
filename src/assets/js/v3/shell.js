@@ -301,9 +301,9 @@ export function openApp(appNameOrNode, pathArg, titleArg) {
     // Named app with no file (e.g. 'browser', 'fileExplorer')
     switch (appNameOrNode) {
       case 'browser':
-        appFactory = () => createBrowserApp('/v2/', 'Portfolio');
+        appFactory = () => createBrowserApp('/', 'Portfolio');
         title = 'Portfolio Browser';
-        filePath = '/v2/';
+        filePath = '/';
         break;
       case 'fileExplorer':
         appFactory = () => createFileExpApp('/', 'File Explorer');

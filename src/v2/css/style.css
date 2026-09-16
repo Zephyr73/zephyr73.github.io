@@ -10,6 +10,7 @@
 @import './base/_base.css';
 @import './base/_typography.css';
 @import './base/_utilities.css';
+@import './base/_transitions.css';
 
 @import './components/_tables.css';
 @import './components/_nav.css';

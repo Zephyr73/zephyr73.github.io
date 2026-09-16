@@ -136,11 +136,14 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
     localStorage.setItem('v2-accent', currentAccent);
   }
 
-  // Preserve unrelated classes like 'no-scroll'
+  // Preserve unrelated classes like 'no-scroll' and 'is-embedded'
   const isNoScroll = document.documentElement.classList.contains('no-scroll');
   document.documentElement.className = '';
   if (isNoScroll) {
     document.documentElement.classList.add('no-scroll');
+  }
+  if (isEmbedded) {
+    document.documentElement.classList.add('is-embedded');
   }
   if (currentMode === 'light') {
     document.documentElement.classList.add('light');
@@ -166,11 +169,19 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
 }
 window.applyTheme = applyTheme;
 
-// Show V3 desktop sync option when embedded
+// Show V3 desktop sync option and hide switch-to-v3 buttons when embedded
 if (window.self !== window.top) {
+  document.documentElement.classList.add('is-embedded');
   document.querySelectorAll('.v3-theme-sync-opt').forEach((el) => {
     el.style.display = el.tagName === 'BUTTON' ? 'inline-flex' : 'flex';
   });
+  document
+    .querySelectorAll(
+      '.site-nav__v3-btn, .site-nav__drawer-v3, .drawer-v3-btn, .btn--v3-launch, [data-v3-switch]',
+    )
+    .forEach((el) => {
+      el.style.display = 'none';
+    });
 }
 
 // Initialize theme UI active states
@@ -606,22 +617,40 @@ function copyToClipboard(text) {
 document.querySelectorAll('.resume-contact__copy[data-copy]').forEach((btn) => {
   btn.addEventListener('click', () => {
     const text = btn.dataset.copy;
-    const original = btn.textContent.trim();
+    const textSpan = btn.querySelector('.btn-text');
+    const originalText = textSpan ? textSpan.textContent : btn.textContent.trim();
     copyToClipboard(text)
       .then(() => {
-        btn.textContent = 'Copied!';
+        if (textSpan) {
+          textSpan.textContent = 'Copied!';
+        } else {
+          btn.textContent = 'Copied!';
+        }
         btn.classList.add('copied');
         clearTimeout(btn._revertTimer);
         btn._revertTimer = setTimeout(() => {
-          btn.textContent = original;
+          if (textSpan) {
+            textSpan.textContent = originalText;
+          } else {
+            btn.textContent = originalText;
+          }
           btn.classList.remove('copied');
         }, 2000);
       })
       .catch(() => {
-        btn.textContent = 'Failed!';
+        if (textSpan) {
+          textSpan.textContent = 'Failed!';
+        } else {
+          btn.textContent = 'Failed!';
+        }
         clearTimeout(btn._revertTimer);
         btn._revertTimer = setTimeout(() => {
-          btn.textContent = original;
+          if (textSpan) {
+            textSpan.textContent = originalText;
+          } else {
+            btn.textContent = originalText;
+          }
+          btn.classList.remove('copied');
         }, 2000);
       });
   });
