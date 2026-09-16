@@ -57,14 +57,14 @@ Explorer "Send to" ──► main.py ──► requests.post() ──► PixelDr
                                    clean exit
 ```
 
-| Component | Role |
-|-----------|------|
-| `sys.argv[1]` | Path passed by Windows Send-to menu |
-| `shutil.make_archive` | Auto-zips folders in-place before upload |
-| `requests.post` | HTTP upload with Basic Auth and custom User-Agent |
-| `pyperclip` | Copies the returned share URL to the clipboard |
-| `ctypes.windll` | Native Windows MessageBox with icon (success/error) |
-| Cleanup pass | Deletes the generated `.zip` after upload completes |
+| Component             | Role                                                |
+| --------------------- | --------------------------------------------------- |
+| `sys.argv[1]`         | Path passed by Windows Send-to menu                 |
+| `shutil.make_archive` | Auto-zips folders in-place before upload            |
+| `requests.post`       | HTTP upload with Basic Auth and custom User-Agent   |
+| `pyperclip`           | Copies the returned share URL to the clipboard      |
+| `ctypes.windll`       | Native Windows MessageBox with icon (success/error) |
+| Cleanup pass          | Deletes the generated `.zip` after upload completes |
 
 ---
 
