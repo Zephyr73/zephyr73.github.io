@@ -806,11 +806,27 @@ const prefetchCache = new Set();
 const galleryImageCache = new Set();
 
 function prefetchGalleryImages() {
+  if (
+    navigator.connection &&
+    (navigator.connection.saveData ||
+      navigator.connection.effectiveType === 'slow-2g' ||
+      navigator.connection.effectiveType === '2g' ||
+      navigator.connection.effectiveType === '3g')
+  ) {
+    return;
+  }
+  const isMobile =
+    window.matchMedia('(max-width: 768px)').matches ||
+    window.matchMedia('(pointer: coarse)').matches;
+  if (isMobile) {
+    return; // Preserve mobile cellular bandwidth
+  }
   const urls = window.__GALLERY_PRELOAD__;
   if (!Array.isArray(urls) || urls.length === 0) {
     return;
   }
-  for (const imageUrl of urls) {
+  const limit = 6;
+  for (const imageUrl of urls.slice(0, limit)) {
     if (galleryImageCache.has(imageUrl)) {
       continue;
     }
@@ -862,8 +878,18 @@ function prefetchHref(href) {
 
 function initLinkPrefetch() {
   document.querySelectorAll('a[href]').forEach((link) => {
-    // pointerover is hit before click settles; focus covers keyboard users
-    link.addEventListener('pointerover', () => prefetchHref(link.href), { passive: true });
+    // pointerover is hit before click settles; focus covers keyboard users.
+    // Skip touch events to avoid congesting mobile network right before navigation.
+    link.addEventListener(
+      'pointerover',
+      (e) => {
+        if (e.pointerType === 'touch') {
+          return;
+        }
+        prefetchHref(link.href);
+      },
+      { passive: true },
+    );
     link.addEventListener('focus', () => prefetchHref(link.href), { passive: true });
   });
 }

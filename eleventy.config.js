@@ -26,7 +26,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy(v2Passthrough);
 
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
-  eleventyConfig.addWatchTarget('./src/assets/');
+  eleventyConfig.addWatchTarget('./src/assets/js/');
+  eleventyConfig.addWatchTarget('./src/assets/css/');
   // Watch V2 and V3 CSS sources (compiled via Tailwind CLI, not Eleventy)
   eleventyConfig.addWatchTarget('./src/v2/css/');
   eleventyConfig.addWatchTarget('./src/v3/css/');
@@ -73,6 +74,12 @@ export default function (eleventyConfig) {
           const name = path.basename(imgSrc, path.extname(imgSrc));
           return `${name}-${width}w.${format}`;
         },
+        sharpWebpOptions: {
+          quality: 80,
+        },
+        sharpJpegOptions: {
+          quality: 80,
+        },
       });
 
       const baseName = path.basename(srcPath, path.extname(srcPath));
@@ -81,7 +88,7 @@ export default function (eleventyConfig) {
         alt: alt || '',
         loading: loading || 'lazy',
         decoding: 'async',
-        sizes: '(max-width: 768px) 100vw, 33vw',
+        sizes: '(max-width: 520px) calc(100vw - 32px), (max-width: 768px) calc(50vw - 24px), 380px',
       };
       // Only forward fetchpriority when explicitly provided
       if (fetchpriority) {

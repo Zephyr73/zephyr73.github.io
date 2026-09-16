@@ -53,6 +53,13 @@
     justify-content: center;
   }
 
+  .page--gallery-detail .page__content .gallery-detail__image-wrap picture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+  }
+
   .page--gallery-detail .page__content .gallery-detail__image-wrap img {
     display: block;
     max-width: 100%;

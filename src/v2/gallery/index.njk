@@ -35,11 +35,7 @@ description: 'Explore my collection of photography, AI-generated art, and Forza 
     <div class="gallery-grid__column">
       {% for img in gallery.ai %}
         {% if (loop.index0 % 3) == col %}
-          {% if loop.index0 < 3 %}
-            {% gimg img.src, img.alt, "eager", "high", loop.index0 %}
-          {% else %}
-            {% gimg img.src, img.alt, "", "", loop.index0 %}
-          {% endif %}
+          {% gimg img.src, img.alt, "", "", loop.index0 %}
         {% endif %}
       {% endfor %}
     </div>
@@ -50,11 +46,7 @@ description: 'Explore my collection of photography, AI-generated art, and Forza 
     <div class="gallery-grid__column">
       {% for img in gallery.forza %}
         {% if (loop.index0 % 3) == col %}
-          {% if loop.index0 < 3 %}
-            {% gimg img.src, img.alt, "eager", "high", loop.index0 %}
-          {% else %}
-            {% gimg img.src, img.alt, "", "", loop.index0 %}
-          {% endif %}
+          {% gimg img.src, img.alt, "", "", loop.index0 %}
         {% endif %}
       {% endfor %}
     </div>

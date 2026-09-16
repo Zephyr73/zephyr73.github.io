@@ -72,8 +72,8 @@ Ordinary Level qualifications in Mathematics-D, Additional Mathematics, Physics,
 ## Contact
 
 - **GitHub**: [github.com/zephyr73](https://github.com/zephyr73)
+- **LinkedIn**: [linkedin.com/in/yaseen-aar-rahman](https://www.linkedin.com/in/yaseen-aar-rahman/)
 - **Twitter / X**: [@Zephyr73\_](https://twitter.com/Zephyr73_)
-- **Pixiv**: [pixiv.net/users/28541154](https://pixiv.net/users/28541154)
 
 ---
 

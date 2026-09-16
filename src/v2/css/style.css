@@ -29,7 +29,8 @@
 @import './vendors/_syntax.css';
 
 /* ── Content scanning ───────────────────────────────────────────────────── */
-@source './src';
+@source '../..';
+@source not '../../assets';
 
 /* ── Design tokens mapped for Tailwind utilities ──────────────────────────
    Values forward-reference the runtime theme vars so utilities follow the

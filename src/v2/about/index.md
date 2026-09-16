@@ -18,12 +18,12 @@ profile:
     - label: 'GitHub ↗'
       url: https://github.com/zephyr73
       icon: github
+    - label: 'LinkedIn ↗'
+      url: https://www.linkedin.com/in/yaseen-aar-rahman/
+      icon: linkedin
     - label: 'Twitter / X ↗'
       url: https://twitter.com/Zephyr73_
       icon: twitter
-    - label: 'Pixiv Art ↗'
-      url: https://pixiv.net/users/28541154
-      icon: pixiv
   summary: >
     Software Developer and Computer Science undergraduate with hands-on expertise in backend
     systems programming, Linux virtualization, networking protocols, and full-stack web
@@ -78,7 +78,7 @@ skills:
 projects:
   - title: 'High-Availability Homelab & Hybrid Network'
     url: /projects/home-network/
-    date: '2026 – Present'
+    date: 'Sep 8, 2026'
     tags:
       - 'Linux (Debian)'
       - 'Proxmox VE'
@@ -101,7 +101,7 @@ projects:
         latency.
   - title: 'WallpaperSync Real-Time Display & RGB Daemon'
     url: /projects/wallpapersync/
-    date: '2023 – 2024'
+    date: 'Oct 27, 2023'
     tags:
       - Python
       - Watchdog
@@ -173,7 +173,7 @@ education:
         accent: true
     desc: 'Rigorous advanced curriculum with focus in Mathematics, Physics, and Computer Science.'
   - degree: 'GCE Ordinary Levels (O Levels)'
-    institution: 'Cambridge University International Curriculum'
+    institution: 'HURDCO International School • Dhaka, Bangladesh'
     date: 'Graduated 2019'
     hideInPrint: true
     badges:

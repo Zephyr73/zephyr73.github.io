@@ -20,12 +20,15 @@ noMarkdownWrapper: true
   <div class="gallery-detail__layout">
 
     <div class="gallery-detail__image-wrap">
-      <img
-        src="{{ img.fullUrl }}"
-        alt="{{ img.filename }}"
-        loading="eager"
-        decoding="async"
-      />
+      <picture>
+        <source srcset="{{ img.webpUrl }}" type="image/webp" />
+        <img
+          src="{{ img.fullUrl }}"
+          alt="{{ img.filename }}"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
     </div>
 
     <div class="gallery-detail__panel">

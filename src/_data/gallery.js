@@ -48,7 +48,13 @@ async function getImageDate(filePath, isPhotography) {
   }
 }
 
+let cachedGalleryResult = null;
+
 export default async function () {
+  if (cachedGalleryResult) {
+    return cachedGalleryResult;
+  }
+
   const categories = ['photography', 'ai', 'forza'];
   const result = {};
 
@@ -60,31 +66,32 @@ export default async function () {
     }
 
     const files = fs.readdirSync(dirPath);
-    const images = [];
-
-    for (const file of files) {
-      if (file.startsWith('.')) continue;
+    const validFiles = files.filter((file) => {
+      if (file.startsWith('.')) return false;
       const ext = path.extname(file).toLowerCase();
-      if (!['.jpg', '.jpeg', '.png', '.webp'].includes(ext)) continue;
+      return ['.jpg', '.jpeg', '.png', '.webp'].includes(ext);
+    });
 
+    const imagePromises = validFiles.map(async (file) => {
+      const ext = path.extname(file).toLowerCase();
       const filePath = path.join(dirPath, file);
       const date = await getImageDate(filePath, category === 'photography');
       const name = path.basename(file, ext);
 
-      // Create a user-friendly alt text (matches sort.py's behaviour)
-      const alt = `image ${name}`;
-
-      images.push({
+      return {
         src: `${category}/${file}`,
-        alt,
+        alt: `image ${name}`,
         date,
-      });
-    }
+      };
+    });
+
+    const images = await Promise.all(imagePromises);
 
     // Sort descending: newest first
     images.sort((a, b) => b.date.getTime() - a.date.getTime());
     result[category] = images;
   }
 
+  cachedGalleryResult = result;
   return result;
 }

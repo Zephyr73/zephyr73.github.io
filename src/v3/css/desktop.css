@@ -16,7 +16,9 @@
 @import './_themes.css';
 @import './_boot.css';
 
-@source './src/v3';
+@source '..';
+@source '../../assets/js/v3';
+@source not '../../assets/css';
 
 @theme {
   --font-mono: var(--font-mono);

@@ -185,11 +185,17 @@ Linux, and creative media.'
     <!-- Creative Card 1: Photography -->
     <a href="/gallery/" class="creative-card">
       <div class="creative-card__image-wrap">
-        <img src="/assets/img/photo.jpg" alt="Urban and landscape photography" loading="lazy" />
-        <div class="creative-card__overlay">
-          <span class="creative-card__category">Street & Landscape</span>
-          <span class="creative-card__count">Galaxy S22 Ultra • Lightroom</span>
-        </div>
+        <picture>
+          <source srcset="/assets/img/photo.webp" type="image/webp" />
+          <img
+            src="/assets/img/photo.jpg"
+            alt="Urban and landscape photography"
+            loading="lazy"
+            decoding="async"
+            width="600"
+            height="338"
+          />
+        </picture>
       </div>
       <div class="creative-card__info">
         <h3>Photography</h3>
@@ -204,11 +210,17 @@ Linux, and creative media.'
     <!-- Creative Card 2: AI Art -->
     <a href="/gallery/#ai-container" class="creative-card">
       <div class="creative-card__image-wrap">
-        <img src="/assets/img/ai.jpg" alt="Stable Diffusion generative artwork" loading="lazy" />
-        <div class="creative-card__overlay">
-          <span class="creative-card__category">Generative Media</span>
-          <span class="creative-card__count">Stable Diffusion • ControlNet</span>
-        </div>
+        <picture>
+          <source srcset="/assets/img/ai.webp" type="image/webp" />
+          <img
+            src="/assets/img/ai.jpg"
+            alt="Stable Diffusion generative artwork"
+            loading="lazy"
+            decoding="async"
+            width="600"
+            height="338"
+          />
+        </picture>
       </div>
       <div class="creative-card__info">
         <h3>AI Generations</h3>

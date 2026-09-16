@@ -70,14 +70,18 @@ function formatDate(date, long = false) {
   });
 }
 
-export default async function () {
-  const images = [];
-  const categories = getCategories();
+let cachedGalleryImagesResult = null;
 
-  for (const category of categories) {
+export default async function () {
+  if (cachedGalleryImagesResult) {
+    return cachedGalleryImagesResult;
+  }
+
+  const categories = getCategories();
+  const categoryPromises = categories.map(async (category) => {
     const dir = path.join(GALLERY_ROOT, category);
     if (!fs.existsSync(dir)) {
-      continue;
+      return [];
     }
 
     const files = fs
@@ -89,14 +93,14 @@ export default async function () {
         return isNaN(na) || isNaN(nb) ? a.localeCompare(b) : na - nb;
       });
 
-    for (const file of files) {
+    const filePromises = files.map(async (file) => {
       const srcPath = path.join(GALLERY_ROOT, category, file);
       const baseName = path.basename(file, path.extname(file));
       const slug = `${category}-${baseName}`;
 
       const [meta, stats] = await Promise.all([
         sharp(srcPath).metadata(),
-        Promise.resolve(fs.statSync(srcPath)),
+        fs.promises.stat(srcPath),
       ]);
 
       const fileSize = formatFileSize(stats.size);
@@ -170,13 +174,15 @@ export default async function () {
       const largestWidth =
         [...GENERATED_WIDTHS].reverse().find((w) => w <= meta.width) ?? GENERATED_WIDTHS[0];
       const thumbUrl = `/assets/img/gallery/${category}/${baseName}-800w.webp`;
+      const webpUrl = `/assets/img/gallery/${category}/${baseName}-${largestWidth}w.webp`;
       const fullUrl = `/assets/img/gallery/${category}/${baseName}-${largestWidth}w.jpeg`;
 
-      images.push({
+      return {
         slug,
         category,
         filename: file,
         thumbUrl,
+        webpUrl,
         fullUrl,
         downloadFilename: file,
         resolution,
@@ -189,13 +195,19 @@ export default async function () {
         iso,
         focalLength,
         _timestamp: resolvedDate ? resolvedDate.getTime() : 0,
-      });
-    }
-  }
+      };
+    });
+
+    return Promise.all(filePromises);
+  });
+
+  const nestedImages = await Promise.all(categoryPromises);
+  const images = nestedImages.flat();
 
   // Sort descending chronologically (newest first)
   images.sort((a, b) => b._timestamp - a._timestamp);
   images.forEach((img) => delete img._timestamp);
 
+  cachedGalleryImagesResult = images;
   return images;
 }
