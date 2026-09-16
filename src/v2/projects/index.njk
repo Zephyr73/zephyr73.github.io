@@ -1,7 +1,7 @@
 ---
 layout: base.njk
 permalink: /projects/
-title: Projects &bull; Zephyr — Software Engineering
+title: Projects • Zephyr — Software Engineering
 bodyClass: page--projects
 pageId: projects-index
 noMarkdownWrapper: true
@@ -10,8 +10,8 @@ description: 'Software development, systems architecture, and engineering projec
 
 <div class="projects-page">
   <div class="page-intro">
-    <span class="page-intro__eyebrow">// ENGINEERING &amp; SYSTEMS</span>
-    <h1 class="page-intro__title">Software &amp; Technical Projects</h1>
+    <span class="page-intro__eyebrow">// ENGINEERING & SYSTEMS</span>
+    <h1 class="page-intro__title">Software & Technical Projects</h1>
     <p class="page-intro__desc">
       A collection of personal systems, infrastructure engineering, and automation utilities built with Python, Linux, Docker, and modern web technologies.
     </p>
@@ -23,11 +23,11 @@ description: 'Software development, systems architecture, and engineering projec
         <div class="project-card__header">
           <span class="project-card__tag">
             {% if project.data.category %}
-              {{ project.data.category }}
+              {{ project.data.category | safe }}
             {% elseif 'home-network' in project.url %}
-              Infrastructure &bull; High Availability
+              Infrastructure • High Availability
             {% elseif 'wallpapersync' in project.url %}
-              Python &bull; Linux Automation
+              Python • Linux Automation
             {% else %}
               Engineering Project
             {% endif %}
@@ -44,6 +44,14 @@ description: 'Software development, systems architecture, and engineering projec
         </p>
 
         <div class="project-card__footer">
+          {% if project.data.repo %}
+            <a href="{{ project.data.repo }}" class="project-card__action" target="_blank" rel="noopener">
+              View on GitHub
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/>
+              </svg>
+            </a>
+          {% endif %}
           <a href="{{ project.url }}" class="project-card__action">
             Read Case Study
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

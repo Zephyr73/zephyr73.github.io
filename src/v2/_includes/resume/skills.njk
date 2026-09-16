@@ -1,0 +1,20 @@
+<!-- ── TECHNICAL SKILLS MATRIX ──────────────────────────────────────── -->
+<section class="resume-section resume-section--skills">
+  <div class="section-title-wrap">
+    <h2 class="section-heading"><span class="screen-only">Technical </span>Skills</h2>
+    <span class="section-rule"></span>
+  </div>
+
+  <div class="skills-category-group">
+    {% for cat in skills %}
+    <div class="skill-category">
+      <h3 class="skill-cat-title">{{ cat.category | safe }}</h3>
+      <div class="skills-pill-grid">
+        {% for item in cat.items %}
+        <div class="skill-tag"><span class="tag-accent">#</span> {{ item | safe }}</div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

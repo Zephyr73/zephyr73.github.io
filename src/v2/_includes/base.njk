@@ -27,8 +27,11 @@
 
     <title>{{ title | default("Zephyr — Software Developer & Portfolio") }}</title>
 
-    <!-- Restore saved theme & mode before CSS loads to prevent FOUC -->
+    <!-- Prevent scroll jitter on reload & restore saved theme before CSS loads to prevent FOUC -->
     <script>
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
       (function () {
         var isEmbedded = window.self !== window.top;
         var validV2Accents = ['lavender', 'white', 'catppuccin', 'red', 'coral', 'emerald'];
@@ -59,6 +62,30 @@
         }
         document.documentElement.className = classes.join(' ');
       })();
+    </script>
+
+    <!-- Speculative Prerendering: Chromium instantly activates pre-rendered pages -->
+    <script type="speculationrules">
+      {
+        "prerender": [
+          {
+            "source": "document",
+            "where": {
+              "and": [
+                { "href_matches": "/*" },
+                { "not": { "href_matches": "/v3/*" } },
+                { "not": { "href_matches": "/*#*" } }
+              ]
+            },
+            "eagerness": "moderate"
+          }
+        ]
+      }
+    </script>
+
+    <!-- Gallery image preload manifest (build-time, consumed by script.js) -->
+    <script>
+      window.__GALLERY_PRELOAD__ = {{ galleryPreload | dump | safe }};
     </script>
 
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />

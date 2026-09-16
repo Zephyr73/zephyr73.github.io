@@ -1,0 +1,34 @@
+<!-- ── EDUCATION TIMELINE ────────────────────────────────────────────── -->
+<section class="resume-section resume-section--education">
+  <div class="section-title-wrap">
+    <h2 class="section-heading">Education</h2>
+    <span class="section-rule"></span>
+  </div>
+
+  <div class="timeline">
+    {% for item in education %}
+    <div class="timeline-item{% if item.hideInPrint %} timeline-item--olevels{% endif %}">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <div>
+            <h3 class="timeline-degree">{{ item.degree | safe }}</h3>
+            <div class="timeline-institution">{{ item.institution | safe }}</div>
+          </div>
+          <div class="timeline-date">{{ item.date | safe }}</div>
+        </div>
+        {% if item.badges %}
+        <div class="timeline-badges">
+          {% for badge in item.badges %}
+          <span class="badge{% if badge.accent %} badge--accent{% endif %}">{{ badge.text | safe }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% if item.desc %}
+        <p class="timeline-desc">{{ item.desc | safe }}</p>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

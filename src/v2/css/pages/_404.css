@@ -54,7 +54,7 @@
     border-radius: 50%;
     background-color: var(--clr-accent);
     box-shadow: 0 0 8px var(--clr-accent);
-    animation: status-pulse 2s infinite ease-in-out;
+    animation: status-pulse 2s infinite ease;
   }
 
   @keyframes status-pulse {

@@ -6,17 +6,25 @@
         <span class="site-nav__brand-badge">V2</span>
       </a>
     </div>
-
     <div class="site-nav__actions">
       <div class="site-nav__links">
         <ul>
-          <li><a href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a></li>
-          <li><a href="/projects/" {% if '/projects' in page.url %}aria-current="page"{% endif %}>Projects</a></li>
-          <li><a href="/gallery/" {% if '/gallery' in page.url %}aria-current="page"{% endif %}>Gallery</a></li>
-          <li><a href="/blog/" {% if '/blog' in page.url %}aria-current="page"{% endif %}>Blog</a></li>
-          <li><a href="/about/" {% if '/about' in page.url %}aria-current="page"{% endif %}>Resume</a></li>
+          <li>
+            <a href="/" {% if page.url == '/' %} aria-current="page" {% endif %}>Home</a>
+          </li>
+          <li>
+            <a href="/projects/" {% if '/projects' in page.url %} aria-current="page" {% endif %}>Projects</a>
+          </li>
+          <li>
+            <a href="/gallery/" {% if '/gallery' in page.url %} aria-current="page" {% endif %}>Gallery</a>
+          </li>
+          <li>
+            <a href="/blog/" {% if '/blog' in page.url %} aria-current="page" {% endif %}>Blog</a>
+          </li>
+          <li>
+            <a href="/about/" {% if '/about' in page.url %} aria-current="page" {% endif %}>About</a>
+          </li>
         </ul>
-
         <div class="site-nav__theme-wrapper">
           <button
             class="site-nav__theme-toggle"
@@ -24,23 +32,60 @@
             aria-label="Choose appearance theme"
             aria-haspopup="true"
             aria-expanded="false"
-            title="Switch theme or accent color"
-          >
+            title="Switch theme or accent color">
             <span class="theme-toggle__dot" aria-hidden="true"></span>
             <span class="theme-toggle__label">Theme</span>
-            <svg class="theme-toggle__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <svg
+              class="theme-toggle__chevron"
+              width="10"
+              height="6"
+              viewBox="0 0 10 6"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true">
               <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
             </svg>
           </button>
-
           <div class="theme-picker__menu" role="menu">
             <div class="theme-picker__header">Mode</div>
             <a href="#" role="menuitem" data-mode="dark">
-              <svg class="theme-mode-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <svg
+                class="theme-mode-icon"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
               <span>Dark</span>
             </a>
             <a href="#" role="menuitem" data-mode="light">
-              <svg class="theme-mode-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              <svg
+                class="theme-mode-icon"
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
               <span>Light</span>
             </a>
             <div class="theme-picker__header" style="margin-top: 6px;">Accent</div>
@@ -75,28 +120,36 @@
           </div>
         </div>
       </div>
-
-      <a
-        href="/v3/"
-        class="site-nav__v3-btn"
-        title="Launch Interactive Virtual Desktop (V3)"
-        aria-label="Launch V3 Desktop"
-      >
-        <svg class="v3-btn__icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <a href="/v3/" class="site-nav__v3-btn" title="Launch Interactive Virtual Desktop (V3)" aria-label="Launch V3 Desktop">
+        <svg
+          class="v3-btn__icon"
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true">
           <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
           <line x1="8" y1="21" x2="16" y2="21"/>
           <line x1="12" y1="17" x2="12" y2="21"/>
         </svg>
         <span>V3 Desktop</span>
       </a>
-
-      <button
-        class="site-nav__mode-toggle"
-        type="button"
-        aria-label="Toggle light/dark mode"
-        title="Toggle light/dark mode"
-      >
-        <svg class="mode-icon mode-icon--sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <button class="site-nav__mode-toggle" type="button" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+        <svg
+          class="mode-icon mode-icon--sun"
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -107,16 +160,25 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-        <svg class="mode-icon mode-icon--moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg
+          class="mode-icon mode-icon--moon"
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
       </button>
-
-      <div class="site-nav__hamburger" aria-label="Open menu" role="button" tabindex="0">
+      <button class="site-nav__hamburger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-drawer">
         <span class="site-nav__hamburger-bar"></span>
         <span class="site-nav__hamburger-bar"></span>
         <span class="site-nav__hamburger-bar"></span>
-      </div>
+      </button>
     </div>
   </div>
 </nav>

@@ -10,7 +10,10 @@
     "dev": "concurrently \"npm:start\" \"npm:watch:css\"",
     "format": "prettier --write \"**/*.{html,js,css,md}\"",
     "lint:js": "eslint \"**/*.js\"",
+    "lint:fix": "eslint --fix \"**/*.js\"",
     "lint": "npm run lint:js",
+    "check": "npm run format && npm run lint:js && npm run build:css && npm run build",
+    "test": "npm run check",
     "start": "npx @11ty/eleventy --serve"
   },
   "keywords": [],

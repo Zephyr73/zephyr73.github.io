@@ -3,6 +3,7 @@ node_modules/
 
 # Build Output
 _site/
+.cache/
 
 # System Files
 .DS_Store

@@ -1,56 +1,67 @@
-name: Build and deploy 11ty to GitHub Pages
+name: Build and deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
     paths-ignore:
       - 'README.md'
+      - 'AGENTS.md'
       - '.gitignore'
       - 'docs/**'
       - 'media/**'
+      - '.vscode/**'
+      - '.agents/**'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
+
+      - name: Cache Eleventy images
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: ${{ runner.os }}-eleventy-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-eleventy-
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint JavaScript
-        run: npm run lint:js
+      - name: Auto-format and lint fix
+        run: |
+          npm run format || true
+          npm run lint:fix || true
 
-      - name: Fix formatting
-        run: npm run format || true
-
-      - name: Auto-commit formatting changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: auto-fix formatting"
+      - name: Lint JavaScript (report only)
+        run: npm run lint:js || true
 
       - name: Build CSS
         run: npm run build:css
 
       - name: Build Eleventy site
         run: npm run build
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

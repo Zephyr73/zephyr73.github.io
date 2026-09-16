@@ -1,0 +1,14 @@
+<!-- ── INTERESTS & PURSUITS ─────────────────────────────────────────── -->
+<section class="resume-section resume-section--interests">
+  <div class="section-title-wrap">
+    <h2 class="section-heading">Interests & Creative Research</h2>
+    <span class="section-rule"></span>
+  </div>
+  <div class="interests-box">
+    {% if content and content.trim().length > 0 %}
+      {{ content | safe }}
+    {% elif interests %}
+      <p>{{ interests | safe }}</p>
+    {% endif %}
+  </div>
+</section>

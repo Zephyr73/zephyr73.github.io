@@ -5,6 +5,7 @@ const drawer = document.querySelector('.site-nav__drawer');
 if (hamTrigger && drawer) {
   function closeDrawer() {
     hamTrigger.classList.remove('active');
+    hamTrigger.setAttribute('aria-expanded', 'false');
     drawer.classList.remove('active');
     document.documentElement.classList.remove('no-scroll');
     document.body.classList.remove('no-scroll');
@@ -13,6 +14,7 @@ if (hamTrigger && drawer) {
   hamTrigger.addEventListener('click', () => {
     const isOpening = !drawer.classList.contains('active');
     hamTrigger.classList.toggle('active', isOpening);
+    hamTrigger.setAttribute('aria-expanded', String(isOpening));
     drawer.classList.toggle('active', isOpening);
     document.documentElement.classList.toggle('no-scroll', isOpening);
     document.body.classList.toggle('no-scroll', isOpening);
@@ -23,10 +25,19 @@ if (hamTrigger && drawer) {
     link.addEventListener('click', closeDrawer);
   });
 
-  // Close drawer on Escape key
+  // Close drawer and theme menu on Escape key
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && drawer.classList.contains('active')) {
-      closeDrawer();
+    if (e.key === 'Escape') {
+      if (drawer.classList.contains('active')) {
+        closeDrawer();
+      }
+      if (themeMenu && themeMenu.style.display === 'block') {
+        themeMenu.style.display = 'none';
+        if (themeSwitch) {
+          themeSwitch.setAttribute('aria-expanded', 'false');
+          themeSwitch.focus();
+        }
+      }
     }
   });
 }
@@ -264,6 +275,13 @@ const GALLERY_SECTIONS = {
   Forza: '.gallery-grid--forza',
 };
 
+const SECTION_HASHES = {
+  '#ai-container': 'AI-Generations',
+  '#ai': 'AI-Generations',
+  '#forza': 'Forza',
+  '#photography': 'Photography',
+};
+
 function initGallery() {
   const isGalleryPage = document.body.classList.contains('page--gallery');
   if (!isGalleryPage) {
@@ -286,7 +304,42 @@ function initGallery() {
 
   let isAnimating = false;
 
-  function show(name) {
+  function syncHashForName(name) {
+    if (!window.history.replaceState) return;
+    const hash = name === 'AI-Generations' ? '#ai-container' : `#${name.toLowerCase()}`;
+    if (window.location.hash !== hash) {
+      window.history.replaceState(null, '', hash);
+    }
+  }
+
+  function getSectionFromHash() {
+    const raw = (window.location.hash || '').toLowerCase();
+    return SECTION_HASHES[raw] || 'Photography';
+  }
+
+  // Pure DOM swap — used on initial load and instant fallbacks.
+  function swapSections(name, updateHash = false) {
+    buttons.forEach((btn) => {
+      btn.classList.toggle('is-active', btn.textContent.trim() === name);
+    });
+
+    const target = containers[name];
+    Object.values(containers).forEach((el) => {
+      if (!el) {
+        return;
+      }
+      const visible = el === target;
+      el.classList.toggle('is-visible', visible);
+      el.style.display = visible ? '' : 'none';
+      el.style.opacity = visible ? '1' : '0';
+    });
+
+    if (updateHash) {
+      syncHashForName(name);
+    }
+  }
+
+  function show(name, updateHash = true) {
     if (isAnimating) {
       return;
     }
@@ -298,42 +351,58 @@ function initGallery() {
       return;
     }
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     isAnimating = true;
 
-    // Update buttons immediately
     buttons.forEach((btn) => {
       btn.classList.toggle('is-active', btn.textContent.trim() === name);
     });
 
+    if (updateHash) {
+      syncHashForName(name);
+    }
+
     const newEl = containers[name];
     const oldEl = currentActiveName ? containers[currentActiveName] : null;
 
+    if (reducedMotion) {
+      if (newEl) {
+        newEl.style.display = '';
+        newEl.classList.add('is-visible');
+        newEl.style.opacity = '1';
+      }
+      if (oldEl && oldEl !== newEl) {
+        oldEl.classList.remove('is-visible');
+        oldEl.style.display = 'none';
+        oldEl.style.opacity = '0';
+      }
+      isAnimating = false;
+      return;
+    }
+
     if (oldEl) {
-      // Fade out old
       oldEl.style.opacity = '0';
 
       setTimeout(() => {
         oldEl.classList.remove('is-visible');
         oldEl.style.display = 'none';
 
-        // Show and fade in new
         if (newEl) {
           newEl.style.display = '';
-          // Force reflow
-          newEl.offsetHeight;
+          void newEl.offsetHeight;
           newEl.classList.add('is-visible');
           newEl.style.opacity = '1';
         }
 
         setTimeout(() => {
           isAnimating = false;
-        }, 150); // Wait for fade in
-      }, 150); // Wait for fade out (matches CSS transition)
+        }, 150);
+      }, 150);
     } else {
-      // Initial load (no old element to fade out)
       if (newEl) {
         newEl.style.display = '';
-        newEl.offsetHeight;
+        void newEl.offsetHeight;
         newEl.classList.add('is-visible');
         newEl.style.opacity = '1';
       }
@@ -341,26 +410,19 @@ function initGallery() {
     }
   }
 
-  // Initial setup: hide all, then show based on hash or default
-  Object.values(containers).forEach((el) => {
-    if (el) {
-      el.classList.remove('is-visible');
-      el.style.display = 'none';
-      el.style.opacity = '0';
-    }
-  });
+  // Initial setup: show the default or hash-selected section directly
+  swapSections(getSectionFromHash(), false);
 
-  const hash = window.location.hash;
-  if (hash === '#ai-container') {
-    show('AI-Generations');
-  } else {
-    show('Photography');
-  }
+  // Handle in-page hash changes (e.g. back/forward navigation or anchor links)
+  window.addEventListener('hashchange', () => {
+    const targetSection = getSectionFromHash();
+    show(targetSection, false);
+  });
 
   buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
-      show(button.textContent.trim());
+      show(button.textContent.trim(), true);
     });
   });
 }
@@ -368,29 +430,8 @@ function initGallery() {
 // Init: run on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   initGallery();
-  initGalleryDetail();
   initAvatarDither();
 });
-
-// Gallery detail page: flag that we're staying in the gallery zone so the
-// gallery index page skips its expand animation when we navigate back.
-// Also clamps the image wrap to the image's actual rendered width so that
-// portrait images sit flush against the info panel with no gap.
-function initGalleryDetail() {
-  if (!document.body.classList.contains('page--gallery-detail')) {
-    return;
-  }
-
-  // Navigation flag
-  document.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('/gallery/')) {
-        sessionStorage.setItem('gallery-keep-expanded', '1');
-      }
-    });
-  });
-}
 
 // ---- Avatar Dithering (About/Resume page) ----
 // Halftone dot dithering: the image is divided into CELL×CELL blocks;
@@ -547,15 +588,15 @@ function _paintDither(avatar, bg, fg) {
 
 function initAvatarDither() {
   const avatar = document.querySelector('.resume-avatar');
-  if (!avatar) {
+  if (!avatar || avatar.dataset.ditherInit) {
     return;
   }
-
+  avatar.dataset.ditherInit = 'true';
   avatar.dataset.originalSrc = avatar.src;
 
   // Wrap the img so we can layer the dither canvas on top of it.
   const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'position:relative; display:block; width:100%;';
+  wrapper.style.cssText = 'position:relative; display:block; width:100%; height:100%;';
   avatar.parentNode.insertBefore(wrapper, avatar);
   wrapper.appendChild(avatar);
 
@@ -756,4 +797,79 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initMarkdownToc);
 } else {
   initMarkdownToc();
+}
+
+// ---- Link Prefetch (Fast Navigation) -------------------------------------
+// Prefetching the hovered/focused destination warms the HTTP cache so that
+// subsequent page navigations load instantly.
+const prefetchCache = new Set();
+const galleryImageCache = new Set();
+
+function prefetchGalleryImages() {
+  const urls = window.__GALLERY_PRELOAD__;
+  if (!Array.isArray(urls) || urls.length === 0) {
+    return;
+  }
+  for (const imageUrl of urls) {
+    if (galleryImageCache.has(imageUrl)) {
+      continue;
+    }
+    galleryImageCache.add(imageUrl);
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.as = 'image';
+    link.href = imageUrl;
+    document.head.appendChild(link);
+  }
+}
+
+function prefetchHref(href) {
+  if (!href || prefetchCache.has(href)) {
+    return;
+  }
+
+  let url;
+  try {
+    url = new URL(href, window.location.href);
+  } catch {
+    return;
+  }
+
+  if (url.origin !== window.location.origin) {
+    return; // external
+  }
+  if (url.pathname === window.location.pathname) {
+    return; // current page / in-page anchors
+  }
+  if (url.pathname.startsWith('/v3/')) {
+    return; // V3 is a hard-cut SPA by design
+  }
+  const extMatch = url.pathname.match(/\.([a-z0-9]+)$/i);
+  if (extMatch && !/^(html?|md)$/i.test(extMatch[1])) {
+    return; // binary/asset links don't navigate to a document
+  }
+
+  if (url.pathname.startsWith('/gallery')) {
+    prefetchGalleryImages();
+  }
+
+  prefetchCache.add(href);
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
+function initLinkPrefetch() {
+  document.querySelectorAll('a[href]').forEach((link) => {
+    // pointerover is hit before click settles; focus covers keyboard users
+    link.addEventListener('pointerover', () => prefetchHref(link.href), { passive: true });
+    link.addEventListener('focus', () => prefetchHref(link.href), { passive: true });
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLinkPrefetch);
+} else {
+  initLinkPrefetch();
 }

@@ -10,11 +10,20 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('src/assets');
 
   // Copy raw v2 markdown files to their original paths so the v3 markdown viewer can fetch them
-  eleventyConfig.addPassthroughCopy({
+  const projectsDir = './src/v2/projects';
+  const projectSlugs = fs
+    .readdirSync(projectsDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && !d.name.startsWith('.'))
+    .map((d) => d.name);
+
+  const v2Passthrough = {
     'src/v2/blog/blogs': 'blog/blogs',
-    'src/v2/projects/wallpapersync': 'projects/wallpapersync',
-    'src/v2/projects/home-network': 'projects/home-network',
-  });
+    'src/v2/about/index.md': 'about/index.md',
+  };
+  for (const slug of projectSlugs) {
+    v2Passthrough[`src/v2/projects/${slug}`] = `projects/${slug}`;
+  }
+  eleventyConfig.addPassthroughCopy(v2Passthrough);
 
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
   eleventyConfig.addWatchTarget('./src/assets/');
@@ -66,6 +75,8 @@ export default function (eleventyConfig) {
         },
       });
 
+      const baseName = path.basename(srcPath, path.extname(srcPath));
+
       const imgAttrs = {
         alt: alt || '',
         loading: loading || 'lazy',
@@ -92,7 +103,7 @@ export default function (eleventyConfig) {
       const srcMeta = await sharp(srcPath).metadata();
       const resolutionStr = `${srcMeta.width} &times; ${srcMeta.height}`;
 
-      const byteSize = fs.statSync(srcPath).size;
+      const byteSize = stats.size;
       const fileSizeStr =
         byteSize >= 1024 * 1024
           ? `${(byteSize / (1024 * 1024)).toFixed(1)} MB`
@@ -118,7 +129,6 @@ export default function (eleventyConfig) {
         }
       }
 
-      const baseName = path.basename(srcPath, path.extname(srcPath));
       const slug = `${subdir}-${baseName}`;
       const detailUrl = `/gallery/image/${slug}/`;
 

@@ -234,9 +234,22 @@ function handleTabCompletion(inputEl) {
 
 // Command execution
 async function execCommand(commandLine) {
-  const parts = commandLine.split(' ');
-  const cmd = parts[0].toLowerCase();
-  const args = parts.slice(1);
+  const trimmed = commandLine.trim();
+  if (!trimmed) return '';
+
+  const regex = /[^\s"']+|"([^"]*)"|'([^']*)'/g;
+  const tokens = [];
+  let match;
+  while ((match = regex.exec(trimmed)) !== null) {
+    tokens.push(match[1] !== undefined ? match[1] : match[2] !== undefined ? match[2] : match[0]);
+  }
+
+  const cmd = (tokens[0] || '').toLowerCase();
+  const args = tokens.slice(1);
+  const resolveTarget = () => {
+    const full = args.join(' ');
+    return getNodeByPath(full) ? full : args[0];
+  };
 
   switch (cmd) {
     case 'help':
@@ -275,7 +288,7 @@ Available commands:
       return args.join(' ');
 
     case 'ls': {
-      const target = args[0] || '';
+      const target = resolveTarget() || '';
       const entries = ls(target);
       if (entries === null) {
         throw new Error(`ls: no such file or directory: ${target}`);
@@ -302,7 +315,7 @@ Available commands:
     }
 
     case 'cd': {
-      const target = args[0];
+      const target = resolveTarget();
       if (!target) {
         cd('/');
         return '';
@@ -315,7 +328,7 @@ Available commands:
     }
 
     case 'cat': {
-      const target = args[0];
+      const target = resolveTarget();
       if (!target) {
         throw new Error('cat: missing operand');
       }
@@ -334,7 +347,7 @@ Available commands:
     }
 
     case 'open': {
-      const target = args[0];
+      const target = resolveTarget();
       if (!target) {
         throw new Error('open: missing filename');
       }

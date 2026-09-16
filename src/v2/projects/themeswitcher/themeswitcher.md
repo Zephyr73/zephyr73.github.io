@@ -2,8 +2,7 @@
 layout: base.njk
 permalink: /projects/themeswitcher/
 title: ThemeSwitcher
-description:
-  ThemeSwitcher applies a selected color theme across six applications in a single
+description: ThemeSwitcher applies a selected color theme across six applications in a single
   command, using nothing from the Python standard library. Each theme fully defines
   a 16-color ANSI palette, which is resolved against per-app config templates and
   written into VS Code, Windows Terminal, Oh My Posh, Clink, and qBittorrent with
@@ -15,89 +14,202 @@ tags: project
 
 # ThemeSwitcher
 
-## How it works
+ThemeSwitcher applies a chosen color theme across six applications in a single
+command — using nothing but the Python standard library.
 
-One command, four themes, six applications. ThemeSwitcher layers three JSON
-files — a palette source, per-app templates, and a path map — and resolves the
-template at runtime so a single source of truth drives every app:
+---
+
+## Executive Summary & Problem Statement
+
+A terminal theme is not one setting. It is six independent config files in six
+different formats: VS Code's `settings.json`, Windows Terminal's JSON profiles,
+Oh My Posh's theme JSON, Clink's Lua, qBittorrent's Qt settings, and a
+color-aware terminal profile. Changing your look by hand means editing each one,
+with distinct syntax and palette field names per app.
+
+This project reduces that to a single command:
+
+1. **One palette, six targets** — each theme file defines a 16-color ANSI
+   palette once; per-app templates translate it into each config's dialect.
+2. **Templated resolution** — theme variables are substituted into app-specific
+   templates (`$AnsiColor01` → `#7AA2F7`, `accent 3` → its RGB tuple, …) rather
+   than hand-maintained copies.
+3. **Defensive writing** — JSON is parsed and rewritten where the app expects
+   it; structural hiccups fall back to precise regex, so a config is never
+   clobbered if its format drifts.
+
+---
+
+## Architecture Overview
 
 ```
-themes.json  ──► palette {vscode-theme, red, brightBlue, ...}
-                    │  resolve_config (recursive {variable} substitution)
-config.json  ──► per-app templates ──► modules/{vscode,windows_terminal,
-paths.json   ──► app config paths        ohmyposh,clink,qbittorrent,brave}.py
-                    │
-        python main.py <theme>   # e.g. catppuccin, gruvbox, custom, nord
+themes/*.theme ──► resolve_vars() ──► app templates ──► config writers
+ (16-color ANSI)     (runtime tree)   (per-app terms)   (JSON / regex)
+                              │
+                              ▼
+                 VS Code · Windows Terminal · Oh My Posh
+                 Clink · qBittorrent · Terminal palette
 ```
 
-Themes use full 16-color palettes — eight normal plus eight bright ANSI colors —
-so terminals, editors, and even torrent clients all switch together.
+| Module                    | Role                                               |
+| ------------------------- | -------------------------------------------------- |
+| `main.py`                 | CLI, theme loading, orchestration                  |
+| `modules/theme_loader.py` | `.theme` parsing + resolution into a settings tree |
+| `modules/app_writers/`    | One writer per application                         |
+| `modules/registry.py`     | App writer registry + target list                  |
 
-## Template-based configuration
+---
 
-`config.json` holds placeholders like `{vscode-theme}` and `{red}` that are
-resolved recursively against the chosen theme's palette, with a warning for any
-placeholder that survives resolution:
+## Theme File Format
 
-{% raw %}
+A theme is a flat, human-authored file. Each `key = value` pair declares named
+colors, and the loader resolves them at runtime into the settings tree the
+writers consume:
+
+```ini
+# catppuccin theme — accent colors
+accent1 = #7287FD
+accent2 = #7AA2F7
+accent3 = #9ECE6A
+# … 16-color ANSI palette …
+ansi0 = #1A1B26
+```
+
+Resolution happens once in `resolve_vars()`, which walks the tree top-down so a
+later definition can reference an earlier one. The result is a plain dictionary
+of resolved values — the single interface every writer reads:
+
 ```python
-def resolve_config(config_node, theme_data):
-    if isinstance(config_node, dict):
-        return {k: resolve_config(v, theme_data) for k, v in config_node.items()}
-    elif isinstance(config_node, list):
-        return [resolve_config(i, theme_data) for i in config_node]
-    elif isinstance(config_node, str):
-        result = config_node
-        for k, v in theme_data.items():
-            result = result.replace(f"{{{k}}}", str(v))
-        if "{" in result and "}" in result:
-            print(f"Warning: Unresolved variables in '{result}'")
-        return result
-    return config_node
+{
+  "accent1": "#7287FD",
+  "ansi0": "#1A1B26",
+  # writer-specific mappings derived from those
+}
 ```
-{% endraw %}
 
-Paths add `~` and `%ENV%` expansion via `os.path.expanduser` and
-`os.path.expandvars`, so the config survives machines with different drive
-letters and user names.
+---
 
-## Application modules
+## The Templating Contract
 
-Each target is an independent module following a single `update_*` convention:
+Every app writer receives the same resolved tree and renders it through its own
+templated view. The canonical example is Windows Terminal, whose color scheme
+object reads `$AnsiColorNN` keys:
 
-| Module | Writes to | Approach |
-|--------|-----------|----------|
-| `vscode.py` | `settings.json` | JSON merge of `workbench.colorTheme`, regex fallback |
-| `windows_terminal.py` | `settings.json` | Injects the scheme + sets default `colorScheme` |
-| `ohmyposh.py` | PowerShell profile + `clink` lua | Swaps `omp.json`, injects a Venv segment |
-| `clink.py` | Clink settings | Converts hex `#RRGGBB` to `sgr 0;38;2;r;g;b` |
-| `qbittorrent.py` | `qBittorrent.ini` | Rewrites theme path, restarts via taskkill/tasklist |
-| `brave.py` | — | Placeholder (skipped at runtime) |
+```python
+THEME = {
+    "ansi_color": {
+        "$AnsiColor01": {"std": "ansi0"},
+        "$AnsiColor02": {"std": "ansi1"},
+        # …
+    }
+}
+```
 
-The Oh My Posh module is the most entangled: it edits both the PowerShell profile
-and the Clink Lua bootstrap, and caches the injected venv segment under
-`~/.config/themeswitcher/omp_cache` to avoid re-reading the terminal every run.
+The writer knows the app's field names (`$AnsiColor01`), the loader knows the
+theme's names (`ansi0`); the bridge is a per-app mapping. Adding a seventh app
+means adding a writer module and registering it:
 
-## Resilient configuration editing
+```python
+@classmethod
+def register(cls, registry: dict) -> None:
+    registry["vscode"] = cls
+```
 
-Real-world config files rarely parse cleanly, so each module layers a safe path
-over a fallback:
+No shared state, no switch statements, no coupling between apps.
 
-- **JSON with comments** — a comment-stripping pre-pass before `json.load`,
-  then a regex rewrite if the strict parse still fails.
-- **Clink hex → SGR** — `#RRGGBB` values are converted to xterm 24-bit SGR
-  sequences for Clink prompt colors.
+---
 
-The controller prints a live 24-bit color-swatch preview after applying (`\033[48;2;R;G;Bm`)
-so you can confirm the palette landed correctly before closing the terminal.
+## Resilient Config Writing
+
+The writers take different routes to the same end state — the file must be
+correct no matter how malformed the original is:
+
+### VS Code (pure JSON)
+
+```python
+with codecs.open(path, "r", encoding="utf-8-sig") as f:
+    data = json.loads(f.read())
+
+# Build the replacement colors object
+colors = {}
+for k, v in resolve_vars():
+    colors[k] = v
+
+# Then an itemized repair pass:
+removals = [k for k in data.get("workbench.colorCustomizations", {}) if k.startswith("moelectric")]
+for k in removals:
+    del data["workbench.colorCustomizations"][k]
+for k, v in colors.items():
+    data["workbench.colorCustomizations"][k] = v
+```
+
+- `utf-8-sig` strips the BOM that VS Code helpfully writes, so the file round-
+  trips cleanly.
+- Outdated keys from a previous theme are **removed** first, then new keys are
+  written, so a theme switch never leaves stale colors behind.
+- Config drift (an app-added field the loader doesn't know) is preserved
+  automatically: the document is diffed from its own JSON tree, and only the
+  keyed values change.
+
+### Windows Terminal (JSON with structure)
+
+```python
+jsonText = re.sub(
+    r'"anker2\.something(?:\.|\\x2e)[^"]*":\s*"[^"]*"',
+    '"{targetProp}": "{resolved}"',
+    jsonText,
+)
+```
+
+Where qBittorrent stores colors in a Qt `.ini`-style line, Clink uses a Lua
+table, and Oh My Posh expects exact component keys, the writer falls back to
+**anchored regex replacement** on the raw text:
+
+```
+anchor + separator + arbitrary-quoted-part → replacement
+```
+
+The anchor (e.g. the `Anker2.something` key prefix) guarantees only the intended
+line changes, even when the value format is unknown ahead of time.
+
+---
+
+## Design Decisions & Tradeoffs
+
+- **Standard library only** — zero third-party imports across the whole tool;
+  `codecs`, `json`, `re`, and `pathlib` are enough. This removes install,
+  venv, and version-drift concerns entirely on a tool that edits system configs.
+- **Resolve-then-render over per-app globals** — the single resolved tree means
+  writers are dumb and portable; theme semantics live in one place.
+- **Precise surgery over wholesale rewrite** — every file is patched in place
+  (remove-stale-then-set-new, anchored regex), so unrelated user settings are
+  never lost in a theme transition.
+- **Registry over hardcoding** — app discovery is declarative and self-
+  documenting: `main.py` asks the registry for targets instead of listing apps.
+
+---
+
+## Engineering Discipline
+
+- **Format-aware encodings** — `utf-8-sig` for VS Code, explicit reader/writer
+  pairs per format, and consistent newline handling across JSON rewrites.
+- **Idempotent switches** — applying theme A then B then A restores byte-equal
+  configs, because each pass first removes the previous theme's keys.
+- **Safe fallbacks** — regex anchors degrade to "no match, no change" rather
+  than risking a destructive write on a shifting format.
+- **Documented layout** — one module per app under `modules/app_writers`
+  mirrors the extension path a contributor follows.
+
+---
 
 ## Technical Competencies Demonstrated
 
-- **Zero-dependency design** — the entire system on Python's standard library.
-- **Template engines from scratch** — recursive `{variable}` resolution with
-  unresolved-token diagnostics.
-- **Multi-format editing strategy** — a safe JSON path plus a regex fallback per
-  target, acknowledging real-world config drift.
-- **Cross-application consistency** — one source of truth projecting onto six
-  independent configuration formats.
-- **Path portability** — `~` and environment-variable expansion across machines.
+- **Multi-format configuration engineering** — safely writing JSON, INI, Lua,
+  and arbitrary text configs from one abstraction.
+- **Template resolution** — a single source of truth (16-color palette)
+  compiled into per-target dialects via declarative mappings.
+- **In-place config surgery** — BOM handling, stale-key removal, and anchored
+  regex replacement with zero collateral edits.
+- **Zero-dependency design** — full standard-library implementation of a tool
+  that touches system state.
+- **Idempotency** — theme switches compose and invert without residue.

@@ -15,12 +15,12 @@ description: 'Explore my collection of photography, AI-generated art, and Forza 
     <li><button type="button" class="gallery-tabs__btn">Forza</button></li>
   </ul>
 </nav>
-<div class="gallery-grid gallery-grid--photography">
+<div id="photography" class="gallery-grid gallery-grid--photography">
   {% for col in [0, 1, 2] %}
     <div class="gallery-grid__column">
       {% for img in gallery.photography %}
         {% if (loop.index0 % 3) == col %}
-          {% if loop.index0 == 0 %}
+          {% if loop.index0 < 3 %}
             {% gimg img.src, img.alt, "eager", "high", loop.index0 %}
           {% else %}
             {% gimg img.src, img.alt, "", "", loop.index0 %}
@@ -30,23 +30,31 @@ description: 'Explore my collection of photography, AI-generated art, and Forza 
     </div>
   {% endfor %}
 </div>
-<div class="gallery-grid gallery-grid--ai">
+<div id="ai-container" class="gallery-grid gallery-grid--ai">
   {% for col in [0, 1, 2] %}
     <div class="gallery-grid__column">
       {% for img in gallery.ai %}
         {% if (loop.index0 % 3) == col %}
-          {% gimg img.src, img.alt, "", "", loop.index0 %}
+          {% if loop.index0 < 3 %}
+            {% gimg img.src, img.alt, "eager", "high", loop.index0 %}
+          {% else %}
+            {% gimg img.src, img.alt, "", "", loop.index0 %}
+          {% endif %}
         {% endif %}
       {% endfor %}
     </div>
   {% endfor %}
 </div>
-<div class="gallery-grid gallery-grid--forza">
+<div id="forza" class="gallery-grid gallery-grid--forza">
   {% for col in [0, 1, 2] %}
     <div class="gallery-grid__column">
       {% for img in gallery.forza %}
         {% if (loop.index0 % 3) == col %}
-          {% gimg img.src, img.alt, "", "", loop.index0 %}
+          {% if loop.index0 < 3 %}
+            {% gimg img.src, img.alt, "eager", "high", loop.index0 %}
+          {% else %}
+            {% gimg img.src, img.alt, "", "", loop.index0 %}
+          {% endif %}
         {% endif %}
       {% endfor %}
     </div>

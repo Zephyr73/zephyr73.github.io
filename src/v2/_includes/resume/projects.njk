@@ -1,0 +1,40 @@
+<!-- ── HIGHLIGHTED PROJECTS / EXPERIENCE ─────────────────────────────── -->
+<section class="resume-section resume-section--experience">
+  <div class="section-title-wrap">
+    <h2 class="section-heading">
+      <span class="print-only">Experience</span><span class="screen-only">Key Technical Projects</span>
+    </h2>
+    <span class="section-rule"></span>
+  </div>
+
+  <div class="resume-projects-list">
+    {% for proj in projects %}
+    <div class="resume-project-item">
+      <div class="project-item-top">
+        <h3 class="project-item-name">
+          {% if proj.url %}
+          <a href="{{ proj.url }}">{{ proj.title | safe }}</a>
+          {% else %}
+          {{ proj.title | safe }}
+          {% endif %}
+        </h3>
+        <span class="project-item-date">{{ proj.date | safe }}</span>
+      </div>
+      {% if proj.tags %}
+      <div class="project-item-tags">
+        {% for tag in proj.tags %}
+        <span class="stack-pill">{{ tag | safe }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if proj.bullets %}
+      <ul class="project-bullet-list">
+        {% for bullet in proj.bullets %}
+        <li>{{ bullet | safe }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>

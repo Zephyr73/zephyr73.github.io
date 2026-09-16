@@ -22,7 +22,6 @@
 @import './pages/_home.css';
 @import './pages/_about.css';
 @import './pages/_projects.css';
-@import './pages/_wallpapersync.css';
 @import './pages/_gallery.css';
 @import './pages/_gallery-detail.css';
 @import './pages/_404.css';
@@ -45,4 +44,7 @@
   --color-accent: var(--clr-link-visited);
   --color-code-bg: var(--clr-code-bg);
   --color-code-fg: var(--clr-code-text);
+
+  --ease-default: ease;
+  --ease-in-default: ease-in;
 }

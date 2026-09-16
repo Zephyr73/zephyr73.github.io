@@ -421,9 +421,9 @@ export function createFileExpApp(initialPath = '/') {
     if (selectedItemNode) {
       const sizeStr =
         selectedItemNode.type === 'file' ? ` (${selectedItemNode.size || '0 B'})` : '';
-      statusbar.innerHTML = `<span>Selected: <strong style="color:var(--cp-white)">${selectedItemNode.name}</strong>${sizeStr}</span><span style="color:var(--cp-dim);font-size:9px">[ENTER] Open &bull; [ESC] Deselect</span>`;
+      statusbar.innerHTML = `<span>Selected: <strong style="color:var(--cp-white)">${selectedItemNode.name}</strong>${sizeStr}</span><span style="color:var(--cp-dim);font-size:9px">[ENTER] Open • [ESC] Deselect</span>`;
     } else {
-      statusbar.innerHTML = `<span>${count} item${count === 1 ? '' : 's'}</span><span style="color:var(--cp-dim);font-size:9px">[DBL-CLICK] Open &bull; [SPACE] Select</span>`;
+      statusbar.innerHTML = `<span>${count} item${count === 1 ? '' : 's'}</span><span style="color:var(--cp-dim);font-size:9px">[DBL-CLICK] Open • [SPACE] Select</span>`;
     }
   }
 

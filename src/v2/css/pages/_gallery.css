@@ -178,7 +178,6 @@
 
   /* ── Full-width gallery layout on large screens ──────────────────────── */
   @media (min-width: 769px) {
-    body.is-expanded.page--gallery .page__content,
     body.page--gallery-detail .page__content {
       max-width: calc(100vw - 10%);
     }
