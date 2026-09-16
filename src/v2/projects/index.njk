@@ -22,7 +22,9 @@ description: 'Software development, systems architecture, and engineering projec
       <article class="project-card">
         <div class="project-card__header">
           <span class="project-card__tag">
-            {% if 'home-network' in project.url %}
+            {% if project.data.category %}
+              {{ project.data.category }}
+            {% elseif 'home-network' in project.url %}
               Infrastructure &bull; High Availability
             {% elseif 'wallpapersync' in project.url %}
               Python &bull; Linux Automation
