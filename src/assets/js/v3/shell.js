@@ -335,6 +335,24 @@ export function openApp(appNameOrNode, pathArg, titleArg) {
     title = titleArg || pathArg;
     filePath = pathArg;
   }
+
+  // Singleton check: if window is already open for this file or named app, bring to front
+  for (const [existingId, info] of openWindows.entries()) {
+    const fileMatch = filePath && info.filePath === filePath;
+    const appMatch = !filePath && info.title === title;
+    if (fileMatch || appMatch) {
+      if (currentMode === 'desktop' && info.state === 'split') {
+        popUp(existingId);
+      } else if (info.state === 'floating') {
+        if (info.el.classList.contains('window--minimized')) {
+          minimizeWindow(existingId);
+        }
+      }
+      focusWindow(existingId);
+      return existingId;
+    }
+  }
+
   const id = ++windowIdCounter;
   const appEl = appFactory();
   if (!appEl) return;
@@ -389,81 +407,91 @@ function _buildWindow(id, appEl, title, filePath, state) {
   // Buttons
   const btns = document.createElement('div');
   btns.className = 'window-titlebar-btns';
-  // Pop-out: only in TTY split state
-  if (state === 'split') {
-    const popupBtn = document.createElement('button');
-    popupBtn.className = 'window-btn window-btn--popup';
-    popupBtn.title = 'Pop out to floating window';
-    popupBtn.setAttribute('aria-label', 'Pop window out to floating');
-    popupBtn.textContent = '[POP]';
-    popupBtn.addEventListener('click', () => popUp(id));
-    btns.appendChild(popupBtn);
-  }
-  // Pop-in: only for floating windows in TTY mode
-  if (state === 'floating' && currentMode === 'tty') {
-    const popinBtn = document.createElement('button');
-    popinBtn.className = 'window-btn window-btn--popin';
-    popinBtn.id = `popin-btn-${id}`;
-    popinBtn.title = 'Pop back into split pane';
-    popinBtn.setAttribute('aria-label', 'Pop window into split pane');
-    popinBtn.textContent = '[IN]';
-    popinBtn.addEventListener('click', () => popIn(id));
-    btns.appendChild(popinBtn);
-  }
-  // Floating-only: maximize and minimize buttons
-  if (state === 'floating') {
-    const minBtn = document.createElement('button');
-    minBtn.className = 'window-btn window-btn--minimize';
-    minBtn.title = 'Minimize';
-    minBtn.setAttribute('aria-label', 'Minimize window');
-    minBtn.textContent = '[_]';
-    minBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      minimizeWindow(id);
-    });
-    btns.appendChild(minBtn);
-    const maxBtn = document.createElement('button');
-    maxBtn.className = 'window-btn window-btn--maximize';
-    maxBtn.title = 'Maximize / Restore';
-    maxBtn.setAttribute('aria-label', 'Maximize window');
-    maxBtn.textContent = '[M]';
-    maxBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      maximizeWindow(id);
-    });
-    btns.appendChild(maxBtn);
-  }
+
+  // Pop-in button: returns floating window to split pane (visibility handled via CSS)
+  const popinBtn = document.createElement('button');
+  popinBtn.className = 'window-btn window-btn--popin';
+  popinBtn.id = `popin-btn-${id}`;
+  popinBtn.title = 'Pop back into split pane';
+  popinBtn.setAttribute('aria-label', 'Pop window into split pane');
+  popinBtn.textContent = '[IN]';
+  popinBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    popIn(id);
+  });
+  btns.appendChild(popinBtn);
+
+  // Pop-out button: pops split window out to floating (visibility handled via CSS)
+  const popupBtn = document.createElement('button');
+  popupBtn.className = 'window-btn window-btn--popup';
+  popupBtn.title = 'Pop out to floating window';
+  popupBtn.setAttribute('aria-label', 'Pop window out to floating');
+  popupBtn.textContent = '[POP]';
+  popupBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    popUp(id);
+  });
+  btns.appendChild(popupBtn);
+
+  // Minimize button
+  const minBtn = document.createElement('button');
+  minBtn.className = 'window-btn window-btn--minimize';
+  minBtn.title = 'Minimize';
+  minBtn.setAttribute('aria-label', 'Minimize window');
+  minBtn.textContent = '[_]';
+  minBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    minimizeWindow(id);
+  });
+  btns.appendChild(minBtn);
+
+  // Maximize button
+  const maxBtn = document.createElement('button');
+  maxBtn.className = 'window-btn window-btn--maximize';
+  maxBtn.title = 'Maximize / Restore';
+  maxBtn.setAttribute('aria-label', 'Maximize window');
+  maxBtn.textContent = '[M]';
+  maxBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    maximizeWindow(id);
+  });
+  btns.appendChild(maxBtn);
+
   // Close button (always)
   const closeBtn = document.createElement('button');
   closeBtn.className = 'window-btn window-btn--close';
   closeBtn.title = 'Close';
   closeBtn.setAttribute('aria-label', 'Close window');
   closeBtn.textContent = '[X]';
-  closeBtn.addEventListener('click', () => closeWindow(id));
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeWindow(id);
+  });
   btns.appendChild(closeBtn);
+
   tbar.appendChild(btns);
   win.appendChild(tbar);
+
   // Body
   const winBody = document.createElement('div');
   winBody.className = 'window-body';
   winBody.appendChild(appEl);
-  if (state === 'floating') {
-    const overlay = document.createElement('div');
-    overlay.className = 'window-iframe-overlay';
-    winBody.appendChild(overlay);
-  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'window-iframe-overlay';
+  winBody.appendChild(overlay);
+
   win.appendChild(winBody);
-  // Drag (floating only)
-  if (state === 'floating') {
-    _makeDraggable(win, tbar);
-    // Resize handles
-    ['e', 's', 'se'].forEach((dir) => {
-      const handle = document.createElement('div');
-      handle.className = `window-resize-${dir}`;
-      win.appendChild(handle);
-      _makeResizeHandle(win, handle, dir);
-    });
-  }
+
+  // Drag & resize setup (behavior guarded by .window--floating class checks)
+  _makeDraggable(win, tbar);
+  ['e', 's', 'se'].forEach((dir) => {
+    const handle = document.createElement('div');
+    handle.className = `window-resize-${dir}`;
+    win.appendChild(handle);
+    _makeResizeHandle(win, handle, dir);
+  });
+
   // Click to focus
   win.addEventListener('mousedown', () => focusWindow(id), true);
   return win;
@@ -515,11 +543,22 @@ function _openSplit(id, appEl, title, filePath) {
   const win = _buildWindow(id, appEl, title, filePath, 'split');
 
   // Set up splitPane visibility & initial width if this is the first pane being opened
+  _insertSplitWindow(win);
+  openWindows.set(id, { el: win, state: 'split', appName: title, title, filePath });
+  _addAppTab(id, title);
+
+  // Focus the newly opened split window
+  focusWindow(id);
+}
+/* ─────────────────────────────────────────────────────────────
+   SPLIT TREE HELPER
+───────────────────────────────────────────────────────────── */
+function _insertSplitWindow(win) {
   const isFirst = !splitPane.classList.contains('visible');
   if (isFirst) {
     splitPane.innerHTML = '';
     splitPane.classList.add('visible');
-    resizeSplit.classList.remove('hidden');
+    resizeSplit?.classList.remove('hidden');
 
     // Default: cap split pane at 50% of available TTY area width
     const totalW = window.innerWidth;
@@ -579,12 +618,6 @@ function _openSplit(id, appEl, title, filePath) {
     // If it's the absolute first window, append directly to splitPane
     splitPane.appendChild(win);
   }
-
-  openWindows.set(id, { el: win, state: 'split', appName: title, title, filePath });
-  _addAppTab(id, title);
-
-  // Focus the newly opened split window
-  focusWindow(id);
 }
 /* ─────────────────────────────────────────────────────────────
    SPLIT TREE CLEANUP HELPER
@@ -646,38 +679,64 @@ export function popUp(id) {
   const winEl = info.el;
   const parentEl = winEl.parentElement;
 
-  // Extract content
-  const appBody = winEl.querySelector('.window-body');
-  const appContent = appBody?.firstElementChild;
-
-  // Remove window from DOM
+  // Detach from split tree & cleanup
   winEl.remove();
-
-  // Clean up the split tree
   _cleanupSplitTree(parentEl);
 
-  // Re-create as floating
-  if (appContent) {
-    const newId = ++windowIdCounter;
-    openWindows.delete(id);
-    _removeAppTab(id);
-    _openFloating(newId, appContent, info.title, info.filePath);
-  }
+  // In-place transform to floating
+  winEl.classList.remove('window--split');
+  winEl.classList.add('window--floating');
+  info.state = 'floating';
+
+  // Position and size for floating container
+  const W = Math.min(900, window.innerWidth - 80);
+  const H = Math.min(640, window.innerHeight - 80);
+  const L = Math.round((window.innerWidth - W) / 2) + (id % 5) * 20;
+  const T = Math.round((window.innerHeight - H) / 2) + (id % 5) * 20 - 20;
+  winEl.style.width = `${W}px`;
+  winEl.style.height = `${H}px`;
+  winEl.style.left = `${L}px`;
+  winEl.style.top = `${T}px`;
+  winEl.dataset.maximized = '0';
+  const maxBtn = winEl.querySelector('.window-btn--maximize');
+  if (maxBtn) maxBtn.textContent = '[M]';
+
+  floatCont.appendChild(winEl);
+  playSound('open');
+  focusWindow(id);
 }
 export function popIn(id) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'floating' || currentMode !== 'tty') return;
-  const winBody = info.el.querySelector('.window-body');
-  const appContent = winBody?.firstElementChild;
-  // Remove floating
-  info.el.remove();
-  openWindows.delete(id);
-  _removeAppTab(id);
-  // Re-open in split
-  if (appContent) {
-    const newId = ++windowIdCounter;
-    _openSplit(newId, appContent, info.title, info.filePath);
+
+  const winEl = info.el;
+
+  // Restore if maximized or minimized
+  if (winEl.dataset.maximized === '1') {
+    winEl.dataset.maximized = '0';
+    const maxBtn = winEl.querySelector('.window-btn--maximize');
+    if (maxBtn) maxBtn.textContent = '[M]';
   }
+  if (winEl.classList.contains('window--minimized')) {
+    winEl.classList.remove('window--minimized');
+    document.getElementById(`apptab-${id}`)?.classList.remove('minimized');
+  }
+
+  // Clear inline position styles from floating mode
+  winEl.style.width = '';
+  winEl.style.height = '';
+  winEl.style.left = '';
+  winEl.style.top = '';
+  winEl.style.zIndex = '';
+
+  // In-place transform to split
+  winEl.classList.remove('window--floating');
+  winEl.classList.add('window--split');
+  info.state = 'split';
+
+  _insertSplitWindow(winEl);
+  playSound('open');
+  focusWindow(id);
 }
 /* ─────────────────────────────────────────────────────────────
    MAXIMIZE / MINIMIZE
@@ -799,6 +858,7 @@ export function focusWindow(id) {
 function _makeDraggable(win, handle) {
   let startX, startY, origLeft, origTop;
   handle.addEventListener('mousedown', (e) => {
+    if (!win.classList.contains('window--floating')) return; // don't drag split windows
     if (e.target.closest('.window-btn')) return; // don't drag on button clicks
     if (win.dataset.maximized === '1') return; // don't drag if maximized
     e.preventDefault();
@@ -810,8 +870,10 @@ function _makeDraggable(win, handle) {
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      win.style.left = `${Math.max(0, origLeft + dx)}px`;
-      win.style.top = `${Math.max(0, Math.min(window.innerHeight - 40, origTop + dy))}px`;
+      const maxL = Math.max(0, window.innerWidth - 60);
+      const maxT = Math.max(0, window.innerHeight - 60);
+      win.style.left = `${Math.max(0, Math.min(maxL, origLeft + dx))}px`;
+      win.style.top = `${Math.max(0, Math.min(maxT, origTop + dy))}px`;
     }
     function onUp() {
       document.removeEventListener('mousemove', onMove);
@@ -824,6 +886,7 @@ function _makeDraggable(win, handle) {
 }
 function _makeResizeHandle(win, handle, dir) {
   handle.addEventListener('mousedown', (e) => {
+    if (!win.classList.contains('window--floating')) return; // don't resize split windows
     if (win.dataset.maximized === '1') return; // don't resize if maximized
     e.preventDefault();
     e.stopPropagation();
@@ -860,9 +923,32 @@ function _addAppTab(id, title) {
   tab.addEventListener('click', () => {
     playSound('click');
     const info = openWindows.get(id);
-    if (info?.el?.classList.contains('window--minimized')) {
-      minimizeWindow(id); // toggles restore
-    } else {
+    if (!info) return;
+
+    if (currentMode === 'desktop' && info.state === 'split') {
+      // In Desktop mode, clicking a split-pane app seamlessly pops it out to desktop floating!
+      popUp(id);
+      focusWindow(id);
+      return;
+    }
+
+    if (info.state === 'floating') {
+      const isMinimized = info.el.classList.contains('window--minimized');
+      const isFocused = info.el.classList.contains('focused');
+      if (isMinimized) {
+        minimizeWindow(id);
+        focusWindow(id);
+      } else if (isFocused) {
+        // Active window clicked on taskbar: toggle minimize
+        minimizeWindow(id);
+      } else {
+        // Window in background: bring to front and focus
+        focusWindow(id);
+      }
+      return;
+    }
+
+    if (currentMode === 'tty' && info.state === 'split') {
       focusWindow(id);
     }
   });

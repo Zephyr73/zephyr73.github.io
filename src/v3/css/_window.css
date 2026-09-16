@@ -197,6 +197,32 @@
     border-color: var(--cp-green);
   }
 
+  /* Pop-in & Pop-out button contextual visibility */
+  #mode-desktop .window-btn--popin,
+  .window--split .window-btn--popin {
+    display: none !important;
+  }
+
+  #mode-tty .window--floating .window-btn--popin {
+    display: flex !important;
+  }
+
+  .window--floating .window-btn--popup {
+    display: none !important;
+  }
+
+  .window--split .window-btn--popup {
+    display: flex !important;
+  }
+
+  .window--split .window-btn--minimize,
+  .window--split .window-btn--maximize,
+  .window--split .window-resize-e,
+  .window--split .window-resize-s,
+  .window--split .window-resize-se {
+    display: none !important;
+  }
+
   .window-btn--minimize {
     color: var(--cp-amber);
   }

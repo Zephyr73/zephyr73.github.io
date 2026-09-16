@@ -1,0 +1,148 @@
+/* Page: 404 / Error Diagnostic */
+
+@layer components {
+  .page--404 .page__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 200px);
+    padding: 2.5rem 1.25rem;
+  }
+
+  .error-card {
+    width: 100%;
+    max-width: 680px;
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+  }
+
+  .error-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--clr-accent), transparent);
+  }
+
+  .error-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--clr-border);
+    background: var(--clr-surface-2);
+    font-family: var(--font-code);
+    font-size: 0.78rem;
+    color: var(--clr-text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .error-card__tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .error-card__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--clr-accent);
+    box-shadow: 0 0 8px var(--clr-accent);
+    animation: status-pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes status-pulse {
+    0%,
+    100% {
+      opacity: 0.6;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+
+  .error-card__body {
+    padding: 32px 28px;
+  }
+
+  .error-card__glitch-wrap {
+    margin-bottom: 16px;
+  }
+
+  .error-card__code {
+    font-family: var(--font-code);
+    font-size: clamp(3.5rem, 8vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--clr-accent);
+    text-shadow: 0 0 25px var(--clr-accent-glow);
+    margin: 0;
+  }
+
+  .error-card__title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 3vw, 1.65rem);
+    font-weight: 700;
+    color: var(--clr-body-text);
+    margin: 14px 0 8px 0;
+    letter-spacing: -0.02em;
+  }
+
+  .error-card__desc {
+    font-family: var(--font-regular);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--clr-text-muted);
+    margin: 0 0 24px 0;
+  }
+
+  .error-card__telemetry {
+    background: var(--clr-code-bg);
+    border: 1px solid var(--clr-border);
+    padding: 16px;
+    margin-bottom: 28px;
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--clr-text-muted);
+  }
+
+  .error-card__telemetry-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .error-card__prompt {
+    color: var(--clr-accent);
+    user-select: none;
+  }
+
+  .error-card__telemetry-val {
+    color: var(--clr-body-text);
+  }
+
+  .error-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (max-width: 600px) {
+    .error-card__body {
+      padding: 24px 18px;
+    }
+    .error-card__actions .btn {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,74 @@
+---
+layout: base.njk
+permalink: /404.html
+title: 404 // File Not Found — Zephyr
+bodyClass: page--404
+pageId: 404
+noMarkdownWrapper: true
+description: 'Error 404: The requested resource or memory segment could not be found.'
+---
+
+<div class="error-card">
+  <div class="error-card__header">
+    <div class="error-card__tag">
+      <span class="error-card__dot"></span>
+      <span>SYSTEM_DIAGNOSTIC // STATUS_CODE_404</span>
+    </div>
+    <span class="error-card__host">ZEPHYR_OS</span>
+  </div>
+
+  <div class="error-card__body">
+    <div class="error-card__glitch-wrap">
+      <h1 class="error-card__code">404</h1>
+      <h2 class="error-card__title">Resource Not Found // ERR_RESOLVE_FAILED</h2>
+    </div>
+
+    <p class="error-card__desc">
+      The requested memory segment or path could not be resolved within the local filesystem tree. It may have been moved, renamed, or de-indexed.
+    </p>
+
+    <div class="error-card__telemetry">
+      <div class="error-card__telemetry-line">
+        <span class="error-card__prompt">[SYS_TRACE]</span>
+        <span class="error-card__telemetry-val" id="telemetry-url">TARGET: /...</span>
+      </div>
+      <div class="error-card__telemetry-line">
+        <span class="error-card__prompt">[SYS_FLAGS]</span>
+        <span>STATUS: 404_NOT_FOUND | VFS_ERR_NULL_NODE</span>
+      </div>
+      <div class="error-card__telemetry-line">
+        <span class="error-card__prompt">[SYS_ACTION]</span>
+        <span>Recommended fallback: return to cluster root or launch Desktop V3.</span>
+      </div>
+    </div>
+
+    <div class="error-card__actions">
+      <a href="/v2/" class="btn btn--primary">
+        <span>Return to Home</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="/" class="btn btn--secondary">
+        <span>Launch V3 Desktop</span>
+      </a>
+      <a href="/projects/" class="btn btn--secondary">
+        <span>View Projects</span>
+      </a>
+      <a href="/about/" class="btn btn--ghost">
+        <span>About &bull; Resume</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    try {
+      var targetEl = document.getElementById('telemetry-url');
+      if (targetEl && window.location.pathname) {
+        targetEl.textContent = 'TARGET: ' + window.location.pathname;
+      }
+    } catch (e) {}
+  })();
+</script>
