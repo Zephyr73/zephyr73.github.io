@@ -214,6 +214,11 @@ export function createBrowserApp(initialPath = '/v2/', initialTitle = 'Portfolio
           updateActiveMenuHighlight(relativePath);
         }
         renderTabs();
+
+        const curV3Theme = localStorage.getItem('v3-theme') || 'green';
+        if (!iframe.contentWindow.sessionStorage?.getItem('v2-embedded-accent')) {
+          iframe.contentWindow.applyTheme?.(curV3Theme, null, true);
+        }
       } catch (err) {
         // Fallback for cross-origin or load errors
         console.warn('Iframe load error or cross-origin access restricted: ', err);

@@ -1,4 +1,4 @@
-/* CRT effects: scanlines, vignette, phosphor bloom, flicker animation. */
+/* CRT effects: scanlines, vignette, phosphor bloom, flicker and glitch animation. */
 
 @layer components {
   body::before {
@@ -11,8 +11,9 @@
       to bottom,
       transparent 0px,
       transparent 2px,
-      rgba(0, 0, 0, 0.12) 2px,
-      rgba(0, 0, 0, 0.12) 4px
+      rgba(0, 0, 0, 0.18) 2px,
+      rgba(0, 0, 0, 0.24) 3px,
+      transparent 4px
     );
     opacity: 0;
     transition: opacity var(--t-med);
@@ -25,8 +26,8 @@
     z-index: 9998;
     pointer-events: none;
     background:
-      radial-gradient(circle at center, var(--cp-crt-glow) 0%, transparent 50%),
-      radial-gradient(circle at center, transparent 70%, rgba(0, 0, 0, 0.35) 100%);
+      radial-gradient(circle at center, var(--cp-crt-glow) 0%, transparent 60%),
+      radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
     opacity: 0;
     transition: opacity var(--t-med);
   }
@@ -39,18 +40,23 @@
   }
 
   body.crt-active {
-    animation: crt-flicker 8s infinite;
+    animation:
+      crt-flicker 8s infinite,
+      crt-glitch 24s infinite;
   }
 
   body.crt-active * {
     text-shadow:
-      0 0 3px var(--cp-green-glow),
-      0 0 8px var(--cp-green-glow);
+      0 0 2px var(--cp-green-glow),
+      0 0 6px var(--cp-green-glow),
+      0 0 12px var(--cp-green-glow);
   }
 
   body.crt-active .window-titlebar,
   body.crt-active .status-bar {
-    text-shadow: 0 0 5px var(--cp-green-glow);
+    text-shadow:
+      0 0 3px var(--cp-green-glow),
+      0 0 8px var(--cp-green-glow);
   }
 
   body.crt-active .window,
@@ -59,8 +65,8 @@
   body.crt-active .tty-nav-pane,
   body.crt-active .tty-split-pane {
     box-shadow:
-      0 0 8px var(--cp-green-glow),
-      inset 0 0 8px var(--cp-green-glow);
+      0 0 10px var(--cp-green-glow),
+      inset 0 0 10px var(--cp-green-glow);
   }
 
   @keyframes crt-flicker {
@@ -74,13 +80,30 @@
       filter: brightness(0.96);
     }
     94% {
-      filter: brightness(1.02);
+      filter: brightness(1.03);
     }
     95% {
       filter: brightness(0.97);
     }
     100% {
       filter: brightness(1);
+    }
+  }
+
+  @keyframes crt-glitch {
+    0%,
+    97.5%,
+    100% {
+      transform: translate(0, 0);
+    }
+    98% {
+      transform: translate(-1px, 0.5px);
+    }
+    98.5% {
+      transform: translate(1px, -0.5px);
+    }
+    99% {
+      transform: translate(0, 0);
     }
   }
 }

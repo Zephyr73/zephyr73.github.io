@@ -58,11 +58,13 @@
     background: var(--cp-bg-2);
     color: var(--cp-green);
     border-bottom: 2px solid var(--cp-green);
+    box-shadow: inset 2px 0 0 var(--cp-green);
   }
 
   .statusbar-tab.active-amber {
     color: var(--cp-amber);
     border-bottom: 2px solid var(--cp-amber);
+    box-shadow: inset 2px 0 0 var(--cp-amber);
   }
 
   .statusbar-tab svg {
@@ -107,7 +109,23 @@
     justify-content: center;
     font-size: 10px;
     color: var(--cp-dim);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
+    font-family: var(--font-mono);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 10px;
+  }
+
+  .statusbar-ticker {
+    display: inline-block;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .statusbar-ticker.fade {
+    opacity: 0;
+    transform: translateY(-4px);
   }
 
   .statusbar-tray {
@@ -148,6 +166,15 @@
   .tray-item .tray-value {
     font-size: 11px;
     font-weight: 700;
+  }
+
+  .tray-item .tray-meter {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--cp-green);
+    letter-spacing: -0.05em;
+    margin-left: 2px;
+    text-shadow: 0 0 4px var(--cp-green-glow);
   }
 
   .tray-item.style-btn {

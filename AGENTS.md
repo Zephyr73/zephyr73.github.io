@@ -34,6 +34,7 @@ npm run format       # Prettier write (**/*.{html,js,css,md})
 ## CSS Build
 
 Two Tailwind v4 entrypoints compiled by `tailwindcss` CLI (not Eleventy):
+
 - `src/v2/css/style.css` → `src/assets/css/style.css`
 - `src/v3/css/desktop.css` → `src/assets/css/desktop.css`
 
@@ -44,9 +45,11 @@ Compiled CSS files are **gitignored** — do not commit them. Prettier also igno
 ## Gallery Images
 
 Use the `gimg` Nunjucks async shortcode in V2 templates:
+
 ```
 {% gimg "photography/photo.jpg", "alt text", "eager", "high" %}
 ```
+
 Generates WebP + JPEG at 400/800/1200/1800 widths with `<picture>` srcset. Processes EXIF for device name overlay. Images must be in `src/assets/img/gallery/<subdir>/`.
 
 ## Linting / Formatting

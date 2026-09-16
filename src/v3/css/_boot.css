@@ -43,6 +43,57 @@
     flex: 1;
     overflow-y: auto;
     text-shadow: 0 0 4px var(--cp-green-glow);
+    font-family: var(--font-mono);
+  }
+
+  .boot-screen__ascii {
+    color: var(--cp-green);
+    font-size: 11px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    display: block;
+    text-shadow: 0 0 6px var(--cp-green-glow);
+  }
+
+  .log-tag-ok {
+    color: var(--cp-green);
+    font-weight: 700;
+  }
+
+  .log-tag-warn {
+    color: var(--cp-amber);
+    font-weight: 700;
+  }
+
+  .log-tag-info {
+    color: var(--cp-cyan);
+    font-weight: 700;
+  }
+
+  .log-tag-fail {
+    color: var(--cp-red);
+    font-weight: 700;
+  }
+
+  .boot-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background: var(--cp-green);
+    box-shadow: 0 0 6px var(--cp-green);
+    vertical-align: -2px;
+    margin-left: 4px;
+    animation: boot-blink 0.8s step-start infinite;
+  }
+
+  @keyframes boot-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
 
   .boot-screen__footer {

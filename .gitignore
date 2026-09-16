@@ -25,6 +25,9 @@ src/assets/js/script_old.js
 
 *.code-workspace
 sort.bat
+
+# Local planning notes
+implementation_plan.md
 .agents/skills/accessibility/SKILL.md
 .agents/skills/accessibility/references/patterns.md
 .agents/skills/agent-ui-design/SKILL.md

@@ -51,11 +51,56 @@
     border-color: var(--cp-green);
   }
 
+  .window.focused .window-titlebar {
+    border-top: 1px solid var(--cp-green);
+    background: color-mix(in srgb, var(--cp-green) 4%, var(--cp-bg-2));
+  }
+
   .window--floating.focused {
     box-shadow:
       0 0 0 1px var(--cp-border-2),
       0 4px 40px rgba(0, 0, 0, 0.9),
       0 0 30px rgba(0, 255, 65, 0.1);
+  }
+
+  .window-led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cp-dim);
+    flex-shrink: 0;
+    transition:
+      background var(--t-fast),
+      box-shadow var(--t-fast);
+  }
+
+  .window.focused .window-led {
+    background: var(--cp-green);
+    box-shadow: 0 0 6px var(--cp-green);
+    animation: window-led-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes window-led-pulse {
+    0%,
+    100% {
+      opacity: 0.8;
+      box-shadow: 0 0 4px var(--cp-green);
+    }
+    50% {
+      opacity: 1;
+      box-shadow: 0 0 8px var(--cp-green);
+    }
+  }
+
+  .window-titlebar-pid {
+    font-size: 9px;
+    color: var(--cp-dim);
+    letter-spacing: 0.06em;
+    font-family: var(--font-mono);
+    padding: 1px 4px;
+    border: 1px solid var(--cp-border);
+    margin-right: 4px;
+    flex-shrink: 0;
   }
 
   .window-titlebar {

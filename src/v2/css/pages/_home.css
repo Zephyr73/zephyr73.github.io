@@ -286,7 +286,9 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
   }
 
   @media (max-width: 480px) {
@@ -423,7 +425,9 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
   }
 
   .creative-card:hover {

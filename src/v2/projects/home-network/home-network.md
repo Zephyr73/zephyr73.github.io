@@ -1,8 +1,8 @@
 ---
 layout: base.njk
 permalink: /projects/home-network/
-title: "High-Availability Homelab & Hybrid Network Architecture"
-description: "Production-grade personal infrastructure featuring dual-resolver AdGuard DNS redundancy, automated Caddy reverse proxy routing, Proxmox VE LXC micro-segmentation with Intel QuickSync GPU passthrough, multi-daemon Docker orchestration, and zero-trust WireGuard mesh networking."
+title: 'High-Availability Homelab & Hybrid Network Architecture'
+description: 'Production-grade personal infrastructure featuring dual-resolver AdGuard DNS redundancy, automated Caddy reverse proxy routing, Proxmox VE LXC micro-segmentation with Intel QuickSync GPU passthrough, multi-daemon Docker orchestration, and zero-trust WireGuard mesh networking.'
 date: 2026-09-08
 tags: project
 ---
@@ -15,7 +15,7 @@ A low-power, 24/7 hybrid infrastructure engineered with enterprise operational d
 
 ## Executive Summary & Engineering Philosophy
 
-This project documents the architecture, configuration, and site reliability engineering (SRE) practices governing my personal production homelab and hybrid local network (`192.168.1.0/24`). 
+This project documents the architecture, configuration, and site reliability engineering (SRE) practices governing my personal production homelab and hybrid local network (`192.168.1.0/24`).
 
 Rather than deploying a single unmanaged monolithic server, this infrastructure is engineered around five fundamental production principles:
 
@@ -101,11 +101,11 @@ The physical topology operates on a single flat L2 broadcast domain (`192.168.1.
 
 To maintain predictability across container lifecycles and automated provisioning scripts, IP addresses within the `/24` subnet are strictly zoned by functional tier:
 
-| Address Range | Functional Zone | Gateway / DNS Policy | Security & Operational Notes |
-|---|---|---|---|
-| `192.168.1.2 – .99` | Family & Guest Endpoints | DNS: Router `.1` (Unfiltered) | Untrusted broadcast clients; direct IP access allowed for media (Jellyfin) without split-horizon dependencies. |
-| `192.168.1.100 – .199` | Virtualized Infrastructure (LXC) | DNS: Primary `.202`, Gateway: `.1` | **Container ID == IP Host Octet** (e.g. CT 104 = `192.168.1.104`). Static IP assigned inside container config, not via DHCP leases. |
-| `192.168.1.200 – .254` | Compute Nodes & Personal Hardware | DNS: AdGuard `.202` / `.102` | High-privilege endpoints; registered in Tailnet with cross-subnet routing enabled. |
+| Address Range          | Functional Zone                   | Gateway / DNS Policy               | Security & Operational Notes                                                                                                        |
+| ---------------------- | --------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `192.168.1.2 – .99`    | Family & Guest Endpoints          | DNS: Router `.1` (Unfiltered)      | Untrusted broadcast clients; direct IP access allowed for media (Jellyfin) without split-horizon dependencies.                      |
+| `192.168.1.100 – .199` | Virtualized Infrastructure (LXC)  | DNS: Primary `.202`, Gateway: `.1` | **Container ID == IP Host Octet** (e.g. CT 104 = `192.168.1.104`). Static IP assigned inside container config, not via DHCP leases. |
+| `192.168.1.200 – .254` | Compute Nodes & Personal Hardware | DNS: AdGuard `.202` / `.102`       | High-privilege endpoints; registered in Tailnet with cross-subnet routing enabled.                                                  |
 
 ### Perimeter Security & Port Forwarding Policy
 
@@ -140,18 +140,23 @@ DNS resolution is the most critical dependency in any self-hosted infrastructure
 ```
 
 ### 1. Dual-Resolver Hardware Distribution
+
 - **Primary Resolver (`192.168.1.202`)**: Runs natively on dedicated bare metal (Raspberry Pi Zero 2 W). Independent from the hypervisor; survives Proxmox reboots, maintenance windows, and host kernel updates.
 - **Secondary Resolver (`192.168.1.102`)**: Runs in an unprivileged Debian LXC container (CT102) on Proxmox.
 
 ### 2. Automated State Synchronization (`adguardhome-sync`)
+
 Running as a daemon on CT102 (`:8080`), `adguardhome-sync` performs continuous synchronization from the primary Pi node every 10 minutes:
+
 - DNS rewrite rules and local domains
 - Filter blocklists (AdGuard DNS filter, HaGeZi's Samsung Tracker Blocklist, EasyPrivacy)
 - Client identification tags and rate limits
 - Upstream configuration and DNSSEC settings
 
 ### 3. Upstream Encryption & Split-Horizon Routing
+
 Outbound DNS queries are dispatched concurrently in parallel mode over encrypted protocols to Quad9 and Cloudflare with DNSSEC validation enforced:
+
 - `https://dns.quad9.net/dns-query` and `tls://dns.quad9.net`
 - `https://1.1.1.1/dns-query` and `tls://1.1.1.1`
 - Bootstrap resolvers: `9.9.9.9`, `1.1.1.1`, `1.0.0.1`
@@ -165,7 +170,7 @@ Both resolvers maintain 12 authoritative split-horizon rewrites routing internal
 All web traffic destined for internal services is funneled through an unprivileged Debian LXC container (CT100) running **Caddy Server**.
 
 ```
-[ HTTPS / HTTP Client ] 
+[ HTTPS / HTTP Client ]
           |
           v
 +-------------------+       https://vault.lan       +--------------------------+
@@ -184,20 +189,21 @@ All web traffic destined for internal services is funneled through an unprivileg
 
 ### Production Route Table
 
-| Ingress Hostname | Upstream Target | SSL / TLS Policy | Operational Purpose |
-|---|---|---|---|
-| `https://vault.lan` | `https://192.168.1.204:8006` | Internal TLS, self-signed verification bypass | Secure access to Proxmox VE Web GUI |
-| `http://glance.archive` | `http://192.168.1.200:9000` | Plain HTTP reverse proxy | Workstation glance metrics dashboard |
-| `http://apollo.archive` | `https://192.168.1.200:47990` | Upstream TLS bypass | Sunshine game streaming web configuration |
-| `http://photos.vault` | `http://192.168.1.101:2283` | Internal HTTP reverse proxy | Immich photo management & ML pipeline |
-| `http://jellyfin.vault` | `http://192.168.1.104:8096` | Host networking passthrough | Jellyfin media streaming server |
-| `http://torrent.vault` | `http://192.168.1.104:8081` | Internal HTTP reverse proxy | Containerized qBittorrent Web UI |
-| `http://books.vault` | `http://192.168.1.104:5000` | Internal HTTP reverse proxy | Kavita digital library server |
-| `http://syncthing.archive` | `http://192.168.1.200:8384` | **502 Bad Gateway (Intentional)** | Bound strictly to `127.0.0.1` on `.200` |
-| `http://asf.archive` | `http://192.168.1.200:1242` | **502 Bad Gateway (Intentional)** | Bound strictly to `127.0.0.1` on `.200` |
+| Ingress Hostname           | Upstream Target               | SSL / TLS Policy                              | Operational Purpose                       |
+| -------------------------- | ----------------------------- | --------------------------------------------- | ----------------------------------------- |
+| `https://vault.lan`        | `https://192.168.1.204:8006`  | Internal TLS, self-signed verification bypass | Secure access to Proxmox VE Web GUI       |
+| `http://glance.archive`    | `http://192.168.1.200:9000`   | Plain HTTP reverse proxy                      | Workstation glance metrics dashboard      |
+| `http://apollo.archive`    | `https://192.168.1.200:47990` | Upstream TLS bypass                           | Sunshine game streaming web configuration |
+| `http://photos.vault`      | `http://192.168.1.101:2283`   | Internal HTTP reverse proxy                   | Immich photo management & ML pipeline     |
+| `http://jellyfin.vault`    | `http://192.168.1.104:8096`   | Host networking passthrough                   | Jellyfin media streaming server           |
+| `http://torrent.vault`     | `http://192.168.1.104:8081`   | Internal HTTP reverse proxy                   | Containerized qBittorrent Web UI          |
+| `http://books.vault`       | `http://192.168.1.104:5000`   | Internal HTTP reverse proxy                   | Kavita digital library server             |
+| `http://syncthing.archive` | `http://192.168.1.200:8384`   | **502 Bad Gateway (Intentional)**             | Bound strictly to `127.0.0.1` on `.200`   |
+| `http://asf.archive`       | `http://192.168.1.200:1242`   | **502 Bad Gateway (Intentional)**             | Bound strictly to `127.0.0.1` on `.200`   |
 
 ### Defense-in-Depth: The Loopback Isolation Pattern
-A critical security feature of this setup is the intentional loopback binding on workstation services (Syncthing and ArchiSteamFarm). 
+
+A critical security feature of this setup is the intentional loopback binding on workstation services (Syncthing and ArchiSteamFarm).
 
 Because these administrative tools lack multi-factor authentication or robust access control, their web listeners are bound strictly to `127.0.0.1` on the host machine. Although Caddy maintains configuration blocks for them, requests across the LAN fail with `HTTP 502 Bad Gateway`. This prevents accidental LAN-wide exposure while allowing immediate access via local loopback or authenticated SSH tunnels (`ssh -L 8384:127.0.0.1:8384 archive`).
 
@@ -208,6 +214,7 @@ Because these administrative tools lack multi-factor authentication or robust ac
 The core compute engine is hosted on a compact Dell OptiPlex Mini running **Proxmox Virtual Environment 9.2.2**. Rather than allocating heavy virtual machines with independent kernels, workloads are packaged into Debian 12/13 LXC containers.
 
 ### Hardware Storage Tiering
+
 Storage is logically segregated across physical media based on access latency, endurance, and capacity requirements:
 
 1. **`local` (70 GB SSD)**: Host OS filesystem, kernel packages, and Debian standard container templates (`debian-13-standard`).
@@ -233,6 +240,7 @@ Storage is logically segregated across physical media based on access latency, e
 ```
 
 ### Privilege Boundary Decisions
+
 - **Unprivileged Containers (`unprivileged: 1`)**: Used for network-facing edge services (CT100 Caddy, CT102 AdGuard, CT105 Dockhand). Root inside the container is mapped to an unprivileged UID on the host (`UID 100000+`), mitigating container-escape vulnerabilities.
 - **Privileged Containers (`unprivileged: 0`)**: Reserved exclusively for CT101 and CT104 where raw block device mounts (`vault-media`) and direct hardware character devices (`/dev/dri`) require native UID 0 mapping.
 
@@ -243,6 +251,7 @@ Storage is logically segregated across physical media based on access latency, e
 One of the highlights of this homelab is real-time, hardware-accelerated video transcoding in Jellyfin (CT104) without dedicating a discrete PCIe GPU or running a heavyweight VM.
 
 ### Linux cgroup Character Device Whitelisting
+
 To allow an LXC container direct access to the integrated Intel UHD graphics silicon, the host kernel character devices for DRM (Direct Rendering Manager) are mapped into container CT104's configuration (`/etc/pve/lxc/104.conf`):
 
 ```ini
@@ -278,20 +287,25 @@ Rather than operating a single Docker daemon across the hypervisor, Docker engin
 ```
 
 ### 1. Centralized Management via Dockhand & Hawser Agents
+
 - **CT105**: Hosts the **Dockhand** management platform (SvelteKit UI). Manages its own stack via native `/var/run/docker.sock`.
 - **CT101 & CT104**: Run lightweight **Hawser** agents listening on TCP port `2376`. Dockhand communicates securely with Hawser to aggregate container states, image updates, and resource telemetry into a single unified console.
 
 ### 2. Immutable Deployments: SHA-256 Digest Pinning
+
 In production environments, floating tags like `:latest` or `:16` can cause uncoordinated schema migrations and database corruption during automated pulls.
 
 In the Immich stack (`/root/immich/docker-compose.yml`), stateful datastore services are pinned strictly to immutable **SHA-256 image digests**:
+
 - **PostgreSQL**: Pinned by content hash to prevent major database upgrades without manual `pg_dump` migrations.
 - **Valkey** (Container `immich_redis`): Pinned by SHA-256 digest to prevent unintended breaking changes from newer upstream builds.
 
 ### 3. Systems Tuning: OOM Prevention & Disk Cache Calibration
+
 During high-throughput gigabit downloads in CT104, unconstrained torrent buffers caused rapid page-cache exhaustion, driving Linux memory pressure into kernel Out-Of-Memory (OOM) panics.
 
 To remediate this:
+
 1. **Memory Ceiling**: CT104 RAM was expanded from 2 GB to 3 GB with 2 GB swap (`pct set 104 -memory 3072 -swap 2048`).
 2. **Explicit Cache Limit**: qBittorrent disk cache was capped at 256 MiB using its REST API (`/api/v2/app/setPreferences` setting `Session\DiskCacheSize=256`).
 3. **Daemon Reload**: Docker daemon was bounced cleanly, enforcing stable 3 GiB limits across all media containers without memory creep.
@@ -314,13 +328,17 @@ To allow seamless remote engineering access from anywhere in the world without o
 ```
 
 ### Redundant Subnet Routers
+
 Both the bare-metal **Pi Zero 2 W** (`.202`) and the **Proxmox Hypervisor** (`.204`) advertise the local subnet prefix:
+
 ```bash
 tailscale up --advertise-routes=192.168.1.0/24
 ```
+
 If Proxmox undergoes maintenance, the Pi maintains continuous LAN route reachability for remote clients. If the Pi is disconnected, Proxmox routes the traffic.
 
 ### Split DNS & MagicDNS
+
 Remote mobile endpoints on the Tailnet can query internal service hostnames (`http://glance.archive:9000` or `http://photos.vault`) natively. Tailscale MagicDNS forwards local domain queries directly to the internal AdGuard resolvers (`.202` and `.102`).
 
 ---
@@ -330,6 +348,7 @@ Remote mobile endpoints on the Tailnet can query internal service hostnames (`ht
 True systems engineering is validated not when everything works, but during catastrophic failure. The network maintains an audited disaster recovery runbook detailing component recovery orders and declarative rebuild commands.
 
 ### Dependency Order Graph
+
 Recovery follows a strict linear dependency hierarchy:
 
 ```
@@ -353,15 +372,16 @@ Recovery follows a strict linear dependency hierarchy:
 
 ### Failure Mode & Effects Analysis (FMEA)
 
-| Failed Component | Blast Radius / System Impact | Severity | Recovery Procedure |
-|---|---|---|---|
-| **Pi Zero 2 W Dies** | Primary DNS fails; 1 of 2 Tailscale subnet routes lost. | **Low** | Secondary DNS (`.102`) handles queries instantly. Re-flash SD card, restore `AdGuardHome.yaml` from backup sync. |
-| **CT100 (Caddy) Dies** | Domain names fail (`502`). Direct IP access unaffected. | **Low** | Recreate CT100 (`pct create 100`), restore `/etc/caddy/Caddyfile`, restart systemd service. |
-| **CT104 (Media) Dies** | Jellyfin, qBittorrent, and Kavita offline. | **Medium** | Recreate CT104, attach GPU `/dev/dri` rules, run `docker compose up -d` in `/root/media-stack`. |
-| **Proxmox Host Dies** | All 6 CTs down; secondary DNS down; primary DNS on Pi holds. | **High** | Reinstall PVE 9.2.2, re-create storage pools (`local-lvm`, `vault-media`), execute declarative `pct create` script. |
-| **vault-media HDD Dies** | Media and Immich library lost. | **Critical** | Single point of failure (documented in self-audit). Requires replacement drive and data restoration. |
+| Failed Component         | Blast Radius / System Impact                                 | Severity     | Recovery Procedure                                                                                                  |
+| ------------------------ | ------------------------------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| **Pi Zero 2 W Dies**     | Primary DNS fails; 1 of 2 Tailscale subnet routes lost.      | **Low**      | Secondary DNS (`.102`) handles queries instantly. Re-flash SD card, restore `AdGuardHome.yaml` from backup sync.    |
+| **CT100 (Caddy) Dies**   | Domain names fail (`502`). Direct IP access unaffected.      | **Low**      | Recreate CT100 (`pct create 100`), restore `/etc/caddy/Caddyfile`, restart systemd service.                         |
+| **CT104 (Media) Dies**   | Jellyfin, qBittorrent, and Kavita offline.                   | **Medium**   | Recreate CT104, attach GPU `/dev/dri` rules, run `docker compose up -d` in `/root/media-stack`.                     |
+| **Proxmox Host Dies**    | All 6 CTs down; secondary DNS down; primary DNS on Pi holds. | **High**     | Reinstall PVE 9.2.2, re-create storage pools (`local-lvm`, `vault-media`), execute declarative `pct create` script. |
+| **vault-media HDD Dies** | Media and Immich library lost.                               | **Critical** | Single point of failure (documented in self-audit). Requires replacement drive and data restoration.                |
 
 ### Declarative Container Recreation Runbook
+
 Every container can be reconstructed from scratch on a clean Proxmox host using deterministic CLI commands:
 
 ```bash
@@ -387,6 +407,7 @@ EOF
 ```
 
 ### Configuration Backup Extraction Script
+
 Critical configuration files are backed up securely off-host using automated `pct pull` commands:
 
 ```bash

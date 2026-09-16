@@ -169,6 +169,19 @@ export function initDesktop({ openApp }) {
       document.addEventListener('mouseup', onMouseUp);
     });
   }
+
+  // Live uptime counter in notification widget
+  const uptimeEl = document.getElementById('notif-uptime');
+  if (uptimeEl) {
+    const startTime = performance.now();
+    setInterval(() => {
+      const elapsedSec = Math.floor((performance.now() - startTime) / 1000);
+      const hrs = String(Math.floor(elapsedSec / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((elapsedSec % 3600) / 60)).padStart(2, '0');
+      const secs = String(elapsedSec % 60).padStart(2, '0');
+      uptimeEl.textContent = `UP: ${hrs}:${mins}:${secs}`;
+    }, 1000);
+  }
 }
 
 function deselectAll() {

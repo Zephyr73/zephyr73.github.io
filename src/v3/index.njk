@@ -87,6 +87,14 @@ eleventyExcludeFromCollections: true
   <!-- ── DESKTOP MODE ──────────────────────────────────────── -->
   <div id="mode-desktop" class="mode-container active" role="main" aria-label="Desktop">
 
+    <!-- Scan sweep CRT beam -->
+    <div class="desktop-scan-sweep" aria-hidden="true"></div>
+
+    <!-- Decorative Corner HUD Badges -->
+    <div class="desktop-corner desktop-corner--tl" aria-hidden="true"><span>+</span> [SYS_READY // V3]</div>
+    <div class="desktop-corner desktop-corner--bl" aria-hidden="true"><span>+</span> SEC_LVL: GUEST</div>
+    <div class="desktop-corner desktop-corner--br" aria-hidden="true">NODE://127.0.0.1 <span>+</span></div>
+
     <!-- Desktop icon column (left) -->
     <div class="desktop-icons" id="desktop-icon-grid" role="list" aria-label="Desktop icons">
       <!-- Populated by desktop.js -->
@@ -94,14 +102,22 @@ eleventyExcludeFromCollections: true
 
     <!-- Notification widget (top-right) -->
     <div class="desktop-notification" id="desktop-notif" aria-live="polite">
-      <div class="desktop-notification__header">SYSTEM STATUS: ACTIVE</div>
+      <div class="desktop-notification__header">
+        <span class="desktop-notification__header-title">SYSTEM STATUS: ACTIVE</span>
+        <span class="desktop-notification__uptime" id="notif-uptime">UP: 00:00:00</span>
+      </div>
       <div class="desktop-notification__body">
-        Welcome to my interactive portfolio environment.<br><br>
-        <span class="notif-highlight">⬡ Navigation Quick Guide:</span><br>
-        • Double-click desktop icons to open applications.<br>
-        • Toggle the status bar tabs or use <kbd>Alt+1</kbd> / <kbd>Alt+2</kbd> to switch views.<br>
-        • Open files from the TTY navigation pane directly into split mode.<br>
-        • Toggle the CRT Bloom effect in the tray for a retro scanline filter.
+        <div class="notif-intro">PORTFOLIO_OS v3.0 [ONLINE] // KERNEL V8</div>
+        <div class="notif-section">
+          <span class="notif-highlight">&gt;&gt; QUICK REFERENCE:</span><br>
+          <span class="notif-bullet">&bull;</span> Double-click desktop icons to open apps<br>
+          <span class="notif-bullet">&bull;</span> Toggle status bar or use <kbd>Alt+1</kbd> / <kbd>Alt+2</kbd><br>
+          <span class="notif-bullet">&bull;</span> Open files from TTY tree into split viewer<br>
+          <span class="notif-bullet">&bull;</span> Toggle CRT Bloom filter in tray for scanlines
+        </div>
+        <div class="notif-terminal-footer">
+          <span class="notif-prompt">guest@portfolio:~$</span> <span class="notif-status-msg">telemetry nominal</span><span class="notif-cursor"></span>
+        </div>
       </div>
     </div>
 
@@ -252,6 +268,7 @@ eleventyExcludeFromCollections: true
           <option value="red">Crimson Red</option>
           <option value="sunset">Cyber Sunset</option>
           <option value="cyberpunk2077">Cyberpunk 2077</option>
+          <option value="phosphor">Warm Phosphor</option>
         </select>
       </div>
       <div class="style-menu__section">
@@ -286,6 +303,12 @@ eleventyExcludeFromCollections: true
     <div class="tray-item" title="SATellite signal">
       <span class="tray-label">SAT</span>
       <span class="tray-value" id="stat-sat">00%</span>
+    </div>
+
+    <div class="tray-item" title="Network Latency & Signal">
+      <span class="tray-label">NET</span>
+      <span class="tray-value" id="stat-ping">12ms</span>
+      <span class="tray-meter" id="stat-signal" aria-hidden="true">▅▆▇█</span>
     </div>
 
     <!-- Clock -->

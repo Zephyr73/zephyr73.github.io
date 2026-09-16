@@ -31,18 +31,22 @@
     <script>
       (function () {
         var isEmbedded = window.self !== window.top;
-        var mode = localStorage.getItem('v2-mode');
-        var theme = localStorage.getItem('v2-theme') || localStorage.getItem('theme');
-        if (!mode) {
-          mode = theme === 'light' ? 'light' : 'dark';
+        var validV2Accents = ['lavender', 'white', 'catppuccin', 'red', 'coral', 'emerald'];
+        var mode;
+        var accent;
+
+        if (isEmbedded) {
+          mode = sessionStorage.getItem('v2-embedded-mode') || 'dark';
+          accent =
+            sessionStorage.getItem('v2-embedded-accent') ||
+            localStorage.getItem('v3-theme') ||
+            'green';
+        } else {
+          mode = localStorage.getItem('v2-mode') || 'dark';
+          var saved = localStorage.getItem('v2-accent');
+          accent = saved && validV2Accents.indexOf(saved) !== -1 ? saved : 'lavender';
         }
-        var accent = localStorage.getItem('v2-accent') || theme || 'lavender';
-        if (accent === 'light' || accent === 'dark') {
-          accent = 'lavender';
-        }
-        if (isEmbedded || theme === 'system') {
-          accent = localStorage.getItem('v3-theme') || 'green';
-        }
+
         var classes = [];
         if (mode === 'light') {
           classes.push('light');

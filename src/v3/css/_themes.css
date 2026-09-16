@@ -96,4 +96,34 @@
     --ic-html: #fcee0a;
     --ic-img: #d80041;
   }
+
+  body[data-theme='phosphor'] {
+    --cp-bg: #0d0900;
+    --cp-bg-1: #140e00;
+    --cp-bg-2: #1c1400;
+    --cp-bg-3: #291d00;
+    --cp-panel: #140e00;
+    --cp-panel-2: #1c1400;
+    --cp-green: #ffaa00;
+    --cp-green-dim: #cc8800;
+    --cp-green-glow: rgba(255, 170, 0, 0.28);
+    --cp-crt-glow: rgba(255, 170, 0, 0.09);
+    --cp-white: #fff3d6;
+    --cp-dim: #734d00;
+    --cp-muted: #996600;
+    --cp-border: #4d3300;
+    --cp-border-2: #734d00;
+
+    --cp-cyan: #ffc44d;
+    --cp-cyan-glow: rgba(255, 196, 77, 0.22);
+    --cp-amber: #ffe066;
+    --cp-amber-glow: rgba(255, 224, 102, 0.25);
+    --cp-red: #ff4400;
+    --cp-red-glow: rgba(255, 68, 0, 0.2);
+
+    --ic-dir: #ffaa00;
+    --ic-md: #ffc44d;
+    --ic-html: #ffe066;
+    --ic-img: #ff7700;
+  }
 }

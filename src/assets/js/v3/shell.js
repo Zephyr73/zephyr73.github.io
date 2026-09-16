@@ -357,6 +357,11 @@ function _buildWindow(id, appEl, title, filePath, state) {
   const tbar = document.createElement('div');
   tbar.className = 'window-titlebar';
   tbar.setAttribute('role', 'toolbar');
+  // LED indicator
+  const led = document.createElement('span');
+  led.className = 'window-led';
+  led.setAttribute('aria-hidden', 'true');
+  tbar.appendChild(led);
   // Icon
   const iconEl = document.createElement('span');
   iconEl.className = 'window-titlebar-icon';
@@ -368,6 +373,12 @@ function _buildWindow(id, appEl, title, filePath, state) {
   titleEl.textContent = title;
   titleEl.setAttribute('aria-label', `Window: ${title}`);
   tbar.appendChild(titleEl);
+  // Fake PID badge
+  const pid = 1000 + ((id * 137) % 8900);
+  const pidEl = document.createElement('span');
+  pidEl.className = 'window-titlebar-pid';
+  pidEl.textContent = `PID:${pid}`;
+  tbar.appendChild(pidEl);
   // Path (if file)
   if (filePath && filePath !== '/') {
     const pathEl = document.createElement('span');
@@ -1033,17 +1044,61 @@ function updateClock() {
 let _cpuBase = 8,
   _gpuBase = 5,
   _memBase = 4.2,
-  _satBase = 87;
+  _satBase = 87,
+  _pingBase = 12;
+const _signalLevels = [' ▂▃▄', '▂▃▄▅', '▃▄▅▆', '▄▅▆▇', '▅▆▇█', '▆▇██'];
+
 function updateStats() {
   const jitter = (base, range) => Math.max(0, Math.min(99, base + (Math.random() - 0.5) * range));
   const cpu = Math.round(jitter(_cpuBase, 8));
   const gpu = Math.round(jitter(_gpuBase, 6));
   const mem = jitter(_memBase, 0.4).toFixed(1);
   const sat = Math.round(jitter(_satBase, 4));
-  document.getElementById('stat-cpu').textContent = `${String(cpu).padStart(2, '0')}%`;
-  document.getElementById('stat-gpu').textContent = `${String(gpu).padStart(2, '0')}%`;
-  document.getElementById('stat-mem').textContent = `${mem}G`;
-  document.getElementById('stat-sat').textContent = `${String(sat).padStart(2, '0')}%`;
+  const ping = Math.max(8, Math.round(jitter(_pingBase, 6)));
+  const sigIdx = Math.min(_signalLevels.length - 1, Math.floor((sat / 100) * _signalLevels.length));
+
+  const cpuEl = document.getElementById('stat-cpu');
+  const gpuEl = document.getElementById('stat-gpu');
+  const memEl = document.getElementById('stat-mem');
+  const satEl = document.getElementById('stat-sat');
+  const pingEl = document.getElementById('stat-ping');
+  const sigEl = document.getElementById('stat-signal');
+
+  if (cpuEl) cpuEl.textContent = `${String(cpu).padStart(2, '0')}%`;
+  if (gpuEl) gpuEl.textContent = `${String(gpu).padStart(2, '0')}%`;
+  if (memEl) memEl.textContent = `${mem}G`;
+  if (satEl) satEl.textContent = `${String(sat).padStart(2, '0')}%`;
+  if (pingEl) pingEl.textContent = `${ping}ms`;
+  if (sigEl) sigEl.textContent = _signalLevels[sigIdx];
+}
+
+function initStatusCenterTicker() {
+  const centerEl = document.getElementById('statusbar-center');
+  if (!centerEl) return;
+
+  const messages = [
+    '// TX_OS KERNEL: ACTIVE',
+    '// ENCRYPTION LAYER: AES-256',
+    '// 127.0.0.1 ROUTED [PACKETS: 104,821]',
+    '// CRT PHOSPHOR EMULATION: ENGAGED',
+    '// VIRTUAL FS: RETRO_FS v1.2',
+    '// SUBSYSTEMS NOMINAL',
+  ];
+
+  let msgIdx = 0;
+  centerEl.innerHTML = `<span class="statusbar-ticker">${messages[0]}</span>`;
+
+  setInterval(() => {
+    const ticker = centerEl.querySelector('.statusbar-ticker');
+    if (ticker) {
+      ticker.classList.add('fade');
+      setTimeout(() => {
+        msgIdx = (msgIdx + 1) % messages.length;
+        ticker.textContent = messages[msgIdx];
+        ticker.classList.remove('fade');
+      }, 250);
+    }
+  }, 4500);
 }
 /* ─────────────────────────────────────────────────────────────
    PANE RESIZE (nav pane drag handle)
@@ -1231,23 +1286,35 @@ function initBootScreen() {
   const bootProgress = document.getElementById('boot-progress');
   const statusPct = document.getElementById('boot-status-pct');
   if (!bootScreen) return;
+
+  const BOOT_ASCII = `<pre class="boot-screen__ascii">
+ ██████╗  ██████╗ ██████╗ ████████╗███████╗ ██████╗ ██╗     ██╗ ██████╗      ██████╗ ███████╗
+ ██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝██╔═══██╗██║     ██║██╔═══██╗    ██╔═══██╗██╔════╝
+ ██████╔╝██║   ██║██████╔╝   ██║   █████╗  ██║   ██║██║     ██║██║   ██║    ██║   ██║███████╗
+ ██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══╝  ██║   ██║██║     ██║██║   ██║    ██║   ██║╚════██║
+ ██║     ╚██████╔╝██║  ██║   ██║   ██║     ╚██████╔╝███████╗██║╚██████╔╝    ╚██████╔╝███████║
+ ╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚═╝ ╚═════╝      ╚═════╝ ╚══════╝
+</pre>`;
+
   const bootLines = [
-    '// ROM BIOS INTEL SANDBOX TX_OS V4.0.5-95638D',
-    '',
-    '>> SYSTEM_BOOT: SEARCHING FOR CORE LOGIC IMAGE...',
-    '>> RAM_CONF: ALLOCATING STORAGE POOLS... 8385',
-    '>> DISK_MNT: COMPILING PHYSICAL LOCALSTORAGE SECTOR',
-    '>> DISK_MNT: RECOVERY MOUNTING SYSTEM COMPILATION BLOCKS... DONE',
-    '>> NET_CONN: LOCAL_IP LOOPBACK VERIFIED AT 127.0.0.1',
-    '>> SECURITY: TRIPLE SANDBOX INTEGRITY BUFFER ACTIVE',
-    '>> SYS_READY: BOOT LOAD COMPLETED SUCCESSFULLY.',
-    '>>',
+    '<span class="log-tag-info">[ROM]</span> BIOS INTEL SANDBOX TX_OS V4.0.5-95638D',
+    '<span class="log-tag-info">[INIT]</span> Initializing core runtime environment...',
+    '<span class="log-tag-ok">[ OK ]</span> CPU0: Virtual Sandbox V8 Execution Engine @ 3.60GHz',
+    '<span class="log-tag-ok">[ OK ]</span> RAM_CONF: Storage pools allocated: 8385 blocks',
+    '<span class="log-tag-ok">[ OK ]</span> DISK_MNT: Virtual FS tree mounted on /dev/sda1 (RETRO_FS v1.2)',
+    '<span class="log-tag-warn">[WARN]</span> NET_IFACE: External uplink bridged via local loopback 127.0.0.1',
+    '<span class="log-tag-ok">[ OK ]</span> CRYPTO: Sandbox encryption buffer active (AES-256-GCM)',
+    '<span class="log-tag-ok">[ OK ]</span> GRAPHICS: CRT Phosphor emulation subsystem engaged',
+    '<span class="log-tag-ok">[ OK ]</span> WM: Virtual desktop compositor & tiling manager ready',
+    '<span class="log-tag-info">[SYS]</span> Starting interactive user session (guest@portfolio)...',
   ];
+
   let lineIndex = 0;
-  let logText = '';
+  let accumulatedHtml = BOOT_ASCII;
   let progress = 0;
   let isSkipped = false;
   let logInterval, progressInterval;
+
   function skipBoot() {
     if (isSkipped) return;
     isSkipped = true;
@@ -1258,28 +1325,38 @@ function initBootScreen() {
       bootScreen.remove();
     }, 450);
   }
+
   // Click anywhere to skip
   bootScreen.addEventListener('click', skipBoot);
+
+  // Initial draw with cursor
+  if (bootLogs) {
+    bootLogs.innerHTML = accumulatedHtml + '<span class="boot-cursor"></span>';
+  }
+
   // Print lines
   logInterval = setInterval(() => {
     if (lineIndex < bootLines.length) {
-      logText += bootLines[lineIndex] + '\n';
+      accumulatedHtml += bootLines[lineIndex] + '<br>';
       if (bootLogs) {
-        bootLogs.textContent = logText;
+        bootLogs.innerHTML = accumulatedHtml + '<span class="boot-cursor"></span>';
         bootLogs.scrollTop = bootLogs.scrollHeight;
       }
       lineIndex++;
     } else {
       clearInterval(logInterval);
     }
-  }, 180);
+  }, 160);
+
   // Animate progress bar (takes ~2.2 seconds)
   progressInterval = setInterval(() => {
     progress += 2;
     if (progress > 100) progress = 100;
 
     if (bootProgress) bootProgress.style.width = `${progress}%`;
-    if (statusPct) statusPct.textContent = `LOAD STATUS: ${progress}% COMPLETE`;
+    if (statusPct) {
+      statusPct.textContent = `LOAD STATUS: ${progress}% COMPLETE ${progress === 100 ? '[READY]' : ''}`;
+    }
     if (progress >= 100) {
       clearInterval(progressInterval);
       setTimeout(skipBoot, 400);
@@ -1317,9 +1394,10 @@ document.addEventListener('DOMContentLoaded', () => {
     'keydown',
     (e) => e.key === 'Enter' && (playSound('click'), switchMode('tty')),
   );
-  // Clock & stats
+  // Clock, stats & center ticker
   updateClock();
   updateStats();
+  initStatusCenterTicker();
   setInterval(updateClock, 1000);
   setInterval(updateStats, 2500);
   // Pane resize handles

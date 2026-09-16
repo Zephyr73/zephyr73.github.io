@@ -18,7 +18,9 @@
     max-width: 960px;
     width: 100%;
     margin-top: calc(76px + env(safe-area-inset-top, 0));
-    padding: 2.5rem max(1.5rem, calc(1rem + env(safe-area-inset-right, 0))) max(5rem, calc(3rem + env(safe-area-inset-bottom, 0))) max(1.5rem, calc(1rem + env(safe-area-inset-left, 0)));
+    padding: 2.5rem max(1.5rem, calc(1rem + env(safe-area-inset-right, 0)))
+      max(5rem, calc(3rem + env(safe-area-inset-bottom, 0)))
+      max(1.5rem, calc(1rem + env(safe-area-inset-left, 0)));
     box-sizing: border-box;
     position: relative;
     z-index: 1;
@@ -35,7 +37,9 @@
   @media (max-width: 768px) {
     .page__content {
       margin-top: calc(60px + env(safe-area-inset-top, 0));
-      padding: 1.5rem max(1rem, calc(0.75rem + env(safe-area-inset-right, 0))) max(3.5rem, calc(2rem + env(safe-area-inset-bottom, 0))) max(1rem, calc(0.75rem + env(safe-area-inset-left, 0)));
+      padding: 1.5rem max(1rem, calc(0.75rem + env(safe-area-inset-right, 0)))
+        max(3.5rem, calc(2rem + env(safe-area-inset-bottom, 0)))
+        max(1rem, calc(0.75rem + env(safe-area-inset-left, 0)));
       width: 100%;
     }
   }
@@ -53,7 +57,9 @@
     width: 100%;
     max-width: 960px;
     margin: 2rem auto 3rem auto;
-    padding: 2.5rem max(1.5rem, calc(1rem + env(safe-area-inset-right, 0))) max(1.5rem, calc(1rem + env(safe-area-inset-bottom, 0))) max(1.5rem, calc(1rem + env(safe-area-inset-left, 0)));
+    padding: 2.5rem max(1.5rem, calc(1rem + env(safe-area-inset-right, 0)))
+      max(1.5rem, calc(1rem + env(safe-area-inset-bottom, 0)))
+      max(1.5rem, calc(1rem + env(safe-area-inset-left, 0)));
     border-top: 1px solid var(--clr-border);
     box-sizing: border-box;
     display: flex;
@@ -64,7 +70,6 @@
   body.page--gallery .site-footer {
     max-width: 1360px;
   }
-
 
   .site-footer__top {
     display: flex;

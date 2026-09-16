@@ -72,14 +72,20 @@
   a {
     color: var(--clr-accent);
     text-decoration: none;
-    transition: color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      opacity 0.15s ease;
   }
 
   a:hover {
     color: var(--clr-accent-dim);
   }
 
-  code, kbd, samp, pre {
+  code,
+  kbd,
+  samp,
+  pre {
     font-family: var(--font-code);
   }
 }

@@ -87,6 +87,11 @@
   }
   .tree-node__row.selected::before {
     background: color-mix(in srgb, var(--cp-green) 12%, transparent);
+    border-left: 2px solid var(--cp-green);
+  }
+  .tree-node__row.selected .tree-node__name {
+    color: var(--cp-green);
+    text-shadow: 0 0 6px var(--cp-green-glow);
   }
 
   .tree-node__toggle {
@@ -95,6 +100,11 @@
     width: 20px;
     flex-shrink: 0;
     text-align: center;
+    transition: color var(--t-fast);
+  }
+
+  .tree-node.open > .tree-node__row .tree-node__toggle {
+    color: var(--cp-green);
   }
 
   .tree-node__icon {
@@ -110,6 +120,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     flex: 1;
+  }
+
+  .tree-node__badge {
+    font-size: 10px;
+    color: var(--cp-dim);
+    margin-left: 6px;
+    font-family: var(--font-mono);
   }
 
   .tree-node__children {
@@ -134,7 +151,7 @@
     width: 16px;
     height: 1px;
     border-top: 1px solid var(--cp-border-2);
-    opacity: 0.7;
+    opacity: 0.9;
   }
 
   .tree-node__children > .tree-node--file::before {
@@ -145,7 +162,7 @@
     width: 41px;
     height: 1px;
     border-top: 1px solid var(--cp-border-2);
-    opacity: 0.7;
+    opacity: 0.9;
   }
 
   .tree-node__children > .tree-node::after {

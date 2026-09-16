@@ -259,7 +259,9 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
-    transition: color 0.15s ease, text-decoration-thickness 0.15s ease;
+    transition:
+      color 0.15s ease,
+      text-decoration-thickness 0.15s ease;
   }
 
   .markdown-content a:hover {

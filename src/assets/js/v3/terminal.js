@@ -249,7 +249,8 @@ Available commands:
   <span style="color:var(--cp-amber)">cat &lt;file&gt;</span>   - Output text file content
   <span style="color:var(--cp-amber)">open &lt;file&gt;</span>  - Open file in visual viewer split/window
   <span style="color:var(--cp-amber)">clear</span>        - Clear terminal logs
-  <span style="color:var(--cp-amber)">neofetch</span>     - Show hardware configuration summary
+  <span style="color:var(--cp-amber)">neofetch</span>     - Show hardware & system configuration summary
+  <span style="color:var(--cp-amber)">matrix</span>       - Digital matrix stream simulation
   <span style="color:var(--cp-amber)">tree [path]</span>  - Draw file system directory tree structure
   <span style="color:var(--cp-amber)">echo &lt;text&gt;</span>  - Echo input text back to console
   <span style="color:var(--cp-amber)">whoami</span>       - Display logged in system role
@@ -353,34 +354,71 @@ Available commands:
       }
       return 'Launching portfolio Web Engine browser...';
 
+    case 'matrix': {
+      window.__TERMINAL_SESSION__.write(
+        'INITIALIZING MATRIX RAIN STREAM... [CTRL+C / KEY TO STOP]',
+        'info',
+      );
+      const chars = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
+      let linesPrinted = 0;
+      const interval = setInterval(() => {
+        let stream = '';
+        for (let i = 0; i < 48; i++) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          const isHighlight = Math.random() > 0.85;
+          stream += isHighlight
+            ? `<span style="color:var(--cp-white);font-weight:bold">${char}</span>`
+            : `<span style="color:var(--cp-green)">${char}</span>`;
+        }
+        window.__TERMINAL_SESSION__.write(stream, 'output');
+        linesPrinted++;
+        if (linesPrinted >= 25) {
+          clearInterval(interval);
+          window.__TERMINAL_SESSION__.write('// MATRIX STREAM COMPLETE //', 'dim');
+        }
+      }, 80);
+      return '';
+    }
+
     case 'neofetch': {
-      // Get current uptime (simulated session uptime)
       const uptimeSec = Math.round((performance.now() || 0) / 1000);
+      const hrs = Math.floor(uptimeSec / 3600);
+      const mins = Math.floor((uptimeSec % 3600) / 60);
+      const secs = uptimeSec % 60;
       const uptimeStr =
-        uptimeSec > 60 ? `${Math.floor(uptimeSec / 60)}m ${uptimeSec % 60}s` : `${uptimeSec}s`;
+        hrs > 0 ? `${hrs}h ${mins}m ${secs}s` : mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+      const curTheme = document.body.dataset.theme || 'green';
+      const memVal = document.getElementById('stat-mem')?.textContent || '4.2G';
 
       return `
-<div class="neofetch-output" style="display:flex;gap:20px;line-height:1.4;">
-<span style="color:var(--cp-green);font-family:monospace;white-space:pre;">
-   /\\___/\\ 
-  (  o o  )
-  (   V   )
-  /|     |\\
-  U|     |U
-</span>
+<div class="neofetch-output" style="display:flex;gap:20px;line-height:1.4;margin:6px 0;font-family:var(--font-mono)">
+<pre style="color:var(--cp-green);margin:0;font-family:inherit;line-height:1.2;text-shadow:0 0 6px var(--cp-green-glow)">
+   /\\_____/\\ 
+  /  o   o  \\ 
+ ( ==  ^  == )
+  )         ( 
+ (           )
+( (  )   (  ) )
+(__(__)___(__)__)
+</pre>
 <div>
-<span style="color:var(--cp-amber)">guest</span>@<span style="color:var(--cp-green)">portfolio</span>
----------------------
-<span style="color:var(--cp-cyan)">OS</span>: TX_OS v3.0 (x86_64)
-<span style="color:var(--cp-cyan)">Host</span>: Virtual Desktop Portfolio Sandbox
-<span style="color:var(--cp-cyan)">Kernel</span>: Eleventy static build / V8 JS Engine
-<span style="color:var(--cp-cyan)">Uptime</span>: ${uptimeStr}
-<span style="color:var(--cp-cyan)">Shell</span>: Custom v3-bash-emulator
-<span style="color:var(--cp-cyan)">Display</span>: Dynamic browser viewport
-<span style="color:var(--cp-cyan)">Theme</span>: ${document.body.dataset.theme || 'green'}
-<span style="color:var(--cp-cyan)">Terminal</span>: Custom TTY Console
-<span style="color:var(--cp-cyan)">CPU</span>: Virtual Browser Thread
-<span style="color:var(--cp-cyan)">Memory</span>: ${document.getElementById('stat-mem')?.textContent || '4.2G'} / 16.0G
+<span style="color:var(--cp-amber);font-weight:bold">guest</span>@<span style="color:var(--cp-green);font-weight:bold">portfolio</span>
+<div style="color:var(--cp-dim);margin-bottom:4px">---------------------------------</div>
+<span style="color:var(--cp-cyan)">OS</span>:      PORTFOLIO_OS v3.0 (x86_64)
+<span style="color:var(--cp-cyan)">Host</span>:    Virtual Desktop Sandbox Rig
+<span style="color:var(--cp-cyan)">Kernel</span>:  Eleventy 3.0 / V8 JS Core
+<span style="color:var(--cp-cyan)">Uptime</span>:  ${uptimeStr}
+<span style="color:var(--cp-cyan)">Shell</span>:   tx-sh 3.2.0-emulator
+<span style="color:var(--cp-cyan)">WM</span>:      Custom Canvas Tiling Compositor
+<span style="color:var(--cp-cyan)">Theme</span>:   ${curTheme.toUpperCase()}
+<span style="color:var(--cp-cyan)">Memory</span>:  ${memVal} / 16.0G
+<div style="margin-top:6px;display:flex;gap:4px">
+  <span style="background:#000;color:var(--cp-green)">███</span>
+  <span style="background:#000;color:var(--cp-amber)">███</span>
+  <span style="background:#000;color:var(--cp-cyan)">███</span>
+  <span style="background:#000;color:var(--cp-red)">███</span>
+  <span style="background:#000;color:var(--cp-white)">███</span>
+</div>
 </div>
 </div>
 `;

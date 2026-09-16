@@ -53,6 +53,30 @@ const themeOptions = document.querySelectorAll('.theme-picker__menu a[data-theme
 const modeOptions = document.querySelectorAll('[data-mode]');
 const drawerThemeButtons = document.querySelectorAll('.drawer-theme-btn[data-theme]');
 
+const VALID_V2_ACCENTS = ['lavender', 'white', 'catppuccin', 'red', 'coral', 'emerald'];
+
+function getActiveThemeState() {
+  const isEmbedded = window.self !== window.top;
+  let mode;
+  let accent;
+
+  if (isEmbedded) {
+    mode =
+      sessionStorage.getItem('v2-embedded-mode') ||
+      (document.documentElement.classList.contains('light') ? 'light' : 'dark');
+    accent =
+      sessionStorage.getItem('v2-embedded-accent') || localStorage.getItem('v3-theme') || 'green';
+  } else {
+    mode =
+      localStorage.getItem('v2-mode') ||
+      (document.documentElement.classList.contains('light') ? 'light' : 'dark');
+    const saved = localStorage.getItem('v2-accent');
+    accent = saved && VALID_V2_ACCENTS.includes(saved) ? saved : 'lavender';
+  }
+
+  return { isEmbedded, mode, accent };
+}
+
 function updateThemeUI(mode, accent) {
   if (modeToggle) {
     const nextMode = mode === 'light' ? 'dark' : 'light';
@@ -67,35 +91,50 @@ function updateThemeUI(mode, accent) {
 
   document.querySelectorAll('[data-theme]').forEach((el) => {
     const t = el.getAttribute('data-theme');
-    el.classList.toggle('active', t === accent);
+    const isSystemActive = t === 'system' && !VALID_V2_ACCENTS.includes(accent);
+    el.classList.toggle('active', t === accent || isSystemActive);
   });
 }
 
-function applyTheme(themeKey, modeKey) {
-  const isEmbedded = window.self !== window.top;
-  let currentMode =
-    localStorage.getItem('v2-mode') ||
-    (document.documentElement.classList.contains('light') ? 'light' : 'dark');
-  let currentAccent = localStorage.getItem('v2-accent') || 'lavender';
+function applyTheme(themeKey, modeKey, fromV3 = false) {
+  const { isEmbedded, mode: prevMode, accent: prevAccent } = getActiveThemeState();
+  let currentMode = prevMode;
+  let currentAccent = prevAccent;
 
-  if (modeKey) {
-    currentMode = modeKey;
-  } else if (themeKey === 'light' || themeKey === 'dark') {
-    currentMode = themeKey;
-  } else if (themeKey === 'system') {
-    currentAccent = localStorage.getItem('v3-theme') || 'green';
-  } else if (themeKey) {
-    currentAccent = themeKey;
+  if (fromV3) {
+    if (themeKey) {
+      currentAccent = themeKey;
+    }
+    if (isEmbedded) {
+      sessionStorage.removeItem('v2-embedded-accent');
+    }
+  } else {
+    if (modeKey) {
+      currentMode = modeKey;
+    } else if (themeKey === 'light' || themeKey === 'dark') {
+      currentMode = themeKey;
+    } else if (themeKey === 'system') {
+      if (isEmbedded) {
+        sessionStorage.removeItem('v2-embedded-accent');
+        currentAccent = localStorage.getItem('v3-theme') || 'green';
+      } else {
+        currentAccent = 'lavender';
+      }
+    } else if (themeKey) {
+      currentAccent = themeKey;
+    }
   }
 
+  // Persist preferences
   if (isEmbedded) {
-    currentAccent = localStorage.getItem('v3-theme') || currentAccent;
+    if (!fromV3) {
+      sessionStorage.setItem('v2-embedded-mode', currentMode);
+      sessionStorage.setItem('v2-embedded-accent', currentAccent);
+    }
+  } else {
+    localStorage.setItem('v2-mode', currentMode);
+    localStorage.setItem('v2-accent', currentAccent);
   }
-
-  localStorage.setItem('v2-mode', currentMode);
-  localStorage.setItem('v2-accent', currentAccent);
-  localStorage.setItem('v2-theme', currentMode === 'light' ? 'light' : currentAccent);
-  localStorage.setItem('theme', currentMode === 'light' ? 'light' : currentAccent);
 
   // Preserve unrelated classes like 'no-scroll'
   const isNoScroll = document.documentElement.classList.contains('no-scroll');
@@ -127,9 +166,15 @@ function applyTheme(themeKey, modeKey) {
 }
 window.applyTheme = applyTheme;
 
+// Show V3 desktop sync option when embedded
+if (window.self !== window.top) {
+  document.querySelectorAll('.v3-theme-sync-opt').forEach((el) => {
+    el.style.display = el.tagName === 'BUTTON' ? 'inline-flex' : 'flex';
+  });
+}
+
 // Initialize theme UI active states
-const initialMode = document.documentElement.classList.contains('light') ? 'light' : 'dark';
-const initialAccent = localStorage.getItem('v2-accent') || 'lavender';
+const { mode: initialMode, accent: initialAccent } = getActiveThemeState();
 updateThemeUI(initialMode, initialAccent);
 
 // Mode toggle button (Sun / Moon)
@@ -334,7 +379,6 @@ function initGalleryDetail() {
       }
     });
   });
-
 }
 
 // ---- Avatar Dithering (About/Resume page) ----
@@ -672,7 +716,7 @@ function initMarkdownToc() {
       {
         rootMargin: '-80px 0px -70% 0px',
         threshold: 0,
-      }
+      },
     );
 
     headings.forEach((h) => observer.observe(h));
