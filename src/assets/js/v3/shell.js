@@ -520,8 +520,13 @@ function _getAppIcon(title, filePath) {
 function _openFloating(id, appEl, title, filePath) {
   const win = _buildWindow(id, appEl, title, filePath, 'floating');
   // Default size & centered position
-  const W = Math.min(900, window.innerWidth - 80);
-  const H = Math.min(640, window.innerHeight - 80);
+  let W = Math.min(900, window.innerWidth - 80);
+  let H = Math.min(640, window.innerHeight - 80);
+  
+  if (appEl && appEl.classList.contains('app-browser')) {
+    W = Math.min(1300, window.innerWidth - 40);
+    H = Math.min(850, window.innerHeight - 60);
+  }
   const L = Math.round((window.innerWidth - W) / 2) + (id % 5) * 20;
   const T = Math.round((window.innerHeight - H) / 2) + (id % 5) * 20 - 20;
   win.style.width = `${W}px`;
@@ -1111,6 +1116,68 @@ function initStyleMenu() {
     setWallpaper(nextIdx);
   });
 }
+
+function initCalendar() {
+  const trayClock = document.getElementById('tray-clock');
+  const calendarMenu = document.getElementById('calendar-menu');
+  const monthYearEl = document.getElementById('calendar-month-year');
+  const gridEl = document.getElementById('calendar-grid');
+  
+  if (!trayClock || !calendarMenu) return;
+  
+  function renderCalendar() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const todayDate = now.getDate();
+    
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    monthYearEl.textContent = `${months[month]} ${year}`;
+    
+    // Days of week header
+    gridEl.innerHTML = '';
+    const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+    days.forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'calendar-day-header';
+      el.textContent = d;
+      gridEl.appendChild(el);
+    });
+    
+    // Empty spots for first day
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      gridEl.appendChild(el);
+    }
+    
+    // Actual days
+    for (let i = 1; i <= daysInMonth; i++) {
+      const el = document.createElement('div');
+      el.className = 'calendar-day' + (i === todayDate ? ' today' : '');
+      el.textContent = i;
+      gridEl.appendChild(el);
+    }
+  }
+  
+  trayClock.addEventListener('click', (e) => {
+    e.stopPropagation();
+    playSound('click');
+    const isHidden = calendarMenu.classList.contains('hidden');
+    calendarMenu.classList.toggle('hidden');
+    if (isHidden) {
+      renderCalendar();
+    }
+  });
+  
+  document.addEventListener('click', (e) => {
+    if (!calendarMenu.classList.contains('hidden') && !calendarMenu.contains(e.target) && !trayClock.contains(e.target)) {
+      calendarMenu.classList.add('hidden');
+    }
+  });
+}
 /* ─────────────────────────────────────────────────────────────
    STATUS BAR: CLOCK & STATS
 ───────────────────────────────────────────────────────────── */
@@ -1492,6 +1559,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initKeyboard();
   // Initialize style menu
   initStyleMenu();
+  initCalendar();
   // Initialize sub-systems
   initDesktop({ openApp });
   initNavPane({ openApp });

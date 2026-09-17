@@ -325,9 +325,15 @@ eleventyExcludeFromCollections: true
     </div>
 
     <!-- Clock -->
-    <div class="tray-clock">
+    <div class="tray-clock" id="tray-clock" role="button" tabindex="0" aria-label="Open Calendar">
       <span class="clock-time" id="clock-time">00:00 PM</span>
       <span class="clock-date" id="clock-date">MON 1, 2025</span>
+    </div>
+    
+    <!-- Calendar Popover -->
+    <div class="calendar-menu hidden" id="calendar-menu" role="dialog" aria-label="Calendar">
+      <div class="calendar-menu__header" id="calendar-month-year"></div>
+      <div class="calendar-menu__grid" id="calendar-grid"></div>
     </div>
 
   </div><!-- /tray -->

@@ -3,6 +3,7 @@
  */
 
 import { getFileContent, getNodeByPath } from '../filesystem.js';
+import { marked } from '../vendor/marked.js';
 
 export function createMarkdownApp(filePath, fileTitle) {
   const container = document.createElement('div');
@@ -115,117 +116,26 @@ export function createMarkdownApp(filePath, fileTitle) {
   return container;
 }
 
+function formatFrontmatter(md) {
+  if (md.startsWith('---')) {
+    const endIdx = md.indexOf('---', 3);
+    if (endIdx > -1) {
+      const frontmatter = md.substring(3, endIdx).trim();
+      const content = md.substring(endIdx + 3).trim();
+      return '```yaml\n# Frontmatter / Metadata\n' + frontmatter + '\n```\n\n' + content;
+    }
+  }
+  return md;
+}
+
 /**
- * A lightweight vanilla JS Markdown Parser.
+ * Uses marked.js for robust markdown parsing
  */
 function parseMarkdown(md) {
-  let html = md;
-
-  // Escape HTML tags to prevent arbitrary code execution, but preserve markdown formatting
-  html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  // Code blocks: ```js ... ```
-  html = html.replace(/```([\s\S]*?)```/g, (match, codeBlock) => {
-    // Separate programming language if specified
-    const lines = codeBlock.split('\n');
-    let lang = '';
-    let code = codeBlock;
-    if (lines[0] && lines[0].trim().length < 15 && !lines[0].includes(' ')) {
-      lang = lines[0].trim();
-      code = lines.slice(1).join('\n');
-    }
-    return `<pre><code class="language-${lang}">${code.trim()}</code></pre>`;
-  });
-
-  // Inline code: `code`
-  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-  // Headers: # H1, ## H2 ...
-  html = html.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
-  html = html.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
-  html = html.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
-  html = html.replace(/^#### (.*?)$/gm, '<h4>$1</h4>');
-
-  // Horizontal rules
-  html = html.replace(/^---$/gm, '<hr />');
-
-  // Blockquotes
-  html = html.replace(/^> (.*?)$/gm, '<blockquote>$1</blockquote>');
-
-  // Bold / Italic
-  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-
-  // Images: ![alt](url)
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />');
-
-  // Links: [text](url)
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-
-  // Lists: Unordered lists starting with - or *
-  html = html.replace(/^\s*[*-]\s+(.*?)$/gm, '<li>$1</li>');
-  // Wrap contiguous <li> blocks in <ul>
-  html = html.replace(/((?:<li>.*?<\/li>\s*)+)/g, '<ul>$1</ul>');
-
-  // Tables
-  // Simple check for tables: lines starting with |
-  const lines = html.split('\n');
-  let inTable = false;
-  let tableHtml = '';
-  let processedLines = [];
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (line.startsWith('|') && line.endsWith('|')) {
-      if (!inTable) {
-        inTable = true;
-        tableHtml = '<table>';
-      }
-
-      const cells = line
-        .split('|')
-        .slice(1, -1)
-        .map((c) => c.trim());
-
-      // Check if it's separator row: |---|---|
-      const isSep = cells.every((c) => /^:-*:?$/.test(c) || /^-+$/.test(c));
-      if (isSep) continue;
-
-      tableHtml += '<tr>';
-      cells.forEach((cell) => {
-        // First row is header
-        if (tableHtml.match(/<tr>/g).length === 1) {
-          tableHtml += `<th>${cell}</th>`;
-        } else {
-          tableHtml += `<td>${cell}</td>`;
-        }
-      });
-      tableHtml += '</tr>';
-    } else {
-      if (inTable) {
-        inTable = false;
-        tableHtml += '</table>';
-        processedLines.push(tableHtml);
-      }
-      processedLines.push(lines[i]);
-    }
-  }
-  if (inTable) {
-    tableHtml += '</table>';
-    processedLines.push(tableHtml);
-  }
-  html = processedLines.join('\n');
-
-  // Convert empty lines to paragraphs, wrapping non-HTML lines
-  const finalBlocks = html.split('\n\n').map((block) => {
-    const trimmed = block.trim();
-    if (!trimmed) return '';
-    // Skip if it's already an HTML block tag
-    if (/^<(h1|h2|h3|h4|ul|ol|pre|table|blockquote|hr)/i.test(trimmed)) {
-      return trimmed;
-    }
-    return `<p>${trimmed.replace(/\n/g, '<br />')}</p>`;
-  });
-
-  return finalBlocks.join('\n');
+  let cleanMd = formatFrontmatter(md);
+  
+  // Replace custom Eleventy/Nunjucks shortcodes (e.g. {% gimg ... %}) so they don't render raw
+  cleanMd = cleanMd.replace(/\{%.*?%\}/g, '<div class="md-plugin-placeholder">[Media Element Omitted]</div>');
+  
+  return marked.parse(cleanMd);
 }

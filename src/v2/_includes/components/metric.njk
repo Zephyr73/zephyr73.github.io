@@ -1,0 +1,7 @@
+{% macro metric(label, value, subtext) %}
+<div class="metric-card bg-surface flex flex-col gap-1 py-4 px-[18px] max-md:py-3 max-md:px-[14px]">
+  <span class="metric-label font-regular text-[0.675rem] uppercase tracking-[0.08em] text-text-subtle">{{ label }}</span>
+  <span class="metric-val font-heading font-bold text-[0.95rem] tracking-[-0.01em] text-body-text">{{ value }}</span>
+  <span class="metric-sub font-regular text-[0.725rem] text-text-muted">{{ subtext }}</span>
+</div>
+{% endmacro %}

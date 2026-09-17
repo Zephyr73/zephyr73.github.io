@@ -336,4 +336,65 @@
     color: var(--cp-dim);
     letter-spacing: 0.05em;
   }
+  
+  .tray-clock:hover {
+    background: var(--cp-bg-2);
+    cursor: pointer;
+  }
+
+  /* Calendar Menu */
+  .calendar-menu {
+    position: absolute;
+    bottom: 46px;
+    right: 12px;
+    width: 250px;
+    background: var(--cp-panel);
+    border: 1px solid var(--cp-border);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    padding: 12px;
+  }
+  
+  .calendar-menu.hidden {
+    display: none;
+  }
+  
+  .calendar-menu__header {
+    font-size: 13px;
+    color: var(--cp-white);
+    text-align: center;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--cp-border-2);
+    padding-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  
+  .calendar-menu__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+    font-size: 11px;
+  }
+  
+  .calendar-day-header {
+    color: var(--cp-dim);
+    font-size: 9px;
+    margin-bottom: 4px;
+  }
+  
+  .calendar-day {
+    color: var(--cp-muted);
+    padding: 4px 0;
+  }
+  
+  .calendar-day.active {
+    color: var(--cp-white);
+  }
+  
+  .calendar-day.today {
+    background: var(--cp-green);
+    color: var(--cp-bg);
+    font-weight: bold;
+  }
 }

@@ -10,19 +10,11 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('src/assets');
 
   // Copy raw v2 markdown files to their original paths so the v3 markdown viewer can fetch them
-  const projectsDir = './src/v2/projects';
-  const projectSlugs = fs
-    .readdirSync(projectsDir, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && !d.name.startsWith('.'))
-    .map((d) => d.name);
-
   const v2Passthrough = {
-    'src/v2/blog/blogs': 'blog/blogs',
+    'src/v2/blog/*.md': 'blog/',
     'src/v2/about/index.md': 'about/index.md',
+    'src/v2/projects/*.md': 'projects/'
   };
-  for (const slug of projectSlugs) {
-    v2Passthrough[`src/v2/projects/${slug}`] = `projects/${slug}`;
-  }
   eleventyConfig.addPassthroughCopy(v2Passthrough);
 
   // 2. Watch for changes in CSS/JS so the browser reloads automatically

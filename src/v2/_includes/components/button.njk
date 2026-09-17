@@ -1,0 +1,20 @@
+{% macro button(text, url, type="primary", target="_self", icon=false) %}
+  {% set baseClass = "inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border max-[480px]:w-full" %}
+  
+  {% if type == "primary" %}
+    {% set variantClass = "font-bold bg-accent text-accent-text border-accent hover:bg-accent-dim hover:border-accent-dim hover:text-white" %}
+  {% elif type == "secondary" %}
+    {% set variantClass = "font-semibold bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2" %}
+  {% elif type == "ghost" %}
+    {% set variantClass = "font-semibold bg-transparent text-text-muted border-transparent hover:text-accent" %}
+  {% endif %}
+
+  <a href="{{ url }}" class="{{ baseClass }} {{ variantClass }}" target="{{ target }}" {% if target == '_blank' %}rel="noopener"{% endif %}>
+    <span>{{ text }}</span>
+    {% if icon %}
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="square" />
+      </svg>
+    {% endif %}
+  </a>
+{% endmacro %}
