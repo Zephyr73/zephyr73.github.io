@@ -1,5 +1,5 @@
 /**
- * shell.js — Portfolio 3.0 Core Orchestrator
+ * shell.js — Phosphor 3.0 Core Orchestrator
  * Manages: modes, window manager, status bar, CRT, app registry
  */
 import { initDesktop } from './desktop.js';
@@ -301,8 +301,8 @@ export function openApp(appNameOrNode, pathArg, titleArg) {
     // Named app with no file (e.g. 'browser', 'fileExplorer')
     switch (appNameOrNode) {
       case 'browser':
-        appFactory = () => createBrowserApp('/', 'Portfolio');
-        title = 'Portfolio Browser';
+        appFactory = () => createBrowserApp('/', 'Phosphor');
+        title = 'Phosphor Browser';
         filePath = '/';
         break;
       case 'fileExplorer':
@@ -499,7 +499,7 @@ function _buildWindow(id, appEl, title, filePath, state) {
 function _getAppIcon(title, filePath) {
   const t = (title || '').toLowerCase();
   const p = (filePath || '').toLowerCase();
-  if (t.includes('browser') || t.includes('portfolio') || t.includes('web')) {
+  if (t.includes('browser') || t.includes('phosphor') || t.includes('web')) {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
   }
   if (p.endsWith('.pdf')) {
@@ -833,6 +833,34 @@ export function closeWindow(id) {
   }
   openWindows.delete(id);
   _removeAppTab(id);
+
+  // Auto-focus next window if any exist
+  if (openWindows.size > 0) {
+    let nextFocusId = null;
+    let highestZ = -1;
+    let highestSplitId = -1;
+
+    for (const [winId, info] of openWindows.entries()) {
+      if (info.state === 'floating') {
+        const z = parseInt(info.el.style.zIndex || '0', 10);
+        if (z > highestZ) {
+          highestZ = z;
+          nextFocusId = winId;
+        }
+      } else if (info.state === 'split') {
+        if (winId > highestSplitId) {
+          highestSplitId = winId;
+        }
+      }
+    }
+
+    if (currentMode === 'desktop' && nextFocusId !== null) {
+      focusWindow(nextFocusId);
+    } else if (currentMode === 'tty') {
+      if (highestSplitId !== -1) focusWindow(highestSplitId);
+      else if (nextFocusId !== null) focusWindow(nextFocusId);
+    }
+  }
 }
 /* ─────────────────────────────────────────────────────────────
    FOCUS WINDOW
@@ -1079,7 +1107,7 @@ function initStyleMenu() {
   });
 
   // Initialize and Sync active theme
-  const activeTheme = localStorage.getItem('v3-theme') || 'green';
+  const activeTheme = localStorage.getItem('v3-theme') || 'phosphor';
   if (themeSelect) {
     themeSelect.value = activeTheme;
     themeSelect.addEventListener('change', (e) => {
@@ -1327,7 +1355,7 @@ function createTerminalFloatApp() {
   el.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;';
   const out = document.createElement('div');
   out.style.cssText =
-    'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);';
+    'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);user-select:text;';
   // Initial draw from buffer
   const renderBuffer = () => {
     out.innerHTML = '';
@@ -1350,7 +1378,7 @@ function createTerminalFloatApp() {
   const prompt = document.createElement('span');
   prompt.style.cssText = 'color:var(--cp-green);font-size:12px;white-space:nowrap;';
   const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
-  prompt.textContent = `guest@portfolio:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
+  prompt.textContent = `guest@phosphor:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
   const inp = document.createElement('input');
   inp.style.cssText =
     'flex:1;background:transparent;border:none;color:var(--cp-white);font-family:var(--font-mono);font-size:12px;outline:none;';
@@ -1385,7 +1413,7 @@ function createTerminalFloatApp() {
       await window.__TERMINAL_SESSION__.execute(cmd);
       // Update prompt label in case directory changed
       const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
-      prompt.textContent = `guest@portfolio:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
+      prompt.textContent = `guest@phosphor:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
       out.scrollTop = out.scrollHeight;
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -1443,16 +1471,16 @@ function initBootScreen() {
   if (!bootScreen) return;
 
   const BOOT_ASCII = `<pre class="boot-screen__ascii">
- ██████╗  ██████╗ ██████╗ ████████╗███████╗ ██████╗ ██╗     ██╗ ██████╗      ██████╗ ███████╗
- ██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝██╔═══██╗██║     ██║██╔═══██╗    ██╔═══██╗██╔════╝
- ██████╔╝██║   ██║██████╔╝   ██║   █████╗  ██║   ██║██║     ██║██║   ██║    ██║   ██║███████╗
- ██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══╝  ██║   ██║██║     ██║██║   ██║    ██║   ██║╚════██║
- ██║     ╚██████╔╝██║  ██║   ██║   ██║     ╚██████╔╝███████╗██║╚██████╔╝    ╚██████╔╝███████║
- ╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚═╝ ╚═════╝      ╚═════╝ ╚══════╝
-</pre>`;
+ ██████╗ ██╗  ██╗ ██████╗ ███████╗██████╗ ██╗  ██╗ ██████╗ ██████╗ 
+ ██╔══██╗██║  ██║██╔═══██╗██╔════╝██╔══██╗██║  ██║██╔═══██╗██╔══██╗
+ ██████╔╝███████║██║   ██║███████╗██████╔╝███████║██║   ██║██████╔╝
+ ██╔═══╝ ██╔══██║██║   ██║╚════██║██╔═══╝ ██╔══██║██║   ██║██╔══██╗
+ ██║     ██║  ██║╚██████╔╝███████║██║     ██║  ██║╚██████╔╝██║  ██║
+ ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
+ </pre>`;
 
   const bootLines = [
-    '<span class="log-tag-info">[ROM]</span> BIOS INTEL SANDBOX TX_OS V4.0.5-95638D',
+    '<span class="log-tag-info">[ROM]</span> BIOS INTEL SANDBOX PHOSPHOR_OS V4.0.5-95638D',
     '<span class="log-tag-info">[INIT]</span> Initializing core runtime environment...',
     '<span class="log-tag-ok">[ OK ]</span> CPU0: Virtual Sandbox V8 Execution Engine @ 3.60GHz',
     '<span class="log-tag-ok">[ OK ]</span> RAM_CONF: Storage pools allocated: 8385 blocks',
@@ -1461,7 +1489,7 @@ function initBootScreen() {
     '<span class="log-tag-ok">[ OK ]</span> CRYPTO: Sandbox encryption buffer active (AES-256-GCM)',
     '<span class="log-tag-ok">[ OK ]</span> GRAPHICS: CRT Phosphor emulation subsystem engaged',
     '<span class="log-tag-ok">[ OK ]</span> WM: Virtual desktop compositor & tiling manager ready',
-    '<span class="log-tag-info">[SYS]</span> Starting interactive user session (guest@portfolio)...',
+    '<span class="log-tag-info">[SYS]</span> Starting interactive user session (guest@phosphor)...',
   ];
 
   let lineIndex = 0;

@@ -8,12 +8,22 @@ export function createGalleryApp(filePath, fileTitle) {
   const container = document.createElement('div');
   container.className = 'app-gallery';
 
-  // Get real public URL from virtual path
-  function getRealSrc(vPath) {
+  // Get candidate public URLs from virtual path (largest first)
+  function getCandidateSrcs(vPath) {
     if (vPath.startsWith('/gallery/')) {
-      return vPath.replace('/gallery/', '/assets/img/gallery/');
+      let p = vPath.replace('/gallery/', '/assets/img/gallery/');
+      const lastDot = p.lastIndexOf('.');
+      if (lastDot > -1) {
+        const base = p.substring(0, lastDot);
+        return [
+          base + '-1800w.webp',
+          base + '-1200w.webp',
+          base + '-800w.webp',
+          base + '-400w.webp'
+        ];
+      }
     }
-    return vPath;
+    return [vPath];
   }
 
   // State
@@ -155,19 +165,38 @@ export function createGalleryApp(filePath, fileTitle) {
     translateY = 0;
     updateImgTransform();
 
-    const realSrc = getRealSrc(vPath);
-    mainImg.src = realSrc;
-    downloadBtn.href = realSrc;
-
-    // Reset resolution and fetch dynamically
+    const candidates = getCandidateSrcs(vPath);
+    
+    // Clear out previous image visually immediately
+    mainImg.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; 
+    downloadBtn.href = '#';
+    
     const resVal = infoPanel.querySelector('#meta-res');
     resVal.textContent = 'Loading...';
 
-    const imgObj = new Image();
-    imgObj.src = realSrc;
-    imgObj.onload = () => {
-      resVal.textContent = `${imgObj.naturalWidth} × ${imgObj.naturalHeight}`;
-    };
+    // Helper to try loading candidates
+    function tryLoadImage(index) {
+      if (index >= candidates.length) {
+        resVal.textContent = 'Failed to load';
+        return;
+      }
+      const testSrc = candidates[index];
+      const imgObj = new Image();
+      imgObj.onload = () => {
+        // Success! Set the real UI
+        mainImg.src = testSrc;
+        downloadBtn.href = testSrc;
+        resVal.textContent = `${imgObj.naturalWidth} × ${imgObj.naturalHeight}`;
+      };
+      imgObj.onerror = () => {
+        // Failed, try the next size down
+        tryLoadImage(index + 1);
+      };
+      imgObj.src = testSrc;
+    }
+
+    // Start loading the largest candidate
+    tryLoadImage(0);
 
     // Fill metadata panel fields
     infoPanel.querySelector('#meta-name').textContent = currentTitle;

@@ -1,5 +1,5 @@
 /**
- * filesystem.js — Virtual Filesystem API for Portfolio 3.0
+ * filesystem.js — Virtual Filesystem API for Phosphor 3.0
  * Connects to the window.__FS_TREE__ data generated at build time.
  */
 

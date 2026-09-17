@@ -353,9 +353,6 @@
     color: var(--cp-green);
   }
 
-  .fileexp-tree-toggle:focus-visible {
-    outline: none;
-  }
 
   .fileexp-tree-toggle-spacer {
     width: 14px;

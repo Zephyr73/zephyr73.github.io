@@ -13,10 +13,10 @@
     --cp-border-2: #234823;
 
     /* Accent colours */
-    --cp-green: #00ff41;
-    --cp-green-dim: #00b830;
-    --cp-green-glow: rgba(0, 255, 65, 0.25);
-    --cp-crt-glow: rgba(0, 255, 65, 0.08);
+    --cp-green: #39ff14;
+    --cp-green-dim: #2eb810;
+    --cp-green-glow: rgba(57, 255, 20, 0.25);
+    --cp-crt-glow: rgba(57, 255, 20, 0.08);
     --cp-amber: #ffb800;
     --cp-amber-glow: rgba(255, 184, 0, 0.2);
     --cp-cyan: #00e5ff;

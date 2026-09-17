@@ -19,7 +19,7 @@ export function initNavPane({ openApp }) {
     renderTree();
   });
   // Apply theme on startup
-  const savedTheme = localStorage.getItem('v3-theme') || 'green';
+  const savedTheme = localStorage.getItem('v3-theme') || 'phosphor';
   applyTheme(savedTheme);
   // Set up stats & volume info
   updateStatsAndVolume();

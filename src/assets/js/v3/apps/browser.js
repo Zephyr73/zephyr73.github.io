@@ -2,7 +2,7 @@
  * browser.js — Browser App (Firefox-mimicking)
  */
 
-export function createBrowserApp(initialPath = '/', initialTitle = 'Portfolio') {
+export function createBrowserApp(initialPath = '/', initialTitle = 'Phosphor') {
   const container = document.createElement('div');
   container.className = 'app-browser';
 
@@ -204,8 +204,8 @@ export function createBrowserApp(initialPath = '/', initialTitle = 'Portfolio') 
         const tab = tabs.find((t) => t.id === tabId);
         if (tab) {
           tab.path = relativePath;
-          const pageTitle = iframe.contentWindow.document.title || 'Portfolio';
-          tab.title = pageTitle.split('—')[0].trim() || 'Portfolio';
+          const pageTitle = iframe.contentWindow.document.title || 'Phosphor';
+          tab.title = pageTitle.split('—')[0].trim() || 'Phosphor';
         }
 
         if (tabId === activeTabId) {
@@ -215,7 +215,7 @@ export function createBrowserApp(initialPath = '/', initialTitle = 'Portfolio') 
         }
         renderTabs();
 
-        const curV3Theme = localStorage.getItem('v3-theme') || 'green';
+        const curV3Theme = localStorage.getItem('v3-theme') || 'phosphor';
         if (!iframe.contentWindow.sessionStorage?.getItem('v2-embedded-accent')) {
           iframe.contentWindow.applyTheme?.(curV3Theme, null, true);
         }

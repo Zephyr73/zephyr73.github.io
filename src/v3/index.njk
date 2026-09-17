@@ -16,7 +16,8 @@ eleventyExcludeFromCollections: true
   <meta property="og:title" content="Portfolio 3.0 — Interactive Virtual Desktop" />
   <meta property="og:description" content="A professional, Linux-like interactive desktop portfolio environment." />
   <meta property="og:url" content="https://tasrif.dev/" />
-  <meta property="og:image" content="https://tasrif.dev/assets/img/og-v3.jpg" />
+  <meta property="og:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
 
   <!-- Google Fonts (Share Tech Mono) — was loaded via @import in desktop.scss -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -114,7 +115,7 @@ eleventyExcludeFromCollections: true
         <span class="desktop-notification__uptime" id="notif-uptime">UP: 00:00:00</span>
       </div>
       <div class="desktop-notification__body">
-        <div class="notif-intro">PORTFOLIO_OS v3.0 [ONLINE] // KERNEL V8</div>
+        <div class="notif-intro">PHOSPHOR_OS v3.0 [ONLINE] // KERNEL V8</div>
         <div class="notif-section">
           <span class="notif-highlight">&gt;&gt; QUICK REFERENCE:</span><br>
           <span class="notif-bullet">•</span> Double-click desktop icons to open apps<br>
@@ -123,7 +124,7 @@ eleventyExcludeFromCollections: true
           <span class="notif-bullet">•</span> Toggle CRT Bloom filter in tray for scanlines
         </div>
         <div class="notif-terminal-footer">
-          <span class="notif-prompt">guest@portfolio:~$</span> <span class="notif-status-msg">telemetry nominal</span><span class="notif-cursor"></span>
+          <span class="notif-prompt">guest@phosphor:~$</span> <span class="notif-status-msg">telemetry nominal</span><span class="notif-cursor"></span>
         </div>
       </div>
     </div>
@@ -134,7 +135,7 @@ eleventyExcludeFromCollections: true
   </div>
 
   <!-- ── TTY SHELL MODE ────────────────────────────────────── -->
-  <div id="mode-tty" class="mode-container" role="main" aria-label="TTY Shell">
+  <div id="mode-tty" class="mode-container" role="main" aria-label="SHELL">
 
     <!-- Left: Navigation Pane -->
     <div class="tty-nav-pane" id="tty-nav-pane" role="navigation" aria-label="File system tree">
@@ -193,7 +194,7 @@ eleventyExcludeFromCollections: true
     <div class="tty-console-pane" id="tty-console">
       <div class="console-header">
         <div class="console-header-title">
-          Terminal: guest@portfolio:~/
+          Terminal: guest@phosphor:~/
         </div>
         <button class="console-nav-toggle" id="console-nav-toggle" aria-label="Toggle Files Pane">⬡ FILES</button>
         <div class="console-header-status" style="font-size:9px;color:var(--cp-dim);">KILL SERVER ACTIVE</div>
@@ -202,7 +203,7 @@ eleventyExcludeFromCollections: true
         <!-- Terminal output populated by terminal.js -->
       </div>
       <div class="console-input-row">
-        <span class="console-prompt-label" id="console-prompt-label">guest@portfolio:~$ </span>
+        <span class="console-prompt-label" id="console-prompt-label">guest@phosphor:~$ </span>
         <input
           class="console-input"
           id="console-input"
@@ -242,9 +243,9 @@ eleventyExcludeFromCollections: true
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="0"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         DESKTOP
       </div>
-      <div class="statusbar-tab" id="tab-tty" role="tab" aria-selected="false" aria-controls="mode-tty" data-mode="tty" tabindex="-1" aria-label="Switch to TTY Shell">
+      <div class="statusbar-tab" id="tab-tty" role="tab" aria-selected="false" aria-controls="mode-tty" data-mode="tty" tabindex="-1" aria-label="Switch to SHELL">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-        TTY SHELL
+        SHELL
       </div>
     </div>
 
@@ -283,12 +284,10 @@ eleventyExcludeFromCollections: true
       <div class="style-menu__section">
         <div class="style-menu__label">THEME:</div>
         <select class="style-menu__select" id="style-theme-select" aria-label="Select desktop theme">
-          <option value="green">Matrix Green</option>
-          <option value="cyan">Cyan Hacker</option>
+          <option value="phosphor">P3 Phosphor</option>
+          <option value="green">P1 Phosphor</option>
           <option value="red">Crimson Red</option>
-          <option value="sunset">Cyber Sunset</option>
-          <option value="cyberpunk2077">Cyberpunk 2077</option>
-          <option value="phosphor">Warm Phosphor</option>
+          <option value="cyan">Cyan Hacker</option>
         </select>
       </div>
       <div class="style-menu__section">

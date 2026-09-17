@@ -12,3 +12,18 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* View Transitions overrides for theme ripple effect */
+::view-transition-group(root) {
+  animation-duration: 400ms;
+  animation-timing-function: var(--ease-default);
+}
+::view-transition-new(root),
+::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+/* Ensure the old view stays beneath the new view during the ripple */
+::view-transition-old(root) {
+  z-index: -1;
+}

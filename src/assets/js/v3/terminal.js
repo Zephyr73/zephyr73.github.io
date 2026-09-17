@@ -30,7 +30,7 @@ window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
 
     // Echo command
     const currentCwd = pwd();
-    const promptText = `guest@portfolio:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
+    const promptText = `guest@phosphor:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
     this.write(promptText + commandLine, 'prompt');
 
     // Add to history
@@ -51,14 +51,14 @@ window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
 
 const BANNER = `
 <div class="console-banner">
-<span class="console-banner-art">██████╗  ██████╗ ██████╗ ████████╗███████╗ ██████╗ ██╗     ██╗ ██████╗ 
-██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔════╝██╔═══██╗██║     ██║██╔═══██╗
-██████╔╝██║   ██║██████╔╝   ██║   █████╗  ██║   ██║██║     ██║██║   ██║
-██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══╝  ██║   ██║██║     ██║██║   ██║
-██║     ╚██████╔╝██║  ██║   ██║   ██║     ╚██████╔╝███████╗██║╚██████╔╝
-╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚═╝ ╚═════╝ 
+<span class="console-banner-art">██████╗ ██╗  ██╗ ██████╗ ███████╗██████╗ ██╗  ██╗ ██████╗ ██████╗ 
+██╔══██╗██║  ██║██╔═══██╗██╔════╝██╔══██╗██║  ██║██╔═══██╗██╔══██╗
+██████╔╝███████║██║   ██║███████╗██████╔╝███████║██║   ██║██████╔╝
+██╔═══╝ ██╔══██║██║   ██║╚════██║██╔═══╝ ██╔══██║██║   ██║██╔══██╗
+██║     ██║  ██║╚██████╔╝███████║██║     ██║  ██║╚██████╔╝██║  ██║
+╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
 </span><span class="console-banner-text">
-Welcome to TX_OS v3.0 terminal emulator.
+Welcome to PHOSPHOR_SHELL v3.0.
 Type 'help' to list available commands.</span>
 </div>`;
 
@@ -163,7 +163,7 @@ export function initTerminal({ openApp }) {
 function updatePromptLabel(labelEl) {
   if (!labelEl) return;
   const currentCwd = pwd();
-  labelEl.textContent = `guest@portfolio:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
+  labelEl.textContent = `guest@phosphor:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
 }
 
 function writeLine(text, type = 'output') {
@@ -221,7 +221,7 @@ function handleTabCompletion(inputEl) {
     inputEl.value = words.join(' ');
   } else if (matches.length > 1) {
     // Print multiple options
-    writeLine(`guest@portfolio:${pwd()}$ ${val}`, 'prompt');
+    writeLine(`guest@phosphor:${pwd()}$ ${val}`, 'prompt');
     const optionStr = matches
       .map((e) => {
         const color = e.type === 'dir' ? 'var(--cp-cyan)' : 'var(--cp-white)';
@@ -268,7 +268,7 @@ Available commands:
   <span style="color:var(--cp-amber)">echo &lt;text&gt;</span>  - Echo input text back to console
   <span style="color:var(--cp-amber)">whoami</span>       - Display logged in system role
   <span style="color:var(--cp-amber)">date</span>         - View UTC system hardware date
-  <span style="color:var(--cp-amber)">browser</span>      - Launch portfolio Web Engine browser
+  <span style="color:var(--cp-amber)">browser</span>      - Launch phosphor Web Engine browser
 `;
 
     case 'clear':
@@ -365,7 +365,7 @@ Available commands:
       if (openAppCallback) {
         openAppCallback('browser');
       }
-      return 'Launching portfolio Web Engine browser...';
+      return 'Launching phosphor Web Engine browser...';
 
     case 'matrix': {
       window.__TERMINAL_SESSION__.write(
@@ -400,7 +400,7 @@ Available commands:
       const secs = uptimeSec % 60;
       const uptimeStr =
         hrs > 0 ? `${hrs}h ${mins}m ${secs}s` : mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
-      const curTheme = document.body.dataset.theme || 'green';
+      const curTheme = document.body.dataset.theme || 'phosphor';
       const memVal = document.getElementById('stat-mem')?.textContent || '4.2G';
 
       return `
@@ -415,9 +415,9 @@ Available commands:
 (__(__)___(__)__)
 </pre>
 <div>
-<span style="color:var(--cp-amber);font-weight:bold">guest</span>@<span style="color:var(--cp-green);font-weight:bold">portfolio</span>
+<span style="color:var(--cp-amber);font-weight:bold">guest</span>@<span style="color:var(--cp-green);font-weight:bold">phosphor</span>
 <div style="color:var(--cp-dim);margin-bottom:4px">---------------------------------</div>
-<span style="color:var(--cp-cyan)">OS</span>:      PORTFOLIO_OS v3.0 (x86_64)
+<span style="color:var(--cp-cyan)">OS</span>:      PHOSPHOR_OS v3.0 (x86_64)
 <span style="color:var(--cp-cyan)">Host</span>:    Virtual Desktop Sandbox Rig
 <span style="color:var(--cp-cyan)">Kernel</span>:  Eleventy 3.0 / V8 JS Core
 <span style="color:var(--cp-cyan)">Uptime</span>:  ${uptimeStr}

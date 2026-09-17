@@ -53,7 +53,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addNunjucksAsyncShortcode(
     'gimg',
     async function (src, alt, loading, fetchpriority, order) {
-      const srcPath = `./src/assets/img/gallery/${src}`;
+      const srcPath = `./src/_gallery_source/${src}`;
       // Keep processed images in the same subdirectory (photography/, ai/, forza/)
       const subdir = src.split('/')[0];
 

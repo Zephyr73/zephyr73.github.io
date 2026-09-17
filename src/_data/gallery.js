@@ -3,7 +3,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import exifReader from 'exif-reader';
 
-const GALLERY_ROOT = './src/assets/img/gallery';
+const GALLERY_ROOT = './src/_gallery_source';
 
 async function getImageDate(filePath, isPhotography) {
   try {

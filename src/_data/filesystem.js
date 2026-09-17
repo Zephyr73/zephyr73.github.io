@@ -16,7 +16,8 @@ const HIDDEN = new Set([
   'assets',
   'scripts',
   'scss',
-  'gallery', // injected separately from assets/img/gallery below
+  '_gallery_source',
+  'gallery', // injected separately from _gallery_source below
   'node_modules',
   '.git',
   '.github',
@@ -121,8 +122,8 @@ function scanDir(dirPath, virtualPath = '/') {
 export default function () {
   const rootChildren = scanDir(SRC_ROOT, '/');
 
-  // Inject gallery assets from src/assets/img/gallery into the virtual filesystem
-  const galleryChildren = scanDir('./src/assets/img/gallery', '/gallery');
+  // Inject gallery assets from src/_gallery_source into the virtual filesystem
+  const galleryChildren = scanDir('./src/_gallery_source', '/gallery');
   if (galleryChildren && galleryChildren.length > 0) {
     rootChildren.push({
       name: 'gallery',
