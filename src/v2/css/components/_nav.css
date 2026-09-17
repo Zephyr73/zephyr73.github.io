@@ -3,5 +3,11 @@
    and accent switcher. */
 
 @layer components {
-  /* This file is now empty; styles migrated to Tailwind utility classes in navbar.njk and drawer.njk */
+  /* Stateful On-Load Transitions for Navbar Expansion */
+  html.nav-starting-narrow .site-nav__inner {
+    max-width: 1100px !important;
+  }
+  html.nav-starting-wide .site-nav__inner {
+    max-width: 1360px !important;
+  }
 }

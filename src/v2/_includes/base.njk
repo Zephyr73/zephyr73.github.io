@@ -60,6 +60,18 @@
         if (isEmbedded) {
           classes.push('is-embedded');
         }
+        
+        // Stateful Navbar Transition Logic
+        var isGallery = window.location.pathname.indexOf('/gallery') !== -1;
+        var wasGallery = sessionStorage.getItem('v2-was-gallery') === 'true';
+        sessionStorage.setItem('v2-was-gallery', isGallery);
+        
+        if (isGallery && !wasGallery) {
+          classes.push('nav-starting-narrow');
+        } else if (!isGallery && wasGallery) {
+          classes.push('nav-starting-wide');
+        }
+        
         document.documentElement.className = classes.join(' ');
       })();
     </script>
@@ -128,5 +140,13 @@
     {% include "footer.njk" %}
 
     <script src="/assets/js/script.js"></script>
+    <script>
+      // Trigger the navbar width animation instantly after first paint
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.documentElement.classList.remove('nav-starting-narrow', 'nav-starting-wide');
+        });
+      });
+    </script>
   </body>
 </html>
