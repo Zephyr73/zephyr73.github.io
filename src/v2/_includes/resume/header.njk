@@ -166,7 +166,7 @@
       {% for item in profile.meta %}
       <div class="meta-cell bg-surface py-[10px] px-[14px] flex flex-col gap-[2px]">
         <span class="meta-label font-regular text-[0.65rem] uppercase tracking-[0.06em] text-text-subtle">{{ item.label }}</span>
-        <span class="meta-value font-regular text-[0.8rem] font-semibold text-body-text{% if item.accent %} text-accent{% endif %}">{{ item.value | safe }}</span>
+        <span class="meta-value font-regular text-[0.8rem] font-semibold {% if item.accent %}text-accent{% else %}text-body-text{% endif %}">{{ item.value | safe }}</span>
       </div>
       {% endfor %}
     </div>
