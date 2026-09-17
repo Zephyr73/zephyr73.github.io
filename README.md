@@ -35,3 +35,12 @@ Run commands from the repository root:
 - **Compile CSS**: `npm run build:css` (Compiles styling manually).
 - **Production Build**: `npm run build` (Generates the static site inside `_site/`).
 - **Lint Check**: `npm run lint:js` (Checks JavaScript files for errors).
+
+---
+
+## License
+
+This repository is dual-licensed:
+
+- **Source Code**: [MIT License](LICENSE) (Free to fork and modify).
+- **Photography & Generative Art** (`src/_gallery_source/`, `src/assets/img/`): [CC BY-NC 4.0](LICENSE-CONTENT) (Free to share and modify with attribution, non-commercial use only).

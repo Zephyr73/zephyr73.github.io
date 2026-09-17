@@ -13,7 +13,7 @@ Eleventy 3.x static site (ESM). Dual-version personal portfolio: **V2** (traditi
 - `src/v3/css/` — V3 Tailwind entrypoint (`desktop.css`) + cyberpunk desktop partials
 - `src/_data/` — Eleventy global data (`filesystem.js` generates virtual FS tree for V3)
 - `src/assets/` — static assets (JS, CSS, images, fonts) copied through via passthrough
-- `src/assets/img/gallery/` — gallery source images (photography, AI, forza subdirs)
+- `src/_gallery_source/` — gallery source images (photography, AI, forza subdirs; kept out of the passthrough so raw files are not deployed)
 - `src/assets/js/v3/` — V3 ES module scripts (shell.js entry, desktop, terminal, filesystem, apps)
 - `_site/` — build output (gitignored)
 
@@ -50,7 +50,7 @@ Use the `gimg` Nunjucks async shortcode in V2 templates:
 {% gimg "photography/photo.jpg", "alt text", "eager", "high" %}
 ```
 
-Generates WebP + JPEG at 400/800/1200/1800 widths with `<picture>` srcset. Processes EXIF for device name overlay. Images must be in `src/assets/img/gallery/<subdir>/`.
+Generates WebP + JPEG at 400/800/1200/1800 widths with `<picture>` srcset. Processes EXIF for device name overlay. Images must be in `src/_gallery_source/<subdir>/`.
 
 ## Linting / Formatting
 

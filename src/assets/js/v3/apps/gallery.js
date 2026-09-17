@@ -124,6 +124,10 @@ export function createGalleryApp(filePath, fileTitle) {
       <span class="gallery-info-label">Captured Date</span>
       <span class="gallery-info-value" id="meta-date">--</span>
     </div>
+    <div class="gallery-info-row">
+      <span class="gallery-info-label">License</span>
+      <span class="gallery-info-value">© Tasrif · CC BY-NC 4.0</span>
+    </div>
   `;
   imageArea.appendChild(infoPanel);
 

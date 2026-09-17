@@ -1,0 +1,33 @@
+Content License — © 2026 Tasrif
+
+This license governs all non-code content in this repository and website,
+specifically the photography and generative artwork found in:
+
+  - src/_gallery_source/
+  - src/assets/img/photo.*, src/assets/img/ai.*
+  - Any derived thumbnails / web-optimized variants generated from those images
+
+Exclusions: source code (HTML/CSS/JS templates and logic) is licensed
+separately under LICENSE-CODE (ISC). Bundled fonts remain under their
+vendors' SIL Open Font License.
+
+                 Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+
+You are free to share, copy, redistribute, remix, transform, and build upon
+this material in any medium or format, provided that:
+
+   1. Attribution — You give appropriate credit to "Tasrif (tasrif.dev)",
+      provide a link to the license, and indicate if changes were made.
+
+   2. NonCommercial — You may not use the material for commercial purposes.
+
+The licensor cannot revoke these freedoms as long as you follow the license terms.
+
+No warranties are given; the material is licensed "as is" and the author
+disclaims all liability arising from its use.
+
+Full legal text:
+  https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+This notice is merely a human-readable summary; the official legal code
+above governs.

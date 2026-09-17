@@ -10,7 +10,7 @@ import exifReader from 'exif-reader';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const GALLERY_ROOT = './src/assets/img/gallery';
+const GALLERY_ROOT = './src/_gallery_source';
 const IMAGE_RE = /\.(jpe?g|png|webp)$/i;
 
 function getCategories() {

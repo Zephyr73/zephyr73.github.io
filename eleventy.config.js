@@ -17,6 +17,12 @@ export default function (eleventyConfig) {
   };
   eleventyConfig.addPassthroughCopy(v2Passthrough);
 
+  // Copy root license files so the footer links resolve in the built site
+  eleventyConfig.addPassthroughCopy({
+    'LICENSE-CODE': 'LICENSE-CODE',
+    'LICENSE-CONTENT': 'LICENSE-CONTENT',
+  });
+
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
   eleventyConfig.addWatchTarget('./src/assets/js/');
   eleventyConfig.addWatchTarget('./src/assets/css/');
@@ -148,6 +154,7 @@ export default function (eleventyConfig) {
         <span>${dateStr}</span>
         <span>${resolutionStr}</span>
         <span>${fileSizeStr}</span>
+        <span>© Tasrif · CC BY-NC 4.0</span>
       </div>
       <span class="gallery-item__view-details inline-block bg-body-text text-container-bg font-regular text-[12px] py-[6px] px-[14px] no-underline transition-colors duration-200 ease">View Details</span>
     </div>
