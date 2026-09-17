@@ -132,7 +132,7 @@ export default function (eleventyConfig) {
       const detailUrl = `/gallery/image/${slug}/`;
 
       const orderStyle =
-        order !== undefined && order !== null && order !== '' ? ` style="order: ${order};"` : '';
+        order !== undefined && order !== null && order !== '' ? ` style="order: ${order}; --stagger-idx: ${order};"` : '';
       return `<div class="gallery-item relative w-full flex flex-col overflow-hidden [&:hover_img]:shadow-[0_0_20px_2px_rgba(0,0,0,0.2)] [&:hover_img]:transition-[0.4s_ease] [&:hover_img]:outline [&:hover_img]:outline-1 [&:hover_img]:outline-body-text [&:hover_img]:scale-[1.015] [&:hover_img]:translate-z-0 [&:hover_.gallery-item\\_\\_overlay]:opacity-100 [&:hover_.gallery-item\\_\\_overlay]:pointer-events-auto"${orderStyle}>
   ${pictureHtml}
   <div class="gallery-item__overlay absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.85)] flex flex-col justify-end items-start p-[14px] gap-[10px] opacity-0 transition-opacity duration-300 ease pointer-events-none">

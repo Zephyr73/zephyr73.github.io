@@ -1,6 +1,17 @@
+{% set pageAccent = "periwinkle" %}
+{% if '/projects' in page.url %}
+  {% set pageAccent = "emerald" %}
+{% elif '/blog' in page.url %}
+  {% set pageAccent = "coral" %}
+{% elif '/gallery' in page.url %}
+  {% set pageAccent = "catppuccin" %}
+{% elif '/about' in page.url %}
+  {% set pageAccent = "red" %}
+{% endif %}
 <!doctype html>
-<html lang="en">
+<html lang="en" data-static-accent="{{ pageAccent }}">
   <head>
+    <link rel="icon" type="image/jpeg" href="/assets/img/favicon.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -27,6 +38,18 @@
 
     <title>{{ title | default("Zephyr — Software Developer & Portfolio") }}</title>
 
+    <!-- Open Graph / Twitter Meta Tags -->
+    <meta property="og:title" content="{{ title | default('Zephyr — Software Developer & Portfolio') }}" />
+    {% if description %}<meta property="og:description" content="{{ description }}" />{% endif %}
+    <meta property="og:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tasrif.dev{{ page.url }}" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ title | default('Zephyr — Software Developer & Portfolio') }}" />
+    {% if description %}<meta name="twitter:description" content="{{ description }}" />{% endif %}
+    <meta name="twitter:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
+
     <!-- Prevent scroll jitter on reload & restore saved theme before CSS loads to prevent FOUC -->
     <script>
       if ('scrollRestoration' in history) {
@@ -46,8 +69,7 @@
             'green';
         } else {
           mode = localStorage.getItem('v2-mode') || 'dark';
-          var saved = localStorage.getItem('v2-accent');
-          accent = saved && validV2Accents.indexOf(saved) !== -1 ? saved : 'lavender';
+          accent = document.documentElement.getAttribute('data-static-accent') || 'periwinkle';
         }
 
         var classes = [];
@@ -129,7 +151,7 @@
               </nav>
             </div>
           </aside>
-          <div class="markdown-content prose max-w-none">
+          <div class="markdown-content">
             {{ content | safe }}
           </div>
         </div>

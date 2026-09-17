@@ -2,7 +2,7 @@
    Order: Tailwind (theme/base/components/utilities) then custom layers. */
 
 @import 'tailwindcss';
-@plugin "@tailwindcss/typography";
+
 
 /* ── Site CSS (7-1 architecture, CSS-native) ────────────────────────────── */
 @import './abstracts/_tokens.css';

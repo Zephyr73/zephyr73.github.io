@@ -4,6 +4,13 @@
 
 @layer components {
   /* ── V2 Primary Accent Themes ─────────────────────────────────────────── */
+  .periwinkle {
+    --clr-accent: #a5b4fc;
+    --clr-accent-dim: #6366f1;
+    --clr-accent-glow: rgba(165, 180, 252, 0.18);
+    --clr-link-visited: #a5b4fc;
+  }
+
   .lavender {
     --clr-accent: #a78bfa;
     --clr-accent-dim: #7c3aed;
@@ -156,20 +163,20 @@
   /* ── Light Mode (Greyish White Aesthetic) ────────────────────────────── */
   html.light,
   html[data-mode='light'] {
-    --clr-body-bg: #f3f3f6;
+    --clr-body-bg: #e4e4e9;
     --clr-body-text: #16161a;
     --clr-bold-text: #111114;
     --clr-text-muted: #5e5e6e;
     --clr-text-subtle: #848496;
 
-    --clr-surface: #ffffff;
-    --clr-surface-2: #eaebee;
-    --clr-border: #dcdce6;
-    --clr-border-hover: #b4b4c6;
+    --clr-surface: #f2f2f6;
+    --clr-surface-2: #dbdbe2;
+    --clr-border: #cccccc;
+    --clr-border-hover: #a8a8bc;
 
-    --clr-navbar-bg: rgba(243, 243, 246, 0.85);
+    --clr-navbar-bg: rgba(228, 228, 233, 0.85);
     --clr-navbar-text: #16161a;
-    --clr-container-bg: #ffffff;
+    --clr-container-bg: #f2f2f6;
     --clr-hamburger-bg: #16161a;
     --clr-off-screen-menu-txt: #16161a;
 

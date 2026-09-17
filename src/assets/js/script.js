@@ -56,15 +56,11 @@ if (siteNav) {
   handleNavScroll();
 }
 
-// Theme: mode toggle, dropdown (desktop), drawer theme panel, persistence
+// Theme: mode toggle, drawer theme panel, persistence
 const themeMenu = document.querySelector('.theme-picker__menu');
 const themeSwitch = document.querySelector('.site-nav__theme-toggle');
 const modeToggle = document.querySelector('.site-nav__mode-toggle');
-const themeOptions = document.querySelectorAll('.theme-picker__menu a[data-theme]');
 const modeOptions = document.querySelectorAll('[data-mode]');
-const drawerThemeButtons = document.querySelectorAll('.drawer-theme-btn[data-theme]');
-
-const VALID_V2_ACCENTS = ['lavender', 'white', 'catppuccin', 'red', 'coral', 'emerald'];
 
 function getActiveThemeState() {
   const isEmbedded = window.self !== window.top;
@@ -81,14 +77,13 @@ function getActiveThemeState() {
     mode =
       localStorage.getItem('v2-mode') ||
       (document.documentElement.classList.contains('light') ? 'light' : 'dark');
-    const saved = localStorage.getItem('v2-accent');
-    accent = saved && VALID_V2_ACCENTS.includes(saved) ? saved : 'lavender';
+    accent = document.documentElement.getAttribute('data-static-accent') || 'periwinkle';
   }
 
   return { isEmbedded, mode, accent };
 }
 
-function updateThemeUI(mode, accent) {
+function updateThemeUI(mode) {
   if (modeToggle) {
     const nextMode = mode === 'light' ? 'dark' : 'light';
     modeToggle.setAttribute('aria-label', `Switch to ${nextMode} mode`);
@@ -98,12 +93,6 @@ function updateThemeUI(mode, accent) {
   document.querySelectorAll('[data-mode]').forEach((el) => {
     const m = el.getAttribute('data-mode');
     el.classList.toggle('active', m === mode);
-  });
-
-  document.querySelectorAll('[data-theme]').forEach((el) => {
-    const t = el.getAttribute('data-theme');
-    const isSystemActive = t === 'system' && !VALID_V2_ACCENTS.includes(accent);
-    el.classList.toggle('active', t === accent || isSystemActive);
   });
 }
 
@@ -124,15 +113,6 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
       currentMode = modeKey;
     } else if (themeKey === 'light' || themeKey === 'dark') {
       currentMode = themeKey;
-    } else if (themeKey === 'system') {
-      if (isEmbedded) {
-        sessionStorage.removeItem('v2-embedded-accent');
-        currentAccent = localStorage.getItem('v3-theme') || 'green';
-      } else {
-        currentAccent = 'lavender';
-      }
-    } else if (themeKey) {
-      currentAccent = themeKey;
     }
   }
 
@@ -144,7 +124,6 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
     }
   } else {
     localStorage.setItem('v2-mode', currentMode);
-    localStorage.setItem('v2-accent', currentAccent);
   }
 
   // Preserve unrelated classes like 'no-scroll' and 'is-embedded'
@@ -162,8 +141,12 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
   if (currentAccent) {
     document.documentElement.classList.add(currentAccent);
   }
+  // Restore static accent data attribute if it was cleared
+  if (!isEmbedded && !document.documentElement.hasAttribute('data-static-accent')) {
+     document.documentElement.setAttribute('data-static-accent', currentAccent);
+  }
 
-  updateThemeUI(currentMode, currentAccent);
+  updateThemeUI(currentMode);
 
   // Update theme toggle UI if present
   if (themeMenu) {
@@ -196,8 +179,8 @@ if (window.self !== window.top) {
 }
 
 // Initialize theme UI active states
-const { mode: initialMode, accent: initialAccent } = getActiveThemeState();
-updateThemeUI(initialMode, initialAccent);
+const { mode: initialMode } = getActiveThemeState();
+updateThemeUI(initialMode);
 
 // Mode toggle button (Sun / Moon)
 if (modeToggle) {
@@ -245,28 +228,7 @@ window.addEventListener('click', (e) => {
   }
 });
 
-themeOptions.forEach((option) => {
-  option.addEventListener('click', (e) => {
-    e.preventDefault();
-    const t = option.getAttribute('data-theme');
-    applyTheme(t);
-  });
-});
 
-drawerThemeButtons.forEach((btn) => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const t = btn.getAttribute('data-theme');
-    applyTheme(t);
-    // close drawer after selecting theme
-    if (hamTrigger && drawer) {
-      hamTrigger.classList.remove('active');
-      drawer.classList.remove('active');
-      document.documentElement.classList.remove('no-scroll');
-      document.body.classList.remove('no-scroll');
-    }
-  });
-});
 
 // Gallery Page: Tabs switching
 const GALLERY_SECTIONS = {
@@ -489,13 +451,19 @@ function ditherAvatar() {
 
   const tmpImg = new Image();
   tmpImg.onload = () => {
-    const W = tmpImg.naturalWidth;
-    const H = tmpImg.naturalHeight;
+    const rect = avatar.getBoundingClientRect();
+    const cssW = rect.width || 160;
+    const cssH = rect.height || 160;
+    const dpr = window.devicePixelRatio || 1;
+
+    const W = Math.round(cssW * dpr);
+    const H = Math.round(cssH * dpr);
+    
     const offscreen = document.createElement('canvas');
     offscreen.width = W;
     offscreen.height = H;
     const ctx = offscreen.getContext('2d');
-    ctx.drawImage(tmpImg, 0, 0);
+    ctx.drawImage(tmpImg, 0, 0, W, H);
     const src = ctx.getImageData(0, 0, W, H).data;
 
     // Pre-compute ITU-R BT.601 luminance for every pixel once.
