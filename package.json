@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "clean": "cross-env NODE_OPTIONS=\"--no-deprecation\" node -e \"fs.rmSync('_site', {recursive:true, force:true})\"",
+    "clean": "node scripts/clean.js",
     "build": "npm run clean && cross-env NODE_OPTIONS=\"--no-deprecation\" npx @11ty/eleventy",
     "build:css": "tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css && tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css",
     "watch:css": "concurrently \"tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css --watch\" \"tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css --watch\"",
