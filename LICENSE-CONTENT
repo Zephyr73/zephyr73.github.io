@@ -5,10 +5,11 @@ specifically the photography and generative artwork found in:
 
   - src/_gallery_source/
   - src/assets/img/photo.*, src/assets/img/ai.*
+  - src/assets/img/favicon.*, src/assets/img/og-image.*, src/assets/img/profile.*, src/assets/img/signature.*, src/assets/img/WallpaperSync.*
   - Any derived thumbnails / web-optimized variants generated from those images
 
 Exclusions: source code (HTML/CSS/JS templates and logic) is licensed
-separately under LICENSE-CODE (ISC). Bundled fonts remain under their
+separately under LICENSE (MIT). Bundled fonts remain under their
 vendors' SIL Open Font License.
 
                  Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)

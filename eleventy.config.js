@@ -19,7 +19,7 @@ export default function (eleventyConfig) {
 
   // Copy root license files so the footer links resolve in the built site
   eleventyConfig.addPassthroughCopy({
-    'LICENSE-CODE': 'LICENSE-CODE',
+    'LICENSE': 'LICENSE',
     'LICENSE-CONTENT': 'LICENSE-CONTENT',
   });
 
