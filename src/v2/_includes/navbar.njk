@@ -1,42 +1,42 @@
-<nav class="site-nav" aria-label="Main navigation">
-  <div class="site-nav__inner">
+<nav class="site-nav fixed top-0 left-0 right-0 w-full h-[64px] z-[99] bg-transparent border-b border-transparent pt-[env(safe-area-inset-top,0)] pl-[env(safe-area-inset-left,0)] pr-[env(safe-area-inset-right,0)] box-content [transform:translateZ(0)] [-webkit-transform:translateZ(0)] transition-[background-color,border-color,backdrop-filter] duration-250 ease-default max-md:h-[60px] [&.scrolled]:bg-navbar-bg [&.scrolled]:backdrop-blur-[16px] [&.scrolled]:[-webkit-backdrop-filter:blur(16px)] [&.scrolled]:border-border" aria-label="Main navigation">
+  <div class="site-nav__inner max-w-[1100px] w-full h-[64px] mx-auto px-6 box-border flex items-center justify-between [:is(body.page--gallery,body.page--gallery-detail)_&]:max-w-[1360px] max-[440px]:px-[0.85rem] max-md:h-[60px] max-md:px-4">
     <div class="site-nav__brand">
-      <a href="/">
-        <span class="site-nav__brand-name">ZEPHYR</span>
-        <span class="site-nav__brand-badge">V2</span>
+      <a href="/" class="group inline-flex items-center gap-2 no-underline text-body-text">
+        <span class="site-nav__brand-name font-heading font-[800] text-[1.15rem] tracking-[-0.03em] text-body-text transition-colors duration-150 ease-default group-hover:text-accent">ZEPHYR</span>
+        <span class="site-nav__brand-badge font-regular text-[0.65rem] font-semibold tracking-[0.05em] px-[5px] py-[2px] border border-border text-text-muted bg-surface">V2</span>
       </a>
     </div>
-    <div class="site-nav__actions">
-      <div class="site-nav__links">
-        <ul>
+    <div class="site-nav__actions flex items-center gap-6 min-[769px]:max-[920px]:gap-[0.85rem]">
+      <div class="site-nav__links flex items-center gap-6 min-[769px]:max-[920px]:gap-[0.85rem] max-md:hidden">
+        <ul class="flex items-center list-none m-0 p-0 gap-1 min-[769px]:max-[920px]:gap-[2px]">
           <li>
-            <a href="/" {% if page.url == '/' %} aria-current="page" {% endif %}>Home</a>
+            <a href="/" {% if page.url == '/' %} aria-current="page" {% endif %} class="inline-block px-3 py-[6px] font-regular text-[0.85rem] text-text-muted no-underline relative transition-colors duration-150 ease-default hover:text-body-text aria-[current=page]:text-accent aria-[current=page]:font-bold aria-[current=page]:after:content-[''] aria-[current=page]:after:absolute aria-[current=page]:after:bottom-[-2px] aria-[current=page]:after:left-[12px] aria-[current=page]:after:right-[12px] aria-[current=page]:after:h-[2px] aria-[current=page]:after:bg-accent min-[769px]:max-[920px]:px-[8px] min-[769px]:max-[920px]:py-[6px] min-[769px]:max-[920px]:text-[0.8rem]">Home</a>
           </li>
           <li>
-            <a href="/projects/" {% if '/projects' in page.url %} aria-current="page" {% endif %}>Projects</a>
+            <a href="/projects/" {% if '/projects' in page.url %} aria-current="page" {% endif %} class="inline-block px-3 py-[6px] font-regular text-[0.85rem] text-text-muted no-underline relative transition-colors duration-150 ease-default hover:text-body-text aria-[current=page]:text-accent aria-[current=page]:font-bold aria-[current=page]:after:content-[''] aria-[current=page]:after:absolute aria-[current=page]:after:bottom-[-2px] aria-[current=page]:after:left-[12px] aria-[current=page]:after:right-[12px] aria-[current=page]:after:h-[2px] aria-[current=page]:after:bg-accent min-[769px]:max-[920px]:px-[8px] min-[769px]:max-[920px]:py-[6px] min-[769px]:max-[920px]:text-[0.8rem]">Projects</a>
           </li>
           <li>
-            <a href="/gallery/" {% if '/gallery' in page.url %} aria-current="page" {% endif %}>Gallery</a>
+            <a href="/gallery/" {% if '/gallery' in page.url %} aria-current="page" {% endif %} class="inline-block px-3 py-[6px] font-regular text-[0.85rem] text-text-muted no-underline relative transition-colors duration-150 ease-default hover:text-body-text aria-[current=page]:text-accent aria-[current=page]:font-bold aria-[current=page]:after:content-[''] aria-[current=page]:after:absolute aria-[current=page]:after:bottom-[-2px] aria-[current=page]:after:left-[12px] aria-[current=page]:after:right-[12px] aria-[current=page]:after:h-[2px] aria-[current=page]:after:bg-accent min-[769px]:max-[920px]:px-[8px] min-[769px]:max-[920px]:py-[6px] min-[769px]:max-[920px]:text-[0.8rem]">Gallery</a>
           </li>
           <li>
-            <a href="/blog/" {% if '/blog' in page.url %} aria-current="page" {% endif %}>Blog</a>
+            <a href="/blog/" {% if '/blog' in page.url %} aria-current="page" {% endif %} class="inline-block px-3 py-[6px] font-regular text-[0.85rem] text-text-muted no-underline relative transition-colors duration-150 ease-default hover:text-body-text aria-[current=page]:text-accent aria-[current=page]:font-bold aria-[current=page]:after:content-[''] aria-[current=page]:after:absolute aria-[current=page]:after:bottom-[-2px] aria-[current=page]:after:left-[12px] aria-[current=page]:after:right-[12px] aria-[current=page]:after:h-[2px] aria-[current=page]:after:bg-accent min-[769px]:max-[920px]:px-[8px] min-[769px]:max-[920px]:py-[6px] min-[769px]:max-[920px]:text-[0.8rem]">Blog</a>
           </li>
           <li>
-            <a href="/about/" {% if '/about' in page.url %} aria-current="page" {% endif %}>About</a>
+            <a href="/about/" {% if '/about' in page.url %} aria-current="page" {% endif %} class="inline-block px-3 py-[6px] font-regular text-[0.85rem] text-text-muted no-underline relative transition-colors duration-150 ease-default hover:text-body-text aria-[current=page]:text-accent aria-[current=page]:font-bold aria-[current=page]:after:content-[''] aria-[current=page]:after:absolute aria-[current=page]:after:bottom-[-2px] aria-[current=page]:after:left-[12px] aria-[current=page]:after:right-[12px] aria-[current=page]:after:h-[2px] aria-[current=page]:after:bg-accent min-[769px]:max-[920px]:px-[8px] min-[769px]:max-[920px]:py-[6px] min-[769px]:max-[920px]:text-[0.8rem]">About</a>
           </li>
         </ul>
-        <div class="site-nav__theme-wrapper">
+        <div class="site-nav__theme-wrapper relative">
           <button
-            class="site-nav__theme-toggle"
+            class="site-nav__theme-toggle group inline-flex items-center gap-[7px] bg-surface border border-border px-[10px] py-[5px] cursor-pointer text-text-muted font-regular text-[0.775rem] tracking-[0.02em] transition-colors duration-150 ease-default hover:border-border-hover hover:text-body-text min-[769px]:max-[920px]:px-[7px] min-[769px]:max-[920px]:py-[4px] min-[769px]:max-[920px]:text-[0.75rem]"
             type="button"
             aria-label="Choose appearance theme"
             aria-haspopup="true"
             aria-expanded="false"
             title="Switch theme or accent color">
-            <span class="theme-toggle__dot" aria-hidden="true"></span>
+            <span class="theme-toggle__dot inline-block w-[8px] h-[8px] bg-accent transition-colors duration-200 ease-default" aria-hidden="true"></span>
             <span class="theme-toggle__label">Theme</span>
             <svg
-              class="theme-toggle__chevron"
+              class="theme-toggle__chevron text-text-muted transition-transform duration-200 ease-default group-aria-expanded:rotate-180"
               width="10"
               height="6"
               viewBox="0 0 10 6"
@@ -46,11 +46,11 @@
               <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>
             </svg>
           </button>
-          <div class="theme-picker__menu" role="menu">
-            <div class="theme-picker__header">Mode</div>
-            <a href="#" role="menuitem" data-mode="dark">
+          <div class="theme-picker__menu hidden absolute top-[calc(100%+8px)] right-0 bg-surface border border-border shadow-[0_12px_30px_rgba(0,0,0,0.6)] z-[102] min-w-[175px] p-1" role="menu">
+            <div class="theme-picker__header px-[10px] pt-[6px] pb-[4px] font-heading text-[0.7rem] uppercase tracking-[0.08em] text-text-muted border-b border-border mb-1">Mode</div>
+            <a href="#" role="menuitem" data-mode="dark" class="flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent">
               <svg
-                class="theme-mode-icon"
+                class="theme-mode-icon shrink-0 text-current transition-colors duration-150 ease-default"
                 width="13"
                 height="13"
                 viewBox="0 0 24 24"
@@ -64,9 +64,9 @@
               </svg>
               <span>Dark</span>
             </a>
-            <a href="#" role="menuitem" data-mode="light">
+            <a href="#" role="menuitem" data-mode="light" class="flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent">
               <svg
-                class="theme-mode-icon"
+                class="theme-mode-icon shrink-0 text-current transition-colors duration-150 ease-default"
                 width="13"
                 height="13"
                 viewBox="0 0 24 24"
@@ -88,41 +88,41 @@
               </svg>
               <span>Light</span>
             </a>
-            <div class="theme-picker__header" style="margin-top: 6px;">Accent</div>
-            <a href="#" role="menuitem" data-theme="lavender">
-              <span class="theme-swatch swatch--lavender"></span>
+            <div class="theme-picker__header px-[10px] pt-[6px] pb-[4px] font-heading text-[0.7rem] uppercase tracking-[0.08em] text-text-muted border-b border-border mb-1 mt-[6px]">Accent</div>
+            <a href="#" role="menuitem" data-theme="lavender" class="flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent">
+              <span class="theme-swatch swatch--lavender inline-block w-[10px] h-[10px] shrink-0 bg-[#a78bfa]"></span>
               <span>Lavender</span>
             </a>
-            <a href="#" role="menuitem" data-theme="white">
-              <span class="theme-swatch swatch--white"></span>
+            <a href="#" role="menuitem" data-theme="white" class="flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent">
+              <span class="theme-swatch swatch--white inline-block w-[10px] h-[10px] shrink-0 bg-white border border-[#444]"></span>
               <span>Monochrome</span>
             </a>
-            <a href="#" role="menuitem" data-theme="catppuccin">
-              <span class="theme-swatch swatch--catppuccin"></span>
+            <a href="#" role="menuitem" data-theme="catppuccin" class="flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent">
+              <span class="theme-swatch swatch--catppuccin inline-block w-[10px] h-[10px] shrink-0 bg-[#f38ba8]"></span>
               <span>Catppuccin</span>
             </a>
-            <a href="#" role="menuitem" data-theme="red">
-              <span class="theme-swatch swatch--red"></span>
+            <a href="#" role="menuitem" data-theme="red" class="flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent">
+              <span class="theme-swatch swatch--red inline-block w-[10px] h-[10px] shrink-0 bg-[#ff4d4d]"></span>
               <span>Crimson</span>
             </a>
-            <a href="#" role="menuitem" data-theme="coral">
-              <span class="theme-swatch swatch--coral"></span>
+            <a href="#" role="menuitem" data-theme="coral" class="flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent">
+              <span class="theme-swatch swatch--coral inline-block w-[10px] h-[10px] shrink-0 bg-[#ff7043]"></span>
               <span>Coral</span>
             </a>
-            <a href="#" role="menuitem" data-theme="emerald">
-              <span class="theme-swatch swatch--emerald"></span>
+            <a href="#" role="menuitem" data-theme="emerald" class="flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent">
+              <span class="theme-swatch swatch--emerald inline-block w-[10px] h-[10px] shrink-0 bg-[#34d399]"></span>
               <span>Emerald</span>
             </a>
-            <a href="#" role="menuitem" data-theme="system" class="v3-theme-sync-opt" style="display: none;">
-              <span class="theme-swatch swatch--system"></span>
+            <a href="#" role="menuitem" data-theme="system" class="v3-theme-sync-opt flex items-center gap-[9px] py-[7px] px-[10px] font-regular text-[0.8rem] text-body-text no-underline transition-colors duration-150 ease-default whitespace-nowrap hover:bg-surface-2 hover:text-accent [&.active]:!text-accent [&.active]:font-bold [&.active]:after:content-['✓'] [&.active]:after:ml-auto [&.active]:after:text-[0.75rem] [&.active]:after:text-accent" style="display: none;">
+              <span class="theme-swatch swatch--system inline-block w-[10px] h-[10px] shrink-0 bg-[linear-gradient(135deg,#00ff41_0%,#00e5ff_100%)] border border-[rgba(255,255,255,0.25)]"></span>
               <span>Match Desktop</span>
             </a>
           </div>
         </div>
       </div>
-      <a href="/v3/" class="site-nav__v3-btn" title="Launch Interactive Virtual Desktop (V3)" aria-label="Launch V3 Desktop">
+      <a href="/v3/" class="site-nav__v3-btn group/v3 inline-flex items-center gap-[6px] bg-surface border border-border px-[12px] py-[6px] cursor-pointer text-body-text font-regular text-[0.775rem] font-semibold tracking-[0.02em] no-underline transition-all duration-150 ease-default box-border whitespace-nowrap rounded-none hover:border-accent hover:text-accent hover:bg-surface-2 hover:shadow-[0_0_12px_var(--color-accent-glow)] max-md:hidden [.is-embedded_&]:!hidden" title="Launch Interactive Virtual Desktop (V3)" aria-label="Launch V3 Desktop">
         <svg
-          class="v3-btn__icon"
+          class="v3-btn__icon text-accent transition-transform duration-200 ease-default group-hover/v3:scale-[1.15]"
           width="13"
           height="13"
           viewBox="0 0 24 24"
@@ -138,9 +138,9 @@
         </svg>
         <span>V3 Desktop</span>
       </a>
-      <button class="site-nav__mode-toggle" type="button" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <button class="site-nav__mode-toggle inline-flex items-center justify-center w-[32px] h-[32px] bg-surface border border-border cursor-pointer text-text-muted transition-colors duration-150 ease-default p-0 box-border rounded-none shrink-0 hover:border-accent hover:text-accent hover:bg-surface-2" type="button" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
         <svg
-          class="mode-icon mode-icon--sun"
+          class="mode-icon mode-icon--sun block [.light_&]:hidden"
           width="15"
           height="15"
           viewBox="0 0 24 24"
@@ -161,7 +161,7 @@
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
         <svg
-          class="mode-icon mode-icon--moon"
+          class="mode-icon mode-icon--moon hidden [.light_&]:block"
           width="15"
           height="15"
           viewBox="0 0 24 24"
@@ -174,10 +174,10 @@
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
       </button>
-      <button class="site-nav__hamburger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-drawer">
-        <span class="site-nav__hamburger-bar"></span>
-        <span class="site-nav__hamburger-bar"></span>
-        <span class="site-nav__hamburger-bar"></span>
+      <button class="site-nav__hamburger group/burger hidden cursor-pointer p-[10px] bg-transparent border-none w-[44px] h-[44px] flex-col items-center justify-center gap-[4.5px] box-border relative z-[101] max-md:flex" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-drawer">
+        <span class="site-nav__hamburger-bar block w-[17px] h-[1.5px] m-0 transition-all duration-250 ease-default bg-body-text origin-center group-hover/burger:bg-accent group-[.active]/burger:bg-accent [&:nth-child(1)]:group-[.active]/burger:translate-y-[6px] [&:nth-child(1)]:group-[.active]/burger:rotate-45 [&:nth-child(2)]:group-[.active]/burger:opacity-0 [&:nth-child(2)]:group-[.active]/burger:scale-x-0 [&:nth-child(3)]:group-[.active]/burger:translate-y-[-6px] [&:nth-child(3)]:group-[.active]/burger:-rotate-45"></span>
+        <span class="site-nav__hamburger-bar block w-[17px] h-[1.5px] m-0 transition-all duration-250 ease-default bg-body-text origin-center group-hover/burger:bg-accent group-[.active]/burger:bg-accent [&:nth-child(1)]:group-[.active]/burger:translate-y-[6px] [&:nth-child(1)]:group-[.active]/burger:rotate-45 [&:nth-child(2)]:group-[.active]/burger:opacity-0 [&:nth-child(2)]:group-[.active]/burger:scale-x-0 [&:nth-child(3)]:group-[.active]/burger:translate-y-[-6px] [&:nth-child(3)]:group-[.active]/burger:-rotate-45"></span>
+        <span class="site-nav__hamburger-bar block w-[17px] h-[1.5px] m-0 transition-all duration-250 ease-default bg-body-text origin-center group-hover/burger:bg-accent group-[.active]/burger:bg-accent [&:nth-child(1)]:group-[.active]/burger:translate-y-[6px] [&:nth-child(1)]:group-[.active]/burger:rotate-45 [&:nth-child(2)]:group-[.active]/burger:opacity-0 [&:nth-child(2)]:group-[.active]/burger:scale-x-0 [&:nth-child(3)]:group-[.active]/burger:translate-y-[-6px] [&:nth-child(3)]:group-[.active]/burger:-rotate-45"></span>
       </button>
     </div>
   </div>

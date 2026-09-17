@@ -37,14 +37,47 @@
    active V2 theme. */
 @theme {
   --font-regular: var(--font-regular);
-  --font-heading: var(--font-bold);
+  --font-heading: var(--font-heading);
+  --font-bold: var(--font-bold);
+  --font-code: var(--font-code);
 
+  --color-body-bg: var(--clr-body-bg);
+  --color-body-text: var(--clr-body-text);
+  --color-text-muted: var(--clr-text-muted);
+  --color-text-subtle: var(--clr-text-subtle);
+
+  --color-surface: var(--clr-surface);
+  --color-surface-2: var(--clr-surface-2);
+  --color-border: var(--clr-border);
+  --color-border-hover: var(--clr-border-hover);
+
+  --color-navbar-bg: var(--clr-navbar-bg);
+  --color-navbar-text: var(--clr-navbar-text);
+  --color-container-bg: var(--clr-container-bg);
+  --color-hamburger-bg: var(--clr-hamburger-bg);
+  --color-off-screen-menu-txt: var(--clr-off-screen-menu-txt);
+
+  --color-accent: var(--clr-accent);
+  --color-accent-dim: var(--clr-accent-dim);
+  --color-accent-glow: var(--clr-accent-glow);
+  --color-link-visited: var(--clr-link-visited);
+  --color-accent-text: var(--clr-accent-text);
+  --color-bold-text: var(--clr-bold-text);
+
+  --color-code-bg: var(--clr-code-bg);
+  --color-code-text: var(--clr-code-text);
+  --color-code-comment: var(--clr-code-comment);
+  --color-code-keyword: var(--clr-code-keyword);
+  --color-code-string: var(--clr-code-string);
+  --color-code-func: var(--clr-code-func);
+  --color-code-number: var(--clr-code-number);
+  --color-inline-code-bg: var(--clr-inline-code-bg);
+  --color-inline-code-text: var(--clr-inline-code-text);
+
+  /* Legacy mappings to avoid breaking existing Tailwind classes if any */
   --color-bg: var(--clr-body-bg);
   --color-fg: var(--clr-body-text);
   --color-container: var(--clr-container-bg);
-  --color-accent: var(--clr-link-visited);
-  --color-code-bg: var(--clr-code-bg);
-  --color-code-fg: var(--clr-code-text);
 
   --ease-default: ease;
   --ease-in-default: ease-in;

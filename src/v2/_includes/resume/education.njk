@@ -1,31 +1,31 @@
 <!-- ── EDUCATION TIMELINE ────────────────────────────────────────────── -->
-<section class="resume-section resume-section--education">
-  <div class="section-title-wrap">
-    <h2 class="section-heading">Education</h2>
-    <span class="section-rule"></span>
+<section class="resume-section resume-section--education mb-14 max-md:mb-11 print:mb-[7pt] print:break-inside-avoid">
+  <div class="section-title-wrap flex items-center gap-5 mb-7 max-md:mb-5 print:mb-[3.5pt] print:border-b print:border-[#222222] print:pb-[1pt] print:block">
+    <h2 class="section-heading font-heading text-[1.35rem] font-bold tracking-[-0.02em] text-body-text m-0 whitespace-nowrap max-md:text-[1.2rem] print:text-[9.5pt] print:uppercase print:tracking-[0.08em] print:text-[#000000] print:m-0 print:p-0">Education</h2>
+    <span class="section-rule h-[1px] bg-border grow print:hidden"></span>
   </div>
 
-  <div class="timeline">
+  <div class="timeline border-l border-border ml-[6px] pl-[22px] flex flex-col gap-9 max-[600px]:ml-1 max-[600px]:pl-[18px] max-[600px]:gap-7">
     {% for item in education %}
-    <div class="timeline-item{% if item.hideInPrint %} timeline-item--olevels{% endif %}">
-      <div class="timeline-marker"></div>
+    <div class="timeline-item relative{% if item.hideInPrint %} timeline-item--olevels print:hidden{% endif %}">
+      <div class="timeline-marker absolute left-[-27px] top-[5px] w-[9px] h-[9px] bg-accent rounded-none shadow-[0_0_8px_var(--color-accent)] max-[600px]:left-[-23px] max-[600px]:w-[8px] max-[600px]:h-[8px]"></div>
       <div class="timeline-content">
-        <div class="timeline-header">
+        <div class="timeline-header flex justify-between items-start flex-wrap gap-2 mb-2 max-[600px]:flex-col max-[600px]:items-start max-[600px]:gap-1">
           <div>
-            <h3 class="timeline-degree">{{ item.degree | safe }}</h3>
-            <div class="timeline-institution">{{ item.institution | safe }}</div>
+            <h3 class="timeline-degree font-heading text-[1.15rem] font-bold text-body-text m-0 mb-1 max-[600px]:text-[1.05rem]">{{ item.degree | safe }}</h3>
+            <div class="timeline-institution font-regular text-[0.825rem] text-text-muted">{{ item.institution | safe }}</div>
           </div>
-          <div class="timeline-date">{{ item.date | safe }}</div>
+          <div class="timeline-date font-regular text-[0.775rem] text-text-muted bg-surface py-[3px] px-2 border border-border whitespace-nowrap">{{ item.date | safe }}</div>
         </div>
         {% if item.badges %}
-        <div class="timeline-badges">
+        <div class="timeline-badges flex flex-wrap gap-[6px] my-[0.6rem]">
           {% for badge in item.badges %}
-          <span class="badge{% if badge.accent %} badge--accent{% endif %}">{{ badge.text | safe }}</span>
+          <span class="badge font-regular text-[0.725rem] py-[2px] px-[7px] bg-surface border border-border text-text-muted{% if badge.accent %} border-accent text-accent{% endif %}">{{ badge.text | safe }}</span>
           {% endfor %}
         </div>
         {% endif %}
         {% if item.desc %}
-        <p class="timeline-desc">{{ item.desc | safe }}</p>
+        <p class="timeline-desc font-regular text-[0.875rem] leading-[1.65] text-text-muted m-0 mt-2 max-[600px]:text-[0.825rem]">{{ item.desc | safe }}</p>
         {% endif %}
       </div>
     </div>

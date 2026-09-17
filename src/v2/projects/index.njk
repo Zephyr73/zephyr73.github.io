@@ -8,20 +8,20 @@ noMarkdownWrapper: true
 description: 'Software development, systems architecture, and engineering projects by Zephyr.'
 ---
 
-<div class="projects-page">
-  <div class="page-intro">
-    <span class="page-intro__eyebrow">// ENGINEERING & SYSTEMS</span>
-    <h1 class="page-intro__title">Software & Technical Projects</h1>
-    <p class="page-intro__desc">
+<div class="projects-page max-w-[900px] mx-auto">
+  <div class="page-intro pb-8 mb-10 border-b border-border max-md:pb-6 max-md:mb-7">
+    <span class="page-intro__eyebrow block font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent mb-[0.4rem]">// ENGINEERING & SYSTEMS</span>
+    <h1 class="page-intro__title font-heading text-[clamp(2rem,4.5vw,2.75rem)] font-extrabold tracking-[-0.035em] leading-[1.1] text-body-text m-0 mb-3 max-md:text-[clamp(1.75rem,6.5vw,2.25rem)]">Software & Technical Projects</h1>
+    <p class="page-intro__desc font-regular text-[0.95rem] leading-[1.7] text-text-muted max-w-[700px] m-0 max-md:text-[0.9rem] max-md:leading-[1.6]">
       A collection of personal systems, infrastructure engineering, and automation utilities built with Python, Linux, Docker, and modern web technologies.
     </p>
   </div>
 
-  <div class="project-list">
+  <div class="project-list flex flex-col gap-6 max-md:gap-5">
     {% for project in collections.project | sortByDate %}
-      <article class="project-card">
-        <div class="project-card__header">
-          <span class="project-card__tag">
+      <article class="project-card bg-surface border border-border p-6 flex flex-col box-border transition-[border-color,transform] duration-200 ease-default hover:border-accent hover:-translate-y-[2px] max-[480px]:py-4 max-[480px]:px-[14px]">
+        <div class="project-card__header flex justify-between items-center mb-4 flex-wrap gap-2">
+          <span class="project-card__tag font-regular text-[0.7rem] uppercase tracking-[0.06em] text-text-muted">
             {% if project.data.category %}
               {{ project.data.category | safe }}
             {% elseif 'home-network' in project.url %}
@@ -32,27 +32,27 @@ description: 'Software development, systems architecture, and engineering projec
               Engineering Project
             {% endif %}
           </span>
-          <span class="project-card__status">{{ project.date | formatDate if project.date else 'Recent' }}</span>
+          <span class="project-card__status font-regular text-[0.65rem] py-[2px] px-[6px] border border-border text-accent bg-surface-2">{{ project.date | formatDate if project.date else 'Recent' }}</span>
         </div>
 
-        <h2 class="project-card__title">
+        <h2 class="project-card__title m-0 mb-3 font-heading text-[1.3rem] font-bold tracking-[-0.02em] leading-[1.2] max-[640px]:text-[1.15rem] [&>a]:text-body-text [&>a]:no-underline [&>a]:transition-colors [&>a]:duration-150 [&>a]:ease-default hover:[&>a]:text-accent">
           <a href="{{ project.url }}">{{ project.data.title }}</a>
         </h2>
 
-        <p class="project-card__desc">
+        <p class="project-card__desc font-regular text-[0.875rem] leading-[1.65] text-text-muted m-0 mb-5 grow">
           {{ project.data.description }}
         </p>
 
-        <div class="project-card__footer">
+        <div class="project-card__footer border-t border-border pt-4 mt-auto flex flex-wrap gap-4">
           {% if project.data.repo %}
-            <a href="{{ project.data.repo }}" class="project-card__action" target="_blank" rel="noopener">
+            <a href="{{ project.data.repo }}" class="project-card__action group/action inline-flex items-center gap-[6px] font-regular text-[0.8rem] font-semibold text-accent no-underline transition-[gap] duration-150 ease-default hover:gap-[9px]" target="_blank" rel="noopener">
               View on GitHub
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/>
               </svg>
             </a>
           {% endif %}
-          <a href="{{ project.url }}" class="project-card__action">
+          <a href="{{ project.url }}" class="project-card__action group/action inline-flex items-center gap-[6px] font-regular text-[0.8rem] font-semibold text-accent no-underline transition-[gap] duration-150 ease-default hover:gap-[9px]">
             Read Case Study
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/>

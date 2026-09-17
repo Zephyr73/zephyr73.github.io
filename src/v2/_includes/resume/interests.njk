@@ -1,10 +1,10 @@
 <!-- ── INTERESTS & PURSUITS ─────────────────────────────────────────── -->
-<section class="resume-section resume-section--interests">
-  <div class="section-title-wrap">
-    <h2 class="section-heading">Interests & Creative Research</h2>
-    <span class="section-rule"></span>
+<section class="resume-section resume-section--interests mb-14 max-md:mb-11 print:mb-[7pt] print:break-inside-avoid print:hidden">
+  <div class="section-title-wrap flex items-center gap-5 mb-7 max-md:mb-5 print:mb-[3.5pt] print:border-b print:border-[#222222] print:pb-[1pt] print:block">
+    <h2 class="section-heading font-heading text-[1.35rem] font-bold tracking-[-0.02em] text-body-text m-0 whitespace-nowrap max-md:text-[1.2rem] print:text-[9.5pt] print:uppercase print:tracking-[0.08em] print:text-[#000000] print:m-0 print:p-0">Interests & Creative Research</h2>
+    <span class="section-rule h-[1px] bg-border grow print:hidden"></span>
   </div>
-  <div class="interests-box">
+  <div class="interests-box bg-surface border border-border p-5 max-[600px]:py-4 max-[600px]:px-[14px] [&>p]:font-regular [&>p]:text-[0.875rem] [&>p]:leading-[1.7] [&>p]:text-text-muted [&>p]:m-0 max-[600px]:[&>p]:text-[0.825rem] max-[600px]:[&>p]:leading-[1.6]">
     {% if content and content.trim().length > 0 %}
       {{ content | safe }}
     {% elif interests %}

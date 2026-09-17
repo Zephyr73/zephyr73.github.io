@@ -1,17 +1,17 @@
 <!-- ── TECHNICAL SKILLS MATRIX ──────────────────────────────────────── -->
-<section class="resume-section resume-section--skills">
-  <div class="section-title-wrap">
-    <h2 class="section-heading"><span class="screen-only">Technical </span>Skills</h2>
-    <span class="section-rule"></span>
+<section class="resume-section resume-section--skills mb-14 max-md:mb-11 print:mb-[7pt] print:break-inside-avoid">
+  <div class="section-title-wrap flex items-center gap-5 mb-7 max-md:mb-5 print:mb-[3.5pt] print:border-b print:border-[#222222] print:pb-[1pt] print:block">
+    <h2 class="section-heading font-heading text-[1.35rem] font-bold tracking-[-0.02em] text-body-text m-0 whitespace-nowrap max-md:text-[1.2rem] print:text-[9.5pt] print:uppercase print:tracking-[0.08em] print:text-[#000000] print:m-0 print:p-0"><span class="screen-only inline print:hidden">Technical </span>Skills</h2>
+    <span class="section-rule h-[1px] bg-border grow print:hidden"></span>
   </div>
 
-  <div class="skills-category-group">
+  <div class="skills-category-group flex flex-col gap-6 print:gap-[2.5pt]">
     {% for cat in skills %}
-    <div class="skill-category">
-      <h3 class="skill-cat-title">{{ cat.category | safe }}</h3>
-      <div class="skills-pill-grid">
+    <div class="skill-category print:flex print:flex-row print:items-baseline print:gap-[4pt] print:m-0">
+      <h3 class="skill-cat-title font-regular text-[0.775rem] uppercase tracking-[0.06em] text-text-muted m-0 mb-3 print:text-[8.5pt] print:font-bold print:text-[#000000] print:min-w-[145pt] print:m-0 print:normal-case print:tracking-normal">{{ cat.category | safe }}</h3>
+      <div class="skills-pill-grid flex flex-wrap gap-2 max-[600px]:gap-[6px] print:inline print:gap-0">
         {% for item in cat.items %}
-        <div class="skill-tag"><span class="tag-accent">#</span> {{ item | safe }}</div>
+        <div class="skill-tag font-regular text-[0.825rem] py-[6px] px-3 bg-surface border border-border text-body-text inline-flex items-center gap-[5px] transition-all duration-150 ease-default rounded-none hover:border-accent hover:text-accent hover:-translate-y-[1px] max-[600px]:py-[5px] max-[600px]:px-[10px] max-[600px]:text-[0.775rem] print:bg-transparent print:border-none print:p-0 print:text-[8.5pt] print:text-[#222222] print:inline print:m-0 print:after:content-[',_'] last:print:after:content-none print:after:text-[#444444]"><span class="tag-accent text-accent font-bold print:hidden">#</span> {{ item | safe }}</div>
         {% endfor %}
       </div>
     </div>

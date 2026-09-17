@@ -1,25 +1,25 @@
 <!-- ── RESUME HEADER ─────────────────────────────────────────────────── -->
-<header class="resume-header">
-  <div class="resume-sidebar">
-    <div class="avatar-frame">
-      <picture>
+<header class="resume-header grid grid-cols-[220px_1fr] gap-12 items-start mb-14 pb-12 border-b border-border max-md:grid-cols-1 max-md:gap-8 max-md:mb-10 max-md:pb-8 print:block print:border-b-[1.5pt] print:border-[#111111] print:pb-[5pt] print:mb-[7pt] print:text-center">
+  <div class="resume-sidebar flex flex-col gap-5 print:hidden">
+    <div class="avatar-frame relative w-full aspect-square border border-border bg-surface overflow-hidden max-md:max-w-[180px] max-md:mx-auto">
+      <picture class="block w-full h-full">
         <source srcset="/assets/img/profile.webp" type="image/webp" />
-        <img class="resume-avatar" src="{{ profile.avatar | default('/assets/img/profile.png') }}" alt="{{ profile.name | default('Zephyr') }} avatar" width="400" height="400" loading="eager" decoding="async" />
+        <img class="resume-avatar block w-full h-full object-cover" src="{{ profile.avatar | default('/assets/img/profile.png') }}" alt="{{ profile.name | default('Zephyr') }} avatar" width="400" height="400" loading="eager" decoding="async" />
       </picture>
-      <span class="avatar-badge">{{ profile.badge | default('NYC • DEVELOPER') | safe }}</span>
+      <span class="avatar-badge absolute bottom-0 left-0 right-0 bg-[#0c0c0e]/90 border-t border-border py-1 px-2 font-regular text-[0.65rem] font-semibold tracking-[0.06em] text-accent text-center uppercase">{{ profile.badge | default('NYC • DEVELOPER') | safe }}</span>
     </div>
 
-    <div class="resume-links">
+    <div class="resume-links flex flex-col gap-2 max-md:grid max-md:grid-cols-2 max-[440px]:grid-cols-1">
       {% if profile.email %}
       <button
-        class="resume-btn resume-contact__copy"
+        class="resume-btn resume-contact__copy flex items-center justify-start overflow-hidden group/copy gap-2 py-2 px-3 bg-surface border border-border text-body-text font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] box-border hover:border-accent hover:text-accent hover:bg-surface-2"
         data-copy="{{ profile.email }}"
         type="button"
         aria-label="Copy email {{ profile.email }}"
         title="Copy email: {{ profile.email }}"
       >
         <svg
-          class="mail-icon"
+          class="mail-icon shrink-0 text-accent"
           width="14"
           height="14"
           viewBox="0 0 24 24"
@@ -32,9 +32,9 @@
           <rect x="2" y="4" width="20" height="16" />
           <path d="M22 6L12 13L2 6" />
         </svg>
-        <span class="btn-text">{{ profile.email }}</span>
+        <span class="btn-text text-[0.76rem] tracking-[-0.01em] whitespace-nowrap overflow-hidden text-ellipsis">{{ profile.email }}</span>
         <svg
-          class="copy-icon"
+          class="copy-icon ml-auto shrink-0 text-text-muted transition-[color,transform] duration-150 ease-default group-hover/copy:text-accent group-hover/copy:scale-110"
           width="13"
           height="13"
           viewBox="0 0 24 24"
@@ -55,7 +55,7 @@
         href="{{ link.url }}"
         target="_blank"
         rel="noopener noreferrer"
-        class="resume-btn"
+        class="resume-btn flex items-center gap-2 py-2 px-3 bg-surface border border-border text-body-text font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] box-border hover:border-accent hover:text-accent hover:bg-surface-2"
       >
         {% if link.icon == 'github' %}
         <svg
@@ -105,7 +105,7 @@
       </a>
       {% endfor %}
 
-      <button onclick="window.print()" class="resume-btn resume-btn--print" type="button">
+      <button onclick="window.print()" class="resume-btn resume-btn--print flex items-center gap-2 py-2 px-3 bg-surface border border-border text-text-muted font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] box-border hover:border-accent hover:text-accent hover:bg-surface-2" type="button">
         <svg
           width="14"
           height="14"
@@ -124,12 +124,12 @@
     </div>
   </div>
 
-  <div class="resume-intro">
-    <div class="resume-headline">
-      <span class="resume-eyebrow">{{ profile.eyebrow | default('// RESUME & DOSSIER') | safe }}</span>
-      <h1 class="resume-name">{{ profile.name | default('Zephyr') }}</h1>
-      <div class="resume-role-tag">{{ profile.role | default('Software Developer • Computer Science') | safe }}</div>
-      <div class="resume-contact-print">
+  <div class="resume-intro flex flex-col print:text-center">
+    <div class="resume-headline print:text-center">
+      <span class="resume-eyebrow font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent block mb-1 print:hidden">{{ profile.eyebrow | default('// RESUME & DOSSIER') | safe }}</span>
+      <h1 class="resume-name font-heading text-[clamp(2.2rem,6vw,3.5rem)] font-extrabold tracking-[-0.04em] leading-[1.05] m-0 mb-3 text-body-text print:text-[18pt] print:font-extrabold print:tracking-[-0.02em] print:m-0 print:mb-[3pt] print:text-[#000000] print:text-center print:leading-[1.1]">{{ profile.name | default('Zephyr') }}</h1>
+      <div class="resume-role-tag inline-block font-regular text-[0.775rem] font-semibold tracking-[0.04em] uppercase text-accent bg-surface border border-border py-1 px-[10px] mb-6 w-fit print:hidden">{{ profile.role | default('Software Developer • Computer Science') | safe }}</div>
+      <div class="resume-contact-print hidden print:block print:text-[8.5pt] print:text-[#333333] print:text-center print:m-0 print:p-0 [&>span>a]:text-[#111111] [&>span>a]:underline">
         <span>{{ profile.location | default('New York, NY') }}</span> •
         <span><a href="mailto:{{ profile.email }}">{{ profile.email }}</a></span> •
         {% for link in profile.socials %}
@@ -144,13 +144,13 @@
     </div>
 
     {% if profile.summary %}
-    <p class="resume-summary-print">
+    <p class="resume-summary-print hidden print:block print:text-[8.5pt] print:leading-[1.32] print:text-[#222222] print:text-left print:m-0 print:mt-[5pt] print:p-0">
       {{ profile.summary | safe }}
     </p>
     {% endif %}
 
     {% if profile.bio %}
-    <div class="resume-bio">
+    <div class="resume-bio print:hidden [&>p]:font-regular [&>p]:text-[0.95rem] [&>p]:leading-[1.75] [&>p]:text-text-muted [&>p]:m-0 [&>p]:mb-4 max-[600px]:[&>p]:text-[0.9rem] max-[600px]:[&>p]:leading-[1.65] [&_strong]:text-body-text">
       {% if profile.bio is string %}
         <p>{{ profile.bio | safe }}</p>
       {% else %}
@@ -162,11 +162,11 @@
     {% endif %}
 
     {% if profile.meta %}
-    <div class="resume-quick-meta">
+    <div class="resume-quick-meta grid grid-cols-3 gap-[1px] bg-border border border-border mt-4 max-[600px]:grid-cols-1 print:hidden">
       {% for item in profile.meta %}
-      <div class="meta-cell">
-        <span class="meta-label">{{ item.label }}</span>
-        <span class="meta-value{% if item.accent %} text-accent{% endif %}">{{ item.value | safe }}</span>
+      <div class="meta-cell bg-surface py-[10px] px-[14px] flex flex-col gap-[2px]">
+        <span class="meta-label font-regular text-[0.65rem] uppercase tracking-[0.06em] text-text-subtle">{{ item.label }}</span>
+        <span class="meta-value font-regular text-[0.8rem] font-semibold text-body-text{% if item.accent %} text-accent{% endif %}">{{ item.value | safe }}</span>
       </div>
       {% endfor %}
     </div>

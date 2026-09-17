@@ -8,16 +8,16 @@ noMarkdownWrapper: true
 description: 'Explore my collection of photography, AI-generated art, and Forza screenshots.'
 ---
 
-<nav class="gallery-tabs" aria-label="Gallery sections">
-  <ul>
-    <li><button type="button" class="gallery-tabs__btn">Photography</button></li>
-    <li><button type="button" class="gallery-tabs__btn">AI-Generations</button></li>
-    <li><button type="button" class="gallery-tabs__btn">Forza</button></li>
+<nav class="gallery-tabs flex justify-center items-center mb-10 max-md:mb-5 max-md:w-full max-md:px-2 max-md:box-border" aria-label="Gallery sections">
+  <ul class="inline-flex flex-nowrap gap-1 p-[3px] bg-surface border border-border m-0 box-border max-md:flex max-md:flex-row max-md:w-full max-md:max-w-[440px] max-md:gap-[2px] max-md:p-[2px]">
+    <li class="m-0 p-0 list-none max-md:flex-1 max-md:min-w-0 max-md:flex"><button type="button" class="gallery-tabs__btn bg-transparent border border-transparent text-text-muted font-regular text-[0.825rem] font-semibold py-[7px] px-4 cursor-pointer rounded-none tracking-[0.02em] transition-all duration-150 ease-default whitespace-nowrap box-border hover:text-body-text [&.is-active]:bg-surface-2 [&.is-active]:border-border [&.is-active]:text-accent max-md:w-full max-md:min-w-0 max-md:flex max-md:items-center max-md:justify-center max-md:py-[6px] max-md:px-[2px] max-md:text-[clamp(0.68rem,2.7vw,0.775rem)] max-md:tracking-normal max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[1.2]">Photography</button></li>
+    <li class="m-0 p-0 list-none max-md:flex-1 max-md:min-w-0 max-md:flex"><button type="button" class="gallery-tabs__btn bg-transparent border border-transparent text-text-muted font-regular text-[0.825rem] font-semibold py-[7px] px-4 cursor-pointer rounded-none tracking-[0.02em] transition-all duration-150 ease-default whitespace-nowrap box-border hover:text-body-text [&.is-active]:bg-surface-2 [&.is-active]:border-border [&.is-active]:text-accent max-md:w-full max-md:min-w-0 max-md:flex max-md:items-center max-md:justify-center max-md:py-[6px] max-md:px-[2px] max-md:text-[clamp(0.68rem,2.7vw,0.775rem)] max-md:tracking-normal max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[1.2]">AI-Generations</button></li>
+    <li class="m-0 p-0 list-none max-md:flex-1 max-md:min-w-0 max-md:flex"><button type="button" class="gallery-tabs__btn bg-transparent border border-transparent text-text-muted font-regular text-[0.825rem] font-semibold py-[7px] px-4 cursor-pointer rounded-none tracking-[0.02em] transition-all duration-150 ease-default whitespace-nowrap box-border hover:text-body-text [&.is-active]:bg-surface-2 [&.is-active]:border-border [&.is-active]:text-accent max-md:w-full max-md:min-w-0 max-md:flex max-md:items-center max-md:justify-center max-md:py-[6px] max-md:px-[2px] max-md:text-[clamp(0.68rem,2.7vw,0.775rem)] max-md:tracking-normal max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[1.2]">Forza</button></li>
   </ul>
 </nav>
-<div id="photography" class="gallery-grid gallery-grid--photography">
+<div id="photography" class="gallery-grid gallery-grid--photography hidden opacity-0 transition-opacity duration-150 ease-default flex-row justify-between items-start pt-[20px] gap-[20px] [&.is-visible]:flex [&.is-visible]:opacity-1 max-md:gap-[20px] max-md:flex-col max-[519px]:max-md:flex min-[520px]:max-md:[&.is-visible]:grid min-[520px]:max-md:grid-cols-2 min-[520px]:max-md:gap-4">
   {% for col in [0, 1, 2] %}
-    <div class="gallery-grid__column">
+    <div class="gallery-grid__column flex flex-col w-[32.5%] items-center gap-[20px] contain-layout max-md:contents [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:object-cover [&_img]:translate-z-0 [&_img]:backface-hidden">
       {% for img in gallery.photography %}
         {% if (loop.index0 % 3) == col %}
           {% if loop.index0 < 3 %}
@@ -30,9 +30,9 @@ description: 'Explore my collection of photography, AI-generated art, and Forza 
     </div>
   {% endfor %}
 </div>
-<div id="ai-container" class="gallery-grid gallery-grid--ai">
+<div id="ai-container" class="gallery-grid gallery-grid--ai hidden opacity-0 transition-opacity duration-150 ease-default flex-row justify-between items-start pt-[20px] gap-[20px] [&.is-visible]:flex [&.is-visible]:opacity-1 max-md:gap-[20px] max-md:flex-col max-[519px]:max-md:flex min-[520px]:max-md:[&.is-visible]:grid min-[520px]:max-md:grid-cols-2 min-[520px]:max-md:gap-4">
   {% for col in [0, 1, 2] %}
-    <div class="gallery-grid__column">
+    <div class="gallery-grid__column flex flex-col w-[32.5%] items-center gap-[20px] contain-layout max-md:contents [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:object-cover [&_img]:translate-z-0 [&_img]:backface-hidden">
       {% for img in gallery.ai %}
         {% if (loop.index0 % 3) == col %}
           {% gimg img.src, img.alt, "", "", loop.index0 %}
@@ -41,9 +41,9 @@ description: 'Explore my collection of photography, AI-generated art, and Forza 
     </div>
   {% endfor %}
 </div>
-<div id="forza" class="gallery-grid gallery-grid--forza">
+<div id="forza" class="gallery-grid gallery-grid--forza hidden opacity-0 transition-opacity duration-150 ease-default flex-row justify-between items-start pt-[20px] gap-[20px] [&.is-visible]:flex [&.is-visible]:opacity-1 max-md:gap-[20px] max-md:flex-col max-[519px]:max-md:flex min-[520px]:max-md:[&.is-visible]:grid min-[520px]:max-md:grid-cols-2 min-[520px]:max-md:gap-4">
   {% for col in [0, 1, 2] %}
-    <div class="gallery-grid__column">
+    <div class="gallery-grid__column flex flex-col w-[32.5%] items-center gap-[20px] contain-layout max-md:contents [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:object-cover [&_img]:translate-z-0 [&_img]:backface-hidden">
       {% for img in gallery.forza %}
         {% if (loop.index0 % 3) == col %}
           {% gimg img.src, img.alt, "", "", loop.index0 %}

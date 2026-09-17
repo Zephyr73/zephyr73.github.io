@@ -8,56 +8,58 @@ noMarkdownWrapper: true
 description: 'Error 404: The requested resource or memory segment could not be found.'
 ---
 
-<div class="error-card">
-  <div class="error-card__header">
-    <div class="error-card__tag">
-      <span class="error-card__dot"></span>
-      <span>SYSTEM_DIAGNOSTIC // STATUS_CODE_404</span>
-    </div>
-    <span class="error-card__host">ZEPHYR_OS</span>
-  </div>
-
-  <div class="error-card__body">
-    <div class="error-card__glitch-wrap">
-      <h1 class="error-card__code">404</h1>
-      <h2 class="error-card__title">Resource Not Found // ERR_RESOLVE_FAILED</h2>
+<div class="flex items-center justify-center min-h-[calc(100vh-200px)] py-10 px-5 w-full">
+  <div class="error-card w-full max-w-[680px] bg-surface border border-border relative shadow-[0_8px_32px_rgba(0,0,0,0.45)] overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 before:right-0 before:h-[2px] before:bg-gradient-to-r before:from-transparent before:via-accent before:to-transparent">
+    <div class="error-card__header flex items-center justify-between py-3 px-[18px] border-b border-border bg-surface-2 font-code text-[0.78rem] text-text-muted tracking-[0.05em]">
+      <div class="error-card__tag flex items-center gap-2">
+        <span class="error-card__dot w-2 h-2 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)] animate-pulse"></span>
+        <span>SYSTEM_DIAGNOSTIC // STATUS_CODE_404</span>
+      </div>
+      <span class="error-card__host">ZEPHYR_OS</span>
     </div>
 
-    <p class="error-card__desc">
-      The requested memory segment or path could not be resolved within the local filesystem tree. It may have been moved, renamed, or de-indexed.
-    </p>
+    <div class="error-card__body py-8 px-7 max-[600px]:py-6 max-[600px]:px-[18px]">
+      <div class="error-card__glitch-wrap mb-4">
+        <h1 class="error-card__code font-code text-[clamp(3.5rem,8vw,5.5rem)] font-extrabold leading-none tracking-[-0.04em] text-accent m-0 [text-shadow:0_0_25px_var(--color-accent-glow)]">404</h1>
+        <h2 class="error-card__title font-heading text-[clamp(1.25rem,3vw,1.65rem)] font-bold text-body-text mt-[14px] mb-2 mx-0 tracking-[-0.02em]">Resource Not Found // ERR_RESOLVE_FAILED</h2>
+      </div>
 
-    <div class="error-card__telemetry">
-      <div class="error-card__telemetry-line">
-        <span class="error-card__prompt">[SYS_TRACE]</span>
-        <span class="error-card__telemetry-val" id="telemetry-url">TARGET: /...</span>
-      </div>
-      <div class="error-card__telemetry-line">
-        <span class="error-card__prompt">[SYS_FLAGS]</span>
-        <span>STATUS: 404_NOT_FOUND | VFS_ERR_NULL_NODE</span>
-      </div>
-      <div class="error-card__telemetry-line">
-        <span class="error-card__prompt">[SYS_ACTION]</span>
-        <span>Recommended fallback: return to cluster root or launch Desktop V3.</span>
-      </div>
-    </div>
+      <p class="error-card__desc font-regular text-[0.95rem] leading-[1.6] text-text-muted m-0 mb-6">
+        The requested memory segment or path could not be resolved within the local filesystem tree. It may have been moved, renamed, or de-indexed.
+      </p>
 
-    <div class="error-card__actions">
-      <a href="/" class="btn btn--primary">
-        <span>Return to Home</span>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <a href="/v3/" class="btn btn--secondary" data-v3-switch>
-        <span>Launch V3 Desktop</span>
-      </a>
-      <a href="/projects/" class="btn btn--secondary">
-        <span>View Projects</span>
-      </a>
-      <a href="/about/" class="btn btn--ghost">
-        <span>About • Resume</span>
-      </a>
+      <div class="error-card__telemetry bg-code-bg border border-border p-4 mb-7 font-code text-[0.8rem] leading-[1.7] text-text-muted">
+        <div class="error-card__telemetry-line flex flex-wrap gap-2">
+          <span class="error-card__prompt text-accent select-none">[SYS_TRACE]</span>
+          <span class="error-card__telemetry-val text-body-text" id="telemetry-url">TARGET: /...</span>
+        </div>
+        <div class="error-card__telemetry-line flex flex-wrap gap-2">
+          <span class="error-card__prompt text-accent select-none">[SYS_FLAGS]</span>
+          <span>STATUS: 404_NOT_FOUND | VFS_ERR_NULL_NODE</span>
+        </div>
+        <div class="error-card__telemetry-line flex flex-wrap gap-2">
+          <span class="error-card__prompt text-accent select-none">[SYS_ACTION]</span>
+          <span>Recommended fallback: return to cluster root or launch Desktop V3.</span>
+        </div>
+      </div>
+
+      <div class="error-card__actions flex flex-wrap gap-3 [&>a]:max-[600px]:w-full">
+        <a href="/" class="inline-flex items-center justify-center gap-[8px] font-regular text-[0.85rem] font-bold py-[10px] px-[20px] cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease border box-border bg-accent text-[#0c0c0e] border-accent hover:bg-accent-dim hover:border-accent-dim hover:text-white">
+          <span>Return to Home</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/v3/" class="inline-flex items-center justify-center gap-[8px] font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2" data-v3-switch>
+          <span>Launch V3 Desktop</span>
+        </a>
+        <a href="/projects/" class="inline-flex items-center justify-center gap-[8px] font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2">
+          <span>View Projects</span>
+        </a>
+        <a href="/about/" class="inline-flex items-center justify-center gap-[8px] font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease border box-border bg-transparent text-text-muted border-transparent hover:text-accent">
+          <span>About • Resume</span>
+        </a>
+      </div>
     </div>
   </div>
 </div>

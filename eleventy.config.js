@@ -141,10 +141,10 @@ export default function (eleventyConfig) {
 
       const orderStyle =
         order !== undefined && order !== null && order !== '' ? ` style="order: ${order};"` : '';
-      return `<div class="gallery-item"${orderStyle}>
+      return `<div class="gallery-item relative w-full flex flex-col overflow-hidden [&:hover_img]:shadow-[0_0_20px_2px_rgba(0,0,0,0.2)] [&:hover_img]:transition-[0.4s_ease] [&:hover_img]:outline [&:hover_img]:outline-1 [&:hover_img]:outline-body-text [&:hover_img]:scale-[1.015] [&:hover_img]:translate-z-0 [&:hover_.gallery-item\\_\\_overlay]:opacity-100 [&:hover_.gallery-item\\_\\_overlay]:pointer-events-auto"${orderStyle}>
   ${pictureHtml}
-  <div class="gallery-item__overlay">
-    <div class="gallery-item__meta">${
+  <div class="gallery-item__overlay absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.85)] flex flex-col justify-end items-start p-[14px] gap-[10px] opacity-0 transition-opacity duration-300 ease pointer-events-none">
+    <div class="gallery-item__meta flex flex-col gap-[3px] font-regular text-[11px] text-[#d8d8d8]">${
       deviceStr
         ? `
       <span>${deviceStr}</span>`
@@ -154,7 +154,7 @@ export default function (eleventyConfig) {
       <span>${resolutionStr}</span>
       <span>${fileSizeStr}</span>
     </div>
-    <a href="${detailUrl}" class="gallery-item__view-details">View Details</a>
+    <a href="${detailUrl}" class="gallery-item__view-details inline-block bg-body-text text-container-bg font-regular text-[12px] py-[6px] px-[14px] no-underline cursor-pointer transition-colors duration-200 ease hover:bg-container-bg hover:text-body-text hover:outline hover:outline-1 hover:outline-body-text">View Details</a>
   </div>
 </div>`;
     },

@@ -10,22 +10,42 @@ Linux, and creative media.'
 ---
 
 <!-- ── HERO SECTION ──────────────────────────────────────────────────────── -->
-<section class="home-hero">
-  <div class="hero-status">
-    <span class="status-dot"></span>
-    <span class="status-text">Software Developer • Computer Science</span>
+<section
+  class="home-hero pt-6 pb-[3.5rem] border-b border-border mb-[3.5rem] max-md:pt-2 max-md:pb-[2.5rem] max-md:mb-[2.5rem]"
+>
+  <div
+    class="hero-status inline-flex items-center gap-2 py-1 px-[10px] bg-surface border border-border mb-6"
+  >
+    <span
+      class="status-dot w-[7px] h-[7px] bg-accent shadow-[0_0_8px_var(--color-accent)] inline-block"
+    ></span>
+    <span
+      class="status-text font-regular text-[0.75rem] font-semibold tracking-[0.04em] text-text-muted uppercase"
+      >Software Developer • Computer Science</span
+    >
   </div>
 
-  <h1 class="hero-title">Engineering clean software, systems & creative workflows.</h1>
+  <h1
+    class="hero-title font-heading text-[clamp(2rem,5vw,3.6rem)] font-extrabold leading-[1.1] tracking-[-0.04em] text-body-text m-0 mb-5 max-w-[820px] max-md:text-[clamp(1.85rem,7vw,2.75rem)] max-md:leading-[1.15]"
+  >
+    Engineering clean software, systems & creative workflows.
+  </h1>
 
-  <p class="hero-subtitle">
+  <p
+    class="hero-subtitle font-regular text-[1rem] leading-[1.75] text-text-muted max-w-[740px] m-0 mb-8 max-md:text-[0.925rem] max-md:leading-[1.65]"
+  >
     Hi, I'm <strong class="text-accent">Zephyr</strong> — a software developer with a strong
     foundation in computer science, Linux systems, and full-stack engineering. Focused on writing
     efficient code and exploring creative technical tools.
   </p>
 
-  <div class="hero-actions">
-    <a href="/about/" class="btn btn--primary">
+  <div
+    class="hero-actions flex items-center flex-wrap gap-[0.85rem] mb-12 max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-[0.65rem]"
+  >
+    <a
+      href="/about/"
+      class="btn--primary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-bold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-accent text-accent-text border-accent hover:bg-accent-dim hover:border-accent-dim hover:text-white max-[480px]:w-full"
+    >
       <span>View Resume</span>
       <svg
         width="16"
@@ -43,72 +63,150 @@ Linux, and creative media.'
         />
       </svg>
     </a>
-    <a href="/projects/" class="btn btn--secondary">
+    <a
+      href="/projects/"
+      class="btn--secondary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2 max-[480px]:w-full"
+    >
       <span>Explore Projects</span>
     </a>
-    <a href="/gallery/" class="btn btn--ghost">
+    <a
+      href="/gallery/"
+      class="btn--ghost inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-transparent text-text-muted border-transparent hover:text-accent max-[480px]:w-full"
+    >
       <span>Visual Gallery ↗</span>
     </a>
   </div>
 
   <!-- Quick Info Metric Grid -->
-  <div class="hero-metrics">
-    <div class="metric-card">
-      <span class="metric-label">Education</span>
-      <span class="metric-val">B.S. Computer Science</span>
-      <span class="metric-sub">Queens College • Prev: A.S. (3.62)</span>
+  <div
+    class="hero-metrics grid grid-cols-4 gap-[1px] bg-border border border-border max-[920px]:grid-cols-2 portrait:max-[1200px]:grid-cols-2 max-[480px]:grid-cols-1"
+  >
+    <div
+      class="metric-card bg-surface flex flex-col gap-1 py-4 px-[18px] max-md:py-3 max-md:px-[14px]"
+    >
+      <span
+        class="metric-label font-regular text-[0.675rem] uppercase tracking-[0.08em] text-text-subtle"
+        >Education</span
+      >
+      <span
+        class="metric-val font-heading font-bold text-[0.95rem] tracking-[-0.01em] text-body-text"
+        >B.S. Computer Science</span
+      >
+      <span class="metric-sub font-regular text-[0.725rem] text-text-muted"
+        >Queens College • Prev: A.S. (3.62)</span
+      >
     </div>
-    <div class="metric-card">
-      <span class="metric-label">Core Languages</span>
-      <span class="metric-val">Python, C++, JS</span>
-      <span class="metric-sub">Java, HTML / CSS, Bash</span>
+    <div
+      class="metric-card bg-surface flex flex-col gap-1 py-4 px-[18px] max-md:py-3 max-md:px-[14px]"
+    >
+      <span
+        class="metric-label font-regular text-[0.675rem] uppercase tracking-[0.08em] text-text-subtle"
+        >Core Languages</span
+      >
+      <span
+        class="metric-val font-heading font-bold text-[0.95rem] tracking-[-0.01em] text-body-text"
+        >Python, C++, JS</span
+      >
+      <span class="metric-sub font-regular text-[0.725rem] text-text-muted"
+        >Java, HTML / CSS, Bash</span
+      >
     </div>
-    <div class="metric-card">
-      <span class="metric-label">Infrastructure</span>
-      <span class="metric-val">Linux & Self-Hosted</span>
-      <span class="metric-sub">Git, Docker, Networking</span>
+    <div
+      class="metric-card bg-surface flex flex-col gap-1 py-4 px-[18px] max-md:py-3 max-md:px-[14px]"
+    >
+      <span
+        class="metric-label font-regular text-[0.675rem] uppercase tracking-[0.08em] text-text-subtle"
+        >Infrastructure</span
+      >
+      <span
+        class="metric-val font-heading font-bold text-[0.95rem] tracking-[-0.01em] text-body-text"
+        >Linux & Self-Hosted</span
+      >
+      <span class="metric-sub font-regular text-[0.725rem] text-text-muted"
+        >Git, Docker, Networking</span
+      >
     </div>
-    <div class="metric-card">
-      <span class="metric-label">Creative Tools</span>
-      <span class="metric-val">Photo & Generative AI</span>
-      <span class="metric-sub">Lightroom, Stable Diffusion</span>
+    <div
+      class="metric-card bg-surface flex flex-col gap-1 py-4 px-[18px] max-md:py-3 max-md:px-[14px]"
+    >
+      <span
+        class="metric-label font-regular text-[0.675rem] uppercase tracking-[0.08em] text-text-subtle"
+        >Creative Tools</span
+      >
+      <span
+        class="metric-val font-heading font-bold text-[0.95rem] tracking-[-0.01em] text-body-text"
+        >Photo & Generative AI</span
+      >
+      <span class="metric-sub font-regular text-[0.725rem] text-text-muted"
+        >Lightroom, Stable Diffusion</span
+      >
     </div>
   </div>
 </section>
 
 <!-- ── FEATURED PROJECTS ─────────────────────────────────────────────────── -->
-<section class="home-section">
-  <div class="section-header">
+<section class="home-section mb-16 max-md:mb-12">
+  <div class="section-header flex justify-between items-end mb-7 flex-wrap gap-3 max-md:mb-5">
     <div class="section-header__title-group">
-      <span class="section-eyebrow">// 01 • ENGINEERING</span>
-      <h2 class="section-title">Featured Projects</h2>
+      <span
+        class="section-eyebrow block font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent mb-1"
+        >// 01 • ENGINEERING</span
+      >
+      <h2
+        class="section-title font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-bold tracking-[-0.03em] text-body-text m-0"
+      >
+        Featured Projects
+      </h2>
     </div>
-    <a href="/projects/" class="section-link">View All Projects →</a>
+    <a
+      href="/projects/"
+      class="section-link font-regular text-[0.825rem] text-text-muted no-underline transition-colors duration-150 ease-default hover:text-accent"
+      >View All Projects →</a
+    >
   </div>
 
-  <div class="projects-grid">
+  <div
+    class="projects-grid grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 max-[640px]:grid-cols-1 max-[640px]:gap-5"
+  >
     <!-- Project 1: Home Network -->
-    <article class="project-card">
-      <div class="project-card__header">
-        <span class="project-card__tag">Infrastructure & Networking</span>
-        <span class="project-card__status">Active</span>
+    <article
+      class="project-card bg-surface border border-border p-6 flex flex-col box-border transition-[border-color,transform] duration-200 ease-default hover:border-accent hover:-translate-y-[2px] max-[480px]:py-4 max-[480px]:px-[14px]"
+    >
+      <div class="project-card__header flex justify-between items-center mb-4 flex-wrap gap-2">
+        <span
+          class="project-card__tag font-regular text-[0.7rem] uppercase tracking-[0.06em] text-text-muted"
+          >Infrastructure & Networking</span
+        >
+        <span
+          class="project-card__status font-regular text-[0.65rem] py-[2px] px-[6px] border border-border text-accent bg-surface-2"
+          >Active</span
+        >
       </div>
-      <h3 class="project-card__title">
+      <h3
+        class="project-card__title m-0 mb-3 font-heading text-[1.3rem] font-bold tracking-[-0.02em] leading-[1.2] max-[640px]:text-[1.15rem] [&>a]:text-body-text [&>a]:no-underline [&>a]:transition-colors [&>a]:duration-150 [&>a]:ease-default hover:[&>a]:text-accent"
+      >
         <a href="/projects/home-network/">Home Network Lab</a>
       </h3>
-      <p class="project-card__desc">
+      <p
+        class="project-card__desc font-regular text-[0.875rem] leading-[1.65] text-text-muted m-0 mb-5 grow"
+      >
         A self-hosted home server and network infrastructure featuring network-wide ad blocking, DNS
         filtering, local NAS storage, automated backups, and encrypted remote access.
       </p>
-      <div class="project-card__stack">
+      <div
+        class="project-card__stack flex flex-wrap gap-[6px] mb-6 [&>span]:font-regular [&>span]:text-[0.7rem] [&>span]:py-[3px] [&>span]:px-2 [&>span]:bg-surface-2 [&>span]:border [&>span]:border-border [&>span]:text-text-muted"
+      >
         <span class="stack-pill">Linux</span>
         <span class="stack-pill">Docker</span>
         <span class="stack-pill">Pi-hole</span>
         <span class="stack-pill">WireGuard</span>
         <span class="stack-pill">Samba</span>
       </div>
-      <div class="project-card__footer">
-        <a href="/projects/home-network/" class="project-card__action">
+      <div class="project-card__footer border-t border-border pt-4 mt-auto">
+        <a
+          href="/projects/home-network/"
+          class="project-card__action group/action inline-flex items-center gap-[6px] font-regular text-[0.8rem] font-semibold text-accent no-underline transition-[gap] duration-150 ease-default hover:gap-[9px]"
+        >
           Read Case Study
           <svg
             width="14"
@@ -129,27 +227,44 @@ Linux, and creative media.'
     </article>
 
     <!-- Project 2: WallpaperSync -->
-    <article class="project-card">
-      <div class="project-card__header">
-        <span class="project-card__tag">Automation & Desktop</span>
-        <span class="project-card__status">Utility</span>
+    <article
+      class="project-card bg-surface border border-border p-6 flex flex-col box-border transition-[border-color,transform] duration-200 ease-default hover:border-accent hover:-translate-y-[2px] max-[480px]:py-4 max-[480px]:px-[14px]"
+    >
+      <div class="project-card__header flex justify-between items-center mb-4 flex-wrap gap-2">
+        <span
+          class="project-card__tag font-regular text-[0.7rem] uppercase tracking-[0.06em] text-text-muted"
+          >Automation & Desktop</span
+        >
+        <span
+          class="project-card__status font-regular text-[0.65rem] py-[2px] px-[6px] border border-border text-accent bg-surface-2"
+          >Utility</span
+        >
       </div>
-      <h3 class="project-card__title">
+      <h3
+        class="project-card__title m-0 mb-3 font-heading text-[1.3rem] font-bold tracking-[-0.02em] leading-[1.2] max-[640px]:text-[1.15rem] [&>a]:text-body-text [&>a]:no-underline [&>a]:transition-colors [&>a]:duration-150 [&>a]:ease-default hover:[&>a]:text-accent"
+      >
         <a href="/projects/wallpapersync/">WallpaperSync</a>
       </h3>
-      <p class="project-card__desc">
+      <p
+        class="project-card__desc font-regular text-[0.875rem] leading-[1.65] text-text-muted m-0 mb-5 grow"
+      >
         A lightweight utility daemon built in Python to seamlessly synchronize, scale, and rotate
         high-resolution multi-monitor wallpapers across different desktop workspaces and aspect
         ratios.
       </p>
-      <div class="project-card__stack">
+      <div
+        class="project-card__stack flex flex-wrap gap-[6px] mb-6 [&>span]:font-regular [&>span]:text-[0.7rem] [&>span]:py-[3px] [&>span]:px-2 [&>span]:bg-surface-2 [&>span]:border [&>span]:border-border [&>span]:text-text-muted"
+      >
         <span class="stack-pill">Python</span>
         <span class="stack-pill">Pillow</span>
         <span class="stack-pill">Automation</span>
         <span class="stack-pill">Systemd</span>
       </div>
-      <div class="project-card__footer">
-        <a href="/projects/wallpapersync/" class="project-card__action">
+      <div class="project-card__footer border-t border-border pt-4 mt-auto">
+        <a
+          href="/projects/wallpapersync/"
+          class="project-card__action group/action inline-flex items-center gap-[6px] font-regular text-[0.8rem] font-semibold text-accent no-underline transition-[gap] duration-150 ease-default hover:gap-[9px]"
+        >
           View Documentation
           <svg
             width="14"
@@ -172,19 +287,37 @@ Linux, and creative media.'
 </section>
 
 <!-- ── CREATIVE SHOWCASE ─────────────────────────────────────────────────── -->
-<section class="home-section">
-  <div class="section-header">
+<section class="home-section mb-16 max-md:mb-12">
+  <div class="section-header flex justify-between items-end mb-7 flex-wrap gap-3 max-md:mb-5">
     <div class="section-header__title-group">
-      <span class="section-eyebrow">// 02 • CREATIVE WORK</span>
-      <h2 class="section-title">Photography & Generative Art</h2>
+      <span
+        class="section-eyebrow block font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent mb-1"
+        >// 02 • CREATIVE WORK</span
+      >
+      <h2
+        class="section-title font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-bold tracking-[-0.03em] text-body-text m-0"
+      >
+        Photography & Generative Art
+      </h2>
     </div>
-    <a href="/gallery/" class="section-link">Open Full Gallery →</a>
+    <a
+      href="/gallery/"
+      class="section-link font-regular text-[0.825rem] text-text-muted no-underline transition-colors duration-150 ease-default hover:text-accent"
+      >Open Full Gallery →</a
+    >
   </div>
 
-  <div class="creative-grid">
+  <div
+    class="creative-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 max-[640px]:grid-cols-1 max-[640px]:gap-5"
+  >
     <!-- Creative Card 1: Photography -->
-    <a href="/gallery/" class="creative-card">
-      <div class="creative-card__image-wrap">
+    <a
+      href="/gallery/"
+      class="creative-card group/creative bg-surface border border-border no-underline flex flex-col overflow-hidden transition-[border-color,transform] duration-200 ease-default hover:border-accent hover:-translate-y-[2px]"
+    >
+      <div
+        class="creative-card__image-wrap relative w-full aspect-video overflow-hidden bg-[#050505] [&>picture]:block [&>picture]:w-full [&>picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block [&_img]:transition-transform [&_img]:duration-300 [&_img]:ease-default group-hover/creative:[&_img]:scale-[1.04]"
+      >
         <picture>
           <source srcset="/assets/img/photo.webp" type="image/webp" />
           <img
@@ -197,19 +330,31 @@ Linux, and creative media.'
           />
         </picture>
       </div>
-      <div class="creative-card__info">
-        <h3>Photography</h3>
-        <p>
+      <div class="creative-card__info p-5 flex flex-col gap-2 grow max-[640px]:p-4">
+        <h3
+          class="m-0 font-heading text-[1.2rem] text-body-text transition-colors group-hover/creative:text-accent"
+        >
+          Photography
+        </h3>
+        <p class="m-0 font-regular text-[0.825rem] leading-[1.6] text-text-muted">
           Curated architectural, cityscape, and natural moments captured and graded with Adobe
           Lightroom.
         </p>
-        <span class="creative-card__link">Browse Photos →</span>
+        <span
+          class="creative-card__link inline-block mt-3 font-regular text-[0.8rem] font-semibold text-accent"
+          >Browse Photos →</span
+        >
       </div>
     </a>
 
     <!-- Creative Card 2: AI Art -->
-    <a href="/gallery/#ai-container" class="creative-card">
-      <div class="creative-card__image-wrap">
+    <a
+      href="/gallery/#ai-container"
+      class="creative-card group/creative bg-surface border border-border no-underline flex flex-col overflow-hidden transition-[border-color,transform] duration-200 ease-default hover:border-accent hover:-translate-y-[2px]"
+    >
+      <div
+        class="creative-card__image-wrap relative w-full aspect-video overflow-hidden bg-[#050505] [&>picture]:block [&>picture]:w-full [&>picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block [&_img]:transition-transform [&_img]:duration-300 [&_img]:ease-default group-hover/creative:[&_img]:scale-[1.04]"
+      >
         <picture>
           <source srcset="/assets/img/ai.webp" type="image/webp" />
           <img
@@ -222,37 +367,61 @@ Linux, and creative media.'
           />
         </picture>
       </div>
-      <div class="creative-card__info">
-        <h3>AI Generations</h3>
-        <p>
+      <div class="creative-card__info p-5 flex flex-col gap-2 grow max-[640px]:p-4">
+        <h3
+          class="m-0 font-heading text-[1.2rem] text-body-text transition-colors group-hover/creative:text-accent"
+        >
+          AI Generations
+        </h3>
+        <p class="m-0 font-regular text-[0.825rem] leading-[1.6] text-text-muted">
           Explorations in latent space composition, pose control, and stylized diffusion artwork.
         </p>
-        <span class="creative-card__link">Explore AI Gallery →</span>
+        <span
+          class="creative-card__link inline-block mt-3 font-regular text-[0.8rem] font-semibold text-accent"
+          >Explore AI Gallery →</span
+        >
       </div>
     </a>
   </div>
 </section>
 
 <!-- ── RECRUITER CONTACT BANNER ──────────────────────────────────────────── -->
-<section class="home-contact-banner">
+<section
+  class="home-contact-banner bg-surface border border-border border-l-4 border-l-accent py-[2.5rem] px-8 mt-[4.5rem] mb-8 max-[640px]:py-[1.75rem] max-[640px]:px-5 max-[640px]:mt-12"
+>
   <div class="banner-content">
-    <span class="banner-eyebrow">// READY TO CONNECT</span>
-    <h2 class="banner-title">Let's build something impactful together.</h2>
-    <p class="banner-text">
+    <span
+      class="banner-eyebrow font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent block mb-2"
+      >// READY TO CONNECT</span
+    >
+    <h2
+      class="banner-title font-heading text-[clamp(1.35rem,3.5vw,2rem)] font-bold tracking-[-0.03em] m-0 mb-3 text-body-text leading-[1.2]"
+    >
+      Let's build something impactful together.
+    </h2>
+    <p
+      class="banner-text font-regular text-[0.95rem] leading-[1.65] text-text-muted max-w-[650px] m-0 mb-7"
+    >
       Currently open for software engineering internships, junior developer roles, and technical
       collaborations.
     </p>
-    <div class="banner-actions">
-      <a href="/about/" class="btn btn--primary">View Full Resume</a>
+    <div
+      class="banner-actions flex items-center flex-wrap gap-3 max-[640px]:flex-col max-[640px]:items-stretch max-[640px]:gap-[0.65rem]"
+    >
+      <a
+        href="/about/"
+        class="btn--primary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-bold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-accent text-accent-text border-accent hover:bg-accent-dim hover:border-accent-dim hover:text-white max-[640px]:w-full"
+        >View Full Resume</a
+      >
       <a
         href="https://github.com/zephyr73"
         target="_blank"
         rel="noopener noreferrer"
-        class="btn btn--secondary"
+        class="btn--secondary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2 max-[640px]:w-full"
         >GitHub Profile ↗</a
       >
       <button
-        class="btn btn--secondary resume-contact__copy"
+        class="btn--secondary resume-contact__copy inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2 max-[640px]:w-full"
         data-copy="contact@tasrif.dev"
         type="button"
       >

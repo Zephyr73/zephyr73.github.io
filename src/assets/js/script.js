@@ -759,6 +759,10 @@ function initMarkdownToc() {
 
     a.addEventListener('click', (e) => {
       e.preventDefault();
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
       heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
       history.pushState(null, '', `#${id}`);
       tocLinks.forEach(({ link }) => link.classList.remove('active'));
@@ -791,6 +795,131 @@ function initMarkdownToc() {
 
     headings.forEach((h) => observer.observe(h));
   }
+
+  // Improved TOC Hitbox & Smooth Scroll Routing
+  // When scrolling in the expanded hitbox (left margin, bottom dead space, etc.),
+  // applies an interpolated easing curve matching native browser smooth scrolling,
+  // preventing the "scrolling too fast" sensation from instant scrollTop jumps.
+  let targetScrollTop = tocAside.scrollTop;
+  let rafId = null;
+
+  function updateTocSmoothScroll() {
+    const current = tocAside.scrollTop;
+    const maxScroll = tocAside.scrollHeight - tocAside.clientHeight;
+    targetScrollTop = Math.max(0, Math.min(maxScroll, targetScrollTop));
+
+    const diff = targetScrollTop - current;
+    if (Math.abs(diff) < 0.5) {
+      tocAside.scrollTop = targetScrollTop;
+      rafId = null;
+      return;
+    }
+
+    // Exponential decay interpolation (~200ms ease-out)
+    tocAside.scrollTop = current + diff * 0.18;
+    rafId = requestAnimationFrame(updateTocSmoothScroll);
+  }
+
+  // Keep target in sync if scrolled directly or programmatically
+  tocAside.addEventListener('scroll', () => {
+    if (!rafId) {
+      targetScrollTop = tocAside.scrollTop;
+    }
+  });
+
+  window.addEventListener(
+    'wheel',
+    (e) => {
+      // Don't interfere with browser zoom or predominantly horizontal swipes
+      if (e.ctrlKey || (e.deltaX && Math.abs(e.deltaX) > Math.abs(e.deltaY))) {
+        return;
+      }
+      // Only active when TOC is displayed (desktop landscape)
+      if (window.getComputedStyle(tocAside).display === 'none') {
+        return;
+      }
+      // Only intervene if TOC has scrollable overflow
+      if (tocAside.scrollHeight <= tocAside.clientHeight) {
+        return;
+      }
+
+      const rect = tocAside.getBoundingClientRect();
+
+      // Expanded hitbox: from screen left edge (0) up to 20px past the TOC's right border,
+      // and vertically within the visible area of the TOC sidebar down to the bottom of the TOC
+      // (or viewport bottom while reading the article).
+      const inTocHitbox =
+        e.clientX <= rect.right + 20 &&
+        e.clientY >= rect.top - 20 &&
+        e.clientY <= Math.min(window.innerHeight, rect.bottom + 30);
+
+      if (!inTocHitbox) {
+        return; // Cursor is in main content area; let browser scroll content natively
+      }
+
+      if (tocAside.contains(e.target)) {
+        // Cursor is directly over the TOC element.
+        // Native browser smooth scrolling handles this with full smoothness.
+        // Prevent scroll chaining when hitting the top or bottom limits.
+        targetScrollTop = tocAside.scrollTop;
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        const maxScroll = tocAside.scrollHeight - tocAside.clientHeight;
+        const atTop = tocAside.scrollTop <= 0 && e.deltaY < 0;
+        const atBottom = tocAside.scrollTop >= maxScroll - 1 && e.deltaY > 0;
+        if (atTop || atBottom) {
+          e.preventDefault();
+        }
+      } else {
+        // Cursor is in the expanded left hitbox (left margin, bottom dead space, etc.)
+        // Apply smooth calibrated scrolling matching native TOC speed.
+        e.preventDefault();
+
+        let deltaY = e.deltaY;
+        if (e.deltaMode === 1) {
+          deltaY *= 33; // DOM_DELTA_LINE normalization
+        } else if (e.deltaMode === 2) {
+          deltaY *= tocAside.clientHeight; // DOM_DELTA_PAGE normalization
+        }
+
+        const isTrackpad =
+          e.deltaMode === 0 && (!Number.isInteger(deltaY) || Math.abs(deltaY) < 30);
+        if (isTrackpad) {
+          // Trackpads already supply high-frequency smooth deltas
+          targetScrollTop = tocAside.scrollTop + deltaY;
+          tocAside.scrollTop = targetScrollTop;
+        } else {
+          // Mouse wheel notches: scale delta to ~60px per click and animate with rAF easing
+          const maxScroll = tocAside.scrollHeight - tocAside.clientHeight;
+          const current = tocAside.scrollTop;
+          const stepDelta = deltaY * 0.65;
+
+          if (rafId === null) {
+            targetScrollTop = current;
+          }
+
+          // Direction reversal: if user quickly scrolls in opposite direction of current easing,
+          // anchor to the current scroll position so reversal is instantaneous without inertia lag
+          if (
+            (stepDelta < 0 && targetScrollTop > current) ||
+            (stepDelta > 0 && targetScrollTop < current)
+          ) {
+            targetScrollTop = current + stepDelta;
+          } else {
+            targetScrollTop = targetScrollTop + stepDelta;
+          }
+
+          targetScrollTop = Math.max(0, Math.min(maxScroll, targetScrollTop));
+          if (!rafId) {
+            rafId = requestAnimationFrame(updateTocSmoothScroll);
+          }
+        }
+      }
+    },
+    { passive: false },
+  );
 }
 
 if (document.readyState === 'loading') {

@@ -13,13 +13,13 @@ eleventyComputed:
 noMarkdownWrapper: true
 ---
 
-<div class="gallery-detail">
+<div class="gallery-detail flex flex-col gap-[20px] mt-[20px] mb-[40px] w-full [@media(min-width:769px)_and_(min-height:650px)]:flex-1 [@media(min-width:769px)_and_(min-height:650px)]:min-h-0">
 
-  <a href="/gallery/#{{ 'ai-container' if img.category == 'ai' else img.category }}" class="gallery-detail__back">← Back to Gallery</a>
+  <a href="/gallery/#{{ 'ai-container' if img.category == 'ai' else img.category }}" class="gallery-detail__back font-regular text-[13px] text-body-text no-underline opacity-60 transition-opacity duration-200 ease self-start hover:opacity-100">← Back to Gallery</a>
 
-  <div class="gallery-detail__layout">
+  <div class="gallery-detail__layout flex flex-col gap-[30px] w-full [@media(min-width:769px)_and_(min-height:650px)]:flex-1 [@media(min-width:769px)_and_(min-height:650px)]:min-h-0 [@media(min-width:769px)_and_(min-height:650px)]:flex-row [@media(min-width:769px)_and_(min-height:650px)]:gap-[40px] [@media(min-width:769px)_and_(min-height:650px)]:items-stretch [@media(min-width:769px)_and_(min-height:650px)]:overflow-hidden">
 
-    <div class="gallery-detail__image-wrap">
+    <div class="gallery-detail__image-wrap w-full flex items-center justify-center [@media(min-width:769px)_and_(min-height:650px)]:flex-1 [@media(min-width:769px)_and_(min-height:650px)]:h-full [@media(min-width:769px)_and_(min-height:650px)]:min-w-0 [&>picture]:flex [&>picture]:items-center [&>picture]:justify-center [&>picture]:max-w-full [&_img]:block [&_img]:max-w-full [&_img]:h-auto [&_img]:max-h-[60vh] [&_img]:object-contain [&_img]:shadow-[0_12px_40px_rgba(0,0,0,0.4)] [&_img]:border [&_img]:border-[rgba(255,255,255,0.08)] [@media(min-width:769px)_and_(min-height:650px)]:[&_img]:max-h-full">
       <picture>
         <source srcset="{{ img.webpUrl }}" type="image/webp" />
         <img
@@ -31,11 +31,11 @@ noMarkdownWrapper: true
       </picture>
     </div>
 
-    <div class="gallery-detail__panel">
+    <div class="gallery-detail__panel w-full bg-container-bg border border-[rgba(255,255,255,0.08)] p-[28px] flex flex-col gap-[24px] box-border [@media(min-width:769px)_and_(min-height:650px)]:flex-none [@media(min-width:769px)_and_(min-height:650px)]:w-[380px] [@media(min-width:769px)_and_(min-height:650px)]:h-full [@media(min-width:769px)_and_(min-height:650px)]:overflow-y-auto [@media(min-width:769px)_and_(min-height:650px)]:scrollbar-thin [@media(min-width:769px)_and_(min-height:650px)]:[scrollbar-color:var(--color-body-text)_transparent]">
 
-      <h1 class="gallery-detail__title">{{ img.category | capitalize }} — {{ img.filename }}</h1>
+      <h1 class="gallery-detail__title font-bold text-[16px] text-body-text m-0 leading-[1.4] opacity-90">{{ img.category | capitalize }} — {{ img.filename }}</h1>
 
-      <table class="gallery-detail__table">
+      <table class="gallery-detail__table w-full border-collapse font-regular text-[13px] [&_tr]:border-b [&_tr]:border-[rgba(255,255,255,0.06)] [&_tr:first-child]:border-t [&_tr:first-child]:border-[rgba(255,255,255,0.06)] [&_td]:py-[12px] [&_td]:px-[8px] [&_td]:text-body-text [&_td]:align-middle [&_td:first-child]:w-[40%] [&_td:first-child]:opacity-50 [&_td:first-child]:font-bold [&_td:last-child]:text-right">
         {% if img.device %}
         <tr>
           <td>Device</td>
@@ -88,7 +88,7 @@ noMarkdownWrapper: true
         {% endif %}
       </table>
 
-      <a href="{{ img.fullUrl }}" download="{{ img.downloadFilename }}" class="gallery-detail__download">
+      <a href="{{ img.fullUrl }}" download="{{ img.downloadFilename }}" class="gallery-detail__download block w-full text-center box-border bg-body-text text-body-bg font-bold text-[13px] py-[12px] px-[20px] no-underline border border-body-text transition-all duration-200 ease cursor-pointer hover:bg-transparent hover:text-body-text [@media(min-width:769px)_and_(min-height:650px)]:w-auto [@media(min-width:769px)_and_(min-height:650px)]:self-start">
         Download full resolution
       </a>
 

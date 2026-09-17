@@ -1,64 +1,64 @@
-<div class="site-nav__drawer" id="mobile-drawer">
-  <div class="site-nav__drawer-content">
-    <ul class="site-nav__drawer-list">
+<div class="site-nav__drawer hidden max-md:block max-md:fixed max-md:top-[calc(60px+env(safe-area-inset-top,0))] max-md:right-0 max-md:left-0 max-md:w-full max-md:max-w-[100vw] max-md:h-[calc(100vh-60px-env(safe-area-inset-top,0))] max-md:h-[calc(100dvh-60px-env(safe-area-inset-top,0))] max-md:bg-body-bg max-md:border-t max-md:border-border max-md:z-[98] max-md:overflow-y-auto max-md:overflow-x-hidden max-md:overscroll-contain max-md:[-webkit-overflow-scrolling:touch] max-md:touch-pan-y max-md:pt-6 max-md:pl-[max(1.25rem,calc(1rem+env(safe-area-inset-left,0)))] max-md:pr-[max(1.25rem,calc(1rem+env(safe-area-inset-right,0)))] max-md:pb-[max(3.5rem,calc(2rem+env(safe-area-inset-bottom,0)))] max-md:box-border max-md:[scrollbar-width:none] max-md:[-ms-overflow-style:none] max-md:[transform:translate3d(100%,0,0)] max-md:invisible max-md:pointer-events-none max-md:will-change-transform max-md:transition-[transform,visibility] max-md:duration-[220ms] max-md:ease-default [&::-webkit-scrollbar]:hidden [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar]:h-0 [&.active]:max-md:[transform:translate3d(0,0,0)] [&.active]:max-md:visible [&.active]:max-md:pointer-events-auto" id="mobile-drawer">
+  <div class="site-nav__drawer-content w-full max-w-full box-border overflow-x-hidden">
+    <ul class="site-nav__drawer-list list-none m-0 mb-8 p-0 flex flex-col gap-2 w-full box-border">
       <li class="site-nav__drawer-item">
-        <a href="/" {% if page.url == '/' %}aria-current="page"{% endif %}>Home</a>
+        <a href="/" {% if page.url == '/' %}aria-current="page"{% endif %} class="font-heading text-[1.35rem] font-bold text-body-text no-underline block py-2 px-0 transition-colors duration-150 ease-default hover:text-accent aria-[current=page]:text-accent">Home</a>
       </li>
       <li class="site-nav__drawer-item">
-        <a href="/projects/" {% if '/projects' in page.url %}aria-current="page"{% endif %}>Projects</a>
+        <a href="/projects/" {% if '/projects' in page.url %}aria-current="page"{% endif %} class="font-heading text-[1.35rem] font-bold text-body-text no-underline block py-2 px-0 transition-colors duration-150 ease-default hover:text-accent aria-[current=page]:text-accent">Projects</a>
       </li>
       <li class="site-nav__drawer-item">
-        <a href="/gallery/" {% if '/gallery' in page.url %}aria-current="page"{% endif %}>Gallery</a>
+        <a href="/gallery/" {% if '/gallery' in page.url %}aria-current="page"{% endif %} class="font-heading text-[1.35rem] font-bold text-body-text no-underline block py-2 px-0 transition-colors duration-150 ease-default hover:text-accent aria-[current=page]:text-accent">Gallery</a>
       </li>
       <li class="site-nav__drawer-item">
-        <a href="/blog/" {% if '/blog' in page.url %}aria-current="page"{% endif %}>Blog</a>
+        <a href="/blog/" {% if '/blog' in page.url %}aria-current="page"{% endif %} class="font-heading text-[1.35rem] font-bold text-body-text no-underline block py-2 px-0 transition-colors duration-150 ease-default hover:text-accent aria-[current=page]:text-accent">Blog</a>
       </li>
       <li class="site-nav__drawer-item">
-        <a href="/about/" {% if '/about' in page.url %}aria-current="page"{% endif %}>Resume</a>
+        <a href="/about/" {% if '/about' in page.url %}aria-current="page"{% endif %} class="font-heading text-[1.35rem] font-bold text-body-text no-underline block py-2 px-0 transition-colors duration-150 ease-default hover:text-accent aria-[current=page]:text-accent">Resume</a>
       </li>
     </ul>
 
-    <div class="site-nav__drawer-themes">
-      <div class="drawer-theme-title">Appearance Mode</div>
-      <div class="drawer-mode-grid">
-        <button type="button" class="drawer-mode-btn" data-mode="dark">
+    <div class="site-nav__drawer-themes border-t border-border pt-6 w-full box-border">
+      <div class="drawer-theme-title font-regular text-[0.725rem] uppercase tracking-[0.08em] text-text-muted mb-3">Appearance Mode</div>
+      <div class="drawer-mode-grid grid grid-cols-2 gap-2 w-full box-border mb-2">
+        <button type="button" class="drawer-mode-btn flex items-center justify-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] font-semibold cursor-pointer text-center transition-colors duration-150 ease-default w-full box-border rounded-none hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold" data-mode="dark">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
           Dark
         </button>
-        <button type="button" class="drawer-mode-btn" data-mode="light">
+        <button type="button" class="drawer-mode-btn flex items-center justify-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] font-semibold cursor-pointer text-center transition-colors duration-150 ease-default w-full box-border rounded-none hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold" data-mode="light">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
           Light
         </button>
       </div>
 
-      <div class="drawer-theme-title" style="margin-top: 1.25rem;">Accent Theme</div>
-      <div class="drawer-theme-grid">
-        <button type="button" class="drawer-theme-btn" data-theme="lavender">
-          <span class="theme-swatch swatch--lavender"></span> Lavender
+      <div class="drawer-theme-title font-regular text-[0.725rem] uppercase tracking-[0.08em] text-text-muted mb-3" style="margin-top: 1.25rem;">Accent Theme</div>
+      <div class="drawer-theme-grid grid grid-cols-2 gap-2 w-full box-border max-[400px]:grid-cols-1">
+        <button type="button" class="drawer-theme-btn flex items-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] cursor-pointer text-left transition-colors duration-150 ease-default w-full box-border min-w-0 overflow-hidden whitespace-nowrap text-ellipsis hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold" data-theme="lavender">
+          <span class="theme-swatch swatch--lavender inline-block w-[10px] h-[10px] shrink-0 bg-[#a78bfa]"></span> Lavender
         </button>
-        <button type="button" class="drawer-theme-btn" data-theme="white">
-          <span class="theme-swatch swatch--white"></span> Monochrome
+        <button type="button" class="drawer-theme-btn flex items-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] cursor-pointer text-left transition-colors duration-150 ease-default w-full box-border min-w-0 overflow-hidden whitespace-nowrap text-ellipsis hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold" data-theme="white">
+          <span class="theme-swatch swatch--white inline-block w-[10px] h-[10px] shrink-0 bg-white border border-[#444]"></span> Monochrome
         </button>
-        <button type="button" class="drawer-theme-btn" data-theme="catppuccin">
-          <span class="theme-swatch swatch--catppuccin"></span> Catppuccin
+        <button type="button" class="drawer-theme-btn flex items-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] cursor-pointer text-left transition-colors duration-150 ease-default w-full box-border min-w-0 overflow-hidden whitespace-nowrap text-ellipsis hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold" data-theme="catppuccin">
+          <span class="theme-swatch swatch--catppuccin inline-block w-[10px] h-[10px] shrink-0 bg-[#f38ba8]"></span> Catppuccin
         </button>
-        <button type="button" class="drawer-theme-btn" data-theme="red">
-          <span class="theme-swatch swatch--red"></span> Crimson
+        <button type="button" class="drawer-theme-btn flex items-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] cursor-pointer text-left transition-colors duration-150 ease-default w-full box-border min-w-0 overflow-hidden whitespace-nowrap text-ellipsis hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold" data-theme="red">
+          <span class="theme-swatch swatch--red inline-block w-[10px] h-[10px] shrink-0 bg-[#ff4d4d]"></span> Crimson
         </button>
-        <button type="button" class="drawer-theme-btn" data-theme="coral">
-          <span class="theme-swatch swatch--coral"></span> Coral
+        <button type="button" class="drawer-theme-btn flex items-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] cursor-pointer text-left transition-colors duration-150 ease-default w-full box-border min-w-0 overflow-hidden whitespace-nowrap text-ellipsis hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold" data-theme="coral">
+          <span class="theme-swatch swatch--coral inline-block w-[10px] h-[10px] shrink-0 bg-[#ff7043]"></span> Coral
         </button>
-        <button type="button" class="drawer-theme-btn" data-theme="emerald">
-          <span class="theme-swatch swatch--emerald"></span> Emerald
+        <button type="button" class="drawer-theme-btn flex items-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] cursor-pointer text-left transition-colors duration-150 ease-default w-full box-border min-w-0 overflow-hidden whitespace-nowrap text-ellipsis hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold" data-theme="emerald">
+          <span class="theme-swatch swatch--emerald inline-block w-[10px] h-[10px] shrink-0 bg-[#34d399]"></span> Emerald
         </button>
-        <button type="button" class="drawer-theme-btn v3-theme-sync-opt" data-theme="system" style="display: none;">
-          <span class="theme-swatch swatch--system"></span> Match Desktop
+        <button type="button" class="drawer-theme-btn v3-theme-sync-opt flex items-center gap-2 py-[10px] px-[12px] min-h-[42px] bg-surface border border-border text-body-text font-regular text-[0.8rem] cursor-pointer text-left transition-colors duration-150 ease-default w-full box-border min-w-0 overflow-hidden whitespace-nowrap text-ellipsis hover:border-accent hover:text-accent [&.active]:border-accent [&.active]:bg-surface-2 [&.active]:text-accent [&.active]:font-bold [&.v3-theme-sync-opt]:col-span-2 max-[400px]:[&.v3-theme-sync-opt]:col-span-1" data-theme="system" style="display: none;">
+          <span class="theme-swatch swatch--system inline-block w-[10px] h-[10px] shrink-0 bg-[linear-gradient(135deg,#00ff41_0%,#00e5ff_100%)] border border-[rgba(255,255,255,0.25)]"></span> Match Desktop
         </button>
       </div>
     </div>
 
-    <div class="site-nav__drawer-v3">
-      <a href="/v3/" class="drawer-v3-btn" title="Launch Interactive Virtual Desktop (V3)">
+    <div class="site-nav__drawer-v3 mt-6 pt-5 border-t border-border w-full box-border">
+      <a href="/v3/" class="drawer-v3-btn flex items-center justify-center gap-2 w-full py-3 px-4 bg-surface-2 border border-border text-body-text font-regular text-[0.85rem] font-semibold no-underline box-border transition-all duration-150 ease-default hover:border-accent hover:text-accent hover:shadow-[0_0_12px_var(--color-accent-glow)] [&>svg]:text-accent" title="Launch Interactive Virtual Desktop (V3)">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
           <line x1="8" y1="21" x2="16" y2="21"/>
