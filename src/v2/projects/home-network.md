@@ -4,6 +4,7 @@ permalink: /projects/home-network/
 title: 'High-Availability Homelab & Hybrid Network Architecture'
 description: 'Production-grade personal infrastructure featuring dual-resolver AdGuard DNS redundancy, automated Caddy reverse proxy routing, Proxmox VE LXC micro-segmentation with Intel QuickSync GPU passthrough, multi-daemon Docker orchestration, and zero-trust WireGuard mesh networking.'
 date: 2026-09-08
+category: Linux System Administration &bull; Networking
 tags: project
 ---
 

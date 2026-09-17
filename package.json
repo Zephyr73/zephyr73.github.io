@@ -4,7 +4,8 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "npx @11ty/eleventy",
+    "clean": "cross-env NODE_OPTIONS=\"--no-deprecation\" node -e \"fs.rmSync('_site', {recursive:true, force:true})\"",
+    "build": "npm run clean && cross-env NODE_OPTIONS=\"--no-deprecation\" npx @11ty/eleventy",
     "build:css": "tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css && tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css",
     "watch:css": "concurrently \"tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css --watch\" \"tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css --watch\"",
     "dev": "concurrently \"npm:start\" \"npm:watch:css\"",
@@ -14,7 +15,7 @@
     "lint": "npm run lint:js",
     "check": "npm run format && npm run lint:js && npm run build:css && npm run build",
     "test": "npm run check",
-    "start": "npx @11ty/eleventy --serve"
+    "start": "cross-env NODE_OPTIONS=\"--no-deprecation\" npx @11ty/eleventy --serve"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,7 @@
     "@tailwindcss/cli": "^4.3.3",
     "@tailwindcss/typography": "^0.5.20",
     "concurrently": "^9.0.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.0.0",
     "exif-reader": "^2.0.3",
     "globals": "^17.3.0",

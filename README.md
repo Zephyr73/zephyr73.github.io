@@ -1,4 +1,4 @@
-# Zephyr73 Portfolio
+# Tasrif's Portfolio
 
 ![Demo](media/image.png)
 
@@ -15,7 +15,7 @@ To clone only the content folders onto your laptop to publish content on the go:
     git clone --no-checkout https://github.com/Zephyr73/zephyr73.github.io.git
     cd zephyr73.github.io
     git sparse-checkout init --cone
-    git sparse-checkout set src/v2/blog src/v2/projects
+    git sparse-checkout set src/v2/blog src/v2/projects src/assets/img
     git checkout main
     ```
 2.  Add/edit posts locally, then commit and push:
@@ -31,7 +31,7 @@ To clone only the content folders onto your laptop to publish content on the go:
 
 Run commands from the repository root:
 
-- **Start Dev Server**: `npm run dev` (Runs eleventy server and watches SCSS).
+- **Start Dev Server**: `npm run dev` (Runs eleventy server and watches Tailwind CSS).
 - **Compile CSS**: `npm run build:css` (Compiles styling manually).
 - **Production Build**: `npm run build` (Generates the static site inside `_site/`).
 - **Lint Check**: `npm run lint:js` (Checks JavaScript files for errors).

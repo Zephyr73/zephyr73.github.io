@@ -8,9 +8,15 @@ eleventyExcludeFromCollections: true
 <head>
   <link rel="icon" type="image/jpeg" href="/assets/img/favicon.jpg" />
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio 3.0 — Interactive Virtual Desktop</title>
   <meta name="description" content="A professional, Linux-like interactive desktop portfolio environment." />
+  <link rel="canonical" href="https://tasrif.dev/" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:title" content="Portfolio 3.0 — Interactive Virtual Desktop" />
+  <meta property="og:description" content="A professional, Linux-like interactive desktop portfolio environment." />
+  <meta property="og:url" content="https://tasrif.dev/" />
+  <meta property="og:image" content="https://tasrif.dev/assets/img/og-v3.jpg" />
 
   <!-- Google Fonts (Share Tech Mono) — was loaded via @import in desktop.scss -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -64,7 +70,7 @@ eleventyExcludeFromCollections: true
 <!-- ============================================================
      BOOT SCREEN OVERLAY
      ============================================================ -->
-<div id="boot-screen" class="boot-screen" role="dialog" aria-modal="true" aria-label="System booting">
+<div id="boot-screen" class="boot-screen" role="dialog" aria-modal="true" aria-label="System booting" tabindex="-1">
   <div class="boot-screen__content">
     <div class="boot-screen__logs" id="boot-logs"></div>
     <div class="boot-screen__footer">
@@ -232,11 +238,11 @@ eleventyExcludeFromCollections: true
   <div class="statusbar-left-scroll">
     <!-- Mode tabs -->
     <div class="statusbar-tabs" role="tablist">
-      <div class="statusbar-tab active" id="tab-desktop" role="tab" aria-selected="true" data-mode="desktop" tabindex="0" aria-label="Switch to Desktop mode">
+      <div class="statusbar-tab active" id="tab-desktop" role="tab" aria-selected="true" aria-controls="mode-desktop" data-mode="desktop" tabindex="0" aria-label="Switch to Desktop mode">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="0"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         DESKTOP
       </div>
-      <div class="statusbar-tab" id="tab-tty" role="tab" aria-selected="false" data-mode="tty" tabindex="0" aria-label="Switch to TTY Shell">
+      <div class="statusbar-tab" id="tab-tty" role="tab" aria-selected="false" aria-controls="mode-tty" data-mode="tty" tabindex="-1" aria-label="Switch to TTY Shell">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
         TTY SHELL
       </div>

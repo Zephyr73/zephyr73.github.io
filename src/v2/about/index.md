@@ -1,17 +1,17 @@
 ---
 layout: about.njk
 permalink: /about/
-title: 'Resume • Zephyr — Software Developer'
+title: 'Resume • Tasrif — IT & DevOps'
 bodyClass: page--resume
 pageId: resume
-description: 'Software Developer and Computer Science student resume. View technical skills, education timeline, systems background, and contact information.'
+description: 'IT & DevOps student resume. View technical skills in Linux, automation, networking, and system administration.'
 
 profile:
-  name: Zephyr
-  role: 'Software Developer • Computer Science'
+  name: Tasrif
+  role: 'IT Infrastructure • DevOps • Security'
   eyebrow: '// RESUME & DOSSIER'
   avatar: /assets/img/profile.png
-  badge: 'NYC • DEVELOPER'
+  badge: 'NYC • SYSTEMS'
   location: 'New York, NY'
   email: contact@tasrif.dev
   socials:
@@ -25,11 +25,10 @@ profile:
       url: https://twitter.com/Zephyr73_
       icon: twitter
   summary: >
-    Software Developer and Computer Science undergraduate with hands-on expertise in backend
-    systems programming, Linux virtualization, networking protocols, and full-stack web
-    applications. Proven track record architecting high-availability containerized
-    microservices, event-driven Python automation daemons, and modular client-side architectures
-    sustaining 99.9% uptime.
+    Computer Science student and IT enthusiast with hands-on expertise in Linux system
+    administration, network protocols, and DevOps automation. Proven track record deploying 
+    zero-trust VPNs, configuring high-availability Proxmox virtualization clusters, and 
+    engineering robust Python/Bash automation daemons.
   bio:
     - >
       Computer Science undergraduate at <strong>Queens College (CUNY)</strong> (started Aug
@@ -38,9 +37,9 @@ profile:
       foundations in algorithmic problem solving, Cambridge University mathematics curriculum,
       and hands-on systems programming.
     - >
-      Experienced in building Linux-based network infrastructure, Python automation tools, and
-      full-stack web applications. Passionate about software architecture, performance
-      optimization, and creative applications of generative AI.
+      Experienced in building highly-available Linux-based network infrastructure, Python 
+      automation tools, and secure homelab environments. Passionate about systems architecture, 
+      DevOps workflows, and continuous integration.
   meta:
     - label: Location
       value: 'New York, NY'
@@ -48,32 +47,37 @@ profile:
       value: 'Open to Opportunities'
       accent: true
     - label: Focus
-      value: 'Systems, Backend & Tools'
+      value: 'Infrastructure & DevOps'
 
 skills:
-  - category: 'Programming Languages'
+  - category: 'Infrastructure & Systems'
     items:
-      - Python
-      - C++
-      - 'JavaScript (ES6+)'
-      - Java
-      - 'HTML5 / Modern CSS'
-      - Bash / Shell Scripting
-  - category: 'Systems, Tools & Infrastructure'
+      - 'Linux System Administration'
+      - 'Proxmox & Virtualization'
+      - 'LXC Containers & Docker'
+      - 'Infrastructure as Code (IaC)'
+      - 'Disaster Recovery'
+  - category: 'Security & Networking'
     items:
-      - 'Linux (Arch, Debian, Ubuntu)'
-      - 'Git & GitHub Version Control'
-      - 'Docker & Containerization'
-      - 'WireGuard VPN & Networking'
-      - 'AdGuard Home / Pi-hole DNS'
-      - 'Vite & Eleventy (11ty)'
-  - category: 'Creative & Generative AI Tools'
+      - 'Networking & DNS'
+      - 'Reverse Proxy & VPN'
+      - 'Reverse Engineering'
+  - category: 'DevOps & Automation'
     items:
-      - 'Stable Diffusion (Automatic1111 / ComfyUI)'
-      - 'ControlNet & OpenPose Workflows'
-      - 'Adobe Lightroom Classic'
-      - 'Adobe Photoshop'
-      - 'Adobe Premiere & After Effects'
+      - 'Python & Bash'
+      - 'PowerShell'
+      - 'Git & GitHub'
+      - 'CI/CD & IT Automation'
+  - category: 'Data & Integration'
+    items:
+      - 'Web Scraping & APIs'
+      - 'Browser Automation'
+      - 'SQLite'
+  - category: 'Other Interests'
+    items:
+      - 'Local LLMs'
+      - 'Stable Diffusion / GenAI'
+      - 'Photography (Lightroom/PS)'
 
 projects:
   - title: 'High-Availability Homelab & Hybrid Network'

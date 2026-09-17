@@ -1,6 +1,6 @@
 # About Me
 
-> **guest@portfolio** | Software Developer · CS Student · Creative Technologist
+> **guest@portfolio** | IT Infrastructure · DevOps · Security
 
 ---
 
@@ -8,29 +8,30 @@
 
 I am a Computer Science undergraduate at **Queens College (CUNY)**, having completed an Associate in Science in Computer Science at **LaGuardia Community College** (3.62 CGPA, July 2026). I have a strong foundation in computer science principles and mathematics completed through the Cambridge University curriculum.
 
-I have a passion for building software, exploring new technologies, and game development. I focus on creating clean, efficient code and exploring creative technical workflows.
+I have a passion for building highly-available infrastructure, network automation, and reliable deployment systems. I focus on deploying zero-trust architectures and exploring robust DevOps workflows.
 
 ---
 
 ## Skills
 
-### Programming & Development
+### Infrastructure & Systems
 
-- **Python** — scripting, automation, data processing
-- **HTML / CSS** — semantic markup, SCSS, design systems
-- **JavaScript** — vanilla ES6+, browser APIs, tooling
-- **C++** — systems programming, game dev
-- **Java** — OOP, data structures
-- **Git** — version control, GitHub workflows
-- **Linux** — daily driver, shell scripting, ricing
+- **Linux** — System Administration, Arch Linux
+- **Virtualization** — Proxmox, LXC Containers, Docker
+- **Networking** — VPN, DNS, Reverse Proxy
+- **Infrastructure** — Disaster Recovery, IaC
 
-### Creative & Tools
+### DevOps & Automation
 
-- **Adobe Photoshop** — photo retouching, compositing
-- **Adobe Premiere** — video editing
-- **After Effects** — motion graphics
-- **Stable Diffusion** — AI art generation, ControlNet, OpenPose
-- **Photography** — street, landscape, cityscape (Samsung Galaxy S22 Ultra)
+- **Python** — Scripting, automation daemons
+- **Bash & PowerShell** — CLI tools, system administration
+- **Git** — Version control, GitHub workflows
+- **Data & APIs** — Web Scraping, REST APIs, SQLite
+
+### Other Interests
+
+- **Generative AI** — Local LLMs, Stable Diffusion
+- **Photography** — Lightroom, Adobe Photoshop
 
 ---
 

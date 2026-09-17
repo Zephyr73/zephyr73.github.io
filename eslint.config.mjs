@@ -3,7 +3,7 @@ import globals from 'globals';
 
 export default [
     {
-        ignores: ['_site/**'],
+        ignores: ['_site/**', 'src/assets/js/v3/vendor/**'],
     },
     js.configs.recommended,
     {

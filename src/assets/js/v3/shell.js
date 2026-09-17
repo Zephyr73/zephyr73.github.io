@@ -988,6 +988,8 @@ function switchMode(mode) {
   tabTTY.classList.toggle('active', mode === 'tty');
   tabDesktop.setAttribute('aria-selected', String(mode === 'desktop'));
   tabTTY.setAttribute('aria-selected', String(mode === 'tty'));
+  tabDesktop.tabIndex = mode === 'desktop' ? 0 : -1;
+  tabTTY.tabIndex = mode === 'tty' ? 0 : -1;
 
   // Move any floating windows into the correct container
   if (mode === 'tty') {
@@ -1473,14 +1475,26 @@ function initBootScreen() {
     isSkipped = true;
     clearInterval(logInterval);
     clearInterval(progressInterval);
+    bootScreen.removeEventListener('keydown', trapFocus);
     bootScreen.classList.add('fade-out');
     setTimeout(() => {
       bootScreen.remove();
+      if (previousFocus) previousFocus.focus();
     }, 450);
   }
 
   // Click anywhere to skip
   bootScreen.addEventListener('click', skipBoot);
+
+  // Focus trap
+  const previousFocus = document.activeElement;
+  bootScreen.focus();
+  const trapFocus = (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+    }
+  };
+  bootScreen.addEventListener('keydown', trapFocus);
 
   // Initial draw with cursor
   if (bootLogs) {
@@ -1539,14 +1553,44 @@ document.addEventListener('DOMContentLoaded', () => {
     playSound('click');
     switchMode('tty');
   });
-  tabDesktop.addEventListener(
-    'keydown',
-    (e) => e.key === 'Enter' && (playSound('click'), switchMode('desktop')),
-  );
-  tabTTY.addEventListener(
-    'keydown',
-    (e) => e.key === 'Enter' && (playSound('click'), switchMode('tty')),
-  );
+
+  const handleTabKeydown = (e) => {
+    let focusTo = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      focusTo = e.target === tabDesktop ? tabTTY : tabDesktop;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      focusTo = e.target === tabTTY ? tabDesktop : tabTTY;
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      focusTo = tabDesktop;
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      focusTo = tabTTY;
+    }
+    
+    if (focusTo) {
+      focusTo.focus();
+      playSound('click');
+      switchMode(focusTo.dataset.mode);
+    }
+  };
+
+  tabDesktop.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault(); playSound('click'); switchMode('desktop');
+    } else {
+      handleTabKeydown(e);
+    }
+  });
+  tabTTY.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault(); playSound('click'); switchMode('tty');
+    } else {
+      handleTabKeydown(e);
+    }
+  });
   // Clock, stats & center ticker
   updateClock();
   updateStats();
