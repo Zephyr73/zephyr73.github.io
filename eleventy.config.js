@@ -136,20 +136,22 @@ export default function (eleventyConfig) {
           ? ` style="order: ${order}; --stagger-idx: ${order};"`
           : '';
       return `<div class="gallery-item relative w-full flex flex-col overflow-hidden"${orderStyle}>
-  ${pictureHtml}
-  <div class="gallery-item__overlay absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.85)] flex flex-col justify-end items-start p-[14px] gap-[10px]">
-    <div class="gallery-item__meta flex flex-col gap-[3px] font-regular text-[11px] text-[#d8d8d8]">${
-      deviceStr
-        ? `
-      <span>${deviceStr}</span>`
-        : ''
-    }
-      <span>${dateStr}</span>
-      <span>${resolutionStr}</span>
-      <span>${fileSizeStr}</span>
+  <a href="${detailUrl}" class="gallery-item__link block w-full relative cursor-pointer text-inherit no-underline" aria-label="View details for ${baseName}">
+    ${pictureHtml}
+    <div class="gallery-item__overlay absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.85)] flex flex-col justify-end items-start p-[14px] gap-[10px]">
+      <div class="gallery-item__meta flex flex-col gap-[3px] font-regular text-[11px] text-[#d8d8d8]">${
+        deviceStr
+          ? `
+        <span>${deviceStr}</span>`
+          : ''
+      }
+        <span>${dateStr}</span>
+        <span>${resolutionStr}</span>
+        <span>${fileSizeStr}</span>
+      </div>
+      <span class="gallery-item__view-details inline-block bg-body-text text-container-bg font-regular text-[12px] py-[6px] px-[14px] no-underline transition-colors duration-200 ease">View Details</span>
     </div>
-    <a href="${detailUrl}" class="gallery-item__view-details inline-block bg-body-text text-container-bg font-regular text-[12px] py-[6px] px-[14px] no-underline cursor-pointer transition-colors duration-200 ease hover:bg-container-bg hover:text-body-text hover:outline hover:outline-1 hover:outline-body-text">View Details</a>
-  </div>
+  </a>
 </div>`;
     },
   );
