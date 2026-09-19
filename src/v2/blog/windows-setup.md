@@ -159,7 +159,7 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
 > - set the device ip to `192.168.1.2xx`
 >
 > > **Note**
-> > For a list of IP and Ports in case of a network rest, refer to the [handbook](ip-and-ports.md)
+> > For a list of IP and Ports in case of a network reset, refer to the `ip-and-ports.md` handbook.
 
 ---
 
@@ -203,7 +203,7 @@ After setting up the color profile in Windows Color Management, go to your syste
 >
 > ### Create Tasks
 >
-> Import the all the tasks from the tasks [folder][tasks-folder]
+> Import the all the tasks from the `.\Task Scheduler\MyScripts\` folder
 
 ---
 
@@ -315,7 +315,7 @@ Restart your Command Prompt to see the difference.
 
 #### Windows Terminal
 
-You can either import the config from [here][terminal-config], or have a fresh start.
+You can either import the config from `.\Customization\Windows Terminal\`, or have a fresh start.
 Here are some settings which I recommend to change:
 
 - Launch Size: 120 x 30
@@ -531,6 +531,4 @@ Download the following extensions before setting the configs
 [Vencord]: https://github.com/Vendicated/Vencord
 [Millenium]: https://github.com/SteamClientHomebrew/Millennium
 [Apollo]: https://github.com/ClassicOldSong/Apollo
-[tasks-folder]: ./Task%20Scheduler/MyScripts/
-[terminal-config]: ./Customization/Windows%20Terminal/
 [autounattend.xml]: https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=en-US&Locale=en-US&Keyboard=00000409&GeoLocation=244&ProcessorArchitecture=amd64&BypassNetworkCheck=true&KeepSensitiveFiles=true&ComputerNameMode=Script&ComputerNameScript=return+%27DESKTOP-%7B0%3AD3%7D%27+-f+%28+Get-Random+-Minimum+0+-Maximum+999+%29%3B&CompactOsMode=Never&TimeZoneMode=Implicit&PartitionMode=Interactive&DiskAssertionMode=Skip&WindowsEditionMode=Generic&WindowsEdition=pro&InstallFromMode=Automatic&PEMode=Default&UserAccountMode=InteractiveLocal&PasswordExpirationMode=Unlimited&LockoutMode=Disabled&HideFiles=None&ClassicContextMenu=true&LaunchToThisPC=true&ShowEndTask=true&TaskbarSearch=Label&TaskbarIconsMode=Default&DisableWidgets=true&LeftTaskbar=true&HideTaskViewButton=true&DisableBingResults=true&StartTilesMode=Empty&StartPinsMode=Empty&DisableFastStartup=true&AllowPowerShellScripts=true&DisableAppSuggestions=true&PreventDeviceEncryption=true&HideEdgeFre=true&DisableEdgeStartupBoost=true&DisablePointerPrecision=true&EffectsMode=Default&DeleteEdgeDesktopIcon=true&DesktopIconsMode=Default&StartFoldersMode=Custom&StartFolderFileExplorer=true&StartFolderSettings=true&WifiMode=Interactive&ExpressSettings=DisableAll&LockKeysMode=Skip&StickyKeysMode=Disabled&ColorMode=Default&WallpaperMode=Default&LockScreenMode=Default&Remove3DViewer=true&RemoveBingSearch=true&RemoveCalculator=true&RemoveCamera=true&RemoveClipchamp=true&RemoveClock=true&RemoveCopilot=true&RemoveCortana=true&RemoveDevHome=true&RemoveWindowsHello=true&RemoveFamily=true&RemoveFeedbackHub=true&RemoveGameAssist=true&RemoveGetHelp=true&RemoveHandwriting=true&RemoveInternetExplorer=true&RemoveMailCalendar=true&RemoveMaps=true&RemoveMathInputPanel=true&RemoveMediaFeatures=true&RemoveMixedReality=true&RemoveZuneVideo=true&RemoveNews=true&RemoveOffice365=true&RemoveOneDrive=true&RemoveOneNote=true&RemoveOneSync=true&RemoveOutlook=true&RemovePaint=true&RemovePaint3D=true&RemovePeople=true&RemovePowerAutomate=true&RemoveQuickAssist=true&RemoveRecall=true&RemoveRdpClient=true&RemoveSkype=true&RemoveSnippingTool=true&RemoveSolitaire=true&RemoveSpeech=true&RemoveStepsRecorder=true&RemoveStickyNotes=true&RemoveTeams=true&RemoveGetStarted=true&RemoveToDo=true&RemoveVoiceRecorder=true&RemoveWallet=true&RemoveWeather=true&RemoveFaxAndScan=true&RemoveWindowsMediaPlayer=true&RemoveZuneMusic=true&RemoveWordPad=true&RemoveXboxApps=true&RemoveYourPhone=true&WdacMode=Skip&AppLockerMode=Skip#:~:text=View%20.xml%20file-,Download%20.xml%20file,-Download%20.xml%20wrapped

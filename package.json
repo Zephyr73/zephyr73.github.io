@@ -10,19 +10,33 @@
     "watch:css": "concurrently \"tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css --watch\" \"tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css --watch\"",
     "dev": "concurrently \"npm:start\" \"npm:watch:css\"",
     "format": "prettier --write \"**/*.{html,js,css,md}\"",
+    "format:check": "prettier --check \"**/*.{html,js,css,md}\"",
     "lint:js": "eslint \"**/*.js\"",
     "lint:fix": "eslint --fix \"**/*.js\"",
     "lint": "npm run lint:js",
-    "check": "npm run format && npm run lint:js && npm run build:css && npm run build",
-    "test": "npm run check",
-    "start": "cross-env NODE_OPTIONS=\"--no-deprecation\" npx @11ty/eleventy --serve"
+    "check:images": "node scripts/check-images.js",
+    "test:html": "html-validate _site",
+    "test:links": "node scripts/check-links.js",
+    "check": "npm run format:check && npm run lint:js && npm run build:css && npm run build",
+    "test": "npm run check && npm run test:html && npm run test:links",
+    "start": "cross-env NODE_OPTIONS=\"--no-deprecation\" npx @11ty/eleventy --serve",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "lint-staged": {
+    "*.{js,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{html,css,md,json}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",
-    "@11ty/eleventy-img": "^6.0.4",
+    "@11ty/eleventy-img": "^7.0.0",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@eslint/js": "^9.0.0",
     "@tailwindcss/cli": "^4.3.3",
@@ -32,7 +46,12 @@
     "eslint": "^9.0.0",
     "exif-reader": "^2.0.3",
     "globals": "^17.3.0",
+    "html-validate": "^11.16.0",
+    "husky": "^9.1.7",
+    "linkinator": "^8.1.0",
+    "lint-staged": "^17.5.1",
     "prettier": "^3.8.1",
+    "sharp": "^0.35.3",
     "tailwindcss": "^4.3.3"
   }
 }

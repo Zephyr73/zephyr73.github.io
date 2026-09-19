@@ -30,9 +30,6 @@ date: 2023-10-27
   - [Backslash Escapes](#backslash)
   - [Automatic Links](#autolink)
 
-**Note:** This document is itself written using Markdown; you
-can [see the source for it by adding '.text' to the URL](/projects/markdown/syntax.text).
-
 ---
 
 ## Overview
@@ -232,7 +229,9 @@ to be indented _twice_ -- 8 spaces or two tabs:
 
 - A list item with a code block:
 
-        <code goes here>
+  ```
+  <code goes here>
+  ```
 
 ### Code Blocks
 
@@ -263,9 +262,11 @@ easy to include example HTML source code using Markdown -- just paste
 it and indent it, and Markdown will handle the hassle of encoding the
 ampersands and angle brackets. For example, this:
 
-    <div class="footer">
-        &copy; 2004 Foo Corporation
-    </div>
+```
+<div class="footer">
+    &copy; 2004 Foo Corporation
+</div>
+```
 
 Regular Markdown syntax is not processed within code blocks. E.g.,
 asterisks are just literal asterisks within a code block. This means

@@ -4,6 +4,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import sharp from 'sharp';
 import exifReader from 'exif-reader';
+import { sanitizeSlug } from './src/_data/lib/gallery-shared.js';
 
 export default function (eleventyConfig) {
   // 1. Copy the 'assets' folder exactly as is to the output
@@ -69,8 +70,8 @@ export default function (eleventyConfig) {
         outputDir: `./_site/assets/img/gallery/${subdir}/`,
         urlPath: `/assets/img/gallery/${subdir}/`,
         filenameFormat: (_id, imgSrc, width, format) => {
-          const name = path.basename(imgSrc, path.extname(imgSrc));
-          return `${name}-${width}w.${format}`;
+          const name = sanitizeSlug(path.basename(imgSrc, path.extname(imgSrc)));
+          return `${name}-${width}.${format}`;
         },
         sharpWebpOptions: {
           quality: 80,
@@ -80,7 +81,7 @@ export default function (eleventyConfig) {
         },
       });
 
-      const baseName = path.basename(srcPath, path.extname(srcPath));
+      const baseName = sanitizeSlug(path.basename(srcPath, path.extname(srcPath)));
 
       const imgAttrs = {
         alt: alt || '',

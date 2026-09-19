@@ -1,0 +1,18 @@
+{
+  "root": true,
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "no-inline-style": "off",
+    "prefer-native-element": "off",
+    "no-unknown-elements": "warn",
+    "doctype-style": "off",
+    "void-style": "off",
+    "no-trailing-whitespace": "off",
+    "no-raw-characters": "off",
+    "prefer-tbody": "off",
+    "attr-spacing": "off",
+    "no-implicit-button-type": "off",
+    "unique-landmark": "off",
+    "aria-label-misuse": "off"
+  }
+}

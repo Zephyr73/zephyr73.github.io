@@ -46,16 +46,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Code style & linting
+      - name: Lint & format check
         run: |
-          npm run format || true
-          npm run lint:fix || true
+          npm run format:check
+          npm run lint:js
+
+      - name: Validate gallery images
+        run: npm run check:images
 
       - name: Build CSS
         run: npm run build:css
 
       - name: Build Eleventy site
         run: npm run build
+
+      - name: Validate HTML & links
+        run: |
+          npm run test:html
+          npm run test:links
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6

@@ -124,7 +124,7 @@ projects:
         near-white anomalies.
       - >
         Automated service management via systemd user units and Windows startup services,
-        maintaining background execution with <1% CPU utilization across continuous multi-day
+        maintaining background execution with &lt;1% CPU utilization across continuous multi-day
         cycles.
   - title: 'Interactive Virtual Desktop & Web Systems Platform'
     url: 'https://github.com/zephyr73/zephyr73.github.io'
