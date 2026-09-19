@@ -336,7 +336,7 @@
     color: var(--cp-dim);
     letter-spacing: 0.05em;
   }
-  
+
   .tray-clock:hover {
     background: var(--cp-bg-2);
     cursor: pointer;
@@ -354,11 +354,11 @@
     z-index: 1000;
     padding: 12px;
   }
-  
+
   .calendar-menu.hidden {
     display: none;
   }
-  
+
   .calendar-menu__header {
     font-size: 13px;
     color: var(--cp-white);
@@ -368,7 +368,7 @@
     padding-bottom: 8px;
     letter-spacing: 1px;
   }
-  
+
   .calendar-menu__grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -376,22 +376,22 @@
     text-align: center;
     font-size: 11px;
   }
-  
+
   .calendar-day-header {
     color: var(--cp-dim);
     font-size: 9px;
     margin-bottom: 4px;
   }
-  
+
   .calendar-day {
     color: var(--cp-muted);
     padding: 4px 0;
   }
-  
+
   .calendar-day.active {
     color: var(--cp-white);
   }
-  
+
   .calendar-day.today {
     background: var(--cp-green);
     color: var(--cp-bg);

@@ -133,9 +133,12 @@ function formatFrontmatter(md) {
  */
 function parseMarkdown(md) {
   let cleanMd = formatFrontmatter(md);
-  
+
   // Replace custom Eleventy/Nunjucks shortcodes (e.g. {% gimg ... %}) so they don't render raw
-  cleanMd = cleanMd.replace(/\{%.*?%\}/g, '<div class="md-plugin-placeholder">[Media Element Omitted]</div>');
-  
+  cleanMd = cleanMd.replace(
+    /\{%.*?%\}/g,
+    '<div class="md-plugin-placeholder">[Media Element Omitted]</div>',
+  );
+
   return marked.parse(cleanMd);
 }

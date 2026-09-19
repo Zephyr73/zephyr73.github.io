@@ -98,10 +98,14 @@ function updateThemeUI(mode) {
 
 let lastClickX = window.innerWidth / 2;
 let lastClickY = window.innerHeight / 2;
-document.addEventListener('click', (e) => {
-  lastClickX = e.clientX;
-  lastClickY = e.clientY;
-}, true);
+document.addEventListener(
+  'click',
+  (e) => {
+    lastClickX = e.clientX;
+    lastClickY = e.clientY;
+  },
+  true,
+);
 
 function _applyThemeDOM(themeKey, modeKey, fromV3 = false) {
   const { isEmbedded, mode: prevMode, accent: prevAccent } = getActiveThemeState();
@@ -150,7 +154,7 @@ function _applyThemeDOM(themeKey, modeKey, fromV3 = false) {
   }
   // Restore static accent data attribute if it was cleared
   if (!isEmbedded && !document.documentElement.hasAttribute('data-static-accent')) {
-     document.documentElement.setAttribute('data-static-accent', currentAccent);
+    document.documentElement.setAttribute('data-static-accent', currentAccent);
   }
 
   updateThemeUI(currentMode);
@@ -170,7 +174,10 @@ function _applyThemeDOM(themeKey, modeKey, fromV3 = false) {
 }
 
 function applyTheme(themeKey, modeKey, fromV3 = false) {
-  if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (
+    !document.startViewTransition ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ) {
     _applyThemeDOM(themeKey, modeKey, fromV3);
     return;
   }
@@ -179,7 +186,7 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
   const y = lastClickY;
   const endRadius = Math.hypot(
     Math.max(x, window.innerWidth - x),
-    Math.max(y, window.innerHeight - y)
+    Math.max(y, window.innerHeight - y),
   );
 
   const transition = document.startViewTransition(() => {
@@ -189,16 +196,13 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
   transition.ready.then(() => {
     document.documentElement.animate(
       {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${endRadius}px at ${x}px ${y}px)`,
-        ],
+        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`],
       },
       {
         duration: 400,
         easing: 'ease-in',
         pseudoElement: '::view-transition-new(root)',
-      }
+      },
     );
   });
 }
@@ -268,8 +272,6 @@ window.addEventListener('click', (e) => {
     }
   }
 });
-
-
 
 // Gallery Page: Tabs switching
 const GALLERY_SECTIONS = {
@@ -499,7 +501,7 @@ function ditherAvatar() {
 
     const W = Math.round(cssW * dpr);
     const H = Math.round(cssH * dpr);
-    
+
     const offscreen = document.createElement('canvas');
     offscreen.width = W;
     offscreen.height = H;

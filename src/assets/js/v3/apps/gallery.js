@@ -19,7 +19,7 @@ export function createGalleryApp(filePath, fileTitle) {
           base + '-1800w.webp',
           base + '-1200w.webp',
           base + '-800w.webp',
-          base + '-400w.webp'
+          base + '-400w.webp',
         ];
       }
     }
@@ -170,11 +170,11 @@ export function createGalleryApp(filePath, fileTitle) {
     updateImgTransform();
 
     const candidates = getCandidateSrcs(vPath);
-    
+
     // Clear out previous image visually immediately
-    mainImg.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; 
+    mainImg.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
     downloadBtn.href = '#';
-    
+
     const resVal = infoPanel.querySelector('#meta-res');
     resVal.textContent = 'Loading...';
 

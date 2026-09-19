@@ -522,7 +522,7 @@ function _openFloating(id, appEl, title, filePath) {
   // Default size & centered position
   let W = Math.min(900, window.innerWidth - 80);
   let H = Math.min(640, window.innerHeight - 80);
-  
+
   if (appEl && appEl.classList.contains('app-browser')) {
     W = Math.min(1300, window.innerWidth - 40);
     H = Math.min(850, window.innerHeight - 60);
@@ -1152,37 +1152,50 @@ function initCalendar() {
   const calendarMenu = document.getElementById('calendar-menu');
   const monthYearEl = document.getElementById('calendar-month-year');
   const gridEl = document.getElementById('calendar-grid');
-  
+
   if (!trayClock || !calendarMenu) return;
-  
+
   function renderCalendar() {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
     const todayDate = now.getDate();
-    
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
     monthYearEl.textContent = `${months[month]} ${year}`;
-    
+
     // Days of week header
     gridEl.innerHTML = '';
     const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-    days.forEach(d => {
+    days.forEach((d) => {
       const el = document.createElement('div');
       el.className = 'calendar-day-header';
       el.textContent = d;
       gridEl.appendChild(el);
     });
-    
+
     // Empty spots for first day
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    
+
     for (let i = 0; i < firstDay; i++) {
       const el = document.createElement('div');
       gridEl.appendChild(el);
     }
-    
+
     // Actual days
     for (let i = 1; i <= daysInMonth; i++) {
       const el = document.createElement('div');
@@ -1191,7 +1204,7 @@ function initCalendar() {
       gridEl.appendChild(el);
     }
   }
-  
+
   trayClock.addEventListener('click', (e) => {
     e.stopPropagation();
     playSound('click');
@@ -1201,9 +1214,13 @@ function initCalendar() {
       renderCalendar();
     }
   });
-  
+
   document.addEventListener('click', (e) => {
-    if (!calendarMenu.classList.contains('hidden') && !calendarMenu.contains(e.target) && !trayClock.contains(e.target)) {
+    if (
+      !calendarMenu.classList.contains('hidden') &&
+      !calendarMenu.contains(e.target) &&
+      !trayClock.contains(e.target)
+    ) {
       calendarMenu.classList.add('hidden');
     }
   });
@@ -1597,7 +1614,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       focusTo = tabTTY;
     }
-    
+
     if (focusTo) {
       focusTo.focus();
       playSound('click');
@@ -1607,14 +1624,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tabDesktop.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault(); playSound('click'); switchMode('desktop');
+      e.preventDefault();
+      playSound('click');
+      switchMode('desktop');
     } else {
       handleTabKeydown(e);
     }
   });
   tabTTY.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault(); playSound('click'); switchMode('tty');
+      e.preventDefault();
+      playSound('click');
+      switchMode('tty');
     } else {
       handleTabKeydown(e);
     }
