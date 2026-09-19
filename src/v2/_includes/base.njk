@@ -37,17 +37,17 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
     {% if description %}<meta name="description" content="{{ description }}" />{% endif %}
 
-    <title>{{ title | default("Tasrif — Software Developer & Portfolio") }}</title>
+    <title>{{ title | default("Tasrif — IT, DevOps & Cybersecurity Portfolio") }}</title>
 
     <!-- Open Graph / Twitter Meta Tags -->
-    <meta property="og:title" content="{{ title | default('Tasrif — Software Developer & Portfolio') }}" />
+    <meta property="og:title" content="{{ title | default('Tasrif — IT, DevOps & Cybersecurity Portfolio') }}" />
     {% if description %}<meta property="og:description" content="{{ description }}" />{% endif %}
     <meta property="og:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://tasrif.dev{{ page.url }}" />
     
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="{{ title | default('Tasrif — Software Developer & Portfolio') }}" />
+    <meta name="twitter:title" content="{{ title | default('Tasrif — IT, DevOps & Cybersecurity Portfolio') }}" />
     {% if description %}<meta name="twitter:description" content="{{ description }}" />{% endif %}
     <meta name="twitter:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
 
