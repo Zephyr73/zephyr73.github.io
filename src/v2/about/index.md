@@ -82,7 +82,7 @@ skills:
 projects:
   - title: 'High-Availability Homelab & Hybrid Network'
     url: /projects/home-network/
-    date: 'Sep 8, 2026'
+    date: 'Sep 19, 2026'
     tags:
       - 'Linux (Debian)'
       - 'Proxmox VE'

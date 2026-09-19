@@ -20,7 +20,7 @@ description: 'Technical notes, desktop setup guides, and development walkthrough
   </div>
 
   <div class="blog-list flex flex-col gap-6 max-md:gap-5">
-    {% for post in collections.blogpost | reverse %}
+    {% for post in collections.blogpost | sortByDate %}
       {{ project_card(post, "Read Article") }}
     {% endfor %}
   </div>

@@ -3,7 +3,7 @@ layout: base.njk
 permalink: /projects/home-network/
 title: 'High-Availability Homelab & Hybrid Network Architecture'
 description: 'Production-grade personal infrastructure featuring dual-resolver AdGuard DNS redundancy, automated Caddy reverse proxy routing, Proxmox VE LXC micro-segmentation with Intel QuickSync GPU passthrough, multi-daemon Docker orchestration, and zero-trust WireGuard mesh networking.'
-date: 2026-09-08
+date: 2026-09-19
 category: Linux System Administration &bull; Networking
 tags: project
 ---
@@ -156,11 +156,11 @@ Running as a daemon on CT102 (`:8080`), `adguardhome-sync` performs continuous s
 
 ### 3. Upstream Encryption & Split-Horizon Routing
 
-Outbound DNS queries are dispatched concurrently in parallel mode over encrypted protocols to Quad9 and Cloudflare with DNSSEC validation enforced:
+Outbound DNS queries are dispatched concurrently in parallel mode over encrypted protocols with strict failover semantics:
 
-- `https://dns.quad9.net/dns-query` and `tls://dns.quad9.net`
-- `https://1.1.1.1/dns-query` and `tls://1.1.1.1`
-- Bootstrap resolvers: `9.9.9.9`, `1.1.1.1`, `1.0.0.1`
+- **Primary Upstreams**: Quad9 via concurrent DNS-over-HTTPS (`https://dns.quad9.net/dns-query`) and DNS-over-TLS (`tls://dns.quad9.net`). Parallel mode races these two transports to ensure the lowest latency response while validating DNSSEC.
+- **Fallback Upstream (`fallback_dns`)**: Cloudflare (`https://1.1.1.1/dns-query`, `tls://1.1.1.1`), queried strictly as a fallback in the event of upstream Quad9 failure.
+- **Bootstrap Resolvers**: Plain IP resolution via `9.9.9.9`, `1.1.1.1`, and `1.0.0.1` for initial TLS certificate bootstrapping.
 
 Both resolvers maintain 12 authoritative split-horizon rewrites routing internal service domains (`*.vault`, `*.archive`, `*.lan`) directly to the reverse proxy at `192.168.1.100`.
 
@@ -338,9 +338,13 @@ tailscale up --advertise-routes=192.168.1.0/24
 
 If Proxmox undergoes maintenance, the Pi maintains continuous LAN route reachability for remote clients. If the Pi is disconnected, Proxmox routes the traffic.
 
-### Split DNS & MagicDNS
+### Split DNS, Tailnet Resolvers & Exit Node Persistence
 
-Remote mobile endpoints on the Tailnet can query internal service hostnames (`http://glance.archive:9000` or `http://photos.vault`) natively. Tailscale MagicDNS forwards local domain queries directly to the internal AdGuard resolvers (`.202` and `.102`).
+To ensure seamless internal and external resolution across all mobile and workstation clients, Tailscale MagicDNS and custom nameservers are configured:
+
+- **Tailnet Nameservers**: `100.68.1.202` (Pi Zero 2 W Tailscale node IP) and `192.168.1.102` (CT102 secondary AdGuard).
+- **"Use with Exit Node" Flag**: Both resolvers have the "Use with Exit node" policy enabled in the Tailscale admin console. When mobile devices (such as the Samsung phone) route external traffic through the Mullvad exit node for public egress privacy, all DNS requests continue to route through AdGuard Home, ensuring zero ad/tracker leakage and retaining uninterrupted access to split-horizon LAN rewrites (`*.vault`, `*.archive`).
+- **Subnet Route Acceptance**: Configured on client endpoints. The Samsung mobile phone has "Use Tailscale subnets" enabled (verified active 2026-09-19), allowing direct, seamless access to the `192.168.1.0/24` subnet from outside the home (with Thinkpad laptop pending configuration when next online).
 
 ---
 
@@ -433,3 +437,11 @@ This setup serves as a practical demonstration of real-world infrastructure and 
 - **Virtualization & Hypervisors**: Proxmox VE clustering architecture, unprivileged vs. privileged container isolation, resource quota enforcement, and hardware device passthrough (`/dev/dri`).
 - **Container Orchestration**: Multi-node Docker daemon topology, Compose multi-container networking, immutable SHA-256 image digest pinning, and resource footprint optimization.
 - **Site Reliability & Disaster Recovery**: Dependency order modeling, failure mode and effects analysis (FMEA), automated state replication (`adguardhome-sync`), and reproducible declarative infrastructure runbooks.
+
+---
+
+## Live Audit & Verification History
+
+- **2026-09-19**: Live DNS & Tailscale verification pass on bare-metal Pi. Confirmed Quad9 DoH/DoT as primary raced transports with Cloudflare designated as isolated `fallback_dns`. Updated Tailnet nameservers to `100.68.1.202` + `192.168.1.102` with "Use with Exit node" active for Mullvad traffic filtering. Verified Samsung mobile client has "Use Tailscale subnets" turned on for remote LAN access.
+- **2026-09-08**: Storage audit & disaster-recovery kit compilation (`RECOVERY.md`). Calibrated CT104 RAM to 3GB and locked qBittorrent disk cache to 256 MiB to eliminate kernel page-cache thrashing.
+- **2026-09-07**: Repository established as single source of truth; migrated Kavita to canonical GitHub container registry (`ghcr.io/kareadita/kavita`); pruned 6.7GB of reclaimable Docker container images; implemented SSH ed25519 key authentication hierarchy.
