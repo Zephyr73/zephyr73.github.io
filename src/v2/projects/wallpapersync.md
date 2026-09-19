@@ -9,6 +9,7 @@ description:
   the wallpaper. This ensures a visually cohesive environment that aligns with your desktop's
   aesthetics.
 date: 2023-10-27
+repo: https://github.com/Zephyr73/WallpaperSync
 category: Python &bull; IT Automation
 tags: project
 ---

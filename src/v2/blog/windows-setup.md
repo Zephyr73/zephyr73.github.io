@@ -1,12 +1,12 @@
 ---
 layout: base.njk
-permalink: /blog/blogs/windows-setup/
+permalink: /blog/windows-setup/
 title: How I setup my windows 11 desktop
 description: This is a step by step process on how I configure my windows 11 desktop and some network configurations. This is in case I forget how I set them up
 pageId: 3
 tags: blogpost
 category: Technical Guide
-date: 2023-10-27
+date: 2026-09-19
 ---
 
 # Step by step process of my windows setup
@@ -15,7 +15,7 @@ date: 2023-10-27
 
 ## Step 1
 
-Before you start the guide, make sure to download a copy of Windows 11 ISO. I would suggest downloading the ISO of last year, usually they are more polished from my personal experience. So for example, as of today the latest version of Windows 11 is **25H2**, I would suggest downloading **24H2**. In some rare cases the newer version might be more polished and have less bugs on release, in that case download the latest one. Do your research to find the most stable version.
+Before you start the guide, make sure to download a copy of Windows 11 ISO. I would suggest downloading the ISO of last year, usually they are more polished from my personal experience. So for example, as of today the latest version of Windows 11 is **25H2**, which is what I am currently running. In some rare cases the newer version might be more polished and have less bugs on release, in that case download the latest one. Do your research to find the most stable version.
 
 After downloading the ISO, download my [autounattend.xml][autounattend.xml]. You can import this file in <https://schneegans.de/windows/unattend-generator/> and inspect it to add or remove settings. I would always suggest creating an autounattend file because it will install an almost clean Windows without you having to manually uninstall bloatware and change settings.
 
@@ -31,10 +31,13 @@ Restart your PC and boot into the USB to go through the windows setup. The proce
 
 - Download GPU Display Drivers
   - For NVIDIA GPU users:
-    - Download version 572.83 (most stable version for me)
+    - Download NVIDIA driver **596.36** (current most stable version for me)
     - Debloat via NVCleanstall
+  - For AMD/Intel GPU users:
+    - Download the latest stable driver, or use debloated variants where available
 - Set Display resolution and refresh rates
 - Set color depth in NVIDIA Control Panel or AMD Radeon Software
+- Apply per-monitor OSD settings from [my Monitor Settings sheet]
 
 Even after installing windows with the unattend file, the default settings of windows are a privacy nightmare.
 
@@ -109,39 +112,37 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
 
 #### Downloads
 
-- **Browsers**
-  - Brave Browser (Make sure to debloat it, instructions below)
-  - Firefox (Make sure to debloat it)
+Everything listed here is available through `winget` unless stated otherwise. Apps and games that are not listed here are re-downloadable any time with their configs synced cloud-side.
 
-- **Gaming**
+- **Drivers**
+  - NVIDIA Driver (debloated via [NVCleanstall])
+  - NVIDIA App
+  - Realtek Ethernet + Realtek Audio Control
+  - [VB-CABLE] (Virtual Audio Cable)
+
+- **Dev / IDEs**
+  - Git
+  - [uv] (Python version manager)
+  - Python
+  - Node.js
+  - MSYS2
+  - JDK 17 + JDK 21
+  - VS Code (with the extensions listed below)
+  - IntelliJ IDEA
+  - Antigravity IDE
+
+- **Apps**
   - Discord with [Vencord][Vencord]
-  - Steam with [Millenium][Millenium]
-  - [Apollo][Apollo]
-
-- **Connectivity**
-  - Tailscale
-  - KDE Connect
-
-- **Utilities**
-  - 7zip
-  - DisplayCal
-  - VS Code
-  - MSI Afterburner
-  - Notepad++
-  - OnlyOffice
-  - OpenRGB
-  - qBittorrent
-  - Malwarebytes
-  - VLC Player
-  - Sysinternals Suite
-  - TreeSize
-  - Defender UI
-  - Revo Uninstaller OR Bulk Crap Uninstaller (BCU)
-  - NVCleanstall
+  - Steam with [Millennium][Millenium]
+  - [Apollo]
+  - Cheat Engine
+  - LM Studio
+  - opencode
+  - Brave Browser (Debloated, instructions below)
 
 - **Customization**
   - Nilesoft Shell
-  - Transclucent Taskbar
+  - Translucent Taskbar
   - Explorer Patcher
   - Windhawk
   - Rainmeter
@@ -151,6 +152,42 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
     - JetBrainsMono Nerd Font
     - Iosevka
 
+- **Tools**
+  - 7-Zip
+  - Sysinternals Suite
+  - Notepad++
+  - OnlyOffice
+  - DisplayCAL
+  - PowerToys
+  - fastfetch
+  - TreeSize
+  - DefenderUI
+  - Malwarebytes
+  - qBittorrent
+  - MSI Afterburner
+  - Core Temp
+  - CrystalDiskInfo
+
+- **Connectivity**
+  - Tailscale
+  - KDE Connect
+  - WinSCP
+  - RustDesk
+
+- **Portable Apps** (`D:\Portable Apps`) - not installed, kept portable:
+  - Bulk Crap Uninstaller (BCU)
+  - OpenRGB
+  - platform-tools (adb/fastboot)
+  - Syncthing
+  - Everything
+  - ventoy
+  - DriverStoreExplorer
+  - usblogview
+  - scrcpy
+  - ArchiSteamFarm (ASF)
+  - Glance Dashboard
+  - Caddy
+
 > ### Network and Firewall
 >
 > Device IP Address should be managed by PiHole, however in the case it is not set appropriately:
@@ -159,7 +196,7 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
 > - set the device ip to `192.168.1.2xx`
 >
 > > **Note**
-> > For a list of IP and Ports in case of a network reset, refer to the `ip-and-ports.md` handbook.
+> > For a list of IP and Ports in case of a network reset, refer to the `ip-and-ports.md` [handbook][ip-and-ports].
 
 ---
 
@@ -170,12 +207,14 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
 - Use **MSI Afterburner** to undervolt GPU and make sure to launch in startup
 - Change **NVIDIA Control Panel** settings according to updated guide
 - Turn off game optimization in **NVIDIA App**
+- Use **DefenderUI** to control Microsoft Defender settings
+- Install **Core Temp** and **CrystalDiskInfo** to monitor your system
 
 #### DisplayCal
 
 The reason we will be using DisplayCal is because the default Windows Color Management program is not known to be reliable for handling color profiles. It glitches out especially when you switch to and from full screen mode, sometimes after a reboot it fails to load the color profile immediately. This is where DisplayCal comes in clutch, it makes sure the profile is always automatically loaded.
 
-After installing and setting up **DisplayCal**, download the calibrated `.icc` or `.icm` profiles for your monitor. YouTubers like _Techless_ and _Monitor Unboxed_ usually provide calibrated profiles for popular monitors. Once you download the color profiles, right click on them and select **Install Profile** from the context menu.
+After installing and setting up **DisplayCal**, download the calibrated `.icc` or `.icm` profiles for your monitor. YouTubers like _Techless_ and _Monitor Unboxed_ usually provide calibrated profiles for popular monitors, or grab mine from [this ICC/ICM profiles Drive folder]. Once you download the color profiles, right click on them and select **Install Profile** from the context menu.
 
 Once you have everything ready, search for **Color Management** in windows search. On the top of the settings screen, it should show your monitors. Make sure to select the correct monitor. Once you select your monitor, click on the tickbox that says **Use my settings for this device**.
 
@@ -187,10 +226,11 @@ After setting up the color profile in Windows Color Management, go to your syste
 >
 > Share the Following drives to the network
 >
-> - `D:\Games`
-> - `D:\Media`
-> - `D:\Programming`
-> - `D:\BACKUPS\Phone Backup\Samsung S25 ULTRA`
+> - `D:\Games` (as `Games`)
+> - `D:\Media` (as `Media`)
+> - `D:\Programming` (as `Programming`)
+> - `D:\BACKUPS\Phone Backup\Samsung S25 ULTRA` (as `Samsung S25 ULTRA`)
+> - `C:\Users` (as `Users`)
 >
 > ### PATH Variables
 >
@@ -198,12 +238,23 @@ After setting up the color profile in Windows Color Management, go to your syste
 >
 > - `D:\Programming\PATH Scripts`
 > - `D:\Programming\PATH Scripts\ViVeTool v0.3.4`
-> - `D:\Programming\Python\ThemeSwitcher\`
-> - `%USERPROFILE%\Downloads\OpenRGB Windows 64-bit`
+> - `D:\Programming\PATH Scripts\ThemeSwitcher`
+> - `D:\Portable Apps\OpenRGB_1.0rc2`
+> - `D:\Portable Apps\platform-tools`
 >
 > ### Create Tasks
 >
-> Import the all the tasks from the `.\Task Scheduler\MyScripts\` folder
+> Import all the tasks from the [`MyScripts`][tasks-folder] folder:
+>
+> - ArchiSteamFarm
+> - ArchiSteamFarm exe
+> - Glance Dashboard
+> - MSIAfterburner
+> - OpenRGB
+> - Rainmeter (optional - disable in Task Scheduler if you are not using Rainmeter)
+> - Syncthing
+> - TodoBot-Startup
+> - Windhawk
 
 ---
 
@@ -301,35 +352,54 @@ Once altered, reload your profile for the changes to take effect:
 . $PROFILE
 ```
 
-For **Command Prompt**, enter the following in your terminal:
+My profile also includes **Python venv auto-activation** - it auto-enables the `.venv` of whichever project directory you `cd` into, and deactivates it when you leave. The helper functions in `Microsoft.PowerShell_profile.ps1` look like this:
 
-```cmd
-clink config prompt use oh-my-posh
+```powershell
+function global:Activate-ProjectVenv {
+    $activate = Join-Path (Get-Location) '.venv\Scripts\Activate.ps1'
+    if (-not (Test-Path $activate)) { return $false }
+    if ($env:VIRTUAL_ENV) { deactivate }
+    . $activate
+    return $true
+}
+
+function global:Set-LocationWithVenv {
+    param([Parameter(Position = 0, Mandatory = $true)][string]$Path, [switch]$PassThru)
+    if ($env:VIRTUAL_ENV) { deactivate }
+    Set-Location -Path $Path
+    Activate-ProjectVenv | Out-Null
+}
+
+Remove-Item -Force alias:cd -ErrorAction SilentlyContinue
+Set-Alias -Name cd -Value Set-LocationWithVenv -Force
+Activate-ProjectVenv | Out-Null
 ```
 
-```cmd
-clink set ohmyposh.theme "%USERPROFILE%\Documents\OhMyPosh themes\catppuccin_mocha.omp.json"
+For **Command Prompt**, **Clink** loads `oh-my-posh.lua` from its install directory (`C:\Program Files (x86)\clink`). Edit that file and paste the following:
+
+```lua
+load(io.popen('oh-my-posh init cmd --config "%USERPROFILE%/Documents/OhMyPosh themes/catppuccin_mocha.omp.json"'):read("*a"))()
 ```
 
 Restart your Command Prompt to see the difference.
 
 #### Windows Terminal
 
-You can either import the config from `.\Customization\Windows Terminal\`, or have a fresh start.
+You can either import the config from the [Windows Terminal settings.json][wt-config], or have a fresh start.
 Here are some settings which I recommend to change:
 
-- Launch Size: 120 x 30
-- Center on launch
-- Appearance
-  - JetBrainsMono Nerd Font Mono
-  - Font Size: 11
-  - Line height: 1.2
-  - Cell width: 0.6
-  - Background Opacity: 80%
-  - Window Padding: 30
+- Profile defaults
+  - Color scheme: **Custom_Palette** (add it to your `schemes`)
+  - Font: **JetBrainsMono Nerd Font Mono**, Size: **11**
+  - Background Opacity: **80%** (Acrylic)
+  - Window Padding: **30**
+  - `adjustIndistinguishableColors`: **indexed**
+  - `elevate`: **ON**
+- Launch mode: **Focus** (opens maximized without the title bar)
+- Center on Launch: **ON**
 - Profiles
-  - PowerShell
-    - Command line: `powershell.exe -nologo`
+  - PowerShell: command line `powershell.exe -nologo`
+  - Default profile: **Command Prompt**
 
 #### CMD.exe
 
@@ -373,9 +443,11 @@ Right click the title bar and then change the settings for the following
 
 #### Nilesoft Shell
 
-Just copy paste the config files
+Copy paste the config files from [the Nilesoft Shell folder][nilesoft-folder] into `C:\Program Files\Nilesoft Shell\` (overwrite the default `shell.nss` and drop the `.nss` files in `imports\`).
 
-#### Transclucent Taskbar
+The config adds a few helpful items to the context menu, including a **Copy share URL** item that uploads the selected file/folder through [File.io] and copies the share link to your clipboard.
+
+#### Translucent Taskbar
 
 Everything should be at default settings except
 **Desktop > Acrylic**
@@ -383,11 +455,12 @@ Everything should be at default settings except
 
 #### Explorer Patcher
 
-Import the config file, OR apply these main settings:
+Import the [ExplorerPatcher.reg][ep-config] config file, OR apply these main settings:
 
 ##### Taskbar
 
 - Taskbar Style: **Windows 11**
+- Multi-Monitor Taskbar Alignment: **One taskbar per monitor**
 - Search: **Hidden**
 - Show Task View Button: **OFF**
 
@@ -399,15 +472,27 @@ Import the config file, OR apply these main settings:
 
 ##### Other
 
-- Disable Rounded Corners: **ON**
+- Start button: **Orb** (`OrbStyle = 1`)
+- Skin menus, center menus, flyout menus: **ON**
 
 #### Windhawk
 
-Download the following extensions for windhawk
+Install the mods below. Their theme/configuration JSON files live in the [Windhawk folder][windhawk-folder] along with a [MODS.md][windhawk-mods] that documents the active set.
 
-- Slick window arrangement
-- Windows 11 notification center styler
-- Windows 11 start menu slider
+**Active mods**
+
+- Windows 11 Start Menu Styler
+- Windows 11 Taskbar Styler
+- Windows 11 Notification Center Styler
+- Slick Window Arrangement
+- Start Menu Size
+- Themed RegEdit ListView
+
+**Currently disabled**
+
+- Taskbar on Top
+- Windows 11 File Explorer Styler
+- Translucent Windows
 
 Go to **Settings > Advanced Settings > More Advanced Settings**
 In the **Process inclusion list** enter `dwm.exe`
@@ -417,36 +502,25 @@ Save and Restart Windhawk
 
 - Slick windows distance: 25
 
-##### Windows 11 notification center styler
+##### Windows 11 Start Menu Styler
 
-- Theme: Matter
-
-##### Windows 11 start menu styler
-
-- Theme: **Windows11_Metro10Minimal**
-- Disable the new start menu layout: **ON**
-- Control styles
-  - Target: `Border#AcrylicBorder`
-    Styles: `Background:=<AcrylicBrush TintOpacity="0" TintColor="Black" TintLuminosityOpacity="0.6" Opacity="1" FallbackColor="#101010"/>`
-  - Target: `Border#AppBorder`
-    Styles: `Background:=<AcrylicBrush TintOpacity="0" TintColor="Black" TintLuminosityOpacity="0.6" Opacity="1" FallbackColor="#101010"/>`
+My config uses a monochrome, square-corners look. The full config is in `Win11MonochromeV2.json` in the [Windhawk folder][windhawk-folder]. Paste the contents into **Settings > Details** of the mod. Alternative themes (`minimal-*.json`, `glassy-minimal-*.json`) are included.
 
 #### VS Code
 
-Download the following extensions before setting the configs
+Import the [settings.json][vscode-config], and install the following extensions:
 
-- Python Preview (Discontinued, Download from shared folder)
-- AREPL for Python
 - C/C++
 - C/C++ Extension Pack
+- C/C++ DevTools
 - Catppuccin for VSCode
 - clangd
 - CMake Tools
 - Code Runner
 - Debug Visualizer
 - Doxygen Documentation Generator
-- Gemini Code Assist
-- Github Copilot Chat
+- GitHub Theme
+- GitHub Actions
 - Gruvbox Theme
 - Hex Editor
 - json
@@ -461,74 +535,136 @@ Download the following extensions before setting the configs
 - Markdown Preview Enhanced
 - Markdownlint
 - Material Icon Theme
+- Monochrome Theme
+- Nunjucks
+- One Dark Pro / Monokai Darker
 - Open in Github, Bitbucket, Gitlab
 - Project Tree
 - Pylance
 - Python
 - Python debugger
 - Python Environments
+- Python Preview
 - Remote - SSH
 - Remote - SSH: Editing Configuration Files
+- Roo Cline
 - Ruff
+- SVG
+- SVG Preview
+- vscode-lldb
 - vscode-pdf
 - YAML
 
-##### Configuration for VS Code
+##### Configuration highlights
 
-**_Text Editor_**
+_**Text Editor**_
 
+- Theme: **Catppuccin Mocha**
+- Icon Theme: **Material Icon Theme**
+- Font: **JetBrainsMono Nerd Font**, Line Height **1.6**
 - Bracket Pairs Horizontal: **true**
-- Line Height: **1.6**
-- Semantic Highlighting Enabled: **true**
-- Smooth Scrolling: **ON**
-- Word Wrap: **ON**
-- Cursor Blinking: **Smooth**
-- Cursor Smooth Caret Animation: **ON**
-- Font Family: **JetBrains Mono Nerd Font**
-- Font Size: **14**
+- Semantic Highlighting: **true**
+- Word Wrap: **ON**, Cursor Blinking: **Smooth**, Smooth Caret Animation: **ON**
 - Auto Save: **After Delay**
 
-**_Workbench_**
+_**Python**_
 
-- Smooth Scrolling: **ON**
-- Workbench Color theme: **Catppuccin Mocha**
-- Icon Theme: **Material Icon Theme**
-- Empty Hint: **hidden**
+- Ruff formats on save + fixes on save
+- Pylance for autocomplete only (`typeCheckingMode: off`, no linting overlap)
 
-**_Features_**
+_**C/C++**_
 
-- Explorer Kind: **Integrated**
-- Integrated > Font Ligatures Enabled: **ON**
-- Integrated Mouse wheel zoom: **ON**
-- Integrated Smooth Scrolling: **ON**
+- `C_Cpp.intelliSenseEngine`: **disabled** (Clangd handles IntelliSense)
+- Clangd args: `--background-index --clang-tidy --completion-style=detailed --header-insertion=never --inlay-hints=true`
 
-**_C/C++_**
+_**Python-envs**_
 
-- C_Cpp Intelli Sense Engine: Disabled
+- Terminal Auto Activation: **shellStartup**
 
-**_Clangd_**
+_**Default interpreter**_
 
-- Clangd Arguments:
-  - `--inlay-hints=true`
-- Clangd PATH: `ENTER PATH OF CLANGD.exe`
+- `python.defaultInterpreterPath` points at the `uv` managed Python (e.g. `C:\Users\<you>\AppData\Roaming\uv\python\cpython-3.14.7-windows-x86_64-none\python.exe`)
 
-**_Git_**
+#### Notepad++
 
-- Open Repository in Parent Folders: **Never**
+Import the config files from [the Notepad++ folder][npp-folder] into `%APPDATA%\Notepad++\` (keep `config.xml`, `shortcuts.xml`, `stylers.xml`, `contextMenu.xml` and the `themes\` folder - I use the Catppuccin Mocha theme).
 
-**_Live Server_**
+#### Rainmeter
 
-- Do not verify tags: **ON**
+Layout: **Boquet Suite II** + the `monstercat-visualizer` skin. Skins are loaded from `%APPDATA%\Rainmeter\`.
 
-**_Python_**
+#### Brave
 
-- **Python > Analysis > Inlay hints: Call Argument Names:** **ON**
-- **Python > Analysis > Inlay hints: Variable Types:** **ON**
-- **Python > Analysis: Type Checking Mode:** **OFF**
-- Language Server: **Pylance**
-- **Python-envs > Terminal: Auto Activation Type:** **shellStartup**
+Brave is my main browser. It is installed **machine-wide** (`C:\Program Files\BraveSoftware\Brave-Browser`). Combined with the built-in **Brave Debloat** tweak in the Chris Titus tool, I remove the bloat as follows:
+
+##### Flags (brave://flags)
+
+- `enable-quic` - QUIC protocol
+- `smooth-scrolling`
+- `enable-parallel-downloading`
+- `brave-ntp-refresh-enabled`
+- `brave-ai-chat`
+
+##### Settings
+
+- Appearance
+  - Theme: **Dark**
+  - Vertical tabs: **ON** (collapsed, floating with hover)
+  - Bookmark bar: **Show on all tabs**
+- New Tab Page
+  - Background: **Custom** radial gradient `#2D0264` -> `#030023`
+  - Show stats only (no news feed, no search box)
+- Search engine: **Brave Search**
+- Shields: **Advanced** view, with 5 sites excluded
+- Debloat (turn OFF / remove):
+  - Brave News
+  - Side panel / sidebar
+  - AI Chat, Brave Rewards, Wallet & VPN - enforced via **registry policies** (see below)
+  - WebRTC IP handling: **disable non-proxied UDP**
+- Privacy: **Sign in / Sync disabled** (local profile)
+
+##### Extensions
+
+- Bitwarden (password manager)
+- Steam Artwork Hub Essentials (Steam profile artwork)
+
+##### Registry policies (debloat)
+
+AI Chat, Wallet, VPN & Rewards are disabled through **Group Policy registry keys**, which survive Brave resets and re-enables better than toggles alone. Create the key and set the `DWord` values:
+
+```powershell
+New-Item -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Force | Out-Null
+Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveAIChatEnabled" -Value 0 -Type DWord
+Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveWalletDisabled" -Value 1 -Type DWord
+Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveVPNDisabled" -Value 1 -Type DWord
+Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveRewardsDisabled" -Value 1 -Type DWord
+```
+
+Some Brave flags are set via `brave://flags`; those are stored in `Local State` / `Preferences` and are not covered here.
+
+##### Context menu bloat removal
+
+Brave adds a bunch of items to its right-click context menu. Since these are removed per menu (right-click an item then **Remove**), they cannot be restored by a config file - do it manually after a fresh install, together with the toggle-driven items above.
+
+Apply the registry debloat above (or merge [Brave-Debloat.reg]) after setting up Brave, so AI Chat, Wallet, VPN & Rewards stay stripped even after a reset.
 
 [Vencord]: https://github.com/Vendicated/Vencord
 [Millenium]: https://github.com/SteamClientHomebrew/Millennium
 [Apollo]: https://github.com/ClassicOldSong/Apollo
+[NVCleanstall]: https://www.techpowerup.com/nvcleanstall/
+[VB-CABLE]: https://vb-audio.com/Cable/
+[uv]: https://docs.astral.sh/uv/
+[File.io]: https://www.file.io/
 [autounattend.xml]: https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=en-US&Locale=en-US&Keyboard=00000409&GeoLocation=244&ProcessorArchitecture=amd64&BypassNetworkCheck=true&KeepSensitiveFiles=true&ComputerNameMode=Script&ComputerNameScript=return+%27DESKTOP-%7B0%3AD3%7D%27+-f+%28+Get-Random+-Minimum+0+-Maximum+999+%29%3B&CompactOsMode=Never&TimeZoneMode=Implicit&PartitionMode=Interactive&DiskAssertionMode=Skip&WindowsEditionMode=Generic&WindowsEdition=pro&InstallFromMode=Automatic&PEMode=Default&UserAccountMode=InteractiveLocal&PasswordExpirationMode=Unlimited&LockoutMode=Disabled&HideFiles=None&ClassicContextMenu=true&LaunchToThisPC=true&ShowEndTask=true&TaskbarSearch=Label&TaskbarIconsMode=Default&DisableWidgets=true&LeftTaskbar=true&HideTaskViewButton=true&DisableBingResults=true&StartTilesMode=Empty&StartPinsMode=Empty&DisableFastStartup=true&AllowPowerShellScripts=true&DisableAppSuggestions=true&PreventDeviceEncryption=true&HideEdgeFre=true&DisableEdgeStartupBoost=true&DisablePointerPrecision=true&EffectsMode=Default&DeleteEdgeDesktopIcon=true&DesktopIconsMode=Default&StartFoldersMode=Custom&StartFolderFileExplorer=true&StartFolderSettings=true&WifiMode=Interactive&ExpressSettings=DisableAll&LockKeysMode=Skip&StickyKeysMode=Disabled&ColorMode=Default&WallpaperMode=Default&LockScreenMode=Default&Remove3DViewer=true&RemoveBingSearch=true&RemoveCalculator=true&RemoveCamera=true&RemoveClipchamp=true&RemoveClock=true&RemoveCopilot=true&RemoveCortana=true&RemoveDevHome=true&RemoveWindowsHello=true&RemoveFamily=true&RemoveFeedbackHub=true&RemoveGameAssist=true&RemoveGetHelp=true&RemoveHandwriting=true&RemoveInternetExplorer=true&RemoveMailCalendar=true&RemoveMaps=true&RemoveMathInputPanel=true&RemoveMediaFeatures=true&RemoveMixedReality=true&RemoveZuneVideo=true&RemoveNews=true&RemoveOffice365=true&RemoveOneDrive=true&RemoveOneNote=true&RemoveOneSync=true&RemoveOutlook=true&RemovePaint=true&RemovePaint3D=true&RemovePeople=true&RemovePowerAutomate=true&RemoveQuickAssist=true&RemoveRecall=true&RemoveRdpClient=true&RemoveSkype=true&RemoveSnippingTool=true&RemoveSolitaire=true&RemoveSpeech=true&RemoveStepsRecorder=true&RemoveStickyNotes=true&RemoveTeams=true&RemoveGetStarted=true&RemoveToDo=true&RemoveVoiceRecorder=true&RemoveWallet=true&RemoveWeather=true&RemoveFaxAndScan=true&RemoveWindowsMediaPlayer=true&RemoveZuneMusic=true&RemoveWordPad=true&RemoveXboxApps=true&RemoveYourPhone=true&WdacMode=Skip&AppLockerMode=Skip#:~:text=View%20.xml%20file-,Download%20.xml%20file,-Download%20.xml%20wrapped
+[ip-and-ports]: https://github.com/Zephyr73/Windows-Setup/blob/main/ip-and-ports.md
+[tasks-folder]: https://github.com/Zephyr73/Windows-Setup/tree/main/Task%20Scheduler/MyScripts
+[wt-config]: https://github.com/Zephyr73/Windows-Setup/blob/main/Customization/Windows%20Terminal/settings.json
+[nilesoft-folder]: https://github.com/Zephyr73/Windows-Setup/tree/main/Customization/Nilesoft%20Shell
+[npp-folder]: https://github.com/Zephyr73/Windows-Setup/tree/main/Customization/Notepad%2B%2B
+[ep-config]: https://github.com/Zephyr73/Windows-Setup/blob/main/Customization/Explorer%20Patcher/ExplorerPatcher.reg
+[windhawk-folder]: https://github.com/Zephyr73/Windows-Setup/tree/main/Customization/Windhawk
+[windhawk-mods]: https://github.com/Zephyr73/Windows-Setup/blob/main/Customization/Windhawk/MODS.md
+[vscode-config]: https://github.com/Zephyr73/Windows-Setup/blob/main/Customization/VSCode/settings.json
+[Brave-Debloat.reg]: https://github.com/Zephyr73/Windows-Setup/blob/main/Customization/Brave/Brave-Debloat.reg
+[my Monitor Settings sheet]: https://docs.google.com/spreadsheets/d/13DLXK-cJcAJ8mueEGOYAwg0wl7UCZsZ0xiOf5OIk4EE/edit?gid=0#gid=0
+[my ICC/ICM profiles Drive folder]: https://drive.google.com/drive/folders/1Y4YkZJee2GxCuM7ox-nrpiuB0YchEWxc
