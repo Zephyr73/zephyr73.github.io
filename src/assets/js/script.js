@@ -176,7 +176,8 @@ function _applyThemeDOM(themeKey, modeKey, fromV3 = false) {
 function applyTheme(themeKey, modeKey, fromV3 = false) {
   if (
     !document.startViewTransition ||
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    fromV3
   ) {
     _applyThemeDOM(themeKey, modeKey, fromV3);
     return;

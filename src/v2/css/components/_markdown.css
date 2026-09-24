@@ -521,28 +521,28 @@
       -webkit-overflow-scrolling: touch;
     }
   }
-}
 
-/* ── Slim, visual-only Table of Contents scrollbar ──────────────────────────── */
-/* Decorative indicator: rides along with scrolling but is click-through (no
-   drag, no hover). Firefox scrollbars can't be made click-through, so they are
-   hidden entirely. */
-.markdown-toc {
-  scrollbar-width: none;
-  overscroll-behavior-y: contain;
-}
+  /* ── Slim, visual-only Table of Contents scrollbar ──────────────────────────── */
+  /* Decorative indicator: rides along with scrolling but is click-through (no
+     drag, no hover). Firefox scrollbars can't be made click-through, so they are
+     hidden entirely. */
+  .markdown-toc {
+    scrollbar-width: none;
+    overscroll-behavior-y: contain;
+  }
 
-.markdown-toc::-webkit-scrollbar {
-  width: 2px;
-  height: 2px;
-  pointer-events: none;
-}
+  .markdown-toc::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+    pointer-events: none;
+  }
 
-.markdown-toc::-webkit-scrollbar-track {
-  background: transparent;
-}
+  .markdown-toc::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-.markdown-toc::-webkit-scrollbar-thumb {
-  background-color: color-mix(in srgb, var(--clr-border-hover) 60%, transparent);
-  border-radius: 9999px;
+  .markdown-toc::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--clr-border-hover) 60%, transparent);
+    border-radius: 9999px;
+  }
 }

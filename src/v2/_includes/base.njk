@@ -99,9 +99,20 @@
         }
         
         // Stateful Navbar Transition Logic
+        // Guard against speculative prerendering: the inline script runs at prerender
+        // time, which would write the wrong 'wasGallery' value into sessionStorage
+        // before the user actually navigates — causing the animation to skip on
+        // activation. Only commit the sessionStorage write when we're not prerendering.
         var isGallery = window.location.pathname.indexOf('/gallery') !== -1;
         var wasGallery = sessionStorage.getItem('v2-was-gallery') === 'true';
-        sessionStorage.setItem('v2-was-gallery', isGallery);
+        if (!document.prerendering) {
+          sessionStorage.setItem('v2-was-gallery', isGallery);
+        } else {
+          // Deferred write: update sessionStorage once this prerendered page activates
+          document.addEventListener('prerenderingchange', function() {
+            sessionStorage.setItem('v2-was-gallery', isGallery);
+          }, { once: true });
+        }
         
         if (isGallery && !wasGallery) {
           classes.push('nav-starting-narrow');
