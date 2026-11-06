@@ -11,9 +11,7 @@ date: 2026-09-19
 
 # Step by step process of my windows setup
 
----
-
-## Step 1
+## Step 1: Installation & Media Setup
 
 Before you start the guide, make sure to download a copy of Windows 11 ISO. I would suggest downloading the ISO of last year, usually they are more polished from my personal experience. So for example, as of today the latest version of Windows 11 is **25H2**, which is what I am currently running. In some rare cases the newer version might be more polished and have less bugs on release, in that case download the latest one. Do your research to find the most stable version.
 
@@ -23,11 +21,9 @@ Once you have both of these files, burn the ISO in a USB stick using **Rufus**. 
 
 Restart your PC and boot into the USB to go through the windows setup. The process should be almost hands-free because of the unattend file.
 
-## Step 2
+## Step 2: Initial Setup & Base Configuration
 
-### Initialization
-
-#### Display
+### Display & Drivers
 
 - Download GPU Display Drivers
   - For NVIDIA GPU users:
@@ -37,11 +33,21 @@ Restart your PC and boot into the USB to go through the windows setup. The proce
     - Download the latest stable driver, or use debloated variants where available
 - Set Display resolution and refresh rates
 - Set color depth in NVIDIA Control Panel or AMD Radeon Software
-- Apply per-monitor OSD settings from [my Monitor Settings sheet]
+- Apply per-monitor OSD settings from [this Monitor Settings sheet]
+
+> In the case where windows automatically downloads the GPU drivers, follow the steps:
+>
+> - Download the GPU drivers from the manufacturer's website
+> - Boot into safe mode
+> - Uninstall GPU drivers using **DDU**
+> - Unplug LAN cable or disable WiFi
+> - Restart your PC
+> - Install the GPU drivers manually
+> - Plug LAN cable or enable WiFi
+
+### Windows Settings
 
 Even after installing windows with the unattend file, the default settings of windows are a privacy nightmare.
-
-#### Settings
 
 - System
   - Display
@@ -93,6 +99,8 @@ Even after installing windows with the unattend file, the default settings of wi
 - Privacy & Security
   - **Disable** almost everything unless you need it
 
+### Network Configuration
+
 For some reasons, my PC used to drop connection at random times after I switched to gigabit internet. It usually happened when I am playing games or when I am in a voice call. Weird issue, never found the exact reason for it, however I fixed them by changing these settings after doing some research.
 
 #### Device Manager
@@ -110,7 +118,94 @@ Go to **Ethernet > Properties > Advanced** and change the following settings
 - IPv4 Checksum Offload: **Rx & Tx Enabled**
 - Power Saving Mode: **Disabled**
 
-#### Downloads
+> #### Personal Note
+>
+> Device IP Address should be managed by AdGuard/PiHole, however in the case it is not set appropriately:
+>
+> - Go to **Control Panel > Network and Internet > Network and Sharing Center > Ethernet > Properties > IPv4**
+> - set the device ip to `192.168.1.xxx`
+>
+> > **Note**
+> > For a list of IP and Ports in case of a network reset, refer to the `ip-and-ports.md` [handbook][ip-and-ports].
+
+## Step 3: Debloating & Service Optimization
+
+### Chris Titus Tool
+
+Copy and paste this in `PowerShell`:
+
+```powershell
+irm "https://christitus.com/win" | iex
+```
+
+From the **TWEAKS** tab
+
+- Remove Widgets
+- Set services to manual
+- Adobe Network Block
+- Brave Debloat
+- Disable Microsoft Copilot
+- Set Classic Right-Click Menu
+
+- Bing Search in Start Menu: **OFF**
+- Center Taskbar Items: **OFF**
+- Cross-Device Resume: **OFF**
+- Detailed BSoD: **OFF**
+- Disable Multiplane Overlay: **ON**
+- Modern Standby Fix: **ON**
+- Mouse Acceleration: **OFF**
+- Recommendations in Start Menu: **OFF**
+- Show File Extensions: **ON**
+- Show Hidden Files: **ON**
+
+> For PC, you may want to **Add and Activate Ultimate Performance Profile**
+
+From the **UPDATES** tab, select Security Settings. This should delay feature updates by 1 year, and security updates by 1 week.
+
+### SysInternals: Autoruns
+
+Go through all the tabs and make sure there are no hidden tasks or services running. Even though we set all services to manual from **Chris Titus Tool**, some services may be overlooked by it. You can double check the services, and tasks created by various apps.
+
+Use this tool to help you with the next app, **Task Scheduler**
+
+### Task Scheduler Audit
+
+Many apps love to hide their automated scripts over here (Auto update, auto install etc). I personally turn off all auto update tasks created by Microsoft and other Browsers. Most of the services are generally safe to turn off, however it is best to do your own research.
+
+### Brave Debloat
+
+Brave is installed **machine-wide** (`C:\Program Files\BraveSoftware\Brave-Browser`). Combined with the built-in **Brave Debloat** tweak in the Chris Titus tool, I remove the bloat as follows:
+
+#### Debloat Settings
+
+- Debloat (turn OFF / remove):
+  - Brave News
+  - Side panel / sidebar
+  - AI Chat, Brave Rewards, Wallet & VPN - enforced via **registry policies** (see below)
+  - WebRTC IP handling: **disable non-proxied UDP**
+- Privacy: **Sign in / Sync disabled** (local profile)
+
+#### Registry Policies (Debloat)
+
+AI Chat, Wallet, VPN & Rewards are disabled through **Group Policy registry keys**, which survive Brave resets and re-enables better than toggles alone. Create the key and set the `DWord` values:
+
+```powershell
+New-Item -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Force | Out-Null
+Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveAIChatEnabled" -Value 0 -Type DWord
+Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveWalletDisabled" -Value 1 -Type DWord
+Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveVPNDisabled" -Value 1 -Type DWord
+Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveRewardsDisabled" -Value 1 -Type DWord
+```
+
+Apply the registry debloat above (or merge [Brave-Debloat.reg]) after setting up Brave, so AI Chat, Wallet, VPN & Rewards stay stripped even after a reset.
+
+#### Context Menu Bloat Removal
+
+Brave adds a bunch of items to its right-click context menu. Since these are removed per menu (right-click an item then **Remove**), they cannot be restored by a config file - do it manually after a fresh install, together with the toggle-driven items above.
+
+## Step 4: Software Installation & System Environment
+
+### Software Downloads
 
 Everything listed here is available through `winget` unless stated otherwise. Apps and games that are not listed here are re-downloadable any time with their configs synced cloud-side.
 
@@ -188,21 +283,7 @@ Everything listed here is available through `winget` unless stated otherwise. Ap
   - Glance Dashboard
   - Caddy
 
-> ### Network and Firewall
->
-> Device IP Address should be managed by PiHole, however in the case it is not set appropriately:
->
-> - Go to **Control Panel > Network and Internet > Network and Sharing Center > Ethernet > Properties > IPv4**
-> - set the device ip to `192.168.1.2xx`
->
-> > **Note**
-> > For a list of IP and Ports in case of a network reset, refer to the `ip-and-ports.md` [handbook][ip-and-ports].
-
----
-
-## Step 3
-
-### Setting up Utilities
+### Hardware & Calibration Utilities
 
 - Use **MSI Afterburner** to undervolt GPU and make sure to launch in startup
 - Change **NVIDIA Control Panel** settings according to updated guide
@@ -222,93 +303,13 @@ On the bottom left of the settings screen, you should see an **Add...** button, 
 
 After setting up the color profile in Windows Color Management, go to your system tray and right click the **DisplayCal** icon and click on **Profile Associations**. _The icon should be there if you installed **DisplayCal**, Do not launch **DisplayCal** App unless you are using hardware to calibrate your monitor_. **DisplayCal** should automatically select the profile for you, but double check if it is the correct profile. On the bottom left, click on **Automatically fix profile associations**
 
-> ### Shared Folders
->
-> Share the Following drives to the network
->
-> - `D:\Games` (as `Games`)
-> - `D:\Media` (as `Media`)
-> - `D:\Programming` (as `Programming`)
-> - `D:\BACKUPS\Phone Backup\Samsung S25 ULTRA` (as `Samsung S25 ULTRA`)
-> - `C:\Users` (as `Users`)
->
-> ### PATH Variables
->
-> Add the following directories to **User Variables > PATHS**
->
-> - `D:\Programming\PATH Scripts`
-> - `D:\Programming\PATH Scripts\ViVeTool v0.3.4`
-> - `D:\Programming\PATH Scripts\ThemeSwitcher`
-> - `D:\Portable Apps\OpenRGB_1.0rc2`
-> - `D:\Portable Apps\platform-tools`
->
-> ### Create Tasks
->
-> Import all the tasks from the [`MyScripts`][tasks-folder] folder:
->
-> - ArchiSteamFarm
-> - ArchiSteamFarm exe
-> - Glance Dashboard
-> - MSIAfterburner
-> - OpenRGB
-> - Rainmeter (optional - disable in Task Scheduler if you are not using Rainmeter)
-> - Syncthing
-> - TodoBot-Startup
-> - Windhawk
+### System Environment
 
----
+> Follow the instructions from [this handbook]
 
-## Step 4
+## Step 5: App Customization & Automation
 
-### Debloat
-
-#### Chris Titus Tool
-
-Copy and paste this in `PowerShell`:
-
-```powershell
-irm "https://christitus.com/win" | iex
-```
-
-From the **TWEAKS** tab
-
-- Remove Widgets
-- Set services to manual
-- Adobe Network Block
-- Brave Debloat
-- Disable Microsoft Copilot
-- Set Classic Right-Click Menu
-
-- Bing Search in Start Menu: **OFF**
-- Center Taskbar Items: **OFF**
-- Cross-Device Resume: **OFF**
-- Detailed BSoD: **OFF**
-- Disable Multiplane Overlay: **ON**
-- Modern Standby Fix: **ON**
-- Mouse Acceleration: **OFF**
-- Recommendations in Start Menu: **OFF**
-- Show File Extensions: **ON**
-- Show Hidden Files: **ON**
-
-> For PC, you may want to **Add and Activate Ultimate Performance Profile**
-
-From the **UPDATES** tab, select Security Settings. This should delay feature updates by 1 year, and security updates by 1 week.
-
-#### SysInternals: Autoruns
-
-Go through all the tabs and make sure there are no hidden tasks or services running. Even though we set all services to manual from **Chris Titus Tool**, some services may be overlooked by it. You can double check the services, and tasks created by various apps.
-
-Use this tool to help you with the next app, **Task Scheduler**
-
-#### Task Scheduler
-
-Many apps love to hide their automated scripts over here (Auto update, auto install etc). I personally turn off all auto update tasks created by Microsoft and other Browsers. Most of the services are generally safe to turn off, however it is best to do your own research.
-
----
-
-## Step 5
-
-### Customize Apps
+### Terminal & Shell
 
 #### Oh My Posh & Clink
 
@@ -441,6 +442,8 @@ Right click the title bar and then change the settings for the following
 - Colors
   - **Opacity:** 97%
 
+### Desktop Customization
+
 #### Nilesoft Shell
 
 Copy paste the config files from [the Nilesoft Shell folder][nilesoft-folder] into `C:\Program Files\Nilesoft Shell\` (overwrite the default `shell.nss` and drop the `.nss` files in `imports\`).
@@ -505,6 +508,8 @@ Save and Restart Windhawk
 ##### Windows 11 Start Menu Styler
 
 My config uses a monochrome, square-corners look. The full config is in `Win11MonochromeV2.json` in the [Windhawk folder][windhawk-folder]. Paste the contents into **Settings > Details** of the mod. Alternative themes (`minimal-*.json`, `glassy-minimal-*.json`) are included.
+
+### Applications & Editors
 
 #### VS Code
 
@@ -595,8 +600,6 @@ Layout: **Boquet Suite II** + the `monstercat-visualizer` skin. Skins are loaded
 
 #### Brave
 
-Brave is my main browser. It is installed **machine-wide** (`C:\Program Files\BraveSoftware\Brave-Browser`). Combined with the built-in **Brave Debloat** tweak in the Chris Titus tool, I remove the bloat as follows:
-
 ##### Flags (brave://flags)
 
 - `enable-quic` - QUIC protocol
@@ -605,7 +608,9 @@ Brave is my main browser. It is installed **machine-wide** (`C:\Program Files\Br
 - `brave-ntp-refresh-enabled`
 - `brave-ai-chat`
 
-##### Settings
+Some Brave flags are set via `brave://flags`; those are stored in `Local State` / `Preferences` and are not covered here.
+
+##### Appearance & Settings
 
 - Appearance
   - Theme: **Dark**
@@ -616,37 +621,25 @@ Brave is my main browser. It is installed **machine-wide** (`C:\Program Files\Br
   - Show stats only (no news feed, no search box)
 - Search engine: **Brave Search**
 - Shields: **Advanced** view, with 5 sites excluded
-- Debloat (turn OFF / remove):
-  - Brave News
-  - Side panel / sidebar
-  - AI Chat, Brave Rewards, Wallet & VPN - enforced via **registry policies** (see below)
-  - WebRTC IP handling: **disable non-proxied UDP**
-- Privacy: **Sign in / Sync disabled** (local profile)
 
 ##### Extensions
 
 - Bitwarden (password manager)
 - Steam Artwork Hub Essentials (Steam profile artwork)
 
-##### Registry policies (debloat)
+### Scheduled Tasks
 
-AI Chat, Wallet, VPN & Rewards are disabled through **Group Policy registry keys**, which survive Brave resets and re-enables better than toggles alone. Create the key and set the `DWord` values:
+Import all the tasks from the [`MyScripts`][tasks-folder] folder:
 
-```powershell
-New-Item -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Force | Out-Null
-Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveAIChatEnabled" -Value 0 -Type DWord
-Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveWalletDisabled" -Value 1 -Type DWord
-Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveVPNDisabled" -Value 1 -Type DWord
-Set-ItemProperty -Path "HKCU:\Software\Policies\BraveSoftware\Brave" -Name "BraveRewardsDisabled" -Value 1 -Type DWord
-```
-
-Some Brave flags are set via `brave://flags`; those are stored in `Local State` / `Preferences` and are not covered here.
-
-##### Context menu bloat removal
-
-Brave adds a bunch of items to its right-click context menu. Since these are removed per menu (right-click an item then **Remove**), they cannot be restored by a config file - do it manually after a fresh install, together with the toggle-driven items above.
-
-Apply the registry debloat above (or merge [Brave-Debloat.reg]) after setting up Brave, so AI Chat, Wallet, VPN & Rewards stay stripped even after a reset.
+- ArchiSteamFarm
+- ArchiSteamFarm exe
+- Glance Dashboard
+- MSIAfterburner
+- OpenRGB
+- Rainmeter (optional - disable in Task Scheduler if you are not using Rainmeter)
+- Syncthing
+- TodoBot-Startup
+- Windhawk
 
 [Vencord]: https://github.com/Vendicated/Vencord
 [Millenium]: https://github.com/SteamClientHomebrew/Millennium
@@ -666,5 +659,6 @@ Apply the registry debloat above (or merge [Brave-Debloat.reg]) after setting up
 [windhawk-mods]: https://github.com/Zephyr73/Windows-Setup/blob/main/Customization/Windhawk/MODS.md
 [vscode-config]: https://github.com/Zephyr73/Windows-Setup/blob/main/Customization/VSCode/settings.json
 [Brave-Debloat.reg]: https://github.com/Zephyr73/Windows-Setup/blob/main/Customization/Brave/Brave-Debloat.reg
-[my Monitor Settings sheet]: https://docs.google.com/spreadsheets/d/13DLXK-cJcAJ8mueEGOYAwg0wl7UCZsZ0xiOf5OIk4EE/edit?gid=0#gid=0
-[my ICC/ICM profiles Drive folder]: https://drive.google.com/drive/folders/1Y4YkZJee2GxCuM7ox-nrpiuB0YchEWxc
+[this Monitor Settings sheet]: https://docs.google.com/spreadsheets/d/13DLXK-cJcAJ8mueEGOYAwg0wl7UCZsZ0xiOf5OIk4EE/edit?gid=0#gid=0
+[this ICC/ICM profiles Drive folder]: https://drive.google.com/drive/folders/1Y4YkZJee2GxCuM7ox-nrpiuB0YchEWxc
+[this handbook]: https://github.com/Zephyr73/Windows-Setup/blob/main/system-environment.md
