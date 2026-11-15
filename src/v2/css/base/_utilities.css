@@ -23,7 +23,7 @@
 
   /* ── Text selection ───────────────────────────────────────────────────── */
   ::selection {
-    background-color: var(--clr-body-text);
-    color: var(--clr-body-bg);
+    background-color: var(--clr-accent);
+    color: var(--clr-accent-text);
   }
 }

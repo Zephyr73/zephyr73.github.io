@@ -326,9 +326,9 @@
   /* ── Inline Code Chips ─────────────────────────────────────────────────── */
   .markdown-content :not(pre) > code {
     font-family: var(--font-code);
-    background-color: var(--clr-surface-2);
+    background-color: var(--clr-accent-subtle, var(--clr-surface-2));
     color: var(--clr-accent);
-    border: 1px solid var(--clr-border);
+    border: 1px solid color-mix(in srgb, var(--clr-accent) 25%, var(--clr-border));
     padding: 2px 7px;
     font-size: 0.85em;
     display: inline;

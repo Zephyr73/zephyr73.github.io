@@ -22,10 +22,12 @@
     --clr-hamburger-bg: #e8e8ed;
     --clr-off-screen-menu-txt: #e8e8ed;
 
-    /* Accent System — Lavender Default */
-    --clr-accent: #a78bfa;
-    --clr-accent-dim: #7c3aed;
-    --clr-accent-glow: rgba(167, 139, 250, 0.15);
+    /* Accent System — Monochromatic White Default */
+    --clr-accent: #ffffff;
+    --clr-accent-dim: #d1d1db;
+    --clr-accent-glow: rgba(255, 255, 255, 0.15);
+    --clr-accent-subtle: rgba(255, 255, 255, 0.06);
+    --clr-accent-muted: #a1a1aa;
     --clr-link-visited: var(--clr-accent);
     --clr-accent-text: #0c0c0e;
     --clr-bold-text: #ffffff;
@@ -35,6 +37,7 @@
     --font-regular: 'JetBrains Mono', monospace;
     --font-bold: 'JetBrains Mono Bold', monospace;
     --font-code: 'JetBrains Mono', monospace;
+    --type-label-tracking: 0.12em;
 
     /* Syntax Highlighting */
     --clr-code-bg: #141418;

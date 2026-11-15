@@ -77,7 +77,7 @@ function getActiveThemeState() {
     mode =
       localStorage.getItem('v2-mode') ||
       (document.documentElement.classList.contains('light') ? 'light' : 'dark');
-    accent = document.documentElement.getAttribute('data-static-accent') || 'periwinkle';
+    accent = document.documentElement.getAttribute('data-static-accent') || 'white';
   }
 
   return { isEmbedded, mode, accent };

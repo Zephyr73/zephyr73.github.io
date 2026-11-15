@@ -88,4 +88,13 @@
   pre {
     font-family: var(--font-code);
   }
+
+  /* Micro-typography: system metadata labels */
+  .sys-label {
+    font-family: var(--font-regular);
+    font-size: 0.68rem;
+    letter-spacing: var(--type-label-tracking, 0.12em);
+    text-transform: uppercase;
+    color: var(--clr-text-muted);
+  }
 }

@@ -1,4 +1,4 @@
-{% set pageAccent = "periwinkle" %}
+{% set pageAccent = "white" %}
 {% if '/projects' in page.url %}
   {% set pageAccent = "emerald" %}
 {% elif '/blog' in page.url %}
@@ -84,7 +84,7 @@
             'green';
         } else {
           mode = localStorage.getItem('v2-mode') || 'dark';
-          accent = document.documentElement.getAttribute('data-static-accent') || 'periwinkle';
+          accent = document.documentElement.getAttribute('data-static-accent') || 'white';
         }
 
         var classes = [];

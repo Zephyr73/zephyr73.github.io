@@ -8,21 +8,30 @@
     --clr-accent: #a5b4fc;
     --clr-accent-dim: #6366f1;
     --clr-accent-glow: rgba(165, 180, 252, 0.18);
+    --clr-accent-subtle: rgba(165, 180, 252, 0.08);
+    --clr-accent-muted: #818cf8;
     --clr-link-visited: #a5b4fc;
+    --clr-accent-text: #0c0c0e;
   }
 
   .lavender {
     --clr-accent: #a78bfa;
     --clr-accent-dim: #7c3aed;
     --clr-accent-glow: rgba(167, 139, 250, 0.18);
+    --clr-accent-subtle: rgba(167, 139, 250, 0.08);
+    --clr-accent-muted: #8b5cf6;
     --clr-link-visited: #a78bfa;
+    --clr-accent-text: #0c0c0e;
   }
 
   .white {
     --clr-accent: #ffffff;
     --clr-accent-dim: #d1d1db;
     --clr-accent-glow: rgba(255, 255, 255, 0.18);
+    --clr-accent-subtle: rgba(255, 255, 255, 0.06);
+    --clr-accent-muted: #a1a1aa;
     --clr-link-visited: #ffffff;
+    --clr-accent-text: #0c0c0e;
   }
 
   .catppuccin,
@@ -30,28 +39,40 @@
     --clr-accent: #f38ba8;
     --clr-accent-dim: #eba0ac;
     --clr-accent-glow: rgba(243, 139, 168, 0.18);
+    --clr-accent-subtle: rgba(243, 139, 168, 0.08);
+    --clr-accent-muted: #f5c2e7;
     --clr-link-visited: #f38ba8;
+    --clr-accent-text: #181116;
   }
 
   .red {
-    --clr-accent: #ff4d4d;
-    --clr-accent-dim: #d92626;
-    --clr-accent-glow: rgba(255, 77, 77, 0.18);
-    --clr-link-visited: #ff4d4d;
+    --clr-accent: #f87171;
+    --clr-accent-dim: #ef4444;
+    --clr-accent-glow: rgba(248, 113, 113, 0.18);
+    --clr-accent-subtle: rgba(248, 113, 113, 0.08);
+    --clr-accent-muted: #fca5a5;
+    --clr-link-visited: #f87171;
+    --clr-accent-text: #ffffff;
   }
 
   .coral {
     --clr-accent: #ff7043;
-    --clr-accent-dim: #e64a19;
+    --clr-accent-dim: #f4511e;
     --clr-accent-glow: rgba(255, 112, 67, 0.18);
+    --clr-accent-subtle: rgba(255, 112, 67, 0.08);
+    --clr-accent-muted: #ff8a65;
     --clr-link-visited: #ff7043;
+    --clr-accent-text: #ffffff;
   }
 
   .emerald {
     --clr-accent: #34d399;
     --clr-accent-dim: #10b981;
     --clr-accent-glow: rgba(52, 211, 153, 0.18);
+    --clr-accent-subtle: rgba(52, 211, 153, 0.08);
+    --clr-accent-muted: #6ee7b7;
     --clr-link-visited: #34d399;
+    --clr-accent-text: #022c22;
   }
 
   /* ── V3 Terminal / Desktop Theme Passthrough Mappings ─────────────────── */
@@ -203,6 +224,8 @@
     --clr-accent: #6d28d9;
     --clr-accent-dim: #4c1d95;
     --clr-accent-glow: rgba(109, 40, 217, 0.12);
+    --clr-accent-subtle: rgba(109, 40, 217, 0.06);
+    --clr-accent-muted: #7c3aed;
     --clr-link-visited: #6d28d9;
     --clr-accent-text: #ffffff;
     --clr-inline-code-text: #6d28d9;
@@ -213,6 +236,8 @@
     --clr-accent: #18181c;
     --clr-accent-dim: #3f3f46;
     --clr-accent-glow: rgba(24, 24, 28, 0.12);
+    --clr-accent-subtle: rgba(24, 24, 28, 0.05);
+    --clr-accent-muted: #71717a;
     --clr-link-visited: #18181c;
     --clr-accent-text: #ffffff;
     --clr-inline-code-text: #18181c;
@@ -223,6 +248,8 @@
     --clr-accent: #db2777;
     --clr-accent-dim: #be185d;
     --clr-accent-glow: rgba(219, 39, 119, 0.12);
+    --clr-accent-subtle: rgba(219, 39, 119, 0.06);
+    --clr-accent-muted: #9d174d;
     --clr-link-visited: #db2777;
     --clr-accent-text: #ffffff;
     --clr-inline-code-text: #be185d;
@@ -232,6 +259,8 @@
     --clr-accent: #dc2626;
     --clr-accent-dim: #b91c1c;
     --clr-accent-glow: rgba(220, 38, 38, 0.12);
+    --clr-accent-subtle: rgba(220, 38, 38, 0.06);
+    --clr-accent-muted: #991b1b;
     --clr-link-visited: #dc2626;
     --clr-accent-text: #ffffff;
     --clr-inline-code-text: #dc2626;
@@ -241,6 +270,8 @@
     --clr-accent: #ea580c;
     --clr-accent-dim: #c2410c;
     --clr-accent-glow: rgba(234, 88, 12, 0.12);
+    --clr-accent-subtle: rgba(234, 88, 12, 0.06);
+    --clr-accent-muted: #9a3412;
     --clr-link-visited: #ea580c;
     --clr-accent-text: #ffffff;
     --clr-inline-code-text: #ea580c;
@@ -250,6 +281,8 @@
     --clr-accent: #059669;
     --clr-accent-dim: #047857;
     --clr-accent-glow: rgba(5, 150, 105, 0.12);
+    --clr-accent-subtle: rgba(5, 150, 105, 0.06);
+    --clr-accent-muted: #065f46;
     --clr-link-visited: #059669;
     --clr-accent-text: #ffffff;
     --clr-inline-code-text: #059669;

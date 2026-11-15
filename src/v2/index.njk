@@ -9,80 +9,84 @@ description: 'Portfolio & Resume of Tasrif — IT & DevOps specialist with a foc
 ---
 
 {% from "components/button.njk" import button %}
-{% from "components/metric.njk" import metric %}
 {% from "components/card.njk" import project_card %}
-
 <!-- ── HERO SECTION ──────────────────────────────────────────────────────── -->
-<section
-  class="home-hero pt-6 pb-[3.5rem] border-b border-border mb-[3.5rem] max-md:pt-2 max-md:pb-[2.5rem] max-md:mb-[2.5rem]"
->
-  <div
-    class="hero-status inline-flex items-center gap-2 py-1 px-[10px] bg-surface border border-border mb-6"
-  >
-    <span
-      class="status-dot w-[7px] h-[7px] bg-accent shadow-[0_0_8px_var(--color-accent)] inline-block"
-    ></span>
-    <span
-      class="status-text font-regular text-[0.75rem] font-semibold tracking-[0.04em] text-text-muted uppercase"
-      >Systems • DevOps • Security</span
-    >
-  </div>
-
-  <h1
-    class="hero-title font-heading text-[clamp(2rem,5vw,3.6rem)] font-extrabold leading-[1.1] tracking-[-0.04em] text-body-text m-0 mb-5 max-w-[820px] max-md:text-[clamp(1.85rem,7vw,2.75rem)] max-md:leading-[1.15]"
-  >
-    Architecting secure infrastructure, automation, and resilient systems.
+<section class="home-hero pt-6 pb-[3.5rem] border-b border-border mb-[3.5rem] max-md:pt-2 max-md:pb-[2.5rem] max-md:mb-[2.5rem]">
+  <h1 class="hero-title font-heading text-[clamp(2rem,5vw,3.6rem)] font-extrabold leading-[1.1] tracking-[-0.035em]
+      text-body-text m-0 mb-5 max-w-[840px] max-md:text-[clamp(1.85rem,7vw,2.75rem)] max-md:leading-[1.15]">
+    Backend systems, homelab infrastructure, and automated tooling.
   </h1>
-
-  <p
-    class="hero-subtitle font-regular text-[1rem] leading-[1.75] text-text-muted max-w-[740px] m-0 mb-8 max-md:text-[0.925rem] max-md:leading-[1.65]"
-  >
-    Hi, I'm <strong class="text-accent">Tasrif</strong> — a Computer Science student and systems enthusiast specializing in Linux administration, DevOps automation, and network security. Focused on building highly-available homelab infrastructure and resilient architectures.
+  <p class="hero-subtitle font-regular text-[0.98rem] leading-[1.75] text-text-muted max-w-[740px] m-0 mb-7
+      max-md:text-[0.925rem] max-md:leading-[1.65]">
+    Hi, I'm
+    <strong class="text-accent font-bold">Tasrif</strong>
+    — a Computer Science student at Queens College. I build Linux systems, DevOps pipelines, and self-hosted
+    infrastructure — currently operating 5 Debian LXC containers in my Proxmox homelab with zero-trust networking.
   </p>
-
-  <div
-    class="hero-actions flex items-center flex-wrap gap-[0.85rem] mb-12 max-[480px]:flex-col max-[480px]:items-stretch max-[480px]:gap-[0.65rem]"
-  >
+  <!-- Core Stack / Technical Badges -->
+  <div class="hero-stack mb-8">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Bash</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Caddy</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">CI/CD</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Docker</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Git</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Linux / Debian</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">LXC</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Networking &amp; DNS</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">PowerShell</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Proxmox VE</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Python</span>
+      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">WireGuard</span>
+    </div>
+  </div>
+  <!-- Infrastructure & System Metrics -->
+  <div class="hero-metrics grid grid-cols-3 gap-3 mb-8 max-[720px]:grid-cols-1">
+    <div class="p-3.5 bg-surface border border-border flex flex-col gap-1">
+      <div class="flex items-center justify-between">
+        <span class="font-regular text-[0.68rem] uppercase tracking-[0.06em] text-text-muted">Virtualization Cluster</span>
+      </div>
+      <span class="font-heading font-bold text-[1.1rem] text-body-text">5 LXC Nodes</span>
+      <span class="font-regular text-[0.72rem] text-text-subtle">Debian on Proxmox VE</span>
+    </div>
+    <div class="p-3.5 bg-surface border border-border flex flex-col gap-1">
+      <div class="flex items-center justify-between">
+        <span class="font-regular text-[0.68rem] uppercase tracking-[0.06em] text-text-muted">Edge DNS Redundancy</span>
+      </div>
+      <span class="font-heading font-bold text-[1.1rem] text-body-text">~340ms Failover</span>
+      <span class="font-regular text-[0.72rem] text-text-subtle">Dual-node Pi + LXC AdGuard</span>
+    </div>
+    <div class="p-3.5 bg-surface border border-border flex flex-col gap-1">
+      <div class="flex items-center justify-between">
+        <span class="font-regular text-[0.68rem] uppercase tracking-[0.06em] text-text-muted">Remote Access Security</span>
+      </div>
+      <span class="font-heading font-bold text-[1.1rem] text-body-text">0 Exposed Ports</span>
+      <span class="font-regular text-[0.72rem] text-text-subtle">Mesh VPN via WireGuard</span>
+    </div>
+  </div>
+  <div class="hero-actions flex items-center flex-wrap gap-[0.85rem] max-[480px]:flex-col max-[480px]:items-stretch
+      max-[480px]:gap-[0.65rem]">
     {{ button("View Resume", "/about/", "primary", "_self", true) }}
     {{ button("Explore Projects", "/projects/", "secondary") }}
     {{ button("Visual Gallery ↗", "/gallery/", "ghost") }}
   </div>
-
-  <!-- Quick Info Metric Grid -->
-  <div
-    class="hero-metrics grid grid-cols-4 gap-[1px] bg-border border border-border max-[920px]:grid-cols-2 portrait:max-[1200px]:grid-cols-2 max-[480px]:grid-cols-1"
-  >
-    {{ metric("Education", "B.S. Computer Science", "Queens College • Prev: A.S. (3.62)") }}
-    {{ metric("Automation & DevOps", "Python, Bash, Git", "PowerShell, IaC, CI/CD") }}
-    {{ metric("Infrastructure", "Linux & Virtualization", "Proxmox, Docker, LXC") }}
-    {{ metric("Security & Net", "VPN, DNS, Reverse Proxy", "Zero-Trust, Disaster Recovery") }}
-  </div>
 </section>
-
 <!-- ── FEATURED PROJECTS ─────────────────────────────────────────────────── -->
 <section class="home-section mb-16 max-md:mb-12">
   <div class="section-header flex justify-between items-end mb-7 flex-wrap gap-3 max-md:mb-5">
     <div class="section-header__title-group">
-      <span
-        class="section-eyebrow block font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent mb-1"
-        >// 01 • ENGINEERING</span
-      >
-      <h2
-        class="section-title font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-bold tracking-[-0.03em] text-body-text m-0"
-      >
+      <h2 class="section-title font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-bold tracking-[-0.03em] text-body-text m-0">
         Featured Projects
       </h2>
     </div>
     <a
       href="/projects/"
-      class="section-link font-regular text-[0.825rem] text-text-muted no-underline transition-colors duration-150 ease-default hover:text-accent"
-      >View All Projects →</a
-    >
+      class="section-link font-regular text-[0.825rem] text-text-muted no-underline transition-colors duration-150 ease-default
+        hover:text-accent">
+    View All Projects →</a>
   </div>
-
-  <div
-    class="projects-grid grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 max-[640px]:grid-cols-1 max-[640px]:gap-5"
-  >
+  <div class="projects-grid grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 max-[640px]:grid-cols-1
+      max-[640px]:gap-5">
     {% for project in collections.project %}
       {% if project.fileSlug == 'home-network' or project.fileSlug == 'wallpapersync' %}
         {{ project_card(project) }}
@@ -90,146 +94,121 @@ description: 'Portfolio & Resume of Tasrif — IT & DevOps specialist with a foc
     {% endfor %}
   </div>
 </section>
-
 <!-- ── CREATIVE SHOWCASE ─────────────────────────────────────────────────── -->
 <section class="home-section mb-16 max-md:mb-12">
   <div class="section-header flex justify-between items-end mb-7 flex-wrap gap-3 max-md:mb-5">
     <div class="section-header__title-group">
-      <span
-        class="section-eyebrow block font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent mb-1"
-        >// 02 • CREATIVE WORK</span
-      >
-      <h2
-        class="section-title font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-bold tracking-[-0.03em] text-body-text m-0"
-      >
-        Photography & Generative Art
+      <h2 class="section-title font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-bold tracking-[-0.03em] text-body-text m-0">
+        Photography &amp; Generative Art
       </h2>
     </div>
     <a
       href="/gallery/"
-      class="section-link font-regular text-[0.825rem] text-text-muted no-underline transition-colors duration-150 ease-default hover:text-accent"
-      >Open Full Gallery →</a
-    >
+      class="section-link font-regular text-[0.825rem] text-text-muted no-underline transition-colors duration-150 ease-default
+        hover:text-accent">
+    Open Full Gallery →</a>
   </div>
-
   <div
-    class="creative-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 max-[640px]:grid-cols-1 max-[640px]:gap-5"
-  >
+    class="creative-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 max-[640px]:grid-cols-1 max-[640px]:gap-5">
     <!-- Creative Card 1: Photography -->
     <a
       href="/gallery/"
-      class="creative-card group/creative bg-surface border border-border no-underline flex flex-col overflow-hidden transition-[border-color,transform] duration-200 ease-default hover:border-accent hover:-translate-y-[2px]"
-    >
-      <div
-        class="creative-card__image-wrap relative w-full aspect-video overflow-hidden bg-[#050505] [&>picture]:block [&>picture]:w-full [&>picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block [&_img]:transition-transform [&_img]:duration-300 [&_img]:ease-default group-hover/creative:[&_img]:scale-[1.04]"
-      >
+      class="creative-card group/creative bg-surface border border-border no-underline flex flex-col overflow-hidden
+        transition-[border-color,transform,box-shadow] duration-200 ease-default hover:border-accent hover:-translate-y-[2px]
+        hover:shadow-[0_4px_20px_var(--color-accent-glow)]">
+      <div class="creative-card__image-wrap relative w-full aspect-video overflow-hidden bg-[#050505] [&>picture]:block
+          [&>picture]:w-full [&>picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block
+          [&_img]:transition-transform [&_img]:duration-300 [&_img]:ease-default group-hover/creative:[&_img]:scale-[1.04]">
         <picture>
-          <source srcset="/assets/img/photo.webp" type="image/webp" />
+          <source srcset="/assets/img/photo.webp" type="image/webp"/>
           <img
             src="/assets/img/photo.jpg"
             alt="Urban and landscape photography"
             loading="lazy"
             decoding="async"
             width="600"
-            height="338"
-          />
+            height="338"/>
         </picture>
       </div>
       <div class="creative-card__info p-5 flex flex-col gap-2 grow max-[640px]:p-4">
-        <h3
-          class="m-0 font-heading text-[1.2rem] text-body-text transition-colors group-hover/creative:text-accent"
-        >
+        <h3 class="m-0 font-heading text-[1.2rem] text-body-text transition-colors group-hover/creative:text-accent">
           Photography
         </h3>
         <p class="m-0 font-regular text-[0.825rem] leading-[1.6] text-text-muted">
-          Curated architectural, cityscape, and natural moments captured and graded with Adobe
-          Lightroom.
+          Curated architectural, cityscape, and natural moments captured and graded with Adobe Lightroom.
         </p>
-        <span
-          class="creative-card__link inline-block mt-3 font-regular text-[0.8rem] font-semibold text-accent"
-          >Browse Photos →</span
-        >
+        <span class="creative-card__link inline-block mt-3 font-regular text-[0.8rem] font-semibold text-accent">Browse Photos →</span>
       </div>
     </a>
-
     <!-- Creative Card 2: AI Art -->
     <a
       href="/gallery/#ai-container"
-      class="creative-card group/creative bg-surface border border-border no-underline flex flex-col overflow-hidden transition-[border-color,transform] duration-200 ease-default hover:border-accent hover:-translate-y-[2px]"
-    >
-      <div
-        class="creative-card__image-wrap relative w-full aspect-video overflow-hidden bg-[#050505] [&>picture]:block [&>picture]:w-full [&>picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block [&_img]:transition-transform [&_img]:duration-300 [&_img]:ease-default group-hover/creative:[&_img]:scale-[1.04]"
-      >
+      class="creative-card group/creative bg-surface border border-border no-underline flex flex-col overflow-hidden
+        transition-[border-color,transform,box-shadow] duration-200 ease-default hover:border-accent hover:-translate-y-[2px]
+        hover:shadow-[0_4px_20px_var(--color-accent-glow)]">
+      <div class="creative-card__image-wrap relative w-full aspect-video overflow-hidden bg-[#050505] [&>picture]:block
+          [&>picture]:w-full [&>picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block
+          [&_img]:transition-transform [&_img]:duration-300 [&_img]:ease-default group-hover/creative:[&_img]:scale-[1.04]">
         <picture>
-          <source srcset="/assets/img/ai.webp" type="image/webp" />
+          <source srcset="/assets/img/ai.webp" type="image/webp"/>
           <img
             src="/assets/img/ai.jpg"
             alt="Stable Diffusion generative artwork"
             loading="lazy"
             decoding="async"
             width="600"
-            height="338"
-          />
+            height="338"/>
         </picture>
       </div>
       <div class="creative-card__info p-5 flex flex-col gap-2 grow max-[640px]:p-4">
-        <h3
-          class="m-0 font-heading text-[1.2rem] text-body-text transition-colors group-hover/creative:text-accent"
-        >
+        <h3 class="m-0 font-heading text-[1.2rem] text-body-text transition-colors group-hover/creative:text-accent">
           AI Generations
         </h3>
         <p class="m-0 font-regular text-[0.825rem] leading-[1.6] text-text-muted">
           Explorations in latent space composition, pose control, and stylized diffusion artwork.
         </p>
-        <span
-          class="creative-card__link inline-block mt-3 font-regular text-[0.8rem] font-semibold text-accent"
-          >Explore AI Gallery →</span
-        >
+        <span class="creative-card__link inline-block mt-3 font-regular text-[0.8rem] font-semibold text-accent">Explore AI
+          Gallery →</span>
       </div>
     </a>
   </div>
 </section>
-
-<!-- ── RECRUITER CONTACT BANNER ──────────────────────────────────────────── -->
-<section
-  class="home-contact-banner bg-surface border border-border border-l-4 border-l-accent py-[2.5rem] px-8 mt-[4.5rem] mb-8 max-[640px]:py-[1.75rem] max-[640px]:px-5 max-[640px]:mt-12"
->
+<!-- ── DIRECT CONTACT BANNER ─────────────────────────────────────────────── -->
+<section class="home-contact-banner bg-surface border border-border py-[2.5rem] px-8 mt-[4.5rem] mb-8
+    relative max-[640px]:py-[1.75rem] max-[640px]:px-5 max-[640px]:mt-12">
   <div class="banner-content">
-    <span
-      class="banner-eyebrow font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent block mb-2"
-      >// READY TO CONNECT</span
-    >
-    <h2
-      class="banner-title font-heading text-[clamp(1.35rem,3.5vw,2rem)] font-bold tracking-[-0.03em] m-0 mb-3 text-body-text leading-[1.2]"
-    >
-      Let's build something impactful together.
+    <h2 class="banner-title font-heading text-[clamp(1.35rem,3.5vw,2rem)] font-bold tracking-[-0.035em] m-0 mb-3 text-body-text
+        leading-[1.2]">
+      Looking for backend engineering &amp; systems roles.
     </h2>
-    <p
-      class="banner-text font-regular text-[0.95rem] leading-[1.65] text-text-muted max-w-[650px] m-0 mb-7"
-    >
-      Currently open for software engineering internships, junior developer roles, and technical
-      collaborations.
+    <p class="banner-text font-regular text-[0.925rem] leading-[1.7] text-text-muted max-w-[680px] m-0 mb-7">
+      I'm a Computer Science student at Queens College focused on Linux systems, self-hosted infrastructure, and writing automated tooling. If you're hiring for backend or DevOps internships or want to talk homelab architectures &mdash; let's connect.
     </p>
-    <div
-      class="banner-actions flex items-center flex-wrap gap-3 max-[640px]:flex-col max-[640px]:items-stretch max-[640px]:gap-[0.65rem]"
-    >
+    <div class="banner-actions flex items-center flex-wrap gap-3 max-[640px]:flex-col max-[640px]:items-stretch
+        max-[640px]:gap-[0.65rem]">
       <a
         href="/about/"
-        class="btn--primary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-bold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-accent text-accent-text border-accent hover:bg-accent-dim hover:border-accent-dim hover:text-white max-[640px]:w-full"
-        >View Full Resume</a
-      >
+        class="btn--primary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-bold py-[10px]
+          px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border
+          box-border bg-accent text-accent-text border-accent hover:bg-accent-dim hover:border-accent-dim hover:text-accent-text
+          active:translate-y-[1px] active:translate-x-[0.5px] select-none max-[640px]:w-full">
+      View Full Resume</a>
       <a
         href="https://github.com/zephyr73"
         target="_blank"
         rel="noopener noreferrer"
-        class="btn--secondary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2 max-[640px]:w-full"
-        >GitHub Profile ↗</a
-      >
+        class="btn--secondary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-semibold py-[10px]
+          px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border
+          box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2
+          active:translate-y-[1px] active:translate-x-[0.5px] select-none max-[640px]:w-full">
+      GitHub Profile ↗</a>
       <button
-        class="btn--secondary resume-contact__copy inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-semibold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2 max-[640px]:w-full"
+        class="btn--secondary resume-contact__copy inline-flex items-center justify-center gap-2 font-regular text-[0.85rem]
+          font-semibold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150
+          ease-default border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent
+          hover:bg-surface-2 active:translate-y-[1px] active:translate-x-[0.5px] select-none max-[640px]:w-full"
         data-copy="contact@tasrif.dev"
-        type="button"
-      >
+        type="button">
         Copy Email Address
       </button>
     </div>
