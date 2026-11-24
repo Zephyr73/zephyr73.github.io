@@ -17,22 +17,25 @@ eleventyExcludeFromCollections: true
   <meta property="og:description" content="A professional, Linux-like interactive desktop portfolio environment." />
   <meta property="og:url" content="https://tasrif.dev/" />
   <meta property="og:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self';">
 
-  <!-- Google Fonts (Share Tech Mono) — was loaded via @import in desktop.scss -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" />
-
-  <!-- Preload fonts already in project -->
+  <!-- Preload local fonts (shared with V2) -->
+  <link rel="preload" href="/assets/fonts/iosevka-ss08-bold.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/assets/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/assets/fonts/JetBrainsMono-Bold.woff2"   as="font" type="font/woff2" crossorigin />
 
   <!-- Core stylesheet -->
   <link rel="stylesheet" href="/assets/css/desktop.css" />
 
-  <!-- Inject local fonts (from portfolio 2.0 assets) -->
+  <!-- Inject local fonts (shared with V2) -->
   <style>
+    @font-face {
+      font-family: 'Iosevka Webfont Bold';
+      src: url('/assets/fonts/iosevka-ss08-bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
     @font-face {
       font-family: 'JetBrains Mono';
       src: url('/assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
@@ -75,13 +78,13 @@ eleventyExcludeFromCollections: true
   <div class="boot-screen__content">
     <div class="boot-screen__logs" id="boot-logs"></div>
     <div class="boot-screen__footer">
-      <div class="boot-screen__msg">BOOTING RETRO_OS COMPILER SANDBOX...</div>
+      <div class="boot-screen__msg">INITIALIZING ~/TASRIF VIRTUAL OS...</div>
       <div class="boot-screen__progress-container">
         <div class="boot-screen__progress-bar" id="boot-progress"></div>
       </div>
       <div class="boot-screen__status-row">
-        <span id="boot-status-pct">LOAD STATUS: 0% COMPLETE</span>
-        <span class="boot-screen__skip-msg">CLICK ANYWHERE TO SKIP TELEMETRY LOGS</span>
+        <span id="boot-status-pct">BOOT: 0%</span>
+        <span class="boot-screen__skip-msg">CLICK OR PRESS ANY KEY TO SKIP</span>
       </div>
     </div>
   </div>
@@ -95,36 +98,27 @@ eleventyExcludeFromCollections: true
   <!-- ── DESKTOP MODE ──────────────────────────────────────── -->
   <div id="mode-desktop" class="mode-container active" role="main" aria-label="Desktop">
 
-    <!-- Scan sweep CRT beam -->
-    <div class="desktop-scan-sweep" aria-hidden="true"></div>
-
-    <!-- Decorative Corner HUD Badges -->
-    <div class="desktop-corner desktop-corner--tl" aria-hidden="true"><span>+</span> [SYS_READY // V3]</div>
-    <div class="desktop-corner desktop-corner--bl" aria-hidden="true"><span>+</span> SEC_LVL: GUEST</div>
-    <div class="desktop-corner desktop-corner--br" aria-hidden="true">NODE://127.0.0.1 <span>+</span></div>
-
     <!-- Desktop icon column (left) -->
     <div class="desktop-icons" id="desktop-icon-grid" role="list" aria-label="Desktop icons">
       <!-- Populated by desktop.js -->
     </div>
 
-    <!-- Notification widget (top-right) -->
+    <!-- Quick Reference widget (top-right) -->
     <div class="desktop-notification" id="desktop-notif" aria-live="polite">
       <div class="desktop-notification__header">
-        <span class="desktop-notification__header-title">SYSTEM STATUS: ACTIVE</span>
+        <span class="desktop-notification__header-title">~/tasrif/v3</span>
         <span class="desktop-notification__uptime" id="notif-uptime">UP: 00:00:00</span>
       </div>
       <div class="desktop-notification__body">
-        <div class="notif-intro">PHOSPHOR_OS v3.0 [ONLINE] // KERNEL V8</div>
         <div class="notif-section">
-          <span class="notif-highlight">&gt;&gt; QUICK REFERENCE:</span><br>
-          <span class="notif-bullet">•</span> Double-click desktop icons to open apps<br>
-          <span class="notif-bullet">•</span> Toggle status bar or use <kbd>Alt+1</kbd> / <kbd>Alt+2</kbd><br>
-          <span class="notif-bullet">•</span> Open files from TTY tree into split viewer<br>
-          <span class="notif-bullet">•</span> Toggle CRT Bloom filter in tray for scanlines
+          <span class="notif-highlight">&gt; CONTROLS:</span><br>
+          <span class="notif-bullet">•</span> Double-click icons to launch apps<br>
+          <span class="notif-bullet">•</span> <kbd>Alt+1</kbd> Desktop / <kbd>Alt+2</kbd> Shell<br>
+          <span class="notif-bullet">•</span> Open files from TTY tree in split view<br>
+          <span class="notif-bullet">•</span> Use STYLE in bar for theme &amp; CRT
         </div>
         <div class="notif-terminal-footer">
-          <span class="notif-prompt">guest@phosphor:~$</span> <span class="notif-status-msg">telemetry nominal</span><span class="notif-cursor"></span>
+          <span class="notif-prompt">tasrif@os:~$</span> <span class="notif-status-msg">session ready</span><span class="notif-cursor"></span>
         </div>
       </div>
     </div>
@@ -149,10 +143,6 @@ eleventyExcludeFromCollections: true
       <div class="nav-pane__footer">
         <div class="footer-stats-grid">
           <div class="stat-row">
-            <span class="stat-lbl">FILESYSTEM</span>
-            <span class="stat-val">RETRO_FS v1.2</span>
-          </div>
-          <div class="stat-row">
             <span class="stat-lbl">FOLDERS</span>
             <span class="stat-val" id="nav-folders-val">—</span>
           </div>
@@ -161,22 +151,8 @@ eleventyExcludeFromCollections: true
             <span class="stat-val" id="nav-files-val">—</span>
           </div>
           <div class="stat-row">
-            <span class="stat-lbl">MOUNT_PT</span>
-            <span class="stat-val">/dev/sda1</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-lbl">SECURITY</span>
-            <span class="stat-val sec-ok">SECURE</span>
-          </div>
-        </div>
-
-        <div class="vol-section">
-          <div class="vol-row">
-            <span class="vol-lbl">VOLUME INFO</span>
-            <span class="vol-val" id="nav-vol-text">— / —</span>
-          </div>
-          <div class="vol-bar-container">
-            <div class="vol-bar-fill" id="nav-vol-bar" style="width: 0%"></div>
+            <span class="stat-lbl">SIZE</span>
+            <span class="stat-val" id="nav-vol-text">—</span>
           </div>
         </div>
 
@@ -194,16 +170,15 @@ eleventyExcludeFromCollections: true
     <div class="tty-console-pane" id="tty-console">
       <div class="console-header">
         <div class="console-header-title">
-          Terminal: guest@phosphor:~/
+          Terminal: tasrif@os:~/
         </div>
         <button class="console-nav-toggle" id="console-nav-toggle" aria-label="Toggle Files Pane">⬡ FILES</button>
-        <div class="console-header-status" style="font-size:9px;color:var(--cp-dim);">KILL SERVER ACTIVE</div>
       </div>
       <div class="console-output" id="console-output" aria-live="polite" role="log">
         <!-- Terminal output populated by terminal.js -->
       </div>
       <div class="console-input-row">
-        <span class="console-prompt-label" id="console-prompt-label">guest@phosphor:~$ </span>
+        <span class="console-prompt-label" id="console-prompt-label">tasrif@os:~$ </span>
         <input
           class="console-input"
           id="console-input"
@@ -302,32 +277,6 @@ eleventyExcludeFromCollections: true
           <span class="style-menu__status" id="style-wallpaper-status">Cyber Grid</span>
         </button>
       </div>
-    </div>
-
-    <div class="tray-item" title="CPU Usage">
-      <span class="tray-label">CPU</span>
-      <span class="tray-value" id="stat-cpu">00%</span>
-    </div>
-
-    <div class="tray-item" title="GPU Usage">
-      <span class="tray-label">GPU</span>
-      <span class="tray-value" id="stat-gpu">00%</span>
-    </div>
-
-    <div class="tray-item" title="Memory Usage">
-      <span class="tray-label">MEM</span>
-      <span class="tray-value" id="stat-mem">0.0G</span>
-    </div>
-
-    <div class="tray-item" title="SATellite signal">
-      <span class="tray-label">SAT</span>
-      <span class="tray-value" id="stat-sat">00%</span>
-    </div>
-
-    <div class="tray-item" title="Network Latency & Signal">
-      <span class="tray-label">NET</span>
-      <span class="tray-value" id="stat-ping">12ms</span>
-      <span class="tray-meter" id="stat-signal" aria-hidden="true">▅▆▇█</span>
     </div>
 
     <!-- Clock -->

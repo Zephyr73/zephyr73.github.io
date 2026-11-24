@@ -21,9 +21,9 @@
 
   #mode-desktop {
     position: relative;
-    background:
-      radial-gradient(ellipse at 20% 80%, rgba(0, 255, 65, 0.03) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 20%, rgba(0, 229, 255, 0.02) 0%, transparent 60%), var(--cp-bg);
+    background-color: var(--cp-bg);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23e5a93c' fill-opacity='0.055'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23e5a93c' fill-opacity='0.055'/%3E%3C/svg%3E");
+    background-repeat: repeat;
     flex-direction: row;
     overflow: hidden;
   }
@@ -38,12 +38,11 @@
     inset: 0;
     pointer-events: none;
     background-image:
-      linear-gradient(var(--cp-green) 1px, transparent 1px),
-      linear-gradient(90deg, var(--cp-green) 1px, transparent 1px);
+      linear-gradient(var(--cp-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--cp-border) 1px, transparent 1px);
     background-size: 40px 40px;
     z-index: 0;
-    opacity: 0.03;
-    animation: desktop-grid-pulse 8s ease-in-out infinite;
+    opacity: 0.22;
   }
 
   #mode-desktop::after {
@@ -51,52 +50,12 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45) 100%);
+    background: radial-gradient(ellipse at center, transparent 65%, rgba(0, 0, 0, 0.32) 100%);
     z-index: 1;
-  }
-
-  @keyframes desktop-grid-pulse {
-    0%,
-    100% {
-      opacity: 0.025;
-    }
-    50% {
-      opacity: 0.06;
-    }
   }
 
   .desktop-scan-sweep {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 140px;
-    top: -140px;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      color-mix(in srgb, var(--cp-green) 3.5%, transparent) 50%,
-      transparent
-    );
-    pointer-events: none;
-    z-index: 1;
-    animation: desktop-scan-sweep-anim 9s linear infinite;
-  }
-
-  @keyframes desktop-scan-sweep-anim {
-    0% {
-      transform: translateY(0);
-      opacity: 0;
-    }
-    15% {
-      opacity: 1;
-    }
-    85% {
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(calc(100vh + 140px));
-      opacity: 0;
-    }
+    display: none;
   }
 
   .desktop-corner {

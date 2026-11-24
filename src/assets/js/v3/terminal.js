@@ -401,7 +401,7 @@ Available commands:
       const uptimeStr =
         hrs > 0 ? `${hrs}h ${mins}m ${secs}s` : mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
       const curTheme = document.body.dataset.theme || 'phosphor';
-      const memVal = document.getElementById('stat-mem')?.textContent || '4.2G';
+      const memVal = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'browser sandbox';
 
       return `
 <div class="neofetch-output" style="display:flex;gap:20px;line-height:1.4;margin:6px 0;font-family:var(--font-mono)">

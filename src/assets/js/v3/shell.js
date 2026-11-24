@@ -1041,19 +1041,19 @@ function toggleCRT() {
 ───────────────────────────────────────────────────────────── */
 const WALLPAPERS = [
   {
-    name: 'Cyber Grid',
+    name: 'Bayer Dither',
     background:
-      'radial-gradient(ellipse at 20% 80%, rgba(0, 255, 65, 0.03) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0, 229, 255, 0.02) 0%, transparent 60%), var(--cp-bg)',
+      "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23e5a93c' fill-opacity='0.055'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23e5a93c' fill-opacity='0.055'/%3E%3C/svg%3E\") repeat, var(--cp-bg)",
     showGrid: true,
   },
   {
-    name: 'Synth Wave',
-    background: 'linear-gradient(135deg, #2b0830 0%, #080f30 100%)',
+    name: 'Subtle Grid',
+    background: 'var(--cp-bg)',
     showGrid: true,
   },
   {
-    name: 'Deep Space',
-    background: 'radial-gradient(circle at center, #0a1b2a 0%, #030810 100%)',
+    name: 'Solid',
+    background: 'var(--cp-bg)',
     showGrid: false,
   },
 ];
@@ -1276,29 +1276,13 @@ function initStatusCenterTicker() {
   const centerEl = document.getElementById('statusbar-center');
   if (!centerEl) return;
 
-  const messages = [
-    '// TX_OS KERNEL: ACTIVE',
-    '// ENCRYPTION LAYER: AES-256',
-    '// 127.0.0.1 ROUTED [PACKETS: 104,821]',
-    '// CRT PHOSPHOR EMULATION: ENGAGED',
-    '// VIRTUAL FS: RETRO_FS v1.2',
-    '// SUBSYSTEMS NOMINAL',
-  ];
-
-  let msgIdx = 0;
-  centerEl.innerHTML = `<span class="statusbar-ticker">${messages[0]}</span>`;
-
-  setInterval(() => {
-    const ticker = centerEl.querySelector('.statusbar-ticker');
-    if (ticker) {
-      ticker.classList.add('fade');
-      setTimeout(() => {
-        msgIdx = (msgIdx + 1) % messages.length;
-        ticker.textContent = messages[msgIdx];
-        ticker.classList.remove('fade');
-      }, 250);
-    }
-  }, 4500);
+  const updateStatus = () => {
+    const modeLabel = currentMode === 'tty' ? 'shell' : 'desktop';
+    const winCount = openWindows.size;
+    centerEl.innerHTML = `<span class="statusbar-ticker">~/tasrif/v3 • ${modeLabel} • ${winCount} window${winCount === 1 ? '' : 's'}</span>`;
+  };
+  updateStatus();
+  setInterval(updateStatus, 1000);
 }
 /* ─────────────────────────────────────────────────────────────
    PANE RESIZE (nav pane drag handle)
@@ -1478,8 +1462,24 @@ function initKeyboard() {
   });
 }
 /* ─────────────────────────────────────────────────────────────
-   BOOT SCREEN SEQUENCE
+   REAL BOOT SCREEN SEQUENCE
 ───────────────────────────────────────────────────────────── */
+function countFsStats(node) {
+  let dirs = 0;
+  let files = 0;
+  function walk(n) {
+    if (!n) return;
+    if (n.type === 'dir') {
+      dirs++;
+      if (Array.isArray(n.children)) n.children.forEach(walk);
+    } else if (n.type === 'file') {
+      files++;
+    }
+  }
+  walk(node);
+  return { dirs, files };
+}
+
 function initBootScreen() {
   const bootScreen = document.getElementById('boot-screen');
   const bootLogs = document.getElementById('boot-logs');
@@ -1487,93 +1487,80 @@ function initBootScreen() {
   const statusPct = document.getElementById('boot-status-pct');
   if (!bootScreen) return;
 
-  const BOOT_ASCII = `<pre class="boot-screen__ascii">
- ██████╗ ██╗  ██╗ ██████╗ ███████╗██████╗ ██╗  ██╗ ██████╗ ██████╗ 
- ██╔══██╗██║  ██║██╔═══██╗██╔════╝██╔══██╗██║  ██║██╔═══██╗██╔══██╗
- ██████╔╝███████║██║   ██║███████╗██████╔╝███████║██║   ██║██████╔╝
- ██╔═══╝ ██╔══██║██║   ██║╚════██║██╔═══╝ ██╔══██║██║   ██║██╔══██╗
- ██║     ██║  ██║╚██████╔╝███████║██║     ██║  ██║╚██████╔╝██║  ██║
- ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
- </pre>`;
+  const fsStats = countFsStats(window.__FS_TREE__);
+  const savedTheme = localStorage.getItem('v3-theme') || 'phosphor';
+  const savedMode = localStorage.getItem('v3-mode') || 'desktop';
+  const crtState = localStorage.getItem('v3-crt') === '1' ? 'enabled' : 'off';
+  const cores = navigator.hardwareConcurrency
+    ? `${navigator.hardwareConcurrency} logical cores`
+    : 'browser runtime';
+  const mem = navigator.deviceMemory ? `${navigator.deviceMemory} GB RAM` : 'sandboxed memory';
+  const bootElapsed = Math.round(performance.now());
 
-  const bootLines = [
-    '<span class="log-tag-info">[ROM]</span> BIOS INTEL SANDBOX PHOSPHOR_OS V4.0.5-95638D',
-    '<span class="log-tag-info">[INIT]</span> Initializing core runtime environment...',
-    '<span class="log-tag-ok">[ OK ]</span> CPU0: Virtual Sandbox V8 Execution Engine @ 3.60GHz',
-    '<span class="log-tag-ok">[ OK ]</span> RAM_CONF: Storage pools allocated: 8385 blocks',
-    '<span class="log-tag-ok">[ OK ]</span> DISK_MNT: Virtual FS tree mounted on /dev/sda1 (RETRO_FS v1.2)',
-    '<span class="log-tag-warn">[WARN]</span> NET_IFACE: External uplink bridged via local loopback 127.0.0.1',
-    '<span class="log-tag-ok">[ OK ]</span> CRYPTO: Sandbox encryption buffer active (AES-256-GCM)',
-    '<span class="log-tag-ok">[ OK ]</span> GRAPHICS: CRT Phosphor emulation subsystem engaged',
-    '<span class="log-tag-ok">[ OK ]</span> WM: Virtual desktop compositor & tiling manager ready',
-    '<span class="log-tag-info">[SYS]</span> Starting interactive user session (guest@phosphor)...',
+  const BOOT_HEADER = `<pre class="boot-screen__ascii">
+ ~/tasrif/v3 — interactive terminal OS
+ -------------------------------------</pre>`;
+
+  const bootSteps = [
+    `<span class="log-tag-info">[ENV ]</span> ${cores}, ${mem} (${bootElapsed}ms startup)`,
+    `<span class="log-tag-ok">[ OK ]</span> Mounted virtual FS: ${fsStats.dirs} directories, ${fsStats.files} files`,
+    `<span class="log-tag-ok">[ OK ]</span> Loaded theme "${savedTheme}" (CRT scanlines: ${crtState})`,
+    `<span class="log-tag-ok">[ OK ]</span> Initialized window manager &amp; TTY shell`,
+    `<span class="log-tag-info">[BOOT]</span> Launching ${savedMode} session (tasrif@os)...`,
   ];
 
-  let lineIndex = 0;
-  let accumulatedHtml = BOOT_ASCII;
-  let progress = 0;
-  let isSkipped = false;
-  let logInterval, progressInterval;
+  let stepIdx = 0;
+  let accumulatedHtml = BOOT_HEADER;
+  let isFinished = false;
+  let stepTimer;
 
-  function skipBoot() {
-    if (isSkipped) return;
-    isSkipped = true;
-    clearInterval(logInterval);
-    clearInterval(progressInterval);
-    bootScreen.removeEventListener('keydown', trapFocus);
+  function finishBoot() {
+    if (isFinished) return;
+    isFinished = true;
+    clearInterval(stepTimer);
+    if (bootProgress) bootProgress.style.width = '100%';
+    if (statusPct) statusPct.textContent = 'BOOT: 100% [READY]';
+    bootScreen.removeEventListener('keydown', onKeyDown);
     bootScreen.classList.add('fade-out');
     setTimeout(() => {
       bootScreen.remove();
       if (previousFocus) previousFocus.focus();
-    }, 450);
+    }, 250);
   }
 
-  // Click anywhere to skip
-  bootScreen.addEventListener('click', skipBoot);
+  bootScreen.addEventListener('click', finishBoot);
 
-  // Focus trap
   const previousFocus = document.activeElement;
   bootScreen.focus();
-  const trapFocus = (e) => {
+  const onKeyDown = (e) => {
     if (e.key === 'Tab') {
       e.preventDefault();
+      return;
     }
+    finishBoot();
   };
-  bootScreen.addEventListener('keydown', trapFocus);
+  bootScreen.addEventListener('keydown', onKeyDown);
 
-  // Initial draw with cursor
   if (bootLogs) {
     bootLogs.innerHTML = accumulatedHtml + '<span class="boot-cursor"></span>';
   }
 
-  // Print lines
-  logInterval = setInterval(() => {
-    if (lineIndex < bootLines.length) {
-      accumulatedHtml += bootLines[lineIndex] + '<br>';
+  stepTimer = setInterval(() => {
+    if (stepIdx < bootSteps.length) {
+      accumulatedHtml += bootSteps[stepIdx] + '<br>';
       if (bootLogs) {
         bootLogs.innerHTML = accumulatedHtml + '<span class="boot-cursor"></span>';
         bootLogs.scrollTop = bootLogs.scrollHeight;
       }
-      lineIndex++;
+      stepIdx++;
+      const pct = Math.round((stepIdx / bootSteps.length) * 100);
+      if (bootProgress) bootProgress.style.width = `${pct}%`;
+      if (statusPct) statusPct.textContent = `BOOT: ${pct}%`;
     } else {
-      clearInterval(logInterval);
+      clearInterval(stepTimer);
+      setTimeout(finishBoot, 220);
     }
-  }, 160);
-
-  // Animate progress bar (takes ~2.2 seconds)
-  progressInterval = setInterval(() => {
-    progress += 2;
-    if (progress > 100) progress = 100;
-
-    if (bootProgress) bootProgress.style.width = `${progress}%`;
-    if (statusPct) {
-      statusPct.textContent = `LOAD STATUS: ${progress}% COMPLETE ${progress === 100 ? '[READY]' : ''}`;
-    }
-    if (progress >= 100) {
-      clearInterval(progressInterval);
-      setTimeout(skipBoot, 400);
-    }
-  }, 40);
+  }, 110);
 }
 /* ─────────────────────────────────────────────────────────────
    INIT
