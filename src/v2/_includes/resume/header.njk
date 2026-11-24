@@ -1,5 +1,5 @@
 <!-- ── RESUME HEADER ─────────────────────────────────────────────────── -->
-<header class="resume-header grid grid-cols-[220px_1fr] gap-12 items-start mb-12 pb-10 border-b border-border max-md:grid-cols-1 max-md:gap-8 max-md:mb-9 max-md:pb-8 print:block print:border-b-[1.5pt] print:border-[#111111] print:pb-[5pt] print:mb-[7pt] print:text-center">
+<header class="resume-header grid grid-cols-[200px_1fr] gap-10 items-start mb-10 pb-2 max-md:grid-cols-1 max-md:gap-7 max-md:mb-8 print:block print:border-b-[1.5pt] print:border-[#111111] print:pb-[5pt] print:mb-[7pt] print:text-center">
   <div class="resume-sidebar flex flex-col gap-5 print:hidden">
     <div class="avatar-frame relative w-full aspect-square border border-border bg-surface overflow-hidden max-md:max-w-[180px] max-md:mx-auto">
       <picture class="block w-full h-full">
@@ -161,14 +161,13 @@
     {% endif %}
 
     {% if profile.meta %}
-    <div class="resume-quick-meta grid grid-cols-3 gap-[1px] bg-border border border-border mt-4 max-[600px]:grid-cols-1 print:hidden">
+    <dl class="resume-quick-meta bg-surface dither-surface border border-border p-3.5 m-0 mt-4 grid grid-cols-[120px_1fr] gap-y-2 gap-x-4 text-[0.8rem] font-code max-[600px]:grid-cols-1 max-[600px]:gap-y-1 print:hidden">
       {% for item in profile.meta %}
-      <div class="meta-cell bg-surface py-[10px] px-[14px] flex flex-col gap-[2px]">
-        <span class="meta-label font-regular text-[0.65rem] uppercase tracking-[0.06em] text-text-subtle">{{ item.label }}</span>
-        <span class="meta-value font-regular text-[0.8rem] font-semibold {% if item.accent %}text-accent{% else %}text-body-text{% endif %}">{{ item.value | safe }}</span>
-      </div>
+      <dt class="meta-label text-text-subtle uppercase tracking-[0.06em] text-[0.7rem] self-center max-[600px]:mt-1.5 first:mt-0">{{ item.label }}</dt>
+      <dd class="meta-value m-0 font-semibold {% if item.accent %}text-accent{% else %}text-body-text{% endif %}">{{ item.value | safe }}</dd>
       {% endfor %}
-    </div>
+    </dl>
     {% endif %}
   </div>
 </header>
+<div class="dither-rule mb-10 max-md:mb-8 print:hidden" aria-hidden="true"></div>

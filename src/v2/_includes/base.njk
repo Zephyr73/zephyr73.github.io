@@ -178,13 +178,24 @@
           </aside>
           <div class="markdown-content">
             {% if date or category or repo %}
-              <div class="mb-6 pb-4 border-b border-border flex items-center flex-wrap gap-4 font-code text-[0.76rem] text-text-muted">
-                {% if category %}<span>{{ category | safe }}</span>{% endif %}
-                {% if date %}<span>{{ date | formatDate }}</span>{% endif %}
+              <div class="mb-7 bg-surface dither-surface border border-border px-3.5 py-2.5 flex items-center justify-between flex-wrap gap-3 font-code text-[0.76rem] text-text-muted">
+                <div class="flex items-center flex-wrap gap-4">
+                  {% if category %}<span>{{ category | safe }}</span>{% endif %}
+                  {% if date %}<span class="text-text-subtle">{{ date | formatDate }}</span>{% endif %}
+                </div>
                 {% if repo %}<a href="{{ repo }}" target="_blank" rel="noopener noreferrer" class="text-accent-2 no-underline hover:underline">github ↗</a>{% endif %}
               </div>
             {% endif %}
             {{ content | safe }}
+            {% if '/projects/' in page.url %}
+              <div class="mt-12 pt-6 border-t border-border font-code text-[0.8rem]">
+                <a href="/projects/" class="no-underline text-text-muted hover:text-accent">← back to projects</a>
+              </div>
+            {% elif '/blog/' in page.url %}
+              <div class="mt-12 pt-6 border-t border-border font-code text-[0.8rem]">
+                <a href="/blog/" class="no-underline text-text-muted hover:text-accent">← back to blog</a>
+              </div>
+            {% endif %}
           </div>
         </div>
       {% endif %}

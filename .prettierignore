@@ -7,3 +7,4 @@ src/assets/js/v3/vendor
 .agents
 docs
 .opencode
+*.njk

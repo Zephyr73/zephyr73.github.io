@@ -57,31 +57,132 @@ export default function (eleventyConfig) {
   //    - Generates WebP + JPEG variants at multiple widths
   //    - Outputs <picture> with srcset so the browser picks the right size
   //    - loading defaults to "lazy"; fetchpriority only set when passed
+  const META_CACHE_PATH = './_site/assets/img/gallery/.meta-cache.json';
+  let metaCache = null;
+  let metaCacheDirty = false;
+
+  function loadMetaCache() {
+    if (metaCache) return metaCache;
+    try {
+      if (fs.existsSync(META_CACHE_PATH)) {
+        metaCache = JSON.parse(fs.readFileSync(META_CACHE_PATH, 'utf8'));
+        return metaCache;
+      }
+    } catch {
+      // Ignore corrupt cache
+    }
+    metaCache = {};
+    return metaCache;
+  }
+
+  eleventyConfig.on('eleventy.after', () => {
+    if (metaCacheDirty && metaCache) {
+      fs.mkdirSync(path.dirname(META_CACHE_PATH), { recursive: true });
+      fs.writeFileSync(META_CACHE_PATH, JSON.stringify(metaCache));
+      metaCacheDirty = false;
+    }
+  });
+
   eleventyConfig.addNunjucksAsyncShortcode(
     'gimg',
     async function (src, alt, loading, fetchpriority, order) {
       const srcPath = `./src/_gallery_source/${src}`;
       // Keep processed images in the same subdirectory (photography/, ai/, forza/)
       const subdir = src.split('/')[0];
-
-      const metadata = await Image(srcPath, {
-        widths: [400, 800, 1200, 1800],
-        formats: ['webp', 'jpeg'],
-        outputDir: `./_site/assets/img/gallery/${subdir}/`,
-        urlPath: `/assets/img/gallery/${subdir}/`,
-        filenameFormat: (_id, imgSrc, width, format) => {
-          const name = sanitizeSlug(path.basename(imgSrc, path.extname(imgSrc)));
-          return `${name}-${width}.${format}`;
-        },
-        sharpWebpOptions: {
-          quality: 80,
-        },
-        sharpJpegOptions: {
-          quality: 80,
-        },
-      });
-
       const baseName = sanitizeSlug(path.basename(srcPath, path.extname(srcPath)));
+      const outDir = `./_site/assets/img/gallery/${subdir}/`;
+      const urlPath = `/assets/img/gallery/${subdir}/`;
+      const widths = [400, 800, 1200, 1800];
+      const formats = ['webp', 'jpeg'];
+
+      const stats = fs.statSync(srcPath);
+      const cache = loadMetaCache();
+      const cached = cache[src];
+      let srcMeta;
+      let deviceStr = '';
+
+      if (cached && cached.mtimeMs === stats.mtimeMs) {
+        srcMeta = { width: cached.width, height: cached.height };
+        deviceStr = cached.deviceStr || '';
+      } else {
+        const rawMeta = await sharp(srcPath).metadata();
+        srcMeta = { width: rawMeta.width, height: rawMeta.height };
+        if (rawMeta.exif) {
+          try {
+            const exif = exifReader(rawMeta.exif);
+            const make = exif.Image?.Make?.trim() ?? '';
+            const model = exif.Image?.Model?.trim() ?? '';
+            if (make && model) {
+              deviceStr = model.toLowerCase().startsWith(make.toLowerCase())
+                ? model
+                : `${make} ${model}`;
+            } else {
+              deviceStr = model || make;
+            }
+          } catch {
+            // No EXIF or unreadable — leave deviceStr empty
+          }
+        }
+        cache[src] = {
+          mtimeMs: stats.mtimeMs,
+          width: srcMeta.width,
+          height: srcMeta.height,
+          deviceStr,
+        };
+        metaCacheDirty = true;
+      }
+
+      // Skip expensive WebP/JPEG re-encoding when all target sizes already exist and are up to date
+      const targetWidths = widths.filter((w) => w <= (srcMeta.width || w));
+      if (targetWidths.length === 0 && srcMeta.width) {
+        targetWidths.push(srcMeta.width);
+      }
+
+      const allCached =
+        targetWidths.length > 0 &&
+        formats.every((fmt) =>
+          targetWidths.every((w) => {
+            const fPath = path.join(outDir, `${baseName}-${w}.${fmt}`);
+            return fs.existsSync(fPath) && fs.statSync(fPath).mtimeMs >= stats.mtimeMs;
+          }),
+        );
+
+      let metadata;
+      if (allCached) {
+        metadata = {};
+        for (const fmt of formats) {
+          metadata[fmt] = targetWidths.map((w) => {
+            const h = Math.round((srcMeta.height / srcMeta.width) * w);
+            const url = `${urlPath}${baseName}-${w}.${fmt}`;
+            return {
+              format: fmt,
+              width: w,
+              height: h,
+              url,
+              sourceType: `image/${fmt}`,
+              srcset: `${url} ${w}w`,
+              outputPath: path.join(outDir, `${baseName}-${w}.${fmt}`),
+            };
+          });
+        }
+      } else {
+        metadata = await Image(srcPath, {
+          widths,
+          formats,
+          outputDir: outDir,
+          urlPath,
+          filenameFormat: (_id, imgSrc, width, format) => {
+            const name = sanitizeSlug(path.basename(imgSrc, path.extname(imgSrc)));
+            return `${name}-${width}.${format}`;
+          },
+          sharpWebpOptions: {
+            quality: 80,
+          },
+          sharpJpegOptions: {
+            quality: 80,
+          },
+        });
+      }
 
       const imgAttrs = {
         alt: alt || '',
@@ -98,7 +199,6 @@ export default function (eleventyConfig) {
 
       // ── Overlay metadata ────────────────────────────────────────────────
       // Date: use the source file's last-modified time
-      const stats = fs.statSync(srcPath);
       const dateStr = stats.mtime.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
@@ -106,7 +206,6 @@ export default function (eleventyConfig) {
       });
 
       // Resolution + size from the original source file
-      const srcMeta = await sharp(srcPath).metadata();
       const resolutionStr = `${srcMeta.width} &times; ${srcMeta.height}`;
 
       const byteSize = stats.size;
@@ -114,26 +213,6 @@ export default function (eleventyConfig) {
         byteSize >= 1024 * 1024
           ? `${(byteSize / (1024 * 1024)).toFixed(1)} MB`
           : `${Math.round(byteSize / 1024)} KB`;
-
-      // Device name from EXIF Make + Model (graceful fallback)
-      let deviceStr = '';
-      if (srcMeta.exif) {
-        try {
-          const exif = exifReader(srcMeta.exif);
-          const make = exif.Image?.Make?.trim() ?? '';
-          const model = exif.Image?.Model?.trim() ?? '';
-          // Avoid duplicating brand name when model already includes it (e.g. "Google Pixel 8")
-          if (make && model) {
-            deviceStr = model.toLowerCase().startsWith(make.toLowerCase())
-              ? model
-              : `${make} ${model}`;
-          } else {
-            deviceStr = model || make;
-          }
-        } catch {
-          // No EXIF or unreadable — leave deviceStr empty
-        }
-      }
 
       const slug = `${subdir}-${baseName}`;
       const detailUrl = `/gallery/image/${slug}/`;
@@ -184,6 +263,11 @@ export default function (eleventyConfig) {
 
       fs.mkdirSync(outDir, { recursive: true });
 
+      const srcStat = fs.statSync(srcPath);
+      if (fs.existsSync(fullOut) && fs.statSync(fullOut).mtimeMs >= srcStat.mtimeMs) {
+        return `<img src="${url}" alt="${alt || ''}" width="${width}" height="${height}" loading="lazy" decoding="async" class="w-full h-full object-cover block" />`;
+      }
+
       const { data, info } = await sharp(srcPath)
         .resize(width, height, { fit: 'cover' })
         .greyscale()
@@ -220,7 +304,7 @@ export default function (eleventyConfig) {
         .png({ palette: true, colours: 2 })
         .toFile(fullOut);
 
-      return `<img src="${url}" alt="${alt || ''}" width="${width}" height="${height}" loading="lazy" decoding="async" class="w-full h-full object-cover block [image-rendering:pixelated]" />`;
+      return `<img src="${url}" alt="${alt || ''}" width="${width}" height="${height}" loading="lazy" decoding="async" class="w-full h-full object-cover block" />`;
     },
   );
 

@@ -18,11 +18,23 @@ if (hamTrigger && drawer) {
     drawer.classList.toggle('active', isOpening);
     document.documentElement.classList.toggle('no-scroll', isOpening);
     document.body.classList.toggle('no-scroll', isOpening);
+
+    if (isOpening) {
+      drawer.querySelectorAll('a[href]').forEach((link) => {
+        prefetchHref(link.href);
+      });
+    }
   });
 
-  // Close drawer on link click
+  // Only animate-close drawer for in-page hash links or new-tab links;
+  // full-page navigations should proceed immediately without 220ms slide-out lag.
   drawer.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', closeDrawer);
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href') || '';
+      if (href.startsWith('#') || link.target === '_blank') {
+        closeDrawer();
+      }
+    });
   });
 
   // Close drawer and theme menu on Escape key
