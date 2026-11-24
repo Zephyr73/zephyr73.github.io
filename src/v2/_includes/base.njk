@@ -169,7 +169,7 @@
           <aside class="markdown-toc" aria-label="Table of contents">
             <div class="markdown-toc__inner">
               <div class="markdown-toc__header">
-                <span class="toc-header__prefix">//</span> ON THIS PAGE
+                <span class="toc-header__prefix text-accent">&gt;</span> contents
               </div>
               <nav class="markdown-toc__nav">
                 <ul class="markdown-toc__list"></ul>
@@ -177,6 +177,13 @@
             </div>
           </aside>
           <div class="markdown-content">
+            {% if date or category or repo %}
+              <div class="mb-6 pb-4 border-b border-border flex items-center flex-wrap gap-4 font-code text-[0.76rem] text-text-muted">
+                {% if category %}<span>{{ category | safe }}</span>{% endif %}
+                {% if date %}<span>{{ date | formatDate }}</span>{% endif %}
+                {% if repo %}<a href="{{ repo }}" target="_blank" rel="noopener noreferrer" class="text-accent-2 no-underline hover:underline">github ↗</a>{% endif %}
+              </div>
+            {% endif %}
             {{ content | safe }}
           </div>
         </div>

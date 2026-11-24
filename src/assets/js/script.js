@@ -1040,3 +1040,48 @@ if (document.readyState === 'loading') {
 } else {
   initLinkPrefetch();
 }
+
+// Keyboard-first chord navigation (g + h/p/b/g/a)
+(() => {
+  const routes = {
+    h: '/',
+    p: '/projects/',
+    b: '/blog/',
+    g: '/gallery/',
+    a: '/about/',
+  };
+  let waitingForTarget = false;
+  let chordTimer = null;
+
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) {
+      return;
+    }
+    const tag = e.target && e.target.tagName;
+    if (
+      tag === 'INPUT' ||
+      tag === 'TEXTAREA' ||
+      tag === 'SELECT' ||
+      (e.target && e.target.isContentEditable)
+    ) {
+      return;
+    }
+
+    const key = e.key.toLowerCase();
+    if (waitingForTarget) {
+      waitingForTarget = false;
+      clearTimeout(chordTimer);
+      if (routes[key] && window.location.pathname !== routes[key]) {
+        window.location.href = routes[key];
+      }
+      return;
+    }
+
+    if (key === 'g') {
+      waitingForTarget = true;
+      chordTimer = setTimeout(() => {
+        waitingForTarget = false;
+      }, 900);
+    }
+  });
+})();

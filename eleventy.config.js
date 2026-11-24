@@ -164,6 +164,66 @@ export default function (eleventyConfig) {
     },
   );
 
+  // 5. Build-time 1-bit Bayer dithered thumbnail shortcode
+  //    Usage: {% ditherThumb "src/assets/img/photo.jpg", "alt text", 240, 152 %}
+  const BAYER_4X4 = [
+    [0, 8, 2, 10],
+    [12, 4, 14, 6],
+    [3, 11, 1, 9],
+    [15, 7, 13, 5],
+  ];
+
+  eleventyConfig.addNunjucksAsyncShortcode(
+    'ditherThumb',
+    async function (srcPath, alt, width = 240, height = 152) {
+      const baseName = sanitizeSlug(path.basename(srcPath, path.extname(srcPath)));
+      const outDir = './_site/assets/img/dither';
+      const outFile = `${baseName}-${width}x${height}.png`;
+      const fullOut = path.join(outDir, outFile);
+      const url = `/assets/img/dither/${outFile}`;
+
+      fs.mkdirSync(outDir, { recursive: true });
+
+      const { data, info } = await sharp(srcPath)
+        .resize(width, height, { fit: 'cover' })
+        .greyscale()
+        .normalize()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+
+      const rgba = Buffer.alloc(info.width * info.height * 4);
+      for (let y = 0; y < info.height; y++) {
+        for (let x = 0; x < info.width; x++) {
+          const i = y * info.width + x;
+          const threshold = ((BAYER_4X4[y & 3][x & 3] + 0.5) / 16) * 255;
+          const isLight = data[i] > threshold;
+          const o = i * 4;
+          if (isLight) {
+            // Warm phosphor off-white
+            rgba[o] = 229;
+            rgba[o + 1] = 227;
+            rgba[o + 2] = 220;
+            rgba[o + 3] = 255;
+          } else {
+            // Warm terminal charcoal
+            rgba[o] = 16;
+            rgba[o + 1] = 17;
+            rgba[o + 2] = 16;
+            rgba[o + 3] = 255;
+          }
+        }
+      }
+
+      await sharp(rgba, {
+        raw: { width: info.width, height: info.height, channels: 4 },
+      })
+        .png({ palette: true, colours: 2 })
+        .toFile(fullOut);
+
+      return `<img src="${url}" alt="${alt || ''}" width="${width}" height="${height}" loading="lazy" decoding="async" class="w-full h-full object-cover block [image-rendering:pixelated]" />`;
+    },
+  );
+
   return {
     dir: {
       input: 'src', // Look for files in the src folder
