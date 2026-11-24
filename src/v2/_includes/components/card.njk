@@ -1,41 +1,35 @@
-{% macro project_card(project, ctaText="Read Case Study") %}
-  <article class="project-card bg-surface border border-border p-6 flex flex-col box-border
-      transition-[border-color,background-color,transform] duration-200 ease-default hover:border-accent hover:bg-surface-2/40
-      max-[480px]:py-4 max-[480px]:px-[14px]">
-    <div class="project-card__header flex justify-between items-center mb-4 flex-wrap gap-2">
-      <span class="project-card__tag font-mono text-[0.68rem] uppercase tracking-[0.08em] text-text-muted">
+{% macro project_card(project, ctaText="Read notes") %}
+  <article class="project-card border-b border-border py-5 px-3 -mx-3 transition-colors duration-150 ease-default hover:bg-surface/70 max-[480px]:px-2 max-[480px]:-mx-2">
+    <div class="flex items-baseline justify-between gap-4 flex-wrap mb-1.5">
+      <div class="flex items-baseline gap-2.5 min-w-0">
+        <span class="font-code text-[0.85rem] text-accent select-none" aria-hidden="true">&gt;</span>
+        <h2 class="project-card__title m-0 font-heading text-[1.15rem] font-bold tracking-[-0.015em] leading-[1.3] [&>a]:text-body-text [&>a]:no-underline [&>a]:transition-colors [&>a]:duration-150 hover:[&>a]:text-accent">
+          <a href="{{ project.url }}">{{ project.data.title }}</a>
+        </h2>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
         {% if project.data.category %}
-          {{ project.data.category | safe }}
-        {% else %}
-          Engineering Project
+          <span class="project-card__tag font-code text-[0.7rem] uppercase tracking-[0.06em] text-text-muted">{{ project.data.category | safe }}</span>
         {% endif %}
-      </span>
-      <span class="project-card__status font-mono text-[0.65rem] py-[2px] px-[6px] border border-accent/25 text-accent
-        bg-accent-subtle">{{ project.date | formatDate if project.date else 'Recent' }}</span>
+        <span class="project-card__status font-code text-[0.72rem] text-text-subtle">
+          {{ project.date | formatDate if project.date else 'recent' }}
+        </span>
+      </div>
     </div>
-    <h2 class="project-card__title m-0 mb-3 font-heading text-[1.3rem] font-bold tracking-[-0.02em] leading-[1.2]
-        max-[640px]:text-[1.15rem] [&>a]:text-body-text [&>a]:no-underline [&>a]:transition-colors [&>a]:duration-150
-        [&>a]:ease-default hover:[&>a]:text-accent">
-      <a href="{{ project.url }}">{{ project.data.title }}</a>
-    </h2>
-    <p class="project-card__desc font-regular text-[0.875rem] leading-[1.65] text-text-muted m-0 mb-5 grow">
+    <p class="project-card__desc font-regular text-[0.86rem] leading-[1.6] text-text-muted m-0 mb-3 pl-5">
       {{ project.data.description }}
     </p>
-    <div class="project-card__footer border-t border-border pt-4 mt-auto flex flex-wrap gap-4">
+    <div class="project-card__footer pl-5 flex items-center flex-wrap gap-5">
+      <a href="{{ project.url }}" class="project-card__action inline-flex items-center gap-1.5 font-code text-[0.78rem] text-accent no-underline hover:underline underline-offset-4">
+        <span>{{ ctaText }}</span>
+        <span aria-hidden="true">→</span>
+      </a>
       {% if project.data.repo %}
-        <a href="{{ project.data.repo }}" class="project-card__action group/action inline-flex items-center gap-[6px] font-regular text-[0.8rem] font-semibold text-accent no-underline transition-[gap] duration-150 ease-default hover:gap-[9px]" target="_blank" rel="noopener">
-          View on GitHub
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/>
-          </svg>
+        <a href="{{ project.data.repo }}" class="project-card__action inline-flex items-center gap-1.5 font-code text-[0.78rem] text-accent-2 no-underline hover:underline underline-offset-4" target="_blank" rel="noopener noreferrer">
+          <span>github</span>
+          <span aria-hidden="true">↗</span>
         </a>
       {% endif %}
-      <a href="{{ project.url }}" class="project-card__action group/action inline-flex items-center gap-[6px] font-regular text-[0.8rem] font-semibold text-accent no-underline transition-[gap] duration-150 ease-default hover:gap-[9px]">
-        {{ ctaText }}
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="square"/>
-        </svg>
-      </a>
     </div>
   </article>
 {% endmacro %}

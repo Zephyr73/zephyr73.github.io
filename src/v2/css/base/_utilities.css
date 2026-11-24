@@ -26,4 +26,44 @@
     background-color: var(--clr-accent);
     color: var(--clr-accent-text);
   }
+
+  /* ── 1-bit Bayer Dither Patterns ──────────────────────────────────────── */
+  .dither-rule {
+    width: 100%;
+    height: 6px;
+    border: 0;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23787d74' fill-opacity='0.55'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23787d74' fill-opacity='0.55'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23787d74' fill-opacity='0.22'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23787d74' fill-opacity='0.22'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  .dither-surface {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23e5a93c' fill-opacity='0.06'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23e5a93c' fill-opacity='0.06'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  .dither-thumb {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--clr-surface-2);
+  }
+
+  .dither-thumb img {
+    filter: grayscale(100%) contrast(1.25) brightness(0.92);
+    image-rendering: pixelated;
+  }
+
+  .dither-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23101110' fill-opacity='0.48'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23101110' fill-opacity='0.48'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23e5a93c' fill-opacity='0.14'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23e5a93c' fill-opacity='0.14'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    mix-blend-mode: hard-light;
+  }
+
+  html.light .dither-thumb::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23f3f0e8' fill-opacity='0.42'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23f3f0e8' fill-opacity='0.42'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23b45309' fill-opacity='0.14'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23b45309' fill-opacity='0.14'/%3E%3C/svg%3E");
+  }
 }

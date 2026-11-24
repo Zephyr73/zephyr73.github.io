@@ -11,15 +11,17 @@ description: 'Software development, systems architecture, and engineering projec
 {% from "components/card.njk" import project_card %}
 
 <div class="projects-page max-w-[900px] mx-auto">
-  <div class="page-intro pb-8 mb-10 border-b border-border max-md:pb-6 max-md:mb-7">
-    <span class="page-intro__eyebrow block font-regular text-[0.725rem] uppercase tracking-[0.08em] text-accent mb-[0.4rem]">// ENGINEERING & SYSTEMS</span>
-    <h1 class="page-intro__title font-heading text-[clamp(2rem,4.5vw,2.75rem)] font-extrabold tracking-[-0.035em] leading-[1.1] text-body-text m-0 mb-3 max-md:text-[clamp(1.75rem,6.5vw,2.25rem)]">Software & Technical Projects</h1>
-    <p class="page-intro__desc font-regular text-[0.95rem] leading-[1.7] text-text-muted max-w-[700px] m-0 max-md:text-[0.9rem] max-md:leading-[1.6]">
-      A collection of personal systems, infrastructure engineering, and automation utilities built with Python, Linux, Docker, and modern web technologies.
+  <div class="page-intro pb-6 mb-2 max-md:pb-4">
+    <span class="page-intro__eyebrow block font-code text-[0.75rem] text-accent mb-2">~/tasrif/projects</span>
+    <h1 class="page-intro__title font-heading text-[clamp(1.65rem,3.4vw,2.2rem)] font-bold tracking-[-0.02em] leading-[1.2] text-body-text m-0 mb-2.5">Software &amp; Systems Projects</h1>
+    <p class="page-intro__desc font-regular text-[0.9rem] leading-[1.65] text-text-muted max-w-[680px] m-0">
+      Personal systems, infrastructure engineering, and automation utilities built with Python, Linux, Docker, and shell tooling.
     </p>
   </div>
 
-  <div class="project-list flex flex-col gap-6 max-md:gap-5">
+  <div class="dither-rule mb-2" aria-hidden="true"></div>
+
+  <div class="project-list flex flex-col">
     {% for project in collections.project | sortByDate %}
       {{ project_card(project) }}
     {% endfor %}

@@ -181,42 +181,45 @@
     --clr-link-visited: #cc4400;
   }
 
-  /* ── Light Mode (Greyish White Aesthetic) ────────────────────────────── */
+  /* ── Light Mode (Warm E-Ink / Newsprint Aesthetic) ──────────────────── */
   html.light,
   html[data-mode='light'] {
-    --clr-body-bg: #e4e4e9;
-    --clr-body-text: #16161a;
-    --clr-bold-text: #111114;
-    --clr-text-muted: #5e5e6e;
-    --clr-text-subtle: #848496;
+    --clr-body-bg: #f3f0e8;
+    --clr-body-text: #1b1a17;
+    --clr-bold-text: #11100e;
+    --clr-text-muted: #5c5950;
+    --clr-text-subtle: #858074;
 
-    --clr-surface: #f2f2f6;
-    --clr-surface-2: #dbdbe2;
-    --clr-border: #cccccc;
-    --clr-border-hover: #a8a8bc;
+    --clr-surface: #eae6dc;
+    --clr-surface-2: #e0dbd0;
+    --clr-border: #cfc9bc;
+    --clr-border-hover: #aca596;
 
-    --clr-navbar-bg: rgba(228, 228, 233, 0.85);
-    --clr-navbar-text: #16161a;
-    --clr-container-bg: #f2f2f6;
-    --clr-hamburger-bg: #16161a;
-    --clr-off-screen-menu-txt: #16161a;
+    --clr-navbar-bg: rgba(243, 240, 232, 0.88);
+    --clr-navbar-text: #1b1a17;
+    --clr-container-bg: #eae6dc;
+    --clr-hamburger-bg: #1b1a17;
+    --clr-off-screen-menu-txt: #1b1a17;
 
-    --clr-accent: #6d28d9;
-    --clr-accent-dim: #4c1d95;
-    --clr-accent-glow: rgba(109, 40, 217, 0.12);
-    --clr-link-visited: #6d28d9;
-    --clr-accent-text: #ffffff;
+    --clr-accent: #b45309;
+    --clr-accent-dim: #92400e;
+    --clr-accent-glow: rgba(180, 83, 9, 0.14);
+    --clr-accent-subtle: rgba(180, 83, 9, 0.08);
+    --clr-accent-muted: #d97706;
+    --clr-accent-2: #1d4ed8;
+    --clr-link-visited: #b45309;
+    --clr-accent-text: #f3f0e8;
 
-    --clr-code-bg: #eaeaef;
-    --clr-code-text: #1c1c22;
-    --clr-code-comment: #727284;
-    --clr-code-keyword: #7c3aed;
-    --clr-code-string: #047857;
+    --clr-code-bg: #eae6dc;
+    --clr-code-text: #1b1a17;
+    --clr-code-comment: #757065;
+    --clr-code-keyword: #92400e;
+    --clr-code-string: #15803d;
     --clr-code-func: #1d4ed8;
     --clr-code-number: #b45309;
 
-    --clr-inline-code-bg: #e5e5ec;
-    --clr-inline-code-text: #6d28d9;
+    --clr-inline-code-bg: #e2ddd2;
+    --clr-inline-code-text: #92400e;
   }
 
   /* Accent Variations under Light Mode */

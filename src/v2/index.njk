@@ -1,92 +1,73 @@
 ---
 layout: base.njk
 permalink: /
-title: Tasrif — IT & DevOps Specialist
+title: Tasrif — Backend & Systems Portfolio
 bodyClass: page--home
 pageId: home
 noMarkdownWrapper: true
-description: 'Portfolio & Resume of Tasrif — IT & DevOps specialist with a focus on clean systems, network infrastructure, Linux, and cybersecurity.'
+description: 'Portfolio of Tasrif — Computer Science student building backend systems, Linux automation, and self-hosted infrastructure.'
 ---
 
-{% from "components/button.njk" import button %}
 {% from "components/card.njk" import project_card %}
-<!-- ── HERO SECTION ──────────────────────────────────────────────────────── -->
-<section class="home-hero pt-6 pb-[3.5rem] border-b border-border mb-[3.5rem] max-md:pt-2 max-md:pb-[2.5rem] max-md:mb-[2.5rem]">
-  <h1 class="hero-title font-heading text-[clamp(2rem,5vw,3.6rem)] font-extrabold leading-[1.1] tracking-[-0.035em]
-      text-body-text m-0 mb-5 max-w-[840px] max-md:text-[clamp(1.85rem,7vw,2.75rem)] max-md:leading-[1.15]">
-    Backend systems, homelab infrastructure, and automated tooling.
-  </h1>
-  <p class="hero-subtitle font-regular text-[0.98rem] leading-[1.75] text-text-muted max-w-[740px] m-0 mb-7
-      max-md:text-[0.925rem] max-md:leading-[1.65]">
-    Hi, I'm
-    <strong class="text-accent font-bold">Tasrif</strong>
-    — a Computer Science student at Queens College. I build Linux systems, DevOps pipelines, and self-hosted
-    infrastructure — currently operating 5 Debian LXC containers in my Proxmox homelab with zero-trust networking.
+
+<!-- ── WHOAMI / INTRO ────────────────────────────────────────────────────── -->
+<section class="home-hero pt-4 pb-10 max-md:pt-1 max-md:pb-8">
+  <p class="font-code text-[0.8rem] text-accent m-0 mb-3 tracking-[0.02em]">
+    tasrif@dev:~$ whoami
   </p>
-  <!-- Core Stack / Technical Badges -->
-  <div class="hero-stack mb-8">
-    <div class="flex flex-wrap items-center gap-2">
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Bash</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Caddy</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">CI/CD</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Docker</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Git</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Linux / Debian</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">LXC</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Networking &amp; DNS</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">PowerShell</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Proxmox VE</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">Python</span>
-      <span class="font-regular text-[0.72rem] py-1 px-2.5 bg-surface border border-border text-text-muted">WireGuard</span>
-    </div>
-  </div>
-  <!-- Infrastructure & System Metrics -->
-  <div class="hero-metrics grid grid-cols-3 gap-3 mb-8 max-[720px]:grid-cols-1">
-    <div class="p-3.5 bg-surface border border-border flex flex-col gap-1">
-      <div class="flex items-center justify-between">
-        <span class="font-regular text-[0.68rem] uppercase tracking-[0.06em] text-text-muted">Virtualization Cluster</span>
-      </div>
-      <span class="font-heading font-bold text-[1.1rem] text-body-text">5 LXC Nodes</span>
-      <span class="font-regular text-[0.72rem] text-text-subtle">Debian on Proxmox VE</span>
-    </div>
-    <div class="p-3.5 bg-surface border border-border flex flex-col gap-1">
-      <div class="flex items-center justify-between">
-        <span class="font-regular text-[0.68rem] uppercase tracking-[0.06em] text-text-muted">Edge DNS Redundancy</span>
-      </div>
-      <span class="font-heading font-bold text-[1.1rem] text-body-text">~340ms Failover</span>
-      <span class="font-regular text-[0.72rem] text-text-subtle">Dual-node Pi + LXC AdGuard</span>
-    </div>
-    <div class="p-3.5 bg-surface border border-border flex flex-col gap-1">
-      <div class="flex items-center justify-between">
-        <span class="font-regular text-[0.68rem] uppercase tracking-[0.06em] text-text-muted">Remote Access Security</span>
-      </div>
-      <span class="font-heading font-bold text-[1.1rem] text-body-text">0 Exposed Ports</span>
-      <span class="font-regular text-[0.72rem] text-text-subtle">Mesh VPN via WireGuard</span>
-    </div>
-  </div>
-  <div class="hero-actions flex items-center flex-wrap gap-[0.85rem] max-[480px]:flex-col max-[480px]:items-stretch
-      max-[480px]:gap-[0.65rem]">
-    {{ button("View Resume", "/about/", "primary", "_self", true) }}
-    {{ button("Explore Projects", "/projects/", "secondary") }}
-    {{ button("Visual Gallery ↗", "/gallery/", "ghost") }}
-  </div>
-</section>
-<!-- ── FEATURED PROJECTS ─────────────────────────────────────────────────── -->
-<section class="home-section mb-16 max-md:mb-12">
-  <div class="section-header flex justify-between items-end mb-7 flex-wrap gap-3 max-md:mb-5">
-    <div class="section-header__title-group">
-      <h2 class="section-title font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-bold tracking-[-0.03em] text-body-text m-0">
-        Featured Projects
-      </h2>
-    </div>
+  <h1 class="hero-title font-heading text-[clamp(1.65rem,3.4vw,2.25rem)] font-bold leading-[1.2] tracking-[-0.02em] text-body-text m-0 mb-4 max-w-[720px]">
+    CS student building backend systems, Linux tooling, and self-hosted infrastructure.
+  </h1>
+  <p class="hero-subtitle font-regular text-[0.92rem] leading-[1.7] text-text-muted max-w-[700px] m-0 mb-6">
+    I'm <strong class="text-body-text font-bold">Tasrif</strong>, an undergraduate at Queens College aiming for backend engineering. Outside class, I maintain a 5-node Debian LXC homelab on Proxmox with WireGuard and write small automation tools.
+  </p>
+
+  <!-- Compact terminal spec block -->
+  <dl class="bg-surface dither-surface border border-border p-4 m-0 mb-7 grid grid-cols-[110px_1fr] gap-y-2 gap-x-4 text-[0.82rem] font-code max-[520px]:grid-cols-1 max-[520px]:gap-y-1">
+    <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center">focus</dt>
+    <dd class="m-0 text-body-text">Backend APIs, Linux systems, networking &amp; automation</dd>
+    <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center max-[520px]:mt-2">stack</dt>
+    <dd class="m-0 text-text-muted">Python, Bash, Docker, SQL, Git, Caddy, Proxmox VE, WireGuard</dd>
+    <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center max-[520px]:mt-2">status</dt>
+    <dd class="m-0 text-accent">Open to backend &amp; systems internships</dd>
+  </dl>
+
+  <div class="hero-actions flex items-center flex-wrap gap-3 max-[480px]:flex-col max-[480px]:items-stretch">
+    <a
+      href="/about/"
+      class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] font-bold py-2.5 px-4 bg-accent text-accent-text border border-accent no-underline transition-colors duration-150 hover:bg-accent-dim hover:border-accent-dim min-h-[44px] box-border">
+      View Resume →
+    </a>
     <a
       href="/projects/"
-      class="section-link font-regular text-[0.825rem] text-text-muted no-underline transition-colors duration-150 ease-default
-        hover:text-accent">
-    View All Projects →</a>
+      class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] font-semibold py-2.5 px-4 bg-surface text-body-text border border-border no-underline transition-colors duration-150 hover:border-accent hover:text-accent min-h-[44px] box-border">
+      Projects
+    </a>
+    <a
+      href="https://github.com/zephyr73"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] text-text-muted border border-transparent py-2.5 px-3 no-underline transition-colors duration-150 hover:text-accent min-h-[44px] box-border">
+      GitHub ↗
+    </a>
   </div>
-  <div class="projects-grid grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-6 max-[640px]:grid-cols-1
-      max-[640px]:gap-5">
+</section>
+
+<div class="dither-rule mb-10 max-md:mb-8" aria-hidden="true"></div>
+
+<!-- ── SELECTED PROJECTS ─────────────────────────────────────────────────── -->
+<section class="home-section mb-12 max-md:mb-9">
+  <div class="section-header flex justify-between items-baseline mb-4 flex-wrap gap-3">
+    <h2 class="section-title font-heading text-[1.25rem] font-bold tracking-[-0.015em] text-body-text m-0">
+      Selected Projects
+    </h2>
+    <a
+      href="/projects/"
+      class="section-link font-code text-[0.8rem] text-text-muted no-underline transition-colors duration-150 hover:text-accent">
+      all projects →
+    </a>
+  </div>
+  <div class="border-t border-border">
     {% for project in collections.project %}
       {% if project.fileSlug == 'home-network' or project.fileSlug == 'wallpapersync' %}
         {{ project_card(project) }}
@@ -94,122 +75,124 @@ description: 'Portfolio & Resume of Tasrif — IT & DevOps specialist with a foc
     {% endfor %}
   </div>
 </section>
-<!-- ── CREATIVE SHOWCASE ─────────────────────────────────────────────────── -->
-<section class="home-section mb-16 max-md:mb-12">
-  <div class="section-header flex justify-between items-end mb-7 flex-wrap gap-3 max-md:mb-5">
-    <div class="section-header__title-group">
-      <h2 class="section-title font-heading text-[clamp(1.35rem,3vw,1.85rem)] font-bold tracking-[-0.03em] text-body-text m-0">
-        Photography &amp; Generative Art
-      </h2>
-    </div>
+
+<div class="dither-rule mb-10 max-md:mb-8" aria-hidden="true"></div>
+
+<!-- ── RECENT WRITING ────────────────────────────────────────────────────── -->
+<section class="home-section mb-12 max-md:mb-9">
+  <div class="section-header flex justify-between items-baseline mb-4 flex-wrap gap-3">
+    <h2 class="section-title font-heading text-[1.25rem] font-bold tracking-[-0.015em] text-body-text m-0">
+      Recent Writing
+    </h2>
     <a
-      href="/gallery/"
-      class="section-link font-regular text-[0.825rem] text-text-muted no-underline transition-colors duration-150 ease-default
-        hover:text-accent">
-    Open Full Gallery →</a>
+      href="/blog/"
+      class="section-link font-code text-[0.8rem] text-text-muted no-underline transition-colors duration-150 hover:text-accent">
+      all posts →
+    </a>
   </div>
-  <div
-    class="creative-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 max-[640px]:grid-cols-1 max-[640px]:gap-5">
-    <!-- Creative Card 1: Photography -->
+  <ul class="list-none m-0 p-0 border-t border-border">
+    {% for post in collections.blogpost | sortByDate %}
+      {% if loop.index0 < 3 %}
+        <li class="border-b border-border">
+          <a
+            href="{{ post.url }}"
+            class="flex items-baseline justify-between gap-4 py-3.5 px-3 -mx-3 no-underline transition-colors duration-150 hover:bg-surface/70 max-[520px]:flex-col max-[520px]:gap-1 max-[480px]:px-2 max-[480px]:-mx-2 group">
+            <span class="font-regular text-[0.9rem] text-body-text group-hover:text-accent transition-colors duration-150">
+              <span class="font-code text-accent mr-2" aria-hidden="true">&gt;</span>{{ post.data.title }}
+            </span>
+            <span class="font-code text-[0.75rem] text-text-subtle shrink-0">
+              {{ post.date | formatDate if post.date else 'recent' }}
+            </span>
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</section>
+
+<div class="dither-rule mb-10 max-md:mb-8" aria-hidden="true"></div>
+
+<!-- ── VISUAL GALLERY (DITHERED PREVIEW) ─────────────────────────────────── -->
+<section class="home-section mb-12 max-md:mb-9">
+  <div class="section-header flex justify-between items-baseline mb-4 flex-wrap gap-3">
+    <h2 class="section-title font-heading text-[1.25rem] font-bold tracking-[-0.015em] text-body-text m-0">
+      Photography &amp; Visuals
+    </h2>
     <a
       href="/gallery/"
-      class="creative-card group/creative bg-surface border border-border no-underline flex flex-col overflow-hidden
-        transition-[border-color,transform,box-shadow] duration-200 ease-default hover:border-accent hover:-translate-y-[2px]
-        hover:shadow-[0_4px_20px_var(--color-accent-glow)]">
-      <div class="creative-card__image-wrap relative w-full aspect-video overflow-hidden bg-[#050505] [&>picture]:block
-          [&>picture]:w-full [&>picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block
-          [&_img]:transition-transform [&_img]:duration-300 [&_img]:ease-default group-hover/creative:[&_img]:scale-[1.04]">
-        <picture>
+      class="section-link font-code text-[0.8rem] text-text-muted no-underline transition-colors duration-150 hover:text-accent">
+      open gallery →
+    </a>
+  </div>
+  <div class="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1">
+    <a
+      href="/gallery/"
+      class="group bg-surface border border-border no-underline flex items-center gap-4 p-3 transition-colors duration-150 hover:border-accent">
+      <div class="dither-thumb w-[120px] h-[76px] shrink-0 border border-border max-[400px]:w-[96px] max-[400px]:h-[64px]">
+        <picture class="block w-full h-full">
           <source srcset="/assets/img/photo.webp" type="image/webp"/>
           <img
             src="/assets/img/photo.jpg"
             alt="Urban and landscape photography"
             loading="lazy"
             decoding="async"
-            width="600"
-            height="338"/>
+            width="240"
+            height="152"
+            class="w-full h-full object-cover block"/>
         </picture>
       </div>
-      <div class="creative-card__info p-5 flex flex-col gap-2 grow max-[640px]:p-4">
-        <h3 class="m-0 font-heading text-[1.2rem] text-body-text transition-colors group-hover/creative:text-accent">
+      <div class="min-w-0">
+        <h3 class="m-0 mb-1 font-heading text-[1rem] text-body-text group-hover:text-accent transition-colors duration-150">
           Photography
         </h3>
-        <p class="m-0 font-regular text-[0.825rem] leading-[1.6] text-text-muted">
-          Curated architectural, cityscape, and natural moments captured and graded with Adobe Lightroom.
+        <p class="m-0 font-regular text-[0.78rem] leading-[1.5] text-text-muted">
+          Architecture, cityscapes, and natural moments.
         </p>
-        <span class="creative-card__link inline-block mt-3 font-regular text-[0.8rem] font-semibold text-accent">Browse Photos →</span>
       </div>
     </a>
-    <!-- Creative Card 2: AI Art -->
     <a
       href="/gallery/#ai-container"
-      class="creative-card group/creative bg-surface border border-border no-underline flex flex-col overflow-hidden
-        transition-[border-color,transform,box-shadow] duration-200 ease-default hover:border-accent hover:-translate-y-[2px]
-        hover:shadow-[0_4px_20px_var(--color-accent-glow)]">
-      <div class="creative-card__image-wrap relative w-full aspect-video overflow-hidden bg-[#050505] [&>picture]:block
-          [&>picture]:w-full [&>picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block
-          [&_img]:transition-transform [&_img]:duration-300 [&_img]:ease-default group-hover/creative:[&_img]:scale-[1.04]">
-        <picture>
+      class="group bg-surface border border-border no-underline flex items-center gap-4 p-3 transition-colors duration-150 hover:border-accent">
+      <div class="dither-thumb w-[120px] h-[76px] shrink-0 border border-border max-[400px]:w-[96px] max-[400px]:h-[64px]">
+        <picture class="block w-full h-full">
           <source srcset="/assets/img/ai.webp" type="image/webp"/>
           <img
             src="/assets/img/ai.jpg"
             alt="Stable Diffusion generative artwork"
             loading="lazy"
             decoding="async"
-            width="600"
-            height="338"/>
+            width="240"
+            height="152"
+            class="w-full h-full object-cover block"/>
         </picture>
       </div>
-      <div class="creative-card__info p-5 flex flex-col gap-2 grow max-[640px]:p-4">
-        <h3 class="m-0 font-heading text-[1.2rem] text-body-text transition-colors group-hover/creative:text-accent">
+      <div class="min-w-0">
+        <h3 class="m-0 mb-1 font-heading text-[1rem] text-body-text group-hover:text-accent transition-colors duration-150">
           AI Generations
         </h3>
-        <p class="m-0 font-regular text-[0.825rem] leading-[1.6] text-text-muted">
-          Explorations in latent space composition, pose control, and stylized diffusion artwork.
+        <p class="m-0 font-regular text-[0.78rem] leading-[1.5] text-text-muted">
+          Latent space composition &amp; diffusion studies.
         </p>
-        <span class="creative-card__link inline-block mt-3 font-regular text-[0.8rem] font-semibold text-accent">Explore AI
-          Gallery →</span>
       </div>
     </a>
   </div>
 </section>
-<!-- ── DIRECT CONTACT BANNER ─────────────────────────────────────────────── -->
-<section class="home-contact-banner bg-surface border border-border py-[2.5rem] px-8 mt-[4.5rem] mb-8
-    relative max-[640px]:py-[1.75rem] max-[640px]:px-5 max-[640px]:mt-12">
-  <div class="banner-content">
-    <h2 class="banner-title font-heading text-[clamp(1.35rem,3.5vw,2rem)] font-bold tracking-[-0.035em] m-0 mb-3 text-body-text
-        leading-[1.2]">
-      Looking for backend engineering &amp; systems roles.
-    </h2>
-    <p class="banner-text font-regular text-[0.925rem] leading-[1.7] text-text-muted max-w-[680px] m-0 mb-7">
-      I'm a Computer Science student at Queens College focused on Linux systems, self-hosted infrastructure, and writing automated tooling. If you're hiring for backend or DevOps internships or want to talk homelab architectures &mdash; let's connect.
-    </p>
-    <div class="banner-actions flex items-center flex-wrap gap-3 max-[640px]:flex-col max-[640px]:items-stretch
-        max-[640px]:gap-[0.65rem]">
-      <a
-        href="/about/"
-        class="btn--primary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-bold py-[10px]
-          px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border
-          box-border bg-accent text-accent-text border-accent hover:bg-accent-dim hover:border-accent-dim hover:text-accent-text
-          active:translate-y-[1px] active:translate-x-[0.5px] select-none max-[640px]:w-full">
-      View Full Resume</a>
-      <a
-        href="https://github.com/zephyr73"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn--secondary inline-flex items-center justify-center gap-2 font-regular text-[0.85rem] font-semibold py-[10px]
-          px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150 ease-default border
-          box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent hover:bg-surface-2
-          active:translate-y-[1px] active:translate-x-[0.5px] select-none max-[640px]:w-full">
-      GitHub Profile ↗</a>
+
+<!-- ── CONTACT ───────────────────────────────────────────────────────────── -->
+<section class="home-contact border-t border-border pt-7 pb-4">
+  <div class="flex items-baseline justify-between flex-wrap gap-4">
+    <div>
+      <h2 class="font-heading text-[1.1rem] font-bold text-body-text m-0 mb-1">Get in touch</h2>
+      <p class="font-regular text-[0.84rem] text-text-muted m-0">
+        Open to backend / systems internships and technical chats.
+      </p>
+    </div>
+    <div class="flex items-center flex-wrap gap-3">
       <button
-        class="btn--secondary resume-contact__copy inline-flex items-center justify-center gap-2 font-regular text-[0.85rem]
-          font-semibold py-[10px] px-[20px] rounded-none cursor-pointer no-underline tracking-[0.02em] transition-all duration-150
-          ease-default border box-border bg-surface text-body-text border-border hover:border-accent hover:text-accent
-          hover:bg-surface-2 active:translate-y-[1px] active:translate-x-[0.5px] select-none max-[640px]:w-full"
+        class="resume-contact__copy inline-flex items-center justify-center font-code text-[0.8rem] font-semibold py-2 px-3.5 bg-surface text-body-text border border-border cursor-pointer transition-colors duration-150 hover:border-accent hover:text-accent min-h-[44px]"
         data-copy="contact@tasrif.dev"
         type="button">
-        Copy Email Address
+        Copy contact@tasrif.dev
       </button>
     </div>
   </div>
