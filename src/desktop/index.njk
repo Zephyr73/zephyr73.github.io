@@ -1,0 +1,311 @@
+---
+layout: false
+permalink: /desktop/
+eleventyExcludeFromCollections: true
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/jpeg" href="/assets/img/favicon.jpg" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasrif — Desktop OS</title>
+  <meta name="description" content="Interactive Linux-like virtual desktop environment." />
+  <link rel="canonical" href="https://tasrif.dev/" />
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:title" content="Portfolio 3.0 — Interactive Virtual Desktop" />
+  <meta property="og:description" content="A professional, Linux-like interactive desktop portfolio environment." />
+  <meta property="og:url" content="https://tasrif.dev/" />
+  <meta property="og:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self';">
+
+  <!-- Preload local fonts (shared with Basic Site) -->
+  <link rel="preload" href="/assets/fonts/iosevka-ss08-bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/JetBrainsMono-Bold.woff2"   as="font" type="font/woff2" crossorigin />
+
+  <!-- Core stylesheet -->
+  <link rel="stylesheet" href="/assets/css/desktop.css" />
+
+  <!-- Inject local fonts (shared with Basic Site) -->
+  <style>
+    @font-face {
+      font-family: 'Iosevka Webfont Bold';
+      src: url('/assets/fonts/iosevka-ss08-bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      src: url('/assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      src: url('/assets/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: block;
+    }
+  </style>
+
+  <!-- Prevent CRT FOUC & Iframe nesting -->
+  <script>
+    (function() {
+      if (window.top !== window.self) {
+        window.location.replace('/');
+        return;
+      }
+      if (localStorage.getItem('desktop-crt') === '1') {
+        document.documentElement.classList.add('crt-pre');
+      }
+      if (localStorage.getItem('desktop-mode')) {
+        document.documentElement.dataset.mode = localStorage.getItem('desktop-mode');
+      }
+    })();
+  </script>
+</head>
+
+<body id="desktop-body">
+
+<!-- ============================================================
+     BOOT SCREEN OVERLAY
+     ============================================================ -->
+<div id="boot-screen" class="boot-screen" role="dialog" aria-modal="true" aria-label="System booting" tabindex="-1">
+  <div class="boot-screen__content">
+    <div class="boot-screen__logs" id="boot-logs"></div>
+    <div class="boot-screen__footer">
+      <div class="boot-screen__msg">INITIALIZING ~/TASRIF VIRTUAL OS...</div>
+      <div class="boot-screen__progress-container">
+        <div class="boot-screen__progress-bar" id="boot-progress"></div>
+      </div>
+      <div class="boot-screen__status-row">
+        <span id="boot-status-pct">BOOT: 0%</span>
+        <span class="boot-screen__skip-msg">CLICK OR PRESS ANY KEY TO SKIP</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DESKTOP ENVIRONMENT
+     ============================================================ -->
+<div id="desktop-env">
+
+  <!-- ── DESKTOP MODE ──────────────────────────────────────── -->
+  <div id="mode-desktop" class="mode-container active" role="main" aria-label="Desktop">
+
+    <!-- Desktop icon column (left) -->
+    <div class="desktop-icons" id="desktop-icon-grid" role="list" aria-label="Desktop icons">
+      <!-- Populated by desktop.js -->
+    </div>
+
+    <!-- Quick Reference widget (top-right) -->
+    <div class="desktop-notification" id="desktop-notif" aria-live="polite">
+      <div class="desktop-notification__header">
+        <span class="desktop-notification__header-title">~/tasrif/desktop</span>
+        <span class="desktop-notification__uptime" id="notif-uptime">UP: 00:00:00</span>
+      </div>
+      <div class="desktop-notification__body">
+        <div class="notif-section">
+          <span class="notif-highlight">&gt; CONTROLS:</span><br>
+          <span class="notif-bullet">•</span> Double-click icons to launch apps<br>
+          <span class="notif-bullet">•</span> <kbd>Alt+1</kbd> Desktop / <kbd>Alt+2</kbd> Shell<br>
+          <span class="notif-bullet">•</span> Open files from TTY tree in split view<br>
+          <span class="notif-bullet">•</span> Use STYLE in bar for theme &amp; CRT
+        </div>
+        <div class="notif-terminal-footer">
+          <span class="notif-prompt">tasrif@os:~$</span> <span class="notif-status-msg">session ready</span><span class="notif-cursor"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating windows container (desktop mode) -->
+    <div id="desktop-floating-container" style="position:absolute;inset:0;pointer-events:none;z-index:10;">
+    </div>
+  </div>
+
+  <!-- ── TTY SHELL MODE ────────────────────────────────────── -->
+  <div id="mode-tty" class="mode-container" role="main" aria-label="SHELL">
+
+    <!-- Left: Navigation Pane -->
+    <div class="tty-nav-pane" id="tty-nav-pane" role="navigation" aria-label="File system tree">
+      <div class="nav-pane__header">
+        <span>FILE SYSTEM TREE</span>
+        <button class="nav-pane__sort-btn" id="nav-sort-btn" aria-label="Sort files">SORT↕</button>
+      </div>
+      <div class="nav-pane__tree" id="nav-tree" role="tree">
+        <!-- Populated by navigation-pane.js -->
+      </div>
+      <div class="nav-pane__footer">
+        <div class="footer-stats-grid">
+          <div class="stat-row">
+            <span class="stat-lbl">FOLDERS</span>
+            <span class="stat-val" id="nav-folders-val">—</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-lbl">FILES</span>
+            <span class="stat-val" id="nav-files-val">—</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-lbl">SIZE</span>
+            <span class="stat-val" id="nav-vol-text">—</span>
+          </div>
+        </div>
+
+        <div class="footer-bottom-row">
+          <span class="footer-lic">CODE: MIT | ART: CC BY-NC 4.0</span>
+          <span class="footer-copy">© 2026 TASRIF</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resize handle 1 -->
+    <div class="pane-resize-handle" id="resize-nav" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Resize navigation pane"></div>
+
+    <!-- Center: Console/Terminal -->
+    <div class="tty-console-pane" id="tty-console">
+      <div class="console-header">
+        <div class="console-header-title">
+          Terminal: tasrif@os:~/
+        </div>
+        <button class="console-nav-toggle" id="console-nav-toggle" aria-label="Toggle Files Pane">⬡ FILES</button>
+      </div>
+      <div class="console-output" id="console-output" aria-live="polite" role="log">
+        <!-- Terminal output populated by terminal.js -->
+      </div>
+      <div class="console-input-row">
+        <span class="console-prompt-label" id="console-prompt-label">tasrif@os:~$ </span>
+        <input
+          class="console-input"
+          id="console-input"
+          type="text"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Terminal input"
+          placeholder="type instructions (e.g. 'help', 'neofetch')..."
+        />
+      </div>
+    </div>
+
+    <!-- Resize handle 2 -->
+    <div class="pane-resize-handle hidden" id="resize-split" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Resize split pane"></div>
+
+    <!-- Right: Split viewer pane -->
+    <div class="tty-split-pane" id="tty-split-pane" aria-label="File viewer">
+      <!-- Populated by window manager when a file is opened in split -->
+    </div>
+
+  </div><!-- /mode-tty -->
+
+</div><!-- /desktop-env -->
+
+
+<!-- ============================================================
+     STATUS BAR
+     ============================================================ -->
+<div class="status-bar" role="toolbar" aria-label="Status bar">
+
+  <div class="statusbar-left-scroll">
+    <!-- Mode tabs -->
+    <div class="statusbar-tabs" role="tablist">
+      <div class="statusbar-tab active" id="tab-desktop" role="tab" aria-selected="true" aria-controls="mode-desktop" data-mode="desktop" tabindex="0" aria-label="Switch to Desktop mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="0"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        DESKTOP
+      </div>
+      <div class="statusbar-tab" id="tab-tty" role="tab" aria-selected="false" aria-controls="mode-tty" data-mode="tty" tabindex="-1" aria-label="Switch to SHELL">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        SHELL
+      </div>
+    </div>
+
+    <!-- Active app tabs -->
+    <div class="statusbar-active-apps" id="statusbar-active-apps" role="tablist" aria-label="Open applications">
+      <!-- Populated by window manager -->
+    </div>
+  </div>
+
+  <!-- Center info -->
+  <div class="statusbar-center" id="statusbar-center"></div>
+
+  <!-- System tray -->
+  <div class="statusbar-tray">
+
+    <a
+      href="/"
+      class="tray-item tray-site-btn"
+      id="btn-switch-site"
+      title="Return to Basic Website"
+      aria-label="Return to Basic Website"
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      <span>BASIC SITE</span>
+    </a>
+
+    <div class="tray-item style-btn" id="style-toggle" role="button" tabindex="0" aria-label="Open style options menu">
+      ⬡ STYLE
+    </div>
+
+    <!-- Style Popover Menu -->
+    <div class="style-menu hidden" id="style-menu" role="dialog" aria-label="Style settings">
+      <div class="style-menu__header">STYLE OPTIONS</div>
+      <div class="style-menu__section">
+        <div class="style-menu__label">THEME:</div>
+        <select class="style-menu__select" id="style-theme-select" aria-label="Select desktop theme">
+          <option value="phosphor">P3 Phosphor</option>
+          <option value="green">P1 Phosphor</option>
+          <option value="red">Crimson Red</option>
+          <option value="cyan">Cyan Hacker</option>
+        </select>
+      </div>
+      <div class="style-menu__section">
+        <button class="style-menu__btn" id="style-crt-btn">
+          <span>CRT BLOOM FILTER</span>
+          <span class="style-menu__status" id="style-crt-status">OFF</span>
+        </button>
+      </div>
+      <div class="style-menu__section">
+        <button class="style-menu__btn" id="style-wallpaper-btn">
+          <span>CYCLE WALLPAPER</span>
+          <span class="style-menu__status" id="style-wallpaper-status">Cyber Grid</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Clock -->
+    <div class="tray-clock" id="tray-clock" role="button" tabindex="0" aria-label="Open Calendar">
+      <span class="clock-time" id="clock-time">00:00 PM</span>
+      <span class="clock-date" id="clock-date">MON 1, 2025</span>
+    </div>
+    
+    <!-- Calendar Popover -->
+    <div class="calendar-menu hidden" id="calendar-menu" role="dialog" aria-label="Calendar">
+      <div class="calendar-menu__header" id="calendar-month-year"></div>
+      <div class="calendar-menu__grid" id="calendar-grid"></div>
+    </div>
+
+  </div><!-- /tray -->
+</div><!-- /status-bar -->
+
+
+<!-- ============================================================
+     INJECT BUILD-TIME FILESYSTEM DATA
+     ============================================================ -->
+<script>
+  window.__FS_TREE__ = {{ filesystem | dump | safe }};
+</script>
+
+<!-- ============================================================
+     APPLICATION SCRIPTS (ES Modules)
+     ============================================================ -->
+<script type="module" src="/assets/js/desktop/shell.js"></script>
+
+</body>
+</html>

@@ -3,8 +3,8 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import { normalizeSkill } from './lib/skills-shared.js';
 
-const PROJECTS_DIR = './src/v2/projects';
-const ABOUT_PATH = './src/v2/about/index.md';
+const PROJECTS_DIR = './src/site/projects';
+const ABOUT_PATH = './src/site/about/index.md';
 
 export default function () {
   const pool = new Map();
@@ -49,7 +49,7 @@ export default function () {
     }
   }
 
-  // Apply manual add/remove overrides from src/v2/about/index.md (skillOverrides)
+  // Apply manual add/remove overrides from src/site/about/index.md (skillOverrides)
   if (fs.existsSync(ABOUT_PATH)) {
     const rawAbout = fs.readFileSync(ABOUT_PATH, 'utf8');
     const { data: aboutData } = matter(rawAbout);

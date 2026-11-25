@@ -5,8 +5,8 @@ import PDFDocument from 'pdfkit';
 import { normalizeSkill } from '../src/_data/lib/skills-shared.js';
 import getSkillPool from '../src/_data/skillPool.js';
 
-const DEFAULT_ABOUT_PATH = './src/v2/about/index.md';
-const DEFAULT_PROJECTS_DIR = './src/v2/projects';
+const DEFAULT_ABOUT_PATH = './src/site/about/index.md';
+const DEFAULT_PROJECTS_DIR = './src/site/projects';
 const DEFAULT_OUTPUT_PATH = './_site/assets/resume.pdf';
 
 // US Letter (612 x 792 pt) with clean ATS-friendly single-column margins
@@ -44,7 +44,7 @@ function cleanText(value) {
 }
 
 /**
- * Build a map of project URL -> normalized skill names from src/v2/projects/*.md
+ * Build a map of project URL -> normalized skill names from src/site/projects/*.md
  * so project tags in the PDF stay in sync with the global skill pool.
  */
 function loadProjectSkillsMap(projectsDir) {

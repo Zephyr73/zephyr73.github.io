@@ -1,0 +1,348 @@
+/* Themes: Accent Switcher + Desktop OS Embedded Theme Mappings.
+   Applied to the <html> element via JS: document.documentElement.className = themeKey.
+   Base dark tokens live in abstracts/_tokens.css (:root block). */
+
+@layer components {
+  /* ── Primary Accent Themes ────────────────────────────────────────────── */
+  .periwinkle {
+    --clr-accent: #a5b4fc;
+    --clr-accent-dim: #6366f1;
+    --clr-accent-glow: rgba(165, 180, 252, 0.18);
+    --clr-accent-subtle: rgba(165, 180, 252, 0.08);
+    --clr-accent-muted: #818cf8;
+    --clr-link-visited: #a5b4fc;
+    --clr-accent-text: #0c0c0e;
+  }
+
+  .lavender {
+    --clr-accent: #a78bfa;
+    --clr-accent-dim: #7c3aed;
+    --clr-accent-glow: rgba(167, 139, 250, 0.18);
+    --clr-accent-subtle: rgba(167, 139, 250, 0.08);
+    --clr-accent-muted: #8b5cf6;
+    --clr-link-visited: #a78bfa;
+    --clr-accent-text: #0c0c0e;
+  }
+
+  .white {
+    --clr-accent: #ffffff;
+    --clr-accent-dim: #d1d1db;
+    --clr-accent-glow: rgba(255, 255, 255, 0.18);
+    --clr-accent-subtle: rgba(255, 255, 255, 0.06);
+    --clr-accent-muted: #a1a1aa;
+    --clr-link-visited: #ffffff;
+    --clr-accent-text: #0c0c0e;
+  }
+
+  .catppuccin,
+  .catppuccin-dark {
+    --clr-accent: #f38ba8;
+    --clr-accent-dim: #eba0ac;
+    --clr-accent-glow: rgba(243, 139, 168, 0.18);
+    --clr-accent-subtle: rgba(243, 139, 168, 0.08);
+    --clr-accent-muted: #f5c2e7;
+    --clr-link-visited: #f38ba8;
+    --clr-accent-text: #181116;
+  }
+
+  .red {
+    --clr-accent: #f87171;
+    --clr-accent-dim: #ef4444;
+    --clr-accent-glow: rgba(248, 113, 113, 0.18);
+    --clr-accent-subtle: rgba(248, 113, 113, 0.08);
+    --clr-accent-muted: #fca5a5;
+    --clr-link-visited: #f87171;
+    --clr-accent-text: #ffffff;
+  }
+
+  .coral {
+    --clr-accent: #ff7043;
+    --clr-accent-dim: #f4511e;
+    --clr-accent-glow: rgba(255, 112, 67, 0.18);
+    --clr-accent-subtle: rgba(255, 112, 67, 0.08);
+    --clr-accent-muted: #ff8a65;
+    --clr-link-visited: #ff7043;
+    --clr-accent-text: #ffffff;
+  }
+
+  .emerald {
+    --clr-accent: #34d399;
+    --clr-accent-dim: #10b981;
+    --clr-accent-glow: rgba(52, 211, 153, 0.18);
+    --clr-accent-subtle: rgba(52, 211, 153, 0.08);
+    --clr-accent-muted: #6ee7b7;
+    --clr-link-visited: #34d399;
+    --clr-accent-text: #022c22;
+  }
+
+  /* ── Desktop OS Terminal Theme Passthrough Mappings ───────────────────── */
+  .green {
+    --clr-accent: #00ff41;
+    --clr-accent-dim: #00b830;
+    --clr-accent-glow: rgba(0, 255, 65, 0.18);
+    --clr-link-visited: #00ff41;
+  }
+
+  .amber {
+    --clr-accent: #ffb800;
+    --clr-accent-dim: #cc9300;
+    --clr-accent-glow: rgba(255, 184, 0, 0.18);
+    --clr-link-visited: #ffb800;
+  }
+
+  .cyan {
+    --clr-accent: #00e5ff;
+    --clr-accent-dim: #00b8cc;
+    --clr-accent-glow: rgba(0, 229, 255, 0.18);
+    --clr-link-visited: #00e5ff;
+  }
+
+  .magenta {
+    --clr-accent: #ff00ff;
+    --clr-accent-dim: #cc00cc;
+    --clr-accent-glow: rgba(255, 0, 255, 0.18);
+    --clr-link-visited: #ff00ff;
+  }
+
+  .purple {
+    --clr-accent: #b026ff;
+    --clr-accent-dim: #8a1ecc;
+    --clr-accent-glow: rgba(176, 38, 255, 0.18);
+    --clr-link-visited: #b026ff;
+  }
+
+  .slate {
+    --clr-accent: #38bdf8;
+    --clr-accent-dim: #0284c7;
+    --clr-accent-glow: rgba(56, 189, 248, 0.18);
+    --clr-link-visited: #38bdf8;
+  }
+
+  .sunset {
+    --clr-accent: #ff7700;
+    --clr-accent-dim: #cc5f00;
+    --clr-accent-glow: rgba(255, 119, 0, 0.18);
+    --clr-link-visited: #ff7700;
+  }
+
+  .cyberpunk2077 {
+    --clr-accent: #fcee0a;
+    --clr-accent-dim: #c9be00;
+    --clr-accent-glow: rgba(252, 238, 10, 0.22);
+    --clr-link-visited: #fcee0a;
+  }
+
+  .phosphor {
+    --clr-accent: #ffaa00;
+    --clr-accent-dim: #cc8800;
+    --clr-accent-glow: rgba(255, 170, 0, 0.22);
+    --clr-link-visited: #ffaa00;
+  }
+
+  .dracula {
+    --clr-accent: #ff79c6;
+    --clr-accent-dim: #bd93f9;
+    --clr-accent-glow: rgba(255, 121, 198, 0.18);
+    --clr-link-visited: #ff79c6;
+  }
+
+  .nord {
+    --clr-accent: #88c0d0;
+    --clr-accent-dim: #81a1c1;
+    --clr-accent-glow: rgba(136, 192, 208, 0.18);
+    --clr-link-visited: #88c0d0;
+  }
+
+  .gruvbox-dark {
+    --clr-accent: #fabd2f;
+    --clr-accent-dim: #d79921;
+    --clr-accent-glow: rgba(250, 189, 47, 0.18);
+    --clr-link-visited: #fabd2f;
+  }
+
+  .tokyo-night {
+    --clr-accent: #7aa2f7;
+    --clr-accent-dim: #bb9af7;
+    --clr-accent-glow: rgba(122, 162, 247, 0.18);
+    --clr-link-visited: #7aa2f7;
+  }
+
+  .midnight {
+    --clr-accent: #a78bfa;
+    --clr-accent-dim: #7c3aed;
+    --clr-accent-glow: rgba(167, 139, 250, 0.18);
+    --clr-link-visited: #a78bfa;
+  }
+
+  .notebook {
+    --clr-accent: #cc4400;
+    --clr-accent-dim: #a33600;
+    --clr-accent-glow: rgba(204, 68, 0, 0.18);
+    --clr-link-visited: #cc4400;
+  }
+
+  /* ── Light Mode (Warm E-Ink / Newsprint Aesthetic) ──────────────────── */
+  html.light,
+  html[data-mode='light'] {
+    --clr-body-bg: #f3f0e8;
+    --clr-body-text: #1b1a17;
+    --clr-bold-text: #11100e;
+    --clr-text-muted: #5c5950;
+    --clr-text-subtle: #858074;
+
+    --clr-surface: #eae6dc;
+    --clr-surface-2: #e0dbd0;
+    --clr-border: #cfc9bc;
+    --clr-border-hover: #aca596;
+
+    --clr-navbar-bg: rgba(243, 240, 232, 0.88);
+    --clr-navbar-text: #1b1a17;
+    --clr-container-bg: #eae6dc;
+    --clr-hamburger-bg: #1b1a17;
+    --clr-off-screen-menu-txt: #1b1a17;
+
+    --clr-accent: #b45309;
+    --clr-accent-dim: #92400e;
+    --clr-accent-glow: rgba(180, 83, 9, 0.14);
+    --clr-accent-subtle: rgba(180, 83, 9, 0.08);
+    --clr-accent-muted: #d97706;
+    --clr-accent-2: #1d4ed8;
+    --clr-link-visited: #b45309;
+    --clr-accent-text: #f3f0e8;
+
+    --clr-code-bg: #eae6dc;
+    --clr-code-text: #1b1a17;
+    --clr-code-comment: #757065;
+    --clr-code-keyword: #92400e;
+    --clr-code-string: #15803d;
+    --clr-code-func: #1d4ed8;
+    --clr-code-number: #b45309;
+    --clr-code-builtin: #6d28d9;
+    --clr-code-var: #0f766e;
+    --clr-code-operator: #be123c;
+    --clr-code-deleted: #b91c1c;
+
+    --clr-inline-code-bg: #e2ddd2;
+    --clr-inline-code-text: #92400e;
+  }
+
+  /* Accent Variations under Light Mode */
+  .light.lavender {
+    --clr-accent: #6d28d9;
+    --clr-accent-dim: #4c1d95;
+    --clr-accent-glow: rgba(109, 40, 217, 0.12);
+    --clr-accent-subtle: rgba(109, 40, 217, 0.06);
+    --clr-accent-muted: #7c3aed;
+    --clr-link-visited: #6d28d9;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #6d28d9;
+  }
+
+  .light.white,
+  .light.monochrome {
+    --clr-accent: #18181c;
+    --clr-accent-dim: #3f3f46;
+    --clr-accent-glow: rgba(24, 24, 28, 0.12);
+    --clr-accent-subtle: rgba(24, 24, 28, 0.05);
+    --clr-accent-muted: #71717a;
+    --clr-link-visited: #18181c;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #18181c;
+  }
+
+  .light.catppuccin,
+  .light.catppuccin-dark {
+    --clr-accent: #db2777;
+    --clr-accent-dim: #be185d;
+    --clr-accent-glow: rgba(219, 39, 119, 0.12);
+    --clr-accent-subtle: rgba(219, 39, 119, 0.06);
+    --clr-accent-muted: #9d174d;
+    --clr-link-visited: #db2777;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #be185d;
+  }
+
+  .light.red {
+    --clr-accent: #dc2626;
+    --clr-accent-dim: #b91c1c;
+    --clr-accent-glow: rgba(220, 38, 38, 0.12);
+    --clr-accent-subtle: rgba(220, 38, 38, 0.06);
+    --clr-accent-muted: #991b1b;
+    --clr-link-visited: #dc2626;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #dc2626;
+  }
+
+  .light.coral {
+    --clr-accent: #ea580c;
+    --clr-accent-dim: #c2410c;
+    --clr-accent-glow: rgba(234, 88, 12, 0.12);
+    --clr-accent-subtle: rgba(234, 88, 12, 0.06);
+    --clr-accent-muted: #9a3412;
+    --clr-link-visited: #ea580c;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #ea580c;
+  }
+
+  .light.emerald {
+    --clr-accent: #059669;
+    --clr-accent-dim: #047857;
+    --clr-accent-glow: rgba(5, 150, 105, 0.12);
+    --clr-accent-subtle: rgba(5, 150, 105, 0.06);
+    --clr-accent-muted: #065f46;
+    --clr-link-visited: #059669;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #059669;
+  }
+
+  .light.green {
+    --clr-accent: #059669;
+    --clr-accent-dim: #047857;
+    --clr-accent-glow: rgba(5, 150, 105, 0.12);
+    --clr-link-visited: #059669;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #059669;
+  }
+
+  .light.cyan {
+    --clr-accent: #0284c7;
+    --clr-accent-dim: #0369a1;
+    --clr-accent-glow: rgba(2, 132, 199, 0.12);
+    --clr-link-visited: #0284c7;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #0284c7;
+  }
+
+  .light.sunset {
+    --clr-accent: #ea580c;
+    --clr-accent-dim: #c2410c;
+    --clr-accent-glow: rgba(234, 88, 12, 0.12);
+    --clr-link-visited: #ea580c;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #ea580c;
+  }
+
+  .light.cyberpunk2077 {
+    --clr-accent: #b45309;
+    --clr-accent-dim: #92400e;
+    --clr-accent-glow: rgba(180, 83, 9, 0.14);
+    --clr-link-visited: #b45309;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #b45309;
+  }
+
+  .light.phosphor {
+    --clr-accent: #d97706;
+    --clr-accent-dim: #b45309;
+    --clr-accent-glow: rgba(217, 119, 6, 0.14);
+    --clr-link-visited: #d97706;
+    --clr-accent-text: #ffffff;
+    --clr-inline-code-text: #d97706;
+  }
+
+  .light .theme-picker__menu {
+    box-shadow:
+      0 10px 25px rgba(0, 0, 0, 0.08),
+      0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+}

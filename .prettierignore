@@ -3,7 +3,7 @@ _site
 package-lock.json
 src/assets/css/style.css
 src/assets/css/desktop.css
-src/assets/js/v3/vendor
+src/assets/js/desktop/vendor
 .agents
 docs
 .opencode

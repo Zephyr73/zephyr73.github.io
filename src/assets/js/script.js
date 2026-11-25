@@ -81,13 +81,15 @@ function getActiveThemeState() {
 
   if (isEmbedded) {
     mode =
-      sessionStorage.getItem('v2-embedded-mode') ||
+      sessionStorage.getItem('site-embedded-mode') ||
       (document.documentElement.classList.contains('light') ? 'light' : 'dark');
     accent =
-      sessionStorage.getItem('v2-embedded-accent') || localStorage.getItem('v3-theme') || 'green';
+      sessionStorage.getItem('site-embedded-accent') ||
+      localStorage.getItem('desktop-theme') ||
+      'green';
   } else {
     mode =
-      localStorage.getItem('v2-mode') ||
+      localStorage.getItem('site-mode') ||
       (document.documentElement.classList.contains('light') ? 'light' : 'dark');
     accent = document.documentElement.getAttribute('data-static-accent') || 'white';
   }
@@ -119,17 +121,17 @@ document.addEventListener(
   true,
 );
 
-function _applyThemeDOM(themeKey, modeKey, fromV3 = false) {
+function _applyThemeDOM(themeKey, modeKey, fromDesktop = false) {
   const { isEmbedded, mode: prevMode, accent: prevAccent } = getActiveThemeState();
   let currentMode = prevMode;
   let currentAccent = prevAccent;
 
-  if (fromV3) {
+  if (fromDesktop) {
     if (themeKey) {
       currentAccent = themeKey;
     }
     if (isEmbedded) {
-      sessionStorage.removeItem('v2-embedded-accent');
+      sessionStorage.removeItem('site-embedded-accent');
     }
   } else {
     if (modeKey) {
@@ -141,12 +143,12 @@ function _applyThemeDOM(themeKey, modeKey, fromV3 = false) {
 
   // Persist preferences
   if (isEmbedded) {
-    if (!fromV3) {
-      sessionStorage.setItem('v2-embedded-mode', currentMode);
-      sessionStorage.setItem('v2-embedded-accent', currentAccent);
+    if (!fromDesktop) {
+      sessionStorage.setItem('site-embedded-mode', currentMode);
+      sessionStorage.setItem('site-embedded-accent', currentAccent);
     }
   } else {
-    localStorage.setItem('v2-mode', currentMode);
+    localStorage.setItem('site-mode', currentMode);
   }
 
   // Preserve unrelated classes like 'no-scroll' and 'is-embedded'
@@ -185,13 +187,13 @@ function _applyThemeDOM(themeKey, modeKey, fromV3 = false) {
   }
 }
 
-function applyTheme(themeKey, modeKey, fromV3 = false) {
+function applyTheme(themeKey, modeKey, fromDesktop = false) {
   if (
     !document.startViewTransition ||
     window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-    fromV3
+    fromDesktop
   ) {
-    _applyThemeDOM(themeKey, modeKey, fromV3);
+    _applyThemeDOM(themeKey, modeKey, fromDesktop);
     return;
   }
 
@@ -203,7 +205,7 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
   );
 
   const transition = document.startViewTransition(() => {
-    _applyThemeDOM(themeKey, modeKey, fromV3);
+    _applyThemeDOM(themeKey, modeKey, fromDesktop);
   });
 
   transition.ready.then(() => {
@@ -221,15 +223,15 @@ function applyTheme(themeKey, modeKey, fromV3 = false) {
 }
 window.applyTheme = applyTheme;
 
-// Show V3 desktop sync option and hide switch-to-v3 buttons when embedded
+// Show Desktop OS theme sync option and hide switch-to-desktop buttons when embedded
 if (window.self !== window.top) {
   document.documentElement.classList.add('is-embedded');
-  document.querySelectorAll('.v3-theme-sync-opt').forEach((el) => {
+  document.querySelectorAll('.desktop-theme-sync-opt').forEach((el) => {
     el.style.display = el.tagName === 'BUTTON' ? 'inline-flex' : 'flex';
   });
   document
     .querySelectorAll(
-      '.site-nav__v3-btn, .site-nav__drawer-v3, .drawer-v3-btn, .btn--v3-launch, [data-v3-switch]',
+      '.site-nav__desktop-btn, .site-nav__drawer-desktop, .drawer-desktop-btn, [data-desktop-switch]',
     )
     .forEach((el) => {
       el.style.display = 'none';
@@ -1072,8 +1074,8 @@ function prefetchHref(href) {
   if (url.pathname === window.location.pathname) {
     return; // current page / in-page anchors
   }
-  if (url.pathname.startsWith('/v3/')) {
-    return; // V3 is a hard-cut SPA by design
+  if (url.pathname.startsWith('/desktop/')) {
+    return; // Desktop OS is a hard-cut SPA by design
   }
   const extMatch = url.pathname.match(/\.([a-z0-9]+)$/i);
   if (extMatch && !/^(html?|md)$/i.test(extMatch[1])) {

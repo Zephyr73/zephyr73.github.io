@@ -1,0 +1,451 @@
+/**
+ * gallery.js — Gallery Image Viewer App
+ */
+
+import { ls, getNodeByPath } from '../filesystem.js';
+
+export function createGalleryApp(filePath, fileTitle) {
+  const container = document.createElement('div');
+  container.className = 'app-gallery';
+
+  function sanitizeSlug(raw) {
+    return String(raw)
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  // Get candidate public URLs from virtual path (largest first)
+  function getCandidateSrcs(vPath) {
+    if (vPath && vPath.startsWith('/gallery/')) {
+      const rel = vPath.slice('/gallery/'.length);
+      const slashIdx = rel.indexOf('/');
+      if (slashIdx > -1) {
+        const subdir = rel.slice(0, slashIdx);
+        const filename = rel.slice(slashIdx + 1);
+        const lastDot = filename.lastIndexOf('.');
+        const rawBase = lastDot > -1 ? filename.slice(0, lastDot) : filename;
+        const base = `/assets/img/gallery/${subdir}/${sanitizeSlug(rawBase)}`;
+        return [`${base}-1800.webp`, `${base}-1200.webp`, `${base}-800.webp`, `${base}-400.webp`];
+      }
+    }
+    return [vPath];
+  }
+
+  // State
+  let currentFilePath = filePath;
+  let currentTitle = fileTitle;
+
+  // Header
+  const header = document.createElement('div');
+  header.className = 'gallery-viewer-header';
+
+  const headerTitle = document.createElement('div');
+  headerTitle.className = 'gallery-header-info';
+  headerTitle.textContent = currentTitle;
+
+  // Zoom & Drag State
+  let scale = 1;
+  const scaleStep = 0.25;
+  const maxScale = 4.0;
+  const minScale = 0.5;
+
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let translateX = 0;
+  let translateY = 0;
+
+  const actions = document.createElement('div');
+  actions.className = 'gallery-header-actions';
+
+  const zoomInBtn = document.createElement('button');
+  zoomInBtn.className = 'gallery-action-btn';
+  zoomInBtn.innerHTML =
+    '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/><line x1="6.5" y1="4.5" x2="6.5" y2="8.5"/><line x1="4.5" y1="6.5" x2="8.5" y2="6.5"/></svg><span>IN</span>';
+  zoomInBtn.title = 'Zoom In';
+
+  const zoomOutBtn = document.createElement('button');
+  zoomOutBtn.className = 'gallery-action-btn';
+  zoomOutBtn.innerHTML =
+    '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/><line x1="4.5" y1="6.5" x2="8.5" y2="6.5"/></svg><span>OUT</span>';
+  zoomOutBtn.title = 'Zoom Out';
+
+  const zoomResetBtn = document.createElement('button');
+  zoomResetBtn.className = 'gallery-action-btn';
+  zoomResetBtn.innerHTML =
+    '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9L2.5 5.5"/><polyline points="2.5 2 2.5 5.5 6 5.5"/></svg><span>RESET</span>';
+  zoomResetBtn.title = 'Reset Zoom';
+
+  const infoBtn = document.createElement('button');
+  infoBtn.className = 'gallery-action-btn';
+  infoBtn.innerHTML =
+    '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6"/><line x1="8" y1="7.5" x2="8" y2="11.5"/><circle cx="8" cy="5" r="0.75" fill="currentColor" stroke="none"/></svg><span>INFO</span>';
+  infoBtn.title = 'Show Metadata';
+
+  const downloadBtn = document.createElement('a');
+  downloadBtn.className = 'gallery-action-btn';
+  downloadBtn.innerHTML =
+    '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 10.5v3h11v-3"/><polyline points="4.5 7 8 10.5 11.5 7"/><line x1="8" y1="2" x2="8" y2="10.5"/></svg><span>DOWNLOAD</span>';
+  downloadBtn.title = 'Download original image';
+  downloadBtn.setAttribute('download', '');
+
+  actions.appendChild(zoomInBtn);
+  actions.appendChild(zoomOutBtn);
+  actions.appendChild(zoomResetBtn);
+  actions.appendChild(infoBtn);
+  actions.appendChild(downloadBtn);
+  header.appendChild(headerTitle);
+  header.appendChild(actions);
+
+  // Main Image area
+  const imageArea = document.createElement('div');
+  imageArea.className = 'gallery-image-area';
+
+  const mainImg = document.createElement('img');
+  mainImg.alt = 'Gallery image';
+  imageArea.appendChild(mainImg);
+
+  // Info overlay panel
+  const infoPanel = document.createElement('div');
+  infoPanel.className = 'gallery-info-panel';
+  infoPanel.innerHTML = `
+    <h4>Metadata</h4>
+    <div class="gallery-info-row">
+      <span class="gallery-info-label">Filename</span>
+      <span class="gallery-info-value" id="meta-name">--</span>
+    </div>
+    <div class="gallery-info-row">
+      <span class="gallery-info-label">Category</span>
+      <span class="gallery-info-value" id="meta-category">--</span>
+    </div>
+    <div class="gallery-info-row">
+      <span class="gallery-info-label">Resolution</span>
+      <span class="gallery-info-value" id="meta-res">--</span>
+    </div>
+    <div class="gallery-info-row">
+      <span class="gallery-info-label">File Size</span>
+      <span class="gallery-info-value" id="meta-size">--</span>
+    </div>
+    <div class="gallery-info-row">
+      <span class="gallery-info-label">Device / Engine</span>
+      <span class="gallery-info-value" id="meta-device">--</span>
+    </div>
+    <div class="gallery-info-row">
+      <span class="gallery-info-label">Captured Date</span>
+      <span class="gallery-info-value" id="meta-date">--</span>
+    </div>
+    <div class="gallery-info-row">
+      <span class="gallery-info-label">License</span>
+      <span class="gallery-info-value">© Tasrif · CC BY-NC 4.0</span>
+    </div>
+  `;
+  imageArea.appendChild(infoPanel);
+
+  // Bottom Nav bar
+  const navBar = document.createElement('div');
+  navBar.className = 'gallery-nav-bar';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'gallery-nav-btn';
+  prevBtn.innerHTML =
+    '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="10 3 5 8 10 13"/></svg><span>PREV</span>';
+
+  const counter = document.createElement('span');
+  counter.className = 'gallery-counter';
+  counter.textContent = '0 / 0';
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'gallery-nav-btn';
+  nextBtn.innerHTML =
+    '<span>NEXT</span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 3 11 8 6 13"/></svg>';
+
+  navBar.appendChild(prevBtn);
+  navBar.appendChild(counter);
+  navBar.appendChild(nextBtn);
+
+  container.appendChild(header);
+  container.appendChild(imageArea);
+  container.appendChild(navBar);
+
+  // Load Image
+  function loadImage(vPath) {
+    currentFilePath = vPath;
+    const node = getNodeByPath(vPath);
+    currentTitle = node ? node.name : vPath.split('/').pop();
+
+    headerTitle.textContent = currentTitle;
+
+    // Reset zoom and panning state on load
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    updateImgTransform();
+
+    const candidates = getCandidateSrcs(vPath);
+
+    // Clear out previous image visually immediately
+    mainImg.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+    downloadBtn.href = '#';
+
+    const resVal = infoPanel.querySelector('#meta-res');
+    resVal.textContent = 'Loading...';
+
+    // Helper to try loading candidates
+    function tryLoadImage(index) {
+      if (index >= candidates.length) {
+        resVal.textContent = 'Failed to load';
+        return;
+      }
+      const testSrc = candidates[index];
+      const imgObj = new Image();
+      imgObj.onload = () => {
+        // Success! Set the real UI
+        mainImg.src = testSrc;
+        downloadBtn.href = testSrc.replace(/\.webp$/, '.jpeg');
+        resVal.textContent = `${imgObj.naturalWidth} × ${imgObj.naturalHeight}`;
+      };
+      imgObj.onerror = () => {
+        // Failed, try the next size down
+        tryLoadImage(index + 1);
+      };
+      imgObj.src = testSrc;
+    }
+
+    // Start loading the largest candidate
+    tryLoadImage(0);
+
+    // Fill metadata panel fields
+    infoPanel.querySelector('#meta-name').textContent = currentTitle;
+
+    // Category mapping
+    let category = 'General';
+    let device = 'Unknown Camera';
+    let dateStr = 'Jun 2026'; // Default simulation fallback
+
+    const parts = vPath.split('/');
+    const folder = parts[2] || 'general';
+    category = folder.charAt(0).toUpperCase() + folder.slice(1);
+
+    if (folder === 'photography') {
+      device = 'Samsung Galaxy S22 Ultra';
+      dateStr = 'May 2024';
+    } else if (folder === 'ai') {
+      category = 'AI Generation';
+      device = 'Stable Diffusion v1.5';
+      dateStr = 'Oct 2024';
+    } else if (folder === 'forza') {
+      category = 'Forza Screen';
+      device = 'Xbox Series X / Forza Engine';
+      dateStr = 'Dec 2024';
+    }
+
+    infoPanel.querySelector('#meta-category').textContent = category;
+    infoPanel.querySelector('#meta-size').textContent = node ? node.size : 'Unknown';
+    infoPanel.querySelector('#meta-device').textContent = device;
+    infoPanel.querySelector('#meta-date').textContent = dateStr;
+
+    updateNavigation();
+  }
+
+  // Navigation Logic
+  function getFolderImages() {
+    const parentPath = currentFilePath.substring(0, currentFilePath.lastIndexOf('/')) || '/';
+    const siblings = ls(parentPath) || [];
+    return siblings.filter((node) => node.type === 'file' && node.fileType === 'img');
+  }
+
+  function updateNavigation() {
+    const images = getFolderImages();
+    const idx = images.findIndex((node) => node.path === currentFilePath);
+
+    if (idx === -1 || images.length === 0) {
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      counter.textContent = '1 / 1';
+      return;
+    }
+
+    counter.textContent = `${idx + 1} / ${images.length}`;
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === images.length - 1;
+
+    // Save index references for clicks
+    prevBtn.onclick = () => {
+      if (idx > 0) loadImage(images[idx - 1].path);
+    };
+
+    nextBtn.onclick = () => {
+      if (idx < images.length - 1) loadImage(images[idx + 1].path);
+    };
+  }
+
+  // Info toggle
+  infoBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    infoPanel.classList.toggle('visible');
+    infoBtn.classList.toggle('active');
+  });
+
+  // Hide info panel when clicking on the image area
+  imageArea.addEventListener('click', (e) => {
+    if (e.target !== infoBtn && !infoPanel.contains(e.target)) {
+      infoPanel.classList.remove('visible');
+      infoBtn.classList.remove('active');
+    }
+  });
+
+  function clampOffsets() {
+    const W_con = imageArea.clientWidth;
+    const H_con = imageArea.clientHeight;
+    const W_img = mainImg.offsetWidth * scale;
+    const H_img = mainImg.offsetHeight * scale;
+
+    if (W_img > W_con) {
+      const maxTranslateX = (W_img - W_con) / 2;
+      translateX = Math.max(-maxTranslateX, Math.min(translateX, maxTranslateX));
+    } else {
+      translateX = 0;
+    }
+
+    if (H_img > H_con) {
+      const maxTranslateY = (H_img - H_con) / 2;
+      translateY = Math.max(-maxTranslateY, Math.min(translateY, maxTranslateY));
+    } else {
+      translateY = 0;
+    }
+  }
+
+  function updateImgTransform() {
+    clampOffsets();
+    mainImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    if (scale > 1) {
+      mainImg.style.cursor = isDragging ? 'grabbing' : 'grab';
+    } else {
+      mainImg.style.cursor = 'default';
+    }
+  }
+
+  // Zoom Button listeners
+  zoomInBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    if (scale < maxScale) {
+      scale = Math.min(scale + scaleStep, maxScale);
+      updateImgTransform();
+    }
+  });
+
+  zoomOutBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    if (scale > minScale) {
+      scale = Math.max(scale - scaleStep, minScale);
+      if (scale <= 1) {
+        translateX = 0;
+        translateY = 0;
+      }
+      updateImgTransform();
+    }
+  });
+
+  zoomResetBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    updateImgTransform();
+  });
+
+  // Double click zoom toggle
+  mainImg.addEventListener('dblclick', (e) => {
+    e.stopPropagation();
+    window.playSound?.('click');
+    if (scale > 1) {
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+    } else {
+      scale = 2.0;
+    }
+    updateImgTransform();
+  });
+
+  // Panning & Dragging event listeners (Mouse)
+  mainImg.addEventListener('mousedown', (e) => {
+    if (scale <= 1) return;
+    e.preventDefault();
+    isDragging = true;
+    startX = e.clientX - translateX;
+    startY = e.clientY - translateY;
+    updateImgTransform();
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    translateX = e.clientX - startX;
+    translateY = e.clientY - startY;
+    updateImgTransform();
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      updateImgTransform();
+    }
+  });
+
+  // Panning & Dragging event listeners (Touch/Mobile)
+  mainImg.addEventListener(
+    'touchstart',
+    (e) => {
+      if (scale <= 1) return;
+      const touch = e.touches[0];
+      isDragging = true;
+      startX = touch.clientX - translateX;
+      startY = touch.clientY - translateY;
+      updateImgTransform();
+    },
+    { passive: true },
+  );
+
+  window.addEventListener(
+    'touchmove',
+    (e) => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      translateX = touch.clientX - startX;
+      translateY = touch.clientY - startY;
+      updateImgTransform();
+    },
+    { passive: true },
+  );
+
+  window.addEventListener('touchend', () => {
+    if (isDragging) {
+      isDragging = false;
+      updateImgTransform();
+    }
+  });
+
+  // Resolve initial file if opened directly from Desktop Gallery shortcut
+  if (!currentFilePath) {
+    for (const dir of ['/gallery/photography', '/gallery/ai', '/gallery/forza']) {
+      const firstImg = (ls(dir) || []).find((n) => n.type === 'file' && n.fileType === 'img');
+      if (firstImg) {
+        currentFilePath = firstImg.path;
+        break;
+      }
+    }
+  }
+
+  // Load the initial file
+  if (currentFilePath) {
+    loadImage(currentFilePath);
+  }
+
+  return container;
+}

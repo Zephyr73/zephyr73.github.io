@@ -23,8 +23,8 @@ const HIDDEN = new Set([
   '.github',
   '.venv',
   '__pycache__',
-  'v2',
-  'v3', // V3 desktop SPA — not exposed in virtual filesystem
+  'site',
+  'desktop', // Desktop OS SPA — not exposed in virtual filesystem
 ]);
 
 const EXT_MAP = {
@@ -133,10 +133,10 @@ export default function () {
     });
   }
 
-  // Inject V2 content pages into the virtual filesystem root
-  const v2ContentDirs = ['about', 'blog', 'projects'];
-  for (const dir of v2ContentDirs) {
-    const realPath = `./src/v2/${dir}`;
+  // Inject Basic Site content pages into the virtual filesystem root
+  const siteContentDirs = ['about', 'blog', 'projects'];
+  for (const dir of siteContentDirs) {
+    const realPath = `./src/site/${dir}`;
     const children = scanDir(realPath, `/${dir}`);
     rootChildren.push({
       name: dir,

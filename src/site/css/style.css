@@ -1,0 +1,87 @@
+/* Basic Site entry point — Tailwind CSS + layered component styles.
+   Order: Tailwind (theme/base/components/utilities) then custom layers. */
+
+@import 'tailwindcss';
+
+/* ── Site CSS (7-1 architecture, CSS-native) ────────────────────────────── */
+@import './abstracts/_tokens.css';
+@import './base/_reset.css';
+@import './base/_fonts.css';
+@import './base/_base.css';
+@import './base/_typography.css';
+@import './base/_utilities.css';
+@import './base/_transitions.css';
+
+@import './components/_tables.css';
+@import './components/_nav.css';
+@import './components/_markdown.css';
+
+@import './layout/_layout.css';
+@import './themes/_themes.css';
+
+@import './pages/_gallery.css';
+@import './pages/_gallery-detail.css';
+
+@import './vendors/_syntax.css';
+
+/* ── Content scanning ───────────────────────────────────────────────────── */
+@source '../..';
+@source not '../../assets';
+
+/* ── Design tokens mapped for Tailwind utilities ──────────────────────────
+   Values forward-reference the runtime theme vars so utilities follow the
+   active Basic Site theme. */
+@theme {
+  --font-regular: var(--font-regular);
+  --font-heading: var(--font-heading);
+  --font-bold: var(--font-bold);
+  --font-code: var(--font-code);
+
+  --color-body-bg: var(--clr-body-bg);
+  --color-body-text: var(--clr-body-text);
+  --color-text-muted: var(--clr-text-muted);
+  --color-text-subtle: var(--clr-text-subtle);
+
+  --color-surface: var(--clr-surface);
+  --color-surface-2: var(--clr-surface-2);
+  --color-border: var(--clr-border);
+  --color-border-hover: var(--clr-border-hover);
+
+  --color-navbar-bg: var(--clr-navbar-bg);
+  --color-navbar-text: var(--clr-navbar-text);
+  --color-container-bg: var(--clr-container-bg);
+  --color-hamburger-bg: var(--clr-hamburger-bg);
+  --color-off-screen-menu-txt: var(--clr-off-screen-menu-txt);
+
+  --color-accent: var(--clr-accent);
+  --color-accent-dim: var(--clr-accent-dim);
+  --color-accent-glow: var(--clr-accent-glow);
+  --color-accent-subtle: var(--clr-accent-subtle);
+  --color-accent-muted: var(--clr-accent-muted);
+  --color-accent-2: var(--clr-accent-2);
+  --color-link-visited: var(--clr-link-visited);
+  --color-accent-text: var(--clr-accent-text);
+  --color-bold-text: var(--clr-bold-text);
+
+  --color-code-bg: var(--clr-code-bg);
+  --color-code-text: var(--clr-code-text);
+  --color-code-comment: var(--clr-code-comment);
+  --color-code-keyword: var(--clr-code-keyword);
+  --color-code-string: var(--clr-code-string);
+  --color-code-func: var(--clr-code-func);
+  --color-code-number: var(--clr-code-number);
+  --color-code-builtin: var(--clr-code-builtin);
+  --color-code-var: var(--clr-code-var);
+  --color-code-operator: var(--clr-code-operator);
+  --color-code-deleted: var(--clr-code-deleted);
+  --color-inline-code-bg: var(--clr-inline-code-bg);
+  --color-inline-code-text: var(--clr-inline-code-text);
+
+  /* Legacy mappings to avoid breaking existing Tailwind classes if any */
+  --color-bg: var(--clr-body-bg);
+  --color-fg: var(--clr-body-text);
+  --color-container: var(--clr-container-bg);
+
+  --ease-default: ease;
+  --ease-in-default: ease-in;
+}

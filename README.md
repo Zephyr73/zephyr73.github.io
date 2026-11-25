@@ -15,7 +15,7 @@ To clone only the content folders onto your laptop to publish content on the go:
     git clone --no-checkout https://github.com/Zephyr73/zephyr73.github.io.git
     cd zephyr73.github.io
     git sparse-checkout init --cone
-    git sparse-checkout set src/v2/blog src/v2/projects src/assets/img
+    git sparse-checkout set src/site/blog src/site/projects src/assets/img
     git checkout main
     ```
 2.  Add/edit posts locally, then commit and push:

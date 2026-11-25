@@ -12,13 +12,13 @@ export default function (eleventyConfig) {
   // 1. Copy the 'assets' folder exactly as is to the output
   eleventyConfig.addPassthroughCopy('src/assets');
 
-  // Copy raw v2 markdown files to their original paths so the v3 markdown viewer can fetch them
-  const v2Passthrough = {
-    'src/v2/blog/*.md': 'blog/',
-    'src/v2/about/index.md': 'about/index.md',
-    'src/v2/projects/*.md': 'projects/',
+  // Copy raw site markdown files to their original paths so the desktop markdown viewer can fetch them
+  const sitePassthrough = {
+    'src/site/blog/*.md': 'blog/',
+    'src/site/about/index.md': 'about/index.md',
+    'src/site/projects/*.md': 'projects/',
   };
-  eleventyConfig.addPassthroughCopy(v2Passthrough);
+  eleventyConfig.addPassthroughCopy(sitePassthrough);
 
   // Copy root license files so the footer links resolve in the built site
   eleventyConfig.addPassthroughCopy({
@@ -29,9 +29,9 @@ export default function (eleventyConfig) {
   // 2. Watch for changes in CSS/JS so the browser reloads automatically
   eleventyConfig.addWatchTarget('./src/assets/js/');
   eleventyConfig.addWatchTarget('./src/assets/css/');
-  // Watch V2 and V3 CSS sources (compiled via Tailwind CLI, not Eleventy)
-  eleventyConfig.addWatchTarget('./src/v2/css/');
-  eleventyConfig.addWatchTarget('./src/v3/css/');
+  // Watch Site and Desktop CSS sources (compiled via Tailwind CLI, not Eleventy)
+  eleventyConfig.addWatchTarget('./src/site/css/');
+  eleventyConfig.addWatchTarget('./src/desktop/css/');
 
   // 3. Add Plugins, Layouts & Filters
   eleventyConfig.addPlugin(syntaxHighlight);
@@ -356,7 +356,7 @@ export default function (eleventyConfig) {
     dir: {
       input: 'src', // Look for files in the src folder
       output: '_site', // Output the built site to '_site' folder
-      includes: 'v2/_includes', // V2 layouts & partials (V3 uses layout: false)
+      includes: 'site/_includes', // Basic site layouts & partials (Desktop OS uses layout: false)
     },
   };
 }
