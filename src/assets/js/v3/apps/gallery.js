@@ -8,19 +8,27 @@ export function createGalleryApp(filePath, fileTitle) {
   const container = document.createElement('div');
   container.className = 'app-gallery';
 
+  function sanitizeSlug(raw) {
+    return String(raw)
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
   // Get candidate public URLs from virtual path (largest first)
   function getCandidateSrcs(vPath) {
-    if (vPath.startsWith('/gallery/')) {
-      let p = vPath.replace('/gallery/', '/assets/img/gallery/');
-      const lastDot = p.lastIndexOf('.');
-      if (lastDot > -1) {
-        const base = p.substring(0, lastDot);
-        return [
-          base + '-1800w.webp',
-          base + '-1200w.webp',
-          base + '-800w.webp',
-          base + '-400w.webp',
-        ];
+    if (vPath && vPath.startsWith('/gallery/')) {
+      const rel = vPath.slice('/gallery/'.length);
+      const slashIdx = rel.indexOf('/');
+      if (slashIdx > -1) {
+        const subdir = rel.slice(0, slashIdx);
+        const filename = rel.slice(slashIdx + 1);
+        const lastDot = filename.lastIndexOf('.');
+        const rawBase = lastDot > -1 ? filename.slice(0, lastDot) : filename;
+        const base = `/assets/img/gallery/${subdir}/${sanitizeSlug(rawBase)}`;
+        return [`${base}-1800.webp`, `${base}-1200.webp`, `${base}-800.webp`, `${base}-400.webp`];
       }
     }
     return [vPath];
@@ -189,7 +197,7 @@ export function createGalleryApp(filePath, fileTitle) {
       imgObj.onload = () => {
         // Success! Set the real UI
         mainImg.src = testSrc;
-        downloadBtn.href = testSrc;
+        downloadBtn.href = testSrc.replace(/\.webp$/, '.jpeg');
         resVal.textContent = `${imgObj.naturalWidth} × ${imgObj.naturalHeight}`;
       };
       imgObj.onerror = () => {
@@ -416,8 +424,21 @@ export function createGalleryApp(filePath, fileTitle) {
     }
   });
 
+  // Resolve initial file if opened directly from Desktop Gallery shortcut
+  if (!currentFilePath) {
+    for (const dir of ['/gallery/photography', '/gallery/ai', '/gallery/forza']) {
+      const firstImg = (ls(dir) || []).find((n) => n.type === 'file' && n.fileType === 'img');
+      if (firstImg) {
+        currentFilePath = firstImg.path;
+        break;
+      }
+    }
+  }
+
   // Load the initial file
-  loadImage(currentFilePath);
+  if (currentFilePath) {
+    loadImage(currentFilePath);
+  }
 
   return container;
 }

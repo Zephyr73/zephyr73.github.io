@@ -73,6 +73,7 @@ When creating or editing a project markdown file in `src/v2/projects/`:
 1. **Check existing skills first:** Read `CANONICAL_META` in `src/_data/lib/skills-shared.js` (and existing `src/v2/projects/*.md` files) and reuse exact canonical skill names (e.g., `REST APIs`, `SQLite`, `Proxmox VE`, `CLI`) instead of inventing variants.
 2. **Add new skills cleanly:** If a project introduces a skill not yet in `CANONICAL_META`, add it to the project's `skills:` frontmatter list **and** add an entry in `CANONICAL_META` (`src/_data/lib/skills-shared.js`) with its canonical display name and category (`Languages & Runtime`, `Infrastructure & Systems`, `Networking & Security`, `APIs & Automation`, `Systems & Hardware`, or `Data & Tooling`).
 3. Keep `tags: project` in project frontmatter for Eleventy's `collections.project`.
+4. **Manual overrides (`src/v2/about/index.md`):** Use `skillOverrides.add` (strings or `{ name, category }` objects) to include skills not tied to public projects, and `skillOverrides.remove` to exclude project skills from the global pool (`/about/`, `resume.pdf`).
 
 ## Blog Posts
 

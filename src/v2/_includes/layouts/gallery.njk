@@ -1,0 +1,59 @@
+---
+layout: base.njk
+noMarkdownWrapper: true
+---
+<div class="page-intro pb-5 mb-2 max-md:pb-4">
+  <h1 class="page-intro__title font-heading text-[clamp(1.65rem,3.4vw,2.2rem)] font-bold tracking-[-0.02em] leading-[1.2] text-body-text m-0 mb-2.5">{{ heading | safe }}</h1>
+  <p class="page-intro__desc font-regular text-[0.9rem] leading-[1.65] text-text-muted max-w-[680px] m-0">
+    {{ intro | safe }}
+  </p>
+</div>
+
+<div class="dither-rule mb-6 max-md:mb-4" aria-hidden="true"></div>
+
+<nav
+  class="gallery-tabs flex justify-start items-center mb-6 max-md:mb-4 max-md:w-full max-md:box-border"
+  aria-label="Gallery sections">
+  <ul class="inline-flex flex-nowrap gap-1 p-[3px] bg-surface border border-border m-0 box-border max-md:flex max-md:flex-row
+      max-md:w-full max-md:gap-[2px] max-md:p-[2px]">
+    {% for tab in tabs %}
+      <li class="m-0 p-0 list-none max-md:flex-1 max-md:min-w-0 max-md:flex">
+        <button
+          type="button"
+          class="gallery-tabs__btn bg-transparent border border-transparent text-text-muted font-code text-[0.8rem]
+            font-semibold py-[7px] px-4 cursor-pointer rounded-none tracking-[0.02em] transition-colors duration-150 ease-default
+            whitespace-nowrap box-border hover:text-body-text [&.is-active]:bg-accent-subtle [&.is-active]:border-accent/40
+            [&.is-active]:text-accent max-md:w-full max-md:min-w-0 max-md:flex max-md:items-center max-md:justify-center
+            max-md:py-[6px] max-md:px-[4px] max-md:text-[clamp(0.68rem,2.7vw,0.775rem)] max-md:tracking-normal max-md:overflow-hidden
+            max-md:text-ellipsis max-md:leading-[1.2]">
+          {{ tab.label }}
+        </button>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+
+{% for tab in tabs %}
+  <div
+    id="{{ tab.id }}"
+    class="gallery-grid gallery-grid--{{ tab.key }} hidden opacity-0 transition-opacity duration-150 ease-default flex-row
+      justify-between items-start pt-[20px] gap-[20px] [&.is-visible]:flex [&.is-visible]:opacity-100 max-md:gap-[20px]
+      max-md:flex-col max-[519px]:max-md:flex min-[520px]:max-md:[&.is-visible]:grid min-[520px]:max-md:grid-cols-2
+      min-[520px]:max-md:gap-4">
+    {% for col in [0, 1, 2] %}
+      <div class="gallery-grid__column flex flex-col w-[32.5%] items-center gap-[20px] contain-layout max-md:contents
+          [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:object-cover [&_img]:translate-z-0
+          [&_img]:backface-hidden">
+        {% for img in gallery[tab.key] %}
+          {% if (loop.index0 % 3) == col %}
+            {% if tab.eagerFirstRow and loop.index0 < 3 %}
+              {% gimg img.src, img.alt, "eager", "high", loop.index0 %}
+            {% else %}
+              {% gimg img.src, img.alt, "", "", loop.index0 %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}

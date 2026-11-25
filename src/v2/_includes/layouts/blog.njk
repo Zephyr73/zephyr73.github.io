@@ -1,20 +1,14 @@
 ---
 layout: base.njk
-permalink: /blog/
-title: Blog • Tasrif — Notes & Guides
-bodyClass: page--blog
-pageId: blog-index
 noMarkdownWrapper: true
-description: 'Technical notes, desktop setup guides, and development walkthroughs by Tasrif.'
 ---
-
 {% from "components/card.njk" import project_card %}
 
 <div class="blog-page max-w-[900px] mx-auto">
   <div class="page-intro pb-6 mb-2 max-md:pb-4">
-    <h1 class="page-intro__title font-heading text-[clamp(1.65rem,3.4vw,2.2rem)] font-bold tracking-[-0.02em] leading-[1.2] text-body-text m-0 mb-2.5">Notes &amp; Technical Guides</h1>
+    <h1 class="page-intro__title font-heading text-[clamp(1.65rem,3.4vw,2.2rem)] font-bold tracking-[-0.02em] leading-[1.2] text-body-text m-0 mb-2.5">{{ heading | safe }}</h1>
     <p class="page-intro__desc font-regular text-[0.9rem] leading-[1.65] text-text-muted max-w-[680px] m-0">
-      Documentation, setup walkthroughs, and personal notes on system configuration, development workflows, and software tooling.
+      {{ intro | safe }}
     </p>
   </div>
 

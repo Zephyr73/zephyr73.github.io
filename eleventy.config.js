@@ -33,8 +33,10 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget('./src/v2/css/');
   eleventyConfig.addWatchTarget('./src/v3/css/');
 
-  // 3. Add Plugins & Filters
+  // 3. Add Plugins, Layouts & Filters
   eleventyConfig.addPlugin(syntaxHighlight);
+  eleventyConfig.addLayoutAlias('base.njk', 'layouts/base.njk');
+  eleventyConfig.addLayoutAlias('about.njk', 'layouts/about.njk');
 
   // Filter to sort collection items by date descending (latest first)
   eleventyConfig.addFilter('sortByDate', function (items) {
@@ -114,7 +116,7 @@ export default function (eleventyConfig) {
       const outDir = `./_site/assets/img/gallery/${subdir}/`;
       const urlPath = `/assets/img/gallery/${subdir}/`;
       const widths = [400, 800, 1200, 1800];
-      const formats = ['webp', 'jpeg'];
+      const formats = ['webp'];
 
       const stats = fs.statSync(srcPath);
       const cache = loadMetaCache();
@@ -159,8 +161,14 @@ export default function (eleventyConfig) {
         targetWidths.push(srcMeta.width);
       }
 
+      const largestWidth = targetWidths[targetWidths.length - 1];
+      const jpegOutPath = path.join(outDir, `${baseName}-${largestWidth}.jpeg`);
+      const jpegCached =
+        fs.existsSync(jpegOutPath) && fs.statSync(jpegOutPath).mtimeMs >= stats.mtimeMs;
+
       const allCached =
         targetWidths.length > 0 &&
+        jpegCached &&
         formats.every((fmt) =>
           targetWidths.every((w) => {
             const fPath = path.join(outDir, `${baseName}-${w}.${fmt}`);
@@ -197,12 +205,20 @@ export default function (eleventyConfig) {
             return `${name}-${width}.${format}`;
           },
           sharpWebpOptions: {
-            quality: 80,
-          },
-          sharpJpegOptions: {
-            quality: 80,
+            quality: 82,
           },
         });
+
+        // Generate a single high-quality JPEG at largestWidth for gallery full-resolution downloads
+        if (!jpegCached) {
+          fs.mkdirSync(outDir, { recursive: true });
+          const srcBuf = await fs.promises.readFile(srcPath);
+          await sharp(srcBuf)
+            .rotate()
+            .resize({ width: largestWidth, withoutEnlargement: true })
+            .jpeg({ quality: 90, mozjpeg: true })
+            .toFile(jpegOutPath);
+        }
       }
 
       const imgAttrs = {
@@ -242,22 +258,21 @@ export default function (eleventyConfig) {
         order !== undefined && order !== null && order !== ''
           ? ` style="order: ${order}; --stagger-idx: ${order};"`
           : '';
-      return `<div class="gallery-item relative w-full flex flex-col overflow-hidden"${orderStyle}>
+      return `<div class="gallery-item relative w-full flex flex-col overflow-hidden border border-border bg-surface transition-colors duration-150"${orderStyle}>
   <a href="${detailUrl}" class="gallery-item__link block w-full relative cursor-pointer text-inherit no-underline" aria-label="View details for ${baseName}">
     ${pictureHtml}
-    <div class="gallery-item__overlay absolute inset-0 bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.85)] flex flex-col justify-end items-start p-[14px] gap-[10px]">
-      <div class="gallery-item__meta flex flex-col gap-[3px] font-regular text-[11px] text-[#d8d8d8]">${
+    <div class="gallery-item__overlay absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(16,17,16,0.35)] to-[rgba(16,17,16,0.92)] flex flex-col justify-end items-start p-[14px] gap-[10px]">
+      <div class="gallery-item__meta flex flex-col gap-[3px] font-code text-[0.7rem] text-[#e5e3dc]">${
         deviceStr
           ? `
-        <span>${deviceStr}</span>`
+        <span class="text-accent">${deviceStr}</span>`
           : ''
       }
         <span>${dateStr}</span>
-        <span>${resolutionStr}</span>
-        <span>${fileSizeStr}</span>
-        <span>© Tasrif · CC BY-NC 4.0</span>
+        <span>${resolutionStr} · ${fileSizeStr}</span>
+        <span class="text-[#a8a59e]">© Tasrif · CC BY-NC 4.0</span>
       </div>
-      <span class="gallery-item__view-details inline-block bg-body-text text-container-bg font-regular text-[12px] py-[6px] px-[14px] no-underline transition-colors duration-200 ease">View Details</span>
+      <span class="gallery-item__view-details inline-flex items-center gap-1.5 bg-surface/95 text-body-text border border-border font-code text-[0.74rem] font-semibold py-[5px] px-[12px] no-underline transition-colors duration-150 ease">&gt; View Details</span>
     </div>
   </a>
 </div>`;

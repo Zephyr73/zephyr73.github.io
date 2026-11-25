@@ -8,6 +8,11 @@ _site/
 # Compiled Assets (built by CI — do not commit)
 src/assets/css/style.css
 src/assets/css/desktop.css
+src/assets/resume.pdf
+
+# Logs
+*.log
+npm-debug.log*
 
 # System Files
 .DS_Store
@@ -16,15 +21,11 @@ Desktop.ini
 
 # Environment & Tooling
 .env
-.venv/
-__pycache__/
-*.pyc
+.env.*
 .vscode/
 .opencode/
 .agents/
-
-# Editor / Workspace
 *.code-workspace
 
-# Local planning notes
+# Local notes
 docs/

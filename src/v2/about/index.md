@@ -49,35 +49,12 @@ profile:
     - label: Focus
       value: 'Infrastructure & DevOps'
 
-skills:
-  - category: 'Infrastructure & Systems'
-    items:
-      - 'Linux System Administration'
-      - 'Proxmox & Virtualization'
-      - 'LXC Containers & Docker'
-      - 'Infrastructure as Code (IaC)'
-      - 'Disaster Recovery'
-  - category: 'Security & Networking'
-    items:
-      - 'Networking & DNS'
-      - 'Reverse Proxy & VPN'
-      - 'Reverse Engineering'
-  - category: 'DevOps & Automation'
-    items:
-      - 'Python & Bash'
-      - 'PowerShell'
-      - 'Git & GitHub'
-      - 'CI/CD & IT Automation'
-  - category: 'Data & Integration'
-    items:
-      - 'Web Scraping & APIs'
-      - 'Browser Automation'
-      - 'SQLite'
-  - category: 'Other Interests'
-    items:
-      - 'Local LLMs'
-      - 'Stable Diffusion / GenAI'
-      - 'Photography (Lightroom/PS)'
+# Manual skill pool overrides (merged with skills from src/v2/projects/*.md)
+# - add: skill names (e.g. 'Terraform') or { name, category } objects
+# - remove: skill names or slugs to exclude from /about/ and resume.pdf
+skillOverrides:
+  add: []
+  remove: []
 
 projects:
   - title: 'High-Availability Homelab & Hybrid Network'
@@ -188,7 +165,6 @@ education:
       Chemistry, and English Language.
 ---
 
-Beyond software engineering, I actively practice mobile photography with a Samsung Galaxy
-S22 Ultra, post-processing RAW compositions in Adobe Lightroom. I also experiment with
+Beyond software engineering, I actively photography with a Sony A6700, post-processing RAW compositions in Adobe Lightroom. I also experiment with
 latent diffusion models and local machine learning pipelines, testing ControlNet
 architectures and custom inference workflows.

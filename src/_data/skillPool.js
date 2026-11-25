@@ -4,6 +4,7 @@ import matter from 'gray-matter';
 import { normalizeSkill } from './lib/skills-shared.js';
 
 const PROJECTS_DIR = './src/v2/projects';
+const ABOUT_PATH = './src/v2/about/index.md';
 
 export default function () {
   const pool = new Map();
@@ -48,9 +49,46 @@ export default function () {
     }
   }
 
-  const all = Array.from(pool.values()).sort((a, b) => a.name.localeCompare(b.name));
+  // Apply manual add/remove overrides from src/v2/about/index.md (skillOverrides)
+  if (fs.existsSync(ABOUT_PATH)) {
+    const rawAbout = fs.readFileSync(ABOUT_PATH, 'utf8');
+    const { data: aboutData } = matter(rawAbout);
+    const overrides = aboutData.skillOverrides || {};
 
-  const top = [...all]
+    const additions = Array.isArray(overrides.add) ? overrides.add : [];
+    for (const item of additions) {
+      const rawName = typeof item === 'string' ? item : item?.name;
+      if (!rawName) continue;
+      const norm = normalizeSkill(rawName);
+      if (!norm.slug) continue;
+
+      const category =
+        typeof item === 'object' && item?.category ? String(item.category).trim() : norm.category;
+
+      if (!pool.has(norm.slug)) {
+        pool.set(norm.slug, {
+          name: norm.name,
+          slug: norm.slug,
+          category,
+          count: 0,
+          projects: [],
+        });
+      } else if (typeof item === 'object' && item?.category) {
+        pool.get(norm.slug).category = category;
+      }
+    }
+
+    const removals = Array.isArray(overrides.remove) ? overrides.remove : [];
+    for (const rawRemove of removals) {
+      const norm = normalizeSkill(rawRemove);
+      if (norm.slug) pool.delete(norm.slug);
+    }
+  }
+
+  const all = Array.from(pool.values()).sort((a, b) => a.name.localeCompare(b.name));
+  const withProjects = all.filter((s) => s.count > 0);
+
+  const top = [...withProjects]
     .sort((a, b) => (b.count !== a.count ? b.count - a.count : a.name.localeCompare(b.name)))
     .slice(0, 12)
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -76,6 +114,7 @@ export default function () {
 
   return {
     all,
+    withProjects,
     top,
     bySlug,
     categories,

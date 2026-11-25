@@ -316,6 +316,11 @@ export function openApp(appNameOrNode, pathArg, titleArg) {
         title = 'Console';
         filePath = null;
         break;
+      case 'gallery':
+        appFactory = () => createGalleryApp(null, 'Gallery');
+        title = 'Gallery';
+        filePath = '/gallery/photography';
+        break;
       default:
         console.warn('Unknown app:', appNameOrNode);
         return;

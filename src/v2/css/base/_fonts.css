@@ -2,15 +2,10 @@
 
 @layer base {
   @font-face {
-    font-family: 'Iosevka Webfont';
-    font-style: normal;
-    src: url('/assets/fonts/iosevka-regular.woff2') format('woff2');
-  }
-
-  @font-face {
     font-family: 'Iosevka Webfont Bold';
     font-style: normal;
     font-weight: bold;
+    font-display: swap;
     src: url('/assets/fonts/iosevka-ss08-bold.woff2') format('woff2');
   }
 
@@ -18,6 +13,7 @@
     font-family: 'JetBrains Mono';
     font-style: normal;
     font-weight: 400;
+    font-display: swap;
     src: url('/assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
   }
 
@@ -25,6 +21,7 @@
     font-family: 'JetBrains Mono';
     font-style: normal;
     font-weight: 600 700;
+    font-display: swap;
     src: url('/assets/fonts/JetBrainsMono-Bold.woff2') format('woff2');
   }
 
@@ -32,6 +29,7 @@
     font-family: 'JetBrains Mono Bold';
     font-style: normal;
     font-weight: bold;
+    font-display: swap;
     src: url('/assets/fonts/JetBrainsMono-Bold.woff2') format('woff2');
   }
 

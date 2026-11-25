@@ -1,31 +1,25 @@
 ---
 layout: base.njk
-permalink: /
-title: Tasrif — Backend & Systems Portfolio
-bodyClass: page--home
-pageId: home
 noMarkdownWrapper: true
-description: 'Portfolio of Tasrif — Computer Science student building backend systems, Linux automation, and self-hosted infrastructure.'
 ---
-
 {% from "components/card.njk" import project_card %}
 
 <!-- ── WHOAMI / INTRO ────────────────────────────────────────────────────── -->
 <section class="home-hero pt-4 pb-10 max-md:pt-1 max-md:pb-8">
   <p class="font-code text-[0.8rem] text-accent m-0 mb-3 tracking-[0.02em]">
-    tasrif@dev:~$ whoami
+    {{ hero.prompt }}
   </p>
   <h1 class="hero-title font-heading text-[clamp(1.65rem,3.4vw,2.25rem)] font-bold leading-[1.2] tracking-[-0.02em] text-body-text m-0 mb-4 max-w-[720px]">
-    CS student building backend systems, Linux tooling, and self-hosted infrastructure.
+    {{ hero.heading }}
   </h1>
   <p class="hero-subtitle font-regular text-[0.92rem] leading-[1.7] text-text-muted max-w-[700px] m-0 mb-6">
-    I'm <strong class="text-body-text font-bold">Tasrif</strong>, an undergraduate at Queens College aiming for backend engineering. Outside class, I maintain a 5-node Debian LXC homelab on Proxmox with WireGuard and write small automation tools.
+    {{ hero.subtitle | safe }}
   </p>
 
   <!-- Compact terminal spec block -->
   <dl class="bg-surface dither-surface border border-border p-4 m-0 mb-7 grid grid-cols-[110px_1fr] gap-y-2 gap-x-4 text-[0.82rem] font-code max-[520px]:grid-cols-1 max-[520px]:gap-y-1">
     <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center">focus</dt>
-    <dd class="m-0 text-body-text">Backend APIs, Linux systems, networking &amp; automation</dd>
+    <dd class="m-0 text-body-text">{{ hero.spec.focus }}</dd>
     <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center max-[520px]:mt-2">stack</dt>
     <dd class="m-0 flex flex-wrap gap-x-3 gap-y-1">
       {% for s in skillPool.top %}
@@ -33,27 +27,33 @@ description: 'Portfolio of Tasrif — Computer Science student building backend 
       {% endfor %}
     </dd>
     <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center max-[520px]:mt-2">status</dt>
-    <dd class="m-0 text-accent">Open to backend &amp; systems internships</dd>
+    <dd class="m-0 text-accent">{{ hero.spec.status }}</dd>
   </dl>
 
   <div class="hero-actions flex items-center flex-wrap gap-3 max-[480px]:flex-col max-[480px]:items-stretch">
-    <a
-      href="/about/"
-      class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] font-bold py-2.5 px-4 bg-accent text-accent-text border border-accent no-underline transition-colors duration-150 hover:bg-accent-dim hover:border-accent-dim min-h-[44px] box-border">
-      View Resume →
-    </a>
-    <a
-      href="/projects/"
-      class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] font-semibold py-2.5 px-4 bg-surface text-body-text border border-border no-underline transition-colors duration-150 hover:border-accent hover:text-accent min-h-[44px] box-border">
-      Projects
-    </a>
-    <a
-      href="https://github.com/zephyr73"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] text-text-muted border border-transparent py-2.5 px-3 no-underline transition-colors duration-150 hover:text-accent min-h-[44px] box-border">
-      GitHub ↗
-    </a>
+    {% for action in hero.actions %}
+      {% if action.primary %}
+        <a
+          href="{{ action.url }}"
+          class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] font-bold py-2.5 px-4 bg-accent text-accent-text border border-accent no-underline transition-colors duration-150 hover:bg-accent-dim hover:border-accent-dim min-h-[44px] box-border">
+          {{ action.label }}
+        </a>
+      {% elif action.external %}
+        <a
+          href="{{ action.url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] text-text-muted border border-transparent py-2.5 px-3 no-underline transition-colors duration-150 hover:text-accent min-h-[44px] box-border">
+          {{ action.label }}
+        </a>
+      {% else %}
+        <a
+          href="{{ action.url }}"
+          class="inline-flex items-center justify-center gap-2 font-code text-[0.82rem] font-semibold py-2.5 px-4 bg-surface text-body-text border border-border no-underline transition-colors duration-150 hover:border-accent hover:text-accent min-h-[44px] box-border">
+          {{ action.label }}
+        </a>
+      {% endif %}
+    {% endfor %}
   </div>
 </section>
 
@@ -73,7 +73,7 @@ description: 'Portfolio of Tasrif — Computer Science student building backend 
   </div>
   <div class="border-t border-border">
     {% for project in collections.project %}
-      {% if project.fileSlug == 'home-network' or project.fileSlug == 'maltracker' or project.fileSlug == 'wallpapersync' %}
+      {% if project.fileSlug in featuredProjectSlugs %}
         {{ project_card(project) }}
       {% endif %}
     {% endfor %}
@@ -129,36 +129,23 @@ description: 'Portfolio of Tasrif — Computer Science student building backend 
     </a>
   </div>
   <div class="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1">
-    <a
-      href="/gallery/"
-      class="group bg-surface border border-border no-underline flex items-center gap-4 p-3 transition-colors duration-150 hover:border-accent">
-      <div class="w-[120px] h-[76px] shrink-0 border border-border overflow-hidden bg-surface-2">
-        {% ditherThumb "src/assets/img/photo.jpg", "Urban and landscape photography", 120, 76 %}
-      </div>
-      <div class="min-w-0">
-        <h3 class="m-0 mb-1 font-heading text-[1rem] text-body-text group-hover:text-accent transition-colors duration-150">
-          Photography
-        </h3>
-        <p class="m-0 font-regular text-[0.78rem] leading-[1.5] text-text-muted">
-          Architecture, cityscapes, and natural moments.
-        </p>
-      </div>
-    </a>
-    <a
-      href="/gallery/#ai-container"
-      class="group bg-surface border border-border no-underline flex items-center gap-4 p-3 transition-colors duration-150 hover:border-accent">
-      <div class="w-[120px] h-[76px] shrink-0 border border-border overflow-hidden bg-surface-2">
-        {% ditherThumb "src/assets/img/ai.jpg", "Stable Diffusion generative artwork", 120, 76 %}
-      </div>
-      <div class="min-w-0">
-        <h3 class="m-0 mb-1 font-heading text-[1rem] text-body-text group-hover:text-accent transition-colors duration-150">
-          AI Generations
-        </h3>
-        <p class="m-0 font-regular text-[0.78rem] leading-[1.5] text-text-muted">
-          Latent space composition &amp; diffusion studies.
-        </p>
-      </div>
-    </a>
+    {% for card in galleryPreview %}
+      <a
+        href="{{ card.url }}"
+        class="group bg-surface border border-border no-underline flex items-center gap-4 p-3 transition-colors duration-150 hover:border-accent">
+        <div class="w-[120px] h-[76px] shrink-0 border border-border overflow-hidden bg-surface-2">
+          {% ditherThumb card.img, card.alt, 120, 76 %}
+        </div>
+        <div class="min-w-0">
+          <h3 class="m-0 mb-1 font-heading text-[1rem] text-body-text group-hover:text-accent transition-colors duration-150">
+            {{ card.title }}
+          </h3>
+          <p class="m-0 font-regular text-[0.78rem] leading-[1.5] text-text-muted">
+            {{ card.desc }}
+          </p>
+        </div>
+      </a>
+    {% endfor %}
   </div>
 </section>
 
@@ -166,17 +153,17 @@ description: 'Portfolio of Tasrif — Computer Science student building backend 
 <section class="home-contact border-t border-border pt-7 pb-4">
   <div class="flex items-baseline justify-between flex-wrap gap-4">
     <div>
-      <h2 class="font-heading text-[1.1rem] font-bold text-body-text m-0 mb-1">Get in touch</h2>
+      <h2 class="font-heading text-[1.1rem] font-bold text-body-text m-0 mb-1">{{ contact.heading }}</h2>
       <p class="font-regular text-[0.84rem] text-text-muted m-0">
-        Open to backend / systems internships and technical chats.
+        {{ contact.subtitle }}
       </p>
     </div>
     <div class="flex items-center flex-wrap gap-3">
       <button
         class="resume-contact__copy inline-flex items-center justify-center font-code text-[0.8rem] font-semibold py-2 px-3.5 bg-surface text-body-text border border-border cursor-pointer transition-colors duration-150 hover:border-accent hover:text-accent min-h-[44px]"
-        data-copy="contact@tasrif.dev"
+        data-copy="{{ contact.email }}"
         type="button">
-        Copy contact@tasrif.dev
+        Copy {{ contact.email }}
       </button>
     </div>
   </div>

@@ -289,13 +289,13 @@ window.addEventListener('click', (e) => {
 // Gallery Page: Tabs switching
 const GALLERY_SECTIONS = {
   Photography: '.gallery-grid--photography',
-  'AI-Generations': '.gallery-grid--ai',
+  'AI Generations': '.gallery-grid--ai',
   Forza: '.gallery-grid--forza',
 };
 
 const SECTION_HASHES = {
-  '#ai-container': 'AI-Generations',
-  '#ai': 'AI-Generations',
+  '#ai-container': 'AI Generations',
+  '#ai': 'AI Generations',
   '#forza': 'Forza',
   '#photography': 'Photography',
 };
@@ -324,7 +324,7 @@ function initGallery() {
 
   function syncHashForName(name) {
     if (!window.history.replaceState) return;
-    const hash = name === 'AI-Generations' ? '#ai-container' : `#${name.toLowerCase()}`;
+    const hash = name === 'AI Generations' ? '#ai-container' : `#${name.toLowerCase()}`;
     if (window.location.hash !== hash) {
       window.history.replaceState(null, '', hash);
     }

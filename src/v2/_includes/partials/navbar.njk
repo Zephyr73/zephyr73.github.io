@@ -17,24 +17,33 @@
         <span class="text-accent">~/</span>
         <span>tasrif</span>
       </a>
-      {% set rawSegments = (page.url or '').split('/') %}
-      {% set segments = [] %}
-      {% for seg in rawSegments %}
-        {% if seg %}
-          {% set segments = (segments.push(seg), segments) %}
-        {% endif %}
-      {% endfor %}
-      {% if segments.length > 0 %}
-        {% set accPath = '' %}
-        {% for seg in segments %}
-          {% set accPath = accPath + '/' + seg %}
-          <span class="text-text-subtle mx-[1px] select-none shrink-0" aria-hidden="true">/</span>
-          {% if loop.last or accPath == '/gallery/image' %}
-            <span class="text-text-muted font-normal truncate max-w-[130px] sm:max-w-[220px] md:max-w-[280px]{% if not loop.last %} max-sm:hidden{% endif %}" title="{{ seg }}">{{ seg }}</span>
-          {% else %}
-            <a href="{{ accPath }}/" class="text-text-muted font-normal no-underline transition-colors duration-150 ease-default hover:text-accent shrink-0 max-sm:hidden">{{ seg }}</a>
+      {% if img and img.category and img.filename %}
+        <span class="text-text-subtle mx-[1px] select-none shrink-0" aria-hidden="true">/</span>
+        <a href="/gallery/" class="text-text-muted font-normal no-underline transition-colors duration-150 ease-default hover:text-accent shrink-0 max-sm:hidden">gallery</a>
+        <span class="text-text-subtle mx-[1px] select-none shrink-0 max-sm:hidden" aria-hidden="true">/</span>
+        <a href="/gallery/#{{ 'ai-container' if img.category == 'ai' else img.category }}" class="text-text-muted font-normal no-underline transition-colors duration-150 ease-default hover:text-accent shrink-0 max-sm:hidden">{{ img.category }}</a>
+        <span class="text-text-subtle mx-[1px] select-none shrink-0" aria-hidden="true">/</span>
+        <span class="text-text-muted font-normal truncate max-w-[130px] sm:max-w-[220px] md:max-w-[280px]" title="{{ img.filename }}">{{ img.filename }}</span>
+      {% else %}
+        {% set rawSegments = (page.url or '').split('/') %}
+        {% set segments = [] %}
+        {% for seg in rawSegments %}
+          {% if seg %}
+            {% set segments = (segments.push(seg), segments) %}
           {% endif %}
         {% endfor %}
+        {% if segments.length > 0 %}
+          {% set accPath = '' %}
+          {% for seg in segments %}
+            {% set accPath = accPath + '/' + seg %}
+            <span class="text-text-subtle mx-[1px] select-none shrink-0" aria-hidden="true">/</span>
+            {% if loop.last %}
+              <span class="text-text-muted font-normal truncate max-w-[130px] sm:max-w-[220px] md:max-w-[280px]" title="{{ seg }}">{{ seg }}</span>
+            {% else %}
+              <a href="{{ accPath }}/" class="text-text-muted font-normal no-underline transition-colors duration-150 ease-default hover:text-accent shrink-0 max-sm:hidden">{{ seg }}</a>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
       {% endif %}
     </div>
     <div class="site-nav__actions flex items-center gap-6 min-[769px]:max-[920px]:gap-[0.85rem]">

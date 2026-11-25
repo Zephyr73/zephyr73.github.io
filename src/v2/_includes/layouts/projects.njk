@@ -1,20 +1,14 @@
 ---
 layout: base.njk
-permalink: /projects/
-title: Projects • Tasrif — Software Engineering
-bodyClass: page--projects
-pageId: projects-index
 noMarkdownWrapper: true
-description: 'Software development, systems architecture, and engineering projects by Tasrif.'
 ---
-
 {% from "components/card.njk" import project_card %}
 
 <div class="projects-page max-w-[900px] mx-auto">
   <div class="page-intro pb-6 mb-2 max-md:pb-4">
-    <h1 class="page-intro__title font-heading text-[clamp(1.65rem,3.4vw,2.2rem)] font-bold tracking-[-0.02em] leading-[1.2] text-body-text m-0 mb-2.5">Software &amp; Systems Projects</h1>
+    <h1 class="page-intro__title font-heading text-[clamp(1.65rem,3.4vw,2.2rem)] font-bold tracking-[-0.02em] leading-[1.2] text-body-text m-0 mb-2.5">{{ heading | safe }}</h1>
     <p class="page-intro__desc font-regular text-[0.9rem] leading-[1.65] text-text-muted max-w-[680px] m-0">
-      Personal systems, infrastructure engineering, and automation utilities built with Python, Linux, Docker, and shell tooling.
+      {{ intro | safe }}
     </p>
   </div>
 
@@ -23,7 +17,7 @@ description: 'Software development, systems architecture, and engineering projec
   <!-- Global Skill Pool Filter -->
   <div class="mb-6" id="project-skill-filter" aria-label="Filter projects by skill">
     <div class="flex items-baseline justify-between flex-wrap gap-2 mb-2.5 font-code text-[0.74rem]">
-      <span class="text-text-subtle uppercase tracking-[0.06em]">skill pool ({{ skillPool.all.length }})</span>
+      <span class="text-text-subtle uppercase tracking-[0.06em]">skill pool ({{ skillPool.withProjects.length }})</span>
       <span id="skill-filter-status" class="text-text-muted">showing {{ collections.project.length }} of {{ collections.project.length }}</span>
     </div>
     <div class="flex flex-wrap gap-1.5">
@@ -34,7 +28,7 @@ description: 'Software development, systems architecture, and engineering projec
         class="skill-filter-btn font-code text-[0.75rem] py-1 px-2.5 bg-surface border border-accent text-accent cursor-pointer transition-colors duration-150">
         all ({{ collections.project.length }})
       </button>
-      {% for s in skillPool.all %}
+      {% for s in skillPool.withProjects %}
         <button
           type="button"
           data-skill-filter="{{ s.slug }}"

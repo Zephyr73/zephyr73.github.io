@@ -10,15 +10,11 @@ import { sanitizeSlug } from './lib/gallery-shared.js';
 
 export default async function () {
   const data = await gallery();
-  const LIMITS = { photography: 12, ai: 6, forza: 6 };
   const urls = [];
 
-  for (const category of ['photography', 'ai', 'forza']) {
-    const items = data[category] || [];
-    for (const img of items.slice(0, LIMITS[category])) {
-      const baseName = sanitizeSlug(path.basename(img.src, path.extname(img.src)));
-      urls.push(`/assets/img/gallery/${category}/${baseName}-800.webp`);
-    }
+  for (const img of (data.photography || []).slice(0, 6)) {
+    const baseName = sanitizeSlug(path.basename(img.src, path.extname(img.src)));
+    urls.push(`/assets/img/gallery/photography/${baseName}-800.webp`);
   }
 
   return urls;

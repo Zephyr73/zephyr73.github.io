@@ -3,6 +3,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import PDFDocument from 'pdfkit';
 import { normalizeSkill } from '../src/_data/lib/skills-shared.js';
+import getSkillPool from '../src/_data/skillPool.js';
 
 const DEFAULT_ABOUT_PATH = './src/v2/about/index.md';
 const DEFAULT_PROJECTS_DIR = './src/v2/projects';
@@ -171,9 +172,11 @@ export async function generateResumePdf(options = {}) {
   const projectSkillsMap = loadProjectSkillsMap(projectsDir);
 
   const profile = data.profile || {};
-  const skills = (Array.isArray(data.skills) ? data.skills : []).filter(
-    (group) => cleanText(group.category).toLowerCase() !== 'other interests',
-  );
+  const skillPool = getSkillPool();
+  const skills = (skillPool.categories || []).map((group) => ({
+    category: group.category,
+    items: (group.items || []).map((item) => item.name),
+  }));
   const projects = Array.isArray(data.projects) ? data.projects : [];
   const education = (Array.isArray(data.education) ? data.education : []).filter(
     (item) => !item.hideInPrint,

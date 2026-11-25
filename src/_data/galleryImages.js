@@ -173,10 +173,16 @@ export default async function () {
       // = largest generated JPEG width that actually exists (eleventy-img skips
       // widths larger than the original).
       const GENERATED_WIDTHS = [400, 800, 1200, 1800];
-      const largestWidth =
-        [...GENERATED_WIDTHS].reverse().find((w) => w <= meta.width) ?? GENERATED_WIDTHS[0];
+      const availableWidths = GENERATED_WIDTHS.filter((w) => w <= meta.width);
+      if (availableWidths.length === 0) {
+        availableWidths.push(meta.width);
+      }
+      const largestWidth = availableWidths[availableWidths.length - 1];
       const thumbUrl = `/assets/img/gallery/${category}/${baseName}-800.webp`;
       const webpUrl = `/assets/img/gallery/${category}/${baseName}-${largestWidth}.webp`;
+      const srcsetWebp = availableWidths
+        .map((w) => `/assets/img/gallery/${category}/${baseName}-${w}.webp ${w}w`)
+        .join(', ');
       const fullUrl = `/assets/img/gallery/${category}/${baseName}-${largestWidth}.jpeg`;
 
       return {
@@ -185,6 +191,7 @@ export default async function () {
         filename: file,
         thumbUrl,
         webpUrl,
+        srcsetWebp,
         fullUrl,
         downloadFilename: file,
         resolution,
