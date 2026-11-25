@@ -29,8 +29,8 @@
         {% for seg in segments %}
           {% set accPath = accPath + '/' + seg %}
           <span class="text-text-subtle mx-[1px] select-none shrink-0" aria-hidden="true">/</span>
-          {% if loop.last %}
-            <span class="text-text-muted font-normal truncate max-w-[130px] sm:max-w-[220px] md:max-w-[280px]" title="{{ seg }}">{{ seg }}</span>
+          {% if loop.last or accPath == '/gallery/image' %}
+            <span class="text-text-muted font-normal truncate max-w-[130px] sm:max-w-[220px] md:max-w-[280px]{% if not loop.last %} max-sm:hidden{% endif %}" title="{{ seg }}">{{ seg }}</span>
           {% else %}
             <a href="{{ accPath }}/" class="text-text-muted font-normal no-underline transition-colors duration-150 ease-default hover:text-accent shrink-0 max-sm:hidden">{{ seg }}</a>
           {% endif %}
