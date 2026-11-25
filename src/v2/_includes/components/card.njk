@@ -1,5 +1,13 @@
 {% macro project_card(project, ctaText="Read notes") %}
-  <article class="project-card border-b border-border py-5 px-3 -mx-3 transition-colors duration-150 ease-default hover:bg-surface/70 max-[480px]:px-2 max-[480px]:-mx-2">
+  {% set skillSlugs = [] %}
+  {% if project.data.skills %}
+    {% for s in project.data.skills %}
+      {% set skillSlugs = (skillSlugs.push(s | skillSlug), skillSlugs) %}
+    {% endfor %}
+  {% endif %}
+  <article
+    class="project-card border-b border-border py-5 px-3 -mx-3 transition-colors duration-150 ease-default hover:bg-surface/70 max-[480px]:px-2 max-[480px]:-mx-2"
+    {% if skillSlugs.length > 0 %}data-skills="{{ skillSlugs.join(',') }}"{% endif %}>
     <div class="flex items-baseline justify-between gap-4 flex-wrap mb-1.5">
       <div class="flex items-baseline gap-2.5 min-w-0">
         <span class="font-code text-[0.85rem] text-accent select-none" aria-hidden="true">&gt;</span>
@@ -19,6 +27,17 @@
     <p class="project-card__desc font-regular text-[0.86rem] leading-[1.6] text-text-muted m-0 mb-3 pl-5">
       {{ project.data.description }}
     </p>
+    {% if project.data.skills and project.data.skills.length > 0 %}
+      <div class="pl-5 mb-3 flex flex-wrap gap-x-3 gap-y-1">
+        {% for s in project.data.skills %}
+          <a
+            href="/projects/?skill={{ s | skillSlug }}"
+            class="font-code text-[0.73rem] text-text-subtle no-underline hover:text-accent transition-colors duration-150">
+            <span class="text-accent/70">#</span>{{ s | skillLabel }}
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
     <div class="project-card__footer pl-5 flex items-center flex-wrap gap-5">
       <a href="{{ project.url }}" class="project-card__action inline-flex items-center gap-1.5 font-code text-[0.78rem] text-accent no-underline hover:underline underline-offset-4">
         <span>{{ ctaText }}</span>

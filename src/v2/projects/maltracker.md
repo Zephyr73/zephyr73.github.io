@@ -10,6 +10,12 @@ description: MALTracker is a personal automation tool that reads your browser hi
   changes before they touch your list.
 category: Python • Automation & APIs
 date: 2022-08-16
+skills:
+  - Python
+  - SQLite
+  - OAuth2
+  - REST APIs
+  - Regex
 tags: project
 ---
 

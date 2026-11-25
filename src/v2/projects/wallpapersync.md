@@ -6,6 +6,12 @@ description: Automated Python daemon integrating OpenRGB and Windows desktop eve
 date: 2023-10-27
 repo: https://github.com/Zephyr73/WallpaperSync
 category: Python &bull; IT Automation
+skills:
+  - Python
+  - OpenRGB
+  - Watchdog
+  - Systemd
+  - Windows
 tags: project
 ---
 

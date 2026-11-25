@@ -9,6 +9,12 @@ description: Game Scraper monitors the r/FreeGamesOnSteam and r/FreeGameFindings
   hint and complete the key automatically.
 category: Python &bull; Automation & AI
 date: 2025-11-04
+skills:
+  - Python
+  - REST APIs
+  - Telegram API
+  - LLMs
+  - Regex
 tags: project
 ---
 

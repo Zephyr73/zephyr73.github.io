@@ -16,10 +16,22 @@
         </h3>
         <span class="project-item-date font-code text-[0.74rem] text-text-subtle print:text-[8pt] print:text-[#444444]">{{ proj.date | safe }}</span>
       </div>
-      {% if proj.tags %}
-      <div class="project-item-tags flex flex-wrap gap-x-3 gap-y-1 mb-3 pl-5 print:pl-0 print:mb-[3pt] [&>span]:font-code [&>span]:text-[0.72rem] [&>span]:text-text-muted print:[&>span]:bg-transparent print:[&>span]:border-none print:[&>span]:p-0 print:[&>span]:text-[8pt] print:[&>span]:text-[#333333] print:[&>span]:inline print:[&>span]:m-0 print:[&>span]:after:content-[',_'] last:print:[&>span]:after:content-none print:[&>span]:after:text-[#555555]">
-        {% for tag in proj.tags %}
-        <span class="stack-pill"><span class="text-accent/70 print:hidden">#</span>{{ tag | safe }}</span>
+      {% set resolvedTags = proj.tags %}
+      {% for colProj in collections.project %}
+        {% if colProj.url == proj.url and colProj.data.skills %}
+          {% set resolvedTags = colProj.data.skills %}
+        {% endif %}
+      {% endfor %}
+      {% if resolvedTags %}
+      <div class="project-item-tags flex flex-wrap gap-x-3 gap-y-1 mb-3 pl-5 print:pl-0 print:mb-[3pt]">
+        {% for tag in resolvedTags %}
+          {% set tSlug = tag | skillSlug %}
+          {% set tLabel = tag | skillLabel %}
+          {% if skillPool.bySlug[tSlug] %}
+            <a href="/projects/?skill={{ tSlug }}" class="stack-pill font-code text-[0.72rem] text-text-muted no-underline hover:text-accent transition-colors duration-150 print:bg-transparent print:border-none print:p-0 print:text-[8pt] print:text-[#333333] print:inline print:m-0 print:after:content-[',_'] last:print:after:content-none print:after:text-[#555555]"><span class="text-accent/70 print:hidden">#</span>{{ tLabel }}</a>
+          {% else %}
+            <span class="stack-pill font-code text-[0.72rem] text-text-muted print:bg-transparent print:border-none print:p-0 print:text-[8pt] print:text-[#333333] print:inline print:m-0 print:after:content-[',_'] last:print:after:content-none print:after:text-[#555555]"><span class="text-accent/70 print:hidden">#</span>{{ tLabel }}</span>
+          {% endif %}
         {% endfor %}
       </div>
       {% endif %}

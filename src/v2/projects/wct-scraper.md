@@ -10,6 +10,12 @@ description: WCT Scraper is a Re:Zero web novel downloader that scrapes translat
   compiled volume.
 category: Python • Web Scraping & EPUB
 date: 2026-06-29
+skills:
+  - Python
+  - Web Scraping
+  - BeautifulSoup
+  - REST APIs
+  - EPUB
 tags: project
 ---
 

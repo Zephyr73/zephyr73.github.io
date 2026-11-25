@@ -177,13 +177,22 @@
             </div>
           </aside>
           <div class="markdown-content">
-            {% if date or category or repo %}
-              <div class="mb-7 bg-surface dither-surface border border-border px-3.5 py-2.5 flex items-center justify-between flex-wrap gap-3 font-code text-[0.76rem] text-text-muted">
-                <div class="flex items-center flex-wrap gap-4">
-                  {% if category %}<span>{{ category | safe }}</span>{% endif %}
-                  {% if date %}<span class="text-text-subtle">{{ date | formatDate }}</span>{% endif %}
+            {% if date or category or repo or (skills and skills.length > 0) %}
+              <div class="mb-7 bg-surface dither-surface border border-border px-3.5 py-2.5 flex flex-col gap-2 font-code text-[0.76rem] text-text-muted">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                  <div class="flex items-center flex-wrap gap-4">
+                    {% if category %}<span>{{ category | safe }}</span>{% endif %}
+                    {% if date %}<span class="text-text-subtle">{{ date | formatDate }}</span>{% endif %}
+                  </div>
+                  {% if repo %}<a href="{{ repo }}" target="_blank" rel="noopener noreferrer" class="text-accent-2 no-underline hover:underline">github ↗</a>{% endif %}
                 </div>
-                {% if repo %}<a href="{{ repo }}" target="_blank" rel="noopener noreferrer" class="text-accent-2 no-underline hover:underline">github ↗</a>{% endif %}
+                {% if skills and skills.length > 0 %}
+                  <div class="flex flex-wrap gap-x-3 gap-y-1 pt-1.5 border-t border-border/60">
+                    {% for s in skills %}
+                      <a href="/projects/?skill={{ s | skillSlug }}" class="text-text-muted no-underline hover:text-accent transition-colors duration-150"><span class="text-accent/70">#</span>{{ s | skillLabel }}</a>
+                    {% endfor %}
+                  </div>
+                {% endif %}
               </div>
             {% endif %}
             {{ content | safe }}

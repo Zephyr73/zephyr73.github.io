@@ -8,6 +8,11 @@ description: TodoBot is a lightweight Discord bot that DMs you your project todo
   owner-only !todo commands to list, add, or remove projects from Discord itself.
 category: Python &bull; Discord Bot
 date: 2026-09-10
+skills:
+  - Python
+  - Discord API
+  - Task Scheduler
+  - Windows
 tags: project
 ---
 

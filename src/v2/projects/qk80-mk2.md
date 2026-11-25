@@ -12,6 +12,12 @@ description: QK80 MK2 Keyboard SDK is a host-side SDK and CLI for the QwertyKeys
 repo: https://github.com/Zephyr73/qk80mk2
 category: Python • Reverse Engineering
 date: 2026-08-14
+skills:
+  - Python
+  - Reverse Engineering
+  - HID
+  - Serial
+  - CLI
 tags: project
 ---
 

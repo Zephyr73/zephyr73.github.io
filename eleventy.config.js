@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import sharp from 'sharp';
 import exifReader from 'exif-reader';
 import { sanitizeSlug } from './src/_data/lib/gallery-shared.js';
+import { normalizeSkill } from './src/_data/lib/skills-shared.js';
 
 export default function (eleventyConfig) {
   // 1. Copy the 'assets' folder exactly as is to the output
@@ -50,6 +51,15 @@ export default function (eleventyConfig) {
       day: 'numeric',
       timeZone: 'UTC',
     });
+  });
+
+  // Filter to normalize a skill name into its canonical slug & display object
+  eleventyConfig.addFilter('skillSlug', function (raw) {
+    return normalizeSkill(raw).slug;
+  });
+
+  eleventyConfig.addFilter('skillLabel', function (raw) {
+    return normalizeSkill(raw).name;
   });
 
   // 4. Gallery image shortcode

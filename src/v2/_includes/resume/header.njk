@@ -163,8 +163,8 @@
     {% if profile.meta %}
     <dl class="resume-quick-meta bg-surface dither-surface border border-border p-3.5 m-0 mt-4 grid grid-cols-[120px_1fr] gap-y-2 gap-x-4 text-[0.8rem] font-code max-[600px]:grid-cols-1 max-[600px]:gap-y-1 print:hidden">
       {% for item in profile.meta %}
-      <dt class="meta-label text-text-subtle uppercase tracking-[0.06em] text-[0.7rem] self-center max-[600px]:mt-1.5 first:mt-0">{{ item.label }}</dt>
-      <dd class="meta-value m-0 font-semibold {% if item.accent %}text-accent{% else %}text-body-text{% endif %}">{{ item.value | safe }}</dd>
+      <dt class="meta-label font-code text-text-subtle uppercase tracking-[0.06em] text-[0.7rem] self-center max-[600px]:mt-1.5 first:mt-0">{{ item.label }}</dt>
+      <dd class="meta-value font-code m-0 font-bold {% if item.accent %}text-accent{% else %}text-body-text{% endif %}">{{ item.value | safe }}</dd>
       {% endfor %}
     </dl>
     {% endif %}

@@ -63,3 +63,33 @@ Generates WebP + JPEG at 400/800/1200/1800 widths with `<picture>` srcset. Proce
 - `filesystem.js` scans `src/` at build time and injects a virtual FS tree into V3 via `window.__FS_TREE__`.
 - `sharp` and `exif-reader` are used by the `gimg` shortcode for image processing (listed in devDeps).
 - V2 raw markdown files are passed through to `_site/` for V3's markdown viewer to fetch client-side.
+
+## Project Skill Pool
+
+V2 builds a global skill pool (`skillPool`) from `skills:` frontmatter in `src/v2/projects/*.md` via `src/_data/skillPool.js`.
+
+When creating or editing a project markdown file in `src/v2/projects/`:
+
+1. **Check existing skills first:** Read `CANONICAL_META` in `src/_data/lib/skills-shared.js` (and existing `src/v2/projects/*.md` files) and reuse exact canonical skill names (e.g., `REST APIs`, `SQLite`, `Proxmox VE`, `CLI`) instead of inventing variants.
+2. **Add new skills cleanly:** If a project introduces a skill not yet in `CANONICAL_META`, add it to the project's `skills:` frontmatter list **and** add an entry in `CANONICAL_META` (`src/_data/lib/skills-shared.js`) with its canonical display name and category (`Languages & Runtime`, `Infrastructure & Systems`, `Networking & Security`, `APIs & Automation`, `Systems & Hardware`, or `Data & Tooling`).
+3. Keep `tags: project` in project frontmatter for Eleventy's `collections.project`.
+
+## Blog Posts
+
+Blog posts in `src/v2/blog/*.md` must include `tags: blogpost` in frontmatter so Eleventy's `collections.blogpost` surfaces them on `/blog/` and the homepage `Recent Writing` list.
+
+## Incremental Build & Image Cache
+
+- `npm run clean` (`scripts/clean.js`) preserves `_site/assets/img/gallery/` (including `.meta-cache.json`) and `_site/assets/img/dither/` so warm rebuilds skip re-encoding unchanged images.
+- Run `node scripts/clean.js --all` when a full clean rebuild of all processed images is needed.
+
+## Dithered Thumbnails & Prettier
+
+- **1-Bit Bayer Thumbnails (`ditherThumb` in `eleventy.config.js`):** Use `{% ditherThumb "src/assets/img/photo.jpg", "alt", 120, 76 %}` to generate 2-color Bayer PNGs in `_site/assets/img/dither/`. Keep output dimensions 1:1 with the rendered CSS container to avoid downscaling moiré on mobile.
+- **Prettier `.njk` Exclusion (`.prettierignore`):** `*.njk` is intentionally ignored because Prettier's HTML parser fails on Nunjucks blocks inside HTML attributes. Do not remove `*.njk` from `.prettierignore`.
+
+## V3 Window & Tile Manager
+
+- `src/assets/js/v3/shell.js` manages a shared `openWindows` pool across Desktop (Windows-style floating) and Shell (Linux-style tiling inside `#tty-split-pane`).
+- Switching modes auto-floats or auto-tiles open windows unless explicitly pinned as `ttyFloating: true` via `[POP]` / `Alt+F`.
+- Any new V3 app should attach an optional `cleanup()` method on its root element so `closeWindow()` can tear down listeners cleanly.

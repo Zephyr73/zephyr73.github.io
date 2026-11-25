@@ -9,6 +9,12 @@ description: ThemeSwitcher applies a selected color theme across six application
   a resilient mix of JSON parsing and regex fallbacks.
 category: Python &bull; System Customization
 date: 2026-03-16
+skills:
+  - Python
+  - CLI
+  - JSON
+  - Regex
+  - Windows
 tags: project
 ---
 

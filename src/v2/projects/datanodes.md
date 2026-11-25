@@ -10,6 +10,12 @@ description: DataNodes automates the click-through chain of datanodes.to downloa
 repo: https://github.com/Zephyr73/DataNodes
 category: Python &bull; Web Scraping
 date: 2026-07-04
+skills:
+  - Python
+  - Playwright
+  - Rich
+  - CLI
+  - Web Scraping
 tags: project
 ---
 

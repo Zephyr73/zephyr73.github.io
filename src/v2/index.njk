@@ -27,7 +27,11 @@ description: 'Portfolio of Tasrif — Computer Science student building backend 
     <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center">focus</dt>
     <dd class="m-0 text-body-text">Backend APIs, Linux systems, networking &amp; automation</dd>
     <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center max-[520px]:mt-2">stack</dt>
-    <dd class="m-0 text-text-muted">Python, Bash, Docker, SQL, Git, Caddy, Proxmox VE, WireGuard</dd>
+    <dd class="m-0 flex flex-wrap gap-x-3 gap-y-1">
+      {% for s in skillPool.top %}
+        <a href="/projects/?skill={{ s.slug }}" class="text-text-muted no-underline hover:text-accent transition-colors duration-150"><span class="text-accent/70">#</span>{{ s.name }}</a>
+      {% endfor %}
+    </dd>
     <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center max-[520px]:mt-2">status</dt>
     <dd class="m-0 text-accent">Open to backend &amp; systems internships</dd>
   </dl>

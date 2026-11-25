@@ -1097,3 +1097,75 @@ if (document.readyState === 'loading') {
     }
   });
 })();
+
+// Global Skill Pool filter on /projects/
+(() => {
+  const filterWrap = document.getElementById('project-skill-filter');
+  const projectList = document.getElementById('project-list');
+  if (!filterWrap || !projectList) {
+    return;
+  }
+
+  const buttons = Array.from(filterWrap.querySelectorAll('[data-skill-filter]'));
+  const cards = Array.from(projectList.querySelectorAll('.project-card'));
+  const statusEl = document.getElementById('skill-filter-status');
+  const emptyEl = document.getElementById('skill-filter-empty');
+
+  function applySkillFilter(slug, updateUrl = true) {
+    const active = slug || 'all';
+    let shown = 0;
+
+    cards.forEach((card) => {
+      const skillsAttr = card.getAttribute('data-skills') || '';
+      const list = skillsAttr ? skillsAttr.split(',') : [];
+      const matches = active === 'all' || list.includes(active);
+      card.style.display = matches ? '' : 'none';
+      if (matches) {
+        shown += 1;
+      }
+    });
+
+    buttons.forEach((btn) => {
+      const isMatch = btn.getAttribute('data-skill-filter') === active;
+      btn.setAttribute('aria-pressed', String(isMatch));
+      btn.classList.toggle('border-accent', isMatch);
+      btn.classList.toggle('text-accent', isMatch);
+      btn.classList.toggle('border-border', !isMatch);
+      btn.classList.toggle('text-text-muted', !isMatch);
+    });
+
+    if (statusEl) {
+      statusEl.textContent =
+        active === 'all'
+          ? `showing ${cards.length} of ${cards.length}`
+          : `showing ${shown} of ${cards.length} for #${active}`;
+    }
+    if (emptyEl) {
+      emptyEl.classList.toggle('hidden', shown > 0);
+    }
+
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (active === 'all') {
+        url.searchParams.delete('skill');
+      } else {
+        url.searchParams.set('skill', active);
+      }
+      window.history.replaceState({}, '', url.toString());
+    }
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-skill-filter') || 'all';
+      const current = new URLSearchParams(window.location.search).get('skill') || 'all';
+      const next = target === current && target !== 'all' ? 'all' : target;
+      applySkillFilter(next, true);
+    });
+  });
+
+  const initialSkill = new URLSearchParams(window.location.search).get('skill');
+  if (initialSkill) {
+    applySkillFilter(initialSkill, false);
+  }
+})();

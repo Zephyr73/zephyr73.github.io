@@ -18,11 +18,40 @@ description: 'Software development, systems architecture, and engineering projec
     </p>
   </div>
 
-  <div class="dither-rule mb-2" aria-hidden="true"></div>
+  <div class="dither-rule mb-5" aria-hidden="true"></div>
 
-  <div class="project-list flex flex-col">
+  <!-- Global Skill Pool Filter -->
+  <div class="mb-6" id="project-skill-filter" aria-label="Filter projects by skill">
+    <div class="flex items-baseline justify-between flex-wrap gap-2 mb-2.5 font-code text-[0.74rem]">
+      <span class="text-text-subtle uppercase tracking-[0.06em]">skill pool ({{ skillPool.all.length }})</span>
+      <span id="skill-filter-status" class="text-text-muted">showing {{ collections.project.length }} of {{ collections.project.length }}</span>
+    </div>
+    <div class="flex flex-wrap gap-1.5">
+      <button
+        type="button"
+        data-skill-filter="all"
+        aria-pressed="true"
+        class="skill-filter-btn font-code text-[0.75rem] py-1 px-2.5 bg-surface border border-accent text-accent cursor-pointer transition-colors duration-150">
+        all ({{ collections.project.length }})
+      </button>
+      {% for s in skillPool.all %}
+        <button
+          type="button"
+          data-skill-filter="{{ s.slug }}"
+          aria-pressed="false"
+          class="skill-filter-btn font-code text-[0.75rem] py-1 px-2.5 bg-surface border border-border text-text-muted cursor-pointer transition-colors duration-150 hover:border-accent hover:text-accent">
+          #{{ s.name }} <span class="text-text-subtle">({{ s.count }})</span>
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="project-list flex flex-col border-t border-border" id="project-list">
     {% for project in collections.project | sortByDate %}
       {{ project_card(project) }}
     {% endfor %}
   </div>
+  <p id="skill-filter-empty" class="hidden font-code text-[0.85rem] text-text-muted py-6 m-0">
+    No projects match that skill tag.
+  </p>
 </div>

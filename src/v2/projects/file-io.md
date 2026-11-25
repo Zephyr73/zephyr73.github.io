@@ -9,6 +9,11 @@ description: File.io Uploader is a Send-to context-menu utility that uploads a f
   with no lingering state.
 category: Python &bull; Utilities
 date: 2026-08-13
+skills:
+  - Python
+  - REST APIs
+  - Windows
+  - CLI
 tags: project
 ---
 

@@ -130,7 +130,7 @@ projects:
     url: 'https://github.com/zephyr73/zephyr73.github.io'
     date: '2024 – Present'
     tags:
-      - 'JavaScript (ES6+)'
+      - JavaScript
       - Eleventy
       - Tailwind CSS
       - Web APIs

@@ -492,8 +492,16 @@ function _buildWindow(id, appEl, title, filePath, state) {
     _makeResizeHandle(win, handle, dir);
   });
 
-  // Click to focus
+  // Focus on click, touch, or keyboard focusin (clears iframe overlay)
   win.addEventListener('mousedown', () => focusWindow(id), true);
+  win.addEventListener('touchstart', () => focusWindow(id), { capture: true, passive: true });
+  win.addEventListener('focusin', () => focusWindow(id), true);
+  tbar.addEventListener('dblclick', (e) => {
+    if (e.target.closest('.window-btn')) return;
+    if (win.classList.contains('window--floating')) {
+      maximizeWindow(id);
+    }
+  });
   return win;
 }
 function _getAppIcon(title, filePath) {
@@ -519,23 +527,26 @@ function _getAppIcon(title, filePath) {
 }
 function _openFloating(id, appEl, title, filePath) {
   const win = _buildWindow(id, appEl, title, filePath, 'floating');
-  // Default size & centered position
-  let W = Math.min(900, window.innerWidth - 80);
-  let H = Math.min(640, window.innerHeight - 80);
-
-  if (appEl && appEl.classList.contains('app-browser')) {
-    W = Math.min(1300, window.innerWidth - 40);
-    H = Math.min(850, window.innerHeight - 60);
-  }
-  const L = Math.round((window.innerWidth - W) / 2) + (id % 5) * 20;
-  const T = Math.round((window.innerHeight - H) / 2) + (id % 5) * 20 - 20;
+  const W = Math.min(900, window.innerWidth - 80);
+  const H = Math.min(640, window.innerHeight - 80);
+  const offset =
+    (Array.from(openWindows.values()).filter((w) => w.state === 'floating').length % 6) * 24;
+  const L = Math.max(12, Math.round((window.innerWidth - W) / 2) + offset - 36);
+  const T = Math.max(12, Math.round((window.innerHeight - H) / 2) + offset - 36);
   win.style.width = `${W}px`;
   win.style.height = `${H}px`;
   win.style.left = `${L}px`;
   win.style.top = `${T}px`;
   floatCont.appendChild(win);
   playSound('open');
-  openWindows.set(id, { el: win, state: 'floating', appName: title, title, filePath });
+  openWindows.set(id, {
+    el: win,
+    state: 'floating',
+    ttyFloating: false,
+    appName: title,
+    title,
+    filePath,
+  });
   focusWindow(id);
   _addAppTab(id, title);
 }
@@ -549,7 +560,14 @@ function _openSplit(id, appEl, title, filePath) {
 
   // Set up splitPane visibility & initial width if this is the first pane being opened
   _insertSplitWindow(win);
-  openWindows.set(id, { el: win, state: 'split', appName: title, title, filePath });
+  openWindows.set(id, {
+    el: win,
+    state: 'split',
+    ttyFloating: false,
+    appName: title,
+    title,
+    filePath,
+  });
   _addAppTab(id, title);
 
   // Focus the newly opened split window
@@ -671,37 +689,78 @@ function _cleanupSplitTree(parentEl) {
     const soleChild = parentEl.firstElementChild;
     // Replace parentEl with soleChild in grandParent
     grandParent.replaceChild(soleChild, parentEl);
+    // Flatten redundant nested containers with identical flex direction
+    if (soleChild.classList.contains('split-container')) {
+      const soleDir = soleChild.classList.contains('split-container--row') ? 'row' : 'column';
+      const gpMatches =
+        grandParent.classList.contains(`split-container--${soleDir}`) ||
+        (grandParent === root && rootMatchesDir(root, soleDir));
+      if (gpMatches) {
+        const moved = Array.from(soleChild.children);
+        for (const child of moved) {
+          grandParent.insertBefore(child, soleChild);
+        }
+        soleChild.remove();
+      }
+    }
     _cleanupSplitTree(grandParent);
   }
 }
 /* ─────────────────────────────────────────────────────────────
    POP UP / POP IN
 ───────────────────────────────────────────────────────────── */
-export function popUp(id) {
+export function popUp(id, { markTtyFloating = true } = {}) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'split') return;
 
   const winEl = info.el;
   const parentEl = winEl.parentElement;
 
+  if (activeSplitWindowId === id) {
+    activeSplitWindowId = null;
+  }
+
   // Detach from split tree & cleanup
   winEl.remove();
   _cleanupSplitTree(parentEl);
 
+  // Update activeSplitWindowId to a remaining split tile if any
+  if (activeSplitWindowId === null) {
+    const remaining = splitPane.querySelector('.window--split');
+    if (remaining) {
+      activeSplitWindowId = parseInt(remaining.dataset.windowId, 10) || null;
+    }
+  }
+
   // In-place transform to floating
   winEl.classList.remove('window--split');
   winEl.classList.add('window--floating');
+  winEl.style.animation = '';
   info.state = 'floating';
+  if (currentMode === 'tty' && markTtyFloating) {
+    info.ttyFloating = true;
+  }
 
-  // Position and size for floating container
-  const W = Math.min(900, window.innerWidth - 80);
-  const H = Math.min(640, window.innerHeight - 80);
-  const L = Math.round((window.innerWidth - W) / 2) + (id % 5) * 20;
-  const T = Math.round((window.innerHeight - H) / 2) + (id % 5) * 20 - 20;
-  winEl.style.width = `${W}px`;
-  winEl.style.height = `${H}px`;
-  winEl.style.left = `${L}px`;
-  winEl.style.top = `${T}px`;
+  // Position and size for floating container (cascade across open floating windows)
+  if (!winEl.dataset.prevFloatW) {
+    const W = Math.min(900, window.innerWidth - 80);
+    const H = Math.min(640, window.innerHeight - 80);
+    const floatCount = Array.from(openWindows.values()).filter(
+      (w) => w.state === 'floating',
+    ).length;
+    const offset = ((floatCount - 1) % 6) * 24;
+    const L = Math.max(12, Math.round((window.innerWidth - W) / 2) + offset - 36);
+    const T = Math.max(12, Math.round((window.innerHeight - H) / 2) + offset - 36);
+    winEl.style.width = `${W}px`;
+    winEl.style.height = `${H}px`;
+    winEl.style.left = `${L}px`;
+    winEl.style.top = `${T}px`;
+  } else {
+    winEl.style.width = winEl.dataset.prevFloatW;
+    winEl.style.height = winEl.dataset.prevFloatH;
+    winEl.style.left = winEl.dataset.prevFloatL;
+    winEl.style.top = winEl.dataset.prevFloatT;
+  }
   winEl.dataset.maximized = '0';
   const maxBtn = winEl.querySelector('.window-btn--maximize');
   if (maxBtn) maxBtn.textContent = '[M]';
@@ -716,6 +775,14 @@ export function popIn(id) {
 
   const winEl = info.el;
 
+  // Save floating geometry in case user pops out again or switches to Desktop
+  if (winEl.dataset.maximized !== '1' && winEl.style.width) {
+    winEl.dataset.prevFloatW = winEl.style.width;
+    winEl.dataset.prevFloatH = winEl.style.height;
+    winEl.dataset.prevFloatL = winEl.style.left;
+    winEl.dataset.prevFloatT = winEl.style.top;
+  }
+
   // Restore if maximized or minimized
   if (winEl.dataset.maximized === '1') {
     winEl.dataset.maximized = '0';
@@ -727,17 +794,19 @@ export function popIn(id) {
     document.getElementById(`apptab-${id}`)?.classList.remove('minimized');
   }
 
-  // Clear inline position styles from floating mode
+  // Clear inline position/animation styles from floating mode
   winEl.style.width = '';
   winEl.style.height = '';
   winEl.style.left = '';
   winEl.style.top = '';
   winEl.style.zIndex = '';
+  winEl.style.animation = '';
 
   // In-place transform to split
   winEl.classList.remove('window--floating');
   winEl.classList.add('window--split');
   info.state = 'split';
+  info.ttyFloating = false;
 
   _insertSplitWindow(winEl);
   playSound('open');
@@ -760,15 +829,13 @@ export function maximizeWindow(id) {
     win.dataset.maximized = '0';
     win.querySelector('.window-btn--maximize').textContent = '[M]';
   } else {
-    // Save and maximize
+    // Save and maximize (floatCont already sits inside #desktop-env above the status bar)
     win.dataset.prevW = win.style.width;
     win.dataset.prevH = win.style.height;
     win.dataset.prevL = win.style.left;
     win.dataset.prevT = win.style.top;
     win.style.width = '100%';
-    win.style.height = 'calc(100% - var(--status-bar-h))';
-    win.style.width = '100%';
-    win.style.height = 'calc(100% - var(--status-bar-h))';
+    win.style.height = '100%';
     win.style.left = '0px';
     win.style.top = '0px';
     win.dataset.maximized = '1';
@@ -796,7 +863,28 @@ export function minimizeWindow(id) {
     const tabM = document.getElementById(`apptab-${id}`);
     if (tabM) tabM.classList.add('minimized');
     win.classList.remove('focused');
+    tabM?.classList.remove('focused');
     playSound('minimize');
+
+    // Focus next highest visible floating window
+    let nextId = null;
+    let highestZ = -1;
+    for (const [winId, wInfo] of openWindows.entries()) {
+      if (
+        winId !== id &&
+        wInfo.state === 'floating' &&
+        !wInfo.el.classList.contains('window--minimized')
+      ) {
+        const z = parseInt(wInfo.el.style.zIndex || '0', 10);
+        if (z > highestZ) {
+          highestZ = z;
+          nextId = winId;
+        }
+      }
+    }
+    if (nextId !== null) {
+      focusWindow(nextId);
+    }
   }
 }
 /* ─────────────────────────────────────────────────────────────
@@ -806,6 +894,10 @@ export function closeWindow(id) {
   const info = openWindows.get(id);
   if (!info) return;
   playSound('close');
+
+  if (activeSplitWindowId === id) {
+    activeSplitWindowId = null;
+  }
 
   if (info.state === 'split') {
     const winEl = info.el;
@@ -821,6 +913,7 @@ export function closeWindow(id) {
     winEl.remove();
     _cleanupSplitTree(parentEl);
   } else {
+    info.el.style.pointerEvents = 'none';
     info.el.style.animation = 'win-close 80ms ease-in forwards';
     setTimeout(() => {
       const appBody = info.el.querySelector('.window-body');
@@ -834,20 +927,20 @@ export function closeWindow(id) {
   openWindows.delete(id);
   _removeAppTab(id);
 
-  // Auto-focus next window if any exist
+  // Auto-focus next visible window if any exist
   if (openWindows.size > 0) {
     let nextFocusId = null;
     let highestZ = -1;
     let highestSplitId = -1;
 
-    for (const [winId, info] of openWindows.entries()) {
-      if (info.state === 'floating') {
-        const z = parseInt(info.el.style.zIndex || '0', 10);
+    for (const [winId, wInfo] of openWindows.entries()) {
+      if (wInfo.state === 'floating' && !wInfo.el.classList.contains('window--minimized')) {
+        const z = parseInt(wInfo.el.style.zIndex || '0', 10);
         if (z > highestZ) {
           highestZ = z;
           nextFocusId = winId;
         }
-      } else if (info.state === 'split') {
+      } else if (wInfo.state === 'split') {
         if (winId > highestSplitId) {
           highestSplitId = winId;
         }
@@ -903,8 +996,10 @@ function _makeDraggable(win, handle) {
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      const maxL = Math.max(0, window.innerWidth - 60);
-      const maxT = Math.max(0, window.innerHeight - 60);
+      const envW = floatCont.clientWidth || window.innerWidth;
+      const envH = floatCont.clientHeight || window.innerHeight - 42;
+      const maxL = Math.max(0, envW - 80);
+      const maxT = Math.max(0, envH - 38);
       win.style.left = `${Math.max(0, Math.min(maxL, origLeft + dx))}px`;
       win.style.top = `${Math.max(0, Math.min(maxT, origTop + dy))}px`;
     }
@@ -928,11 +1023,21 @@ function _makeResizeHandle(win, handle, dir) {
     const startY = e.clientY;
     const origW = win.offsetWidth;
     const origH = win.offsetHeight;
+    const origL = parseInt(win.style.left) || 0;
+    const origT = parseInt(win.style.top) || 0;
+    const envW = floatCont.clientWidth || window.innerWidth;
+    const envH = floatCont.clientHeight || window.innerHeight - 42;
     function onMove(e) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      if (dir === 'e' || dir === 'se') win.style.width = `${Math.max(300, origW + dx)}px`;
-      if (dir === 's' || dir === 'se') win.style.height = `${Math.max(200, origH + dy)}px`;
+      if (dir === 'e' || dir === 'se') {
+        const maxW = Math.max(300, envW - origL);
+        win.style.width = `${Math.min(maxW, Math.max(300, origW + dx))}px`;
+      }
+      if (dir === 's' || dir === 'se') {
+        const maxH = Math.max(200, envH - origT);
+        win.style.height = `${Math.min(maxH, Math.max(200, origH + dy))}px`;
+      }
     }
     function onUp() {
       document.removeEventListener('mousemove', onMove);
@@ -971,11 +1076,11 @@ function _addAppTab(id, title) {
       if (isMinimized) {
         minimizeWindow(id);
         focusWindow(id);
-      } else if (isFocused) {
-        // Active window clicked on taskbar: toggle minimize
+      } else if (currentMode === 'desktop' && isFocused) {
+        // Active window clicked on Desktop taskbar: toggle minimize
         minimizeWindow(id);
       } else {
-        // Window in background: bring to front and focus
+        // Window in background (or floating in TTY): bring to front and focus
         focusWindow(id);
       }
       return;
@@ -1019,13 +1124,25 @@ function switchMode(mode) {
   tabDesktop.tabIndex = mode === 'desktop' ? 0 : -1;
   tabTTY.tabIndex = mode === 'tty' ? 0 : -1;
 
-  // Move any floating windows into the correct container
+  // Sync shared open apps into the target mode's WM paradigm:
+  // - Desktop: all open apps float (Windows-style)
+  // - Shell (TTY): open apps tile in splitPane unless explicitly floated via [POP]
   if (mode === 'tty') {
-    // Move floating container into TTY mode
     modeTTY.appendChild(floatCont);
     floatCont.style.zIndex = '200';
+    for (const [id, info] of openWindows.entries()) {
+      if (info.state === 'floating' && !info.ttyFloating) {
+        popIn(id);
+      }
+    }
   } else {
     modeDesktop.appendChild(floatCont);
+    floatCont.style.zIndex = '10';
+    for (const [id, info] of openWindows.entries()) {
+      if (info.state === 'split') {
+        popUp(id, { markTtyFloating: false });
+      }
+    }
   }
 }
 /* ─────────────────────────────────────────────────────────────
@@ -1451,9 +1568,40 @@ function initKeyboard() {
       switchMode('tty');
     }
     // Alt+C = Toggle CRT
-    if (e.altKey && e.key === 'c') {
+    if (e.altKey && e.key.toLowerCase() === 'c') {
       e.preventDefault();
       toggleCRT();
+    }
+    // Alt+F = Toggle float/tile on focused window in Shell mode
+    if (e.altKey && e.key.toLowerCase() === 'f' && currentMode === 'tty') {
+      const focusedEl = document.querySelector('.window.focused');
+      const fId = focusedEl ? parseInt(focusedEl.dataset.windowId, 10) : null;
+      if (fId && openWindows.has(fId)) {
+        e.preventDefault();
+        const info = openWindows.get(fId);
+        if (info.state === 'split') popUp(fId);
+        else popIn(fId);
+      }
+    }
+    // Alt+Q = Close focused window
+    if (e.altKey && e.key.toLowerCase() === 'q') {
+      const focusedEl = document.querySelector('.window.focused');
+      const fId = focusedEl ? parseInt(focusedEl.dataset.windowId, 10) : null;
+      if (fId && openWindows.has(fId)) {
+        e.preventDefault();
+        closeWindow(fId);
+      }
+    }
+    // Alt+ArrowLeft / Alt+ArrowRight = Cycle focus across open windows
+    if (e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight') && openWindows.size > 0) {
+      e.preventDefault();
+      const ids = Array.from(openWindows.keys());
+      const focusedEl = document.querySelector('.window.focused');
+      const curId = focusedEl ? parseInt(focusedEl.dataset.windowId, 10) : -1;
+      const curIdx = ids.indexOf(curId);
+      const delta = e.key === 'ArrowRight' ? 1 : -1;
+      const nextIdx = curIdx === -1 ? 0 : (curIdx + delta + ids.length) % ids.length;
+      focusWindow(ids[nextIdx]);
     }
     // Escape = focus console input in TTY
     if (e.key === 'Escape' && currentMode === 'tty') {
