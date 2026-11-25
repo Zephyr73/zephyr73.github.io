@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "node scripts/clean.js",
     "build": "npm run clean && cross-env NODE_OPTIONS=\"--no-deprecation\" npx @11ty/eleventy",
+    "build:pdf": "node scripts/generate-resume-pdf.js",
     "build:css": "tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css && tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css",
     "watch:css": "concurrently \"tailwindcss -i src/v2/css/style.css -o src/assets/css/style.css --watch\" \"tailwindcss -i src/v3/css/desktop.css -o src/assets/css/desktop.css --watch\"",
     "dev": "concurrently \"npm:start\" \"npm:watch:css\"",
@@ -46,10 +47,12 @@
     "eslint": "^9.0.0",
     "exif-reader": "^2.0.3",
     "globals": "^17.3.0",
+    "gray-matter": "^4.0.3",
     "html-validate": "^11.16.0",
     "husky": "^9.1.7",
     "linkinator": "^8.1.0",
     "lint-staged": "^17.5.1",
+    "pdfkit": "^0.21.0",
     "prettier": "^3.8.1",
     "sharp": "^0.35.3",
     "tailwindcss": "^4.3.3"

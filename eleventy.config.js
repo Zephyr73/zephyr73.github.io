@@ -6,6 +6,7 @@ import sharp from 'sharp';
 import exifReader from 'exif-reader';
 import { sanitizeSlug } from './src/_data/lib/gallery-shared.js';
 import { normalizeSkill } from './src/_data/lib/skills-shared.js';
+import { generateResumePdf } from './scripts/generate-resume-pdf.js';
 
 export default function (eleventyConfig) {
   // 1. Copy the 'assets' folder exactly as is to the output
@@ -62,6 +63,15 @@ export default function (eleventyConfig) {
     return normalizeSkill(raw).name;
   });
 
+  // Estimate reading time (~220 wpm) for rendered HTML content
+  eleventyConfig.addFilter('readingTime', function (htmlContent) {
+    if (!htmlContent) return '1 min read';
+    const text = String(htmlContent).replace(/<[^>]*>/g, ' ');
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    const mins = Math.max(1, Math.round(words / 220));
+    return `${mins} min read`;
+  });
+
   // 4. Gallery image shortcode
   //    Usage: {% gimg "photography/1.jpg", "alt text", "eager", "high" %}
   //    - Generates WebP + JPEG variants at multiple widths
@@ -85,12 +95,13 @@ export default function (eleventyConfig) {
     return metaCache;
   }
 
-  eleventyConfig.on('eleventy.after', () => {
+  eleventyConfig.on('eleventy.after', async () => {
     if (metaCacheDirty && metaCache) {
       fs.mkdirSync(path.dirname(META_CACHE_PATH), { recursive: true });
       fs.writeFileSync(META_CACHE_PATH, JSON.stringify(metaCache));
       metaCacheDirty = false;
     }
+    await generateResumePdf();
   });
 
   eleventyConfig.addNunjucksAsyncShortcode(

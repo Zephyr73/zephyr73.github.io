@@ -93,3 +93,8 @@ Blog posts in `src/v2/blog/*.md` must include `tags: blogpost` in frontmatter so
 - `src/assets/js/v3/shell.js` manages a shared `openWindows` pool across Desktop (Windows-style floating) and Shell (Linux-style tiling inside `#tty-split-pane`).
 - Switching modes auto-floats or auto-tiles open windows unless explicitly pinned as `ttyFloating: true` via `[POP]` / `Alt+F`.
 - Any new V3 app should attach an optional `cleanup()` method on its root element so `closeWindow()` can tear down listeners cleanly.
+
+## Resume PDF Generator
+
+- `scripts/generate-resume-pdf.js` uses `pdfkit` + `gray-matter` to build an ATS/OCR-friendly, single-column US Letter PDF at `_site/assets/resume.pdf` directly from `src/v2/about/index.md` frontmatter and normalized project skills (`src/v2/projects/*.md`).
+- It runs automatically via `eleventy.after` in `eleventy.config.js` on every build, and can also be run standalone with `npm run build:pdf`.

@@ -32,8 +32,9 @@
     --clr-accent-text: #101110;
     --clr-bold-text: #f3f1eb;
 
-    /* Typography — Local Monospace System */
+    /* Typography — Local Monospace + Editorial Prose System */
     --font-heading: 'Iosevka Webfont Bold', 'Iosevka Webfont', 'JetBrains Mono Bold', monospace;
+    --font-prose: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-regular: 'JetBrains Mono', monospace;
     --font-bold: 'JetBrains Mono Bold', monospace;
     --font-code: 'JetBrains Mono', monospace;

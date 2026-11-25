@@ -1169,3 +1169,60 @@ if (document.readyState === 'loading') {
     applySkillFilter(initialSkill, false);
   }
 })();
+
+// Markdown reading polish: code block copy buttons & heading anchor links
+(() => {
+  const md = document.querySelector('.markdown-content');
+  if (!md) {
+    return;
+  }
+
+  md.querySelectorAll('pre').forEach((pre) => {
+    if (pre.parentElement && pre.parentElement.classList.contains('code-block-wrap')) {
+      return;
+    }
+    const wrap = document.createElement('div');
+    wrap.className = 'code-block-wrap';
+
+    const code = pre.querySelector('code');
+    const langMatch = (pre.className || (code && code.className) || '').match(
+      /language-([a-z0-9_-]+)/i,
+    );
+    const lang = langMatch ? langMatch[1].toLowerCase() : 'text';
+
+    const bar = document.createElement('div');
+    bar.className = 'code-block-bar';
+    bar.innerHTML = `<span>${lang}</span>`;
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'code-copy-btn';
+    copyBtn.textContent = 'copy';
+    copyBtn.addEventListener('click', () => {
+      const text = (code ? code.textContent : pre.textContent) || '';
+      navigator.clipboard?.writeText(text).then(() => {
+        copyBtn.textContent = 'copied';
+        setTimeout(() => {
+          copyBtn.textContent = 'copy';
+        }, 1500);
+      });
+    });
+
+    bar.appendChild(copyBtn);
+    pre.parentNode.insertBefore(wrap, pre);
+    wrap.appendChild(bar);
+    wrap.appendChild(pre);
+  });
+
+  md.querySelectorAll('h2[id], h3[id]').forEach((heading) => {
+    if (heading.querySelector('.heading-anchor')) {
+      return;
+    }
+    const anchor = document.createElement('a');
+    anchor.className = 'heading-anchor';
+    anchor.href = `#${heading.id}`;
+    anchor.setAttribute('aria-label', `Link to ${heading.textContent.trim()}`);
+    anchor.textContent = '#';
+    heading.appendChild(anchor);
+  });
+})();

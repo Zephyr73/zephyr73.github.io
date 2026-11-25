@@ -105,7 +105,12 @@
       </a>
       {% endfor %}
 
-      <button onclick="window.print()" class="resume-btn resume-btn--print flex items-center gap-2 py-2 px-3 bg-surface border border-border text-text-muted font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] box-border hover:border-accent hover:text-accent hover:bg-surface-2" type="button">
+      <a
+        href="/assets/resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="resume-btn resume-btn--pdf flex items-center gap-2 py-2 px-3 bg-surface border border-border text-accent font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] box-border hover:border-accent hover:bg-surface-2"
+      >
         <svg
           width="14"
           height="14"
@@ -114,13 +119,14 @@
           stroke="currentColor"
           stroke-width="2"
           stroke-linecap="square"
+          aria-hidden="true"
         >
-          <polyline points="6 9 6 2 18 2 18 9" />
-          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-          <rect x="6" y="14" width="12" height="8" />
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
-        Print / PDF
-      </button>
+        Download Resume
+      </a>
     </div>
   </div>
 
@@ -138,7 +144,7 @@
           <span><a href="{{ link.url }}">{{ link.url | replace('https://www.', '') | replace('https://', '') }}</a></span> •
           {% endif %}
         {% endfor %}
-        <span><a href="https://zephyr73.github.io">zephyr73.github.io</a></span>
+        <span><a href="https://tasrif.dev">tasrif.dev</a></span>
       </div>
     </div>
 

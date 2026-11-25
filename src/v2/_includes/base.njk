@@ -183,6 +183,7 @@
                   <div class="flex items-center flex-wrap gap-4">
                     {% if category %}<span>{{ category | safe }}</span>{% endif %}
                     {% if date %}<span class="text-text-subtle">{{ date | formatDate }}</span>{% endif %}
+                    <span class="text-text-subtle">~{{ content | readingTime }}</span>
                   </div>
                   {% if repo %}<a href="{{ repo }}" target="_blank" rel="noopener noreferrer" class="text-accent-2 no-underline hover:underline">github ↗</a>{% endif %}
                 </div>
