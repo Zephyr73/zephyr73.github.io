@@ -36,7 +36,7 @@
           {% set accPath = '' %}
           {% for seg in segments %}
             {% set accPath = accPath + '/' + seg %}
-            <span class="text-text-subtle mx-[1px] select-none shrink-0" aria-hidden="true">/</span>
+            <span class="text-text-subtle mx-[1px] select-none shrink-0{% if not loop.last %} max-sm:hidden{% endif %}" aria-hidden="true">/</span>
             {% if loop.last %}
               <span class="text-text-muted font-normal truncate max-w-[130px] sm:max-w-[220px] md:max-w-[280px]" title="{{ seg }}">{{ seg }}</span>
             {% else %}

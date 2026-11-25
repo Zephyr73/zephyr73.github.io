@@ -6,7 +6,6 @@
         <source srcset="/assets/img/profile.webp" type="image/webp" />
         <img class="resume-avatar block w-full h-full object-cover" src="{{ profile.avatar | default('/assets/img/profile.png') }}" alt="{{ profile.name | default('Tasrif') }} avatar" width="400" height="400" loading="eager" decoding="async" />
       </picture>
-      <span class="avatar-badge absolute bottom-0 left-0 right-0 bg-body-bg/90 border-t border-border py-1 px-2 font-code text-[0.65rem] font-semibold tracking-[0.06em] text-accent text-center uppercase">{{ profile.badge | default('NYC • DEVELOPER') | safe }}</span>
     </div>
 
     <div class="resume-links flex flex-col gap-2 max-md:grid max-md:grid-cols-2 max-[440px]:grid-cols-1">

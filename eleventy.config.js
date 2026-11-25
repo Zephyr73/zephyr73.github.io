@@ -261,7 +261,7 @@ export default function (eleventyConfig) {
       return `<div class="gallery-item relative w-full flex flex-col overflow-hidden border border-border bg-surface transition-colors duration-150"${orderStyle}>
   <a href="${detailUrl}" class="gallery-item__link block w-full relative cursor-pointer text-inherit no-underline" aria-label="View details for ${baseName}">
     ${pictureHtml}
-    <div class="gallery-item__overlay absolute inset-0 bg-gradient-to-b from-transparent via-[rgba(16,17,16,0.35)] to-[rgba(16,17,16,0.92)] flex flex-col justify-end items-start p-[14px] gap-[10px]">
+    <div class="gallery-item__overlay absolute inset-0 flex flex-col justify-end items-start p-[14px] gap-[10px]">
       <div class="gallery-item__meta flex flex-col gap-[3px] font-code text-[0.7rem] text-[#e5e3dc]">${
         deviceStr
           ? `
@@ -279,13 +279,25 @@ export default function (eleventyConfig) {
     },
   );
 
-  // 5. Build-time 1-bit Bayer dithered thumbnail shortcode
+  // 5. Build-time 4-level 8x8 Bayer ordered dithered thumbnail shortcode
   //    Usage: {% ditherThumb "src/assets/img/photo.jpg", "alt text", 240, 152 %}
-  const BAYER_4X4 = [
-    [0, 8, 2, 10],
-    [12, 4, 14, 6],
-    [3, 11, 1, 9],
-    [15, 7, 13, 5],
+  const BAYER_8X8 = [
+    [0, 32, 8, 40, 2, 34, 10, 42],
+    [48, 16, 56, 24, 50, 18, 58, 26],
+    [12, 44, 4, 36, 14, 46, 6, 38],
+    [60, 28, 52, 20, 62, 30, 54, 22],
+    [3, 35, 11, 43, 1, 33, 9, 41],
+    [51, 19, 59, 27, 49, 17, 57, 25],
+    [15, 47, 7, 39, 13, 45, 5, 37],
+    [63, 31, 55, 23, 61, 29, 53, 21],
+  ];
+
+  // 4-stop warm terminal charcoal -> phosphor amber -> off-white palette
+  const DITHER_PALETTE = [
+    [16, 17, 16],
+    [68, 54, 30],
+    [158, 122, 54],
+    [229, 227, 220],
   ];
 
   eleventyConfig.addNunjucksAsyncShortcode(
@@ -293,15 +305,16 @@ export default function (eleventyConfig) {
     async function (srcPath, alt, width = 240, height = 152) {
       const baseName = sanitizeSlug(path.basename(srcPath, path.extname(srcPath)));
       const outDir = './_site/assets/img/dither';
-      const outFile = `${baseName}-${width}x${height}.png`;
+      const outFile = `${baseName}-${width}x${height}-bayer8.png`;
       const fullOut = path.join(outDir, outFile);
       const url = `/assets/img/dither/${outFile}`;
+      const imgTag = `<img src="${url}" alt="${alt || ''}" width="${width}" height="${height}" loading="lazy" decoding="async" class="w-full h-full object-cover block [image-rendering:pixelated]" />`;
 
       fs.mkdirSync(outDir, { recursive: true });
 
       const srcStat = fs.statSync(srcPath);
       if (fs.existsSync(fullOut) && fs.statSync(fullOut).mtimeMs >= srcStat.mtimeMs) {
-        return `<img src="${url}" alt="${alt || ''}" width="${width}" height="${height}" loading="lazy" decoding="async" class="w-full h-full object-cover block" />`;
+        return imgTag;
       }
 
       const { data, info } = await sharp(srcPath)
@@ -311,36 +324,31 @@ export default function (eleventyConfig) {
         .raw()
         .toBuffer({ resolveWithObject: true });
 
+      const levels = DITHER_PALETTE.length;
       const rgba = Buffer.alloc(info.width * info.height * 4);
       for (let y = 0; y < info.height; y++) {
+        const row = BAYER_8X8[y & 7];
         for (let x = 0; x < info.width; x++) {
           const i = y * info.width + x;
-          const threshold = ((BAYER_4X4[y & 3][x & 3] + 0.5) / 16) * 255;
-          const isLight = data[i] > threshold;
+          const v = data[i] / 255;
+          const t = (row[x & 7] + 0.5) / 64;
+          const q = Math.min(levels - 1, Math.max(0, Math.floor(v * (levels - 1) + t)));
+          const [r, g, b] = DITHER_PALETTE[q];
           const o = i * 4;
-          if (isLight) {
-            // Warm phosphor off-white
-            rgba[o] = 229;
-            rgba[o + 1] = 227;
-            rgba[o + 2] = 220;
-            rgba[o + 3] = 255;
-          } else {
-            // Warm terminal charcoal
-            rgba[o] = 16;
-            rgba[o + 1] = 17;
-            rgba[o + 2] = 16;
-            rgba[o + 3] = 255;
-          }
+          rgba[o] = r;
+          rgba[o + 1] = g;
+          rgba[o + 2] = b;
+          rgba[o + 3] = 255;
         }
       }
 
       await sharp(rgba, {
         raw: { width: info.width, height: info.height, channels: 4 },
       })
-        .png({ palette: true, colours: 2 })
+        .png({ palette: true, colours: levels })
         .toFile(fullOut);
 
-      return `<img src="${url}" alt="${alt || ''}" width="${width}" height="${height}" loading="lazy" decoding="async" class="w-full h-full object-cover block" />`;
+      return imgTag;
     },
   );
 

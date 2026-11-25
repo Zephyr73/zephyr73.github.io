@@ -11,7 +11,6 @@ profile:
   role: 'IT Infrastructure • DevOps • Security'
   eyebrow: '// RESUME & DOSSIER'
   avatar: /assets/img/profile.png
-  badge: 'NYC • SYSTEMS'
   location: 'New York, NY'
   email: contact@tasrif.dev
   socials:

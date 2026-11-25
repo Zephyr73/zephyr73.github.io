@@ -449,6 +449,7 @@ function initGallery() {
 document.addEventListener('DOMContentLoaded', () => {
   initGallery();
   initAvatarDither();
+  initMarkdownDither();
 });
 
 // ---- Avatar Dithering (About/Resume page) ----
@@ -486,16 +487,18 @@ function ditherAvatar() {
   const style = getComputedStyle(document.documentElement);
   const bgHex = style.getPropertyValue('--clr-body-bg').trim();
   const fgHex = style.getPropertyValue('--clr-body-text').trim();
+  const accentHex = style.getPropertyValue('--clr-accent').trim() || fgHex;
   if (!bgHex || !fgHex) {
     return;
   }
 
   const bg = hexToRgb(bgHex);
   const fg = hexToRgb(fgHex);
+  const accent = hexToRgb(accentHex);
 
   // Luminance already cached — jump straight to repaint.
   if (avatar._lumCache) {
-    _paintDither(avatar, bg, fg);
+    _paintDither(avatar, bg, fg, accent);
     return;
   }
 
@@ -537,7 +540,7 @@ function ditherAvatar() {
       avatar._ditherCanvas.height = H;
     }
 
-    _paintDither(avatar, bg, fg);
+    _paintDither(avatar, bg, fg, accent);
   };
   tmpImg.src = originalSrc;
 }
@@ -558,7 +561,48 @@ const BAYER8 = [
   [63, 31, 55, 23, 61, 29, 53, 21],
 ];
 
-function _paintDither(avatar, bg, fg) {
+function lerpRgb(a, b, t) {
+  return {
+    r: Math.round(a.r + (b.r - a.r) * t),
+    g: Math.round(a.g + (b.g - a.g) * t),
+    b: Math.round(a.b + (b.b - a.b) * t),
+  };
+}
+
+function renderBayerToCanvas(lum, W, H, canvas, bg, fg, accent) {
+  const bgLum = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b;
+  const fgLum = 0.299 * fg.r + 0.587 * fg.g + 0.114 * fg.b;
+  const dark = bgLum > fgLum ? fg : bg;
+  const light = bgLum > fgLum ? bg : fg;
+  const palette = [dark, lerpRgb(dark, accent, 0.48), lerpRgb(accent, light, 0.45), light];
+  const levels = palette.length;
+
+  const ctx = canvas.getContext('2d');
+  const imageData = ctx.createImageData(W, H);
+  const out = imageData.data;
+
+  for (let y = 0; y < H; y++) {
+    const row = BAYER8[y & 7];
+    for (let x = 0; x < W; x++) {
+      // Crush near-black backgrounds cleanly so dark screenshots stay solid without dot noise
+      const normalized = Math.max(0, (lum[y * W + x] - 18) / 237);
+      const linear = Math.pow(normalized, 1.35);
+      const threshold = (row[x & 7] + 0.5) / 64;
+      const q = Math.min(levels - 1, Math.max(0, Math.floor(linear * (levels - 1) + threshold)));
+      const c = palette[q];
+
+      const pi = (y * W + x) * 4;
+      out[pi] = c.r;
+      out[pi + 1] = c.g;
+      out[pi + 2] = c.b;
+      out[pi + 3] = 255;
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+}
+
+function _paintDither(avatar, bg, fg, accent) {
   if (_ditherRafId) {
     cancelAnimationFrame(_ditherRafId);
   }
@@ -568,45 +612,63 @@ function _paintDither(avatar, bg, fg) {
     if (!canvas) {
       return;
     }
+    renderBayerToCanvas(avatar._lumCache, avatar._lumW, avatar._lumH, canvas, bg, fg, accent);
+  });
+}
 
-    const W = avatar._lumW;
-    const H = avatar._lumH;
-    const lum = avatar._lumCache;
+function ditherMarkdownImg(img) {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const displayW = img.clientWidth || img.naturalWidth || 700;
+  const targetW = Math.min(img.naturalWidth || 700, Math.round(displayW * dpr));
+  const ratio = img.naturalHeight && img.naturalWidth ? img.naturalHeight / img.naturalWidth : 0.6;
+  const W = Math.max(1, targetW);
+  const H = Math.max(1, Math.round(W * ratio));
 
-    // In a light theme bg is brighter than fg (text). Without correction,
-    // bright image pixels map to the dark text colour — visually inverted.
-    // Detect light themes by comparing bg/fg perceived luminance and, if
-    // needed, invert the effective tone so bright always → lighter colour.
-    const bgLum = 0.299 * bg.r + 0.587 * bg.g + 0.114 * bg.b;
-    const fgLum = 0.299 * fg.r + 0.587 * fg.g + 0.114 * fg.b;
-    const invert = bgLum > fgLum; // true = light theme
+  const offscreen = document.createElement('canvas');
+  offscreen.width = W;
+  offscreen.height = H;
+  const ctx = offscreen.getContext('2d');
+  ctx.drawImage(img, 0, 0, W, H);
 
-    const ctx = canvas.getContext('2d');
-    const imageData = ctx.createImageData(W, H);
-    const out = imageData.data;
+  const imageData = ctx.getImageData(0, 0, W, H);
+  const data = imageData.data;
+  const levels = 5; // 5 levels per R/G/B channel (125-color Bayer color dithering)
 
-    for (let y = 0; y < H; y++) {
-      const row = BAYER8[y & 7];
-      for (let x = 0; x < W; x++) {
-        // Gamma-linearise, then flip tone for light themes so bright pixels
-        // always resolve to the lighter of the two theme colours.
-        let linear = Math.pow(lum[y * W + x] / 255, 2.2);
-        if (invert) {
-          linear = 1 - linear;
-        }
-
-        const threshold = (row[x & 7] + 0.5) / 64;
-        const useFg = linear > threshold;
-
-        const pi = (y * W + x) * 4;
-        out[pi] = useFg ? fg.r : bg.r;
-        out[pi + 1] = useFg ? fg.g : bg.g;
-        out[pi + 2] = useFg ? fg.b : bg.b;
-        out[pi + 3] = 255;
+  for (let y = 0; y < H; y++) {
+    const row = BAYER8[y & 7];
+    for (let x = 0; x < W; x++) {
+      const pi = (y * W + x) * 4;
+      const t = (row[x & 7] + 0.5) / 64;
+      for (let ch = 0; ch < 3; ch++) {
+        const q = Math.min(
+          levels - 1,
+          Math.max(0, Math.floor((data[pi + ch] / 255) * (levels - 1) + t)),
+        );
+        data[pi + ch] = Math.round((q * 255) / (levels - 1));
       }
     }
+  }
 
-    ctx.putImageData(imageData, 0, 0);
+  ctx.putImageData(imageData, 0, 0);
+  img.src = offscreen.toDataURL('image/png');
+}
+
+function initMarkdownDither() {
+  const imgs = document.querySelectorAll('.markdown-content img');
+  if (!imgs.length) {
+    return;
+  }
+  imgs.forEach((img) => {
+    if (img.dataset.ditherInit) {
+      return;
+    }
+    img.dataset.ditherInit = 'true';
+    const run = () => ditherMarkdownImg(img);
+    if (img.complete && img.naturalWidth > 0) {
+      run();
+    } else {
+      img.addEventListener('load', run, { once: true });
+    }
   });
 }
 
