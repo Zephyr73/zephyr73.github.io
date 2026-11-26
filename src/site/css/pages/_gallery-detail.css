@@ -7,26 +7,18 @@
   }
 
   .page--gallery-detail .page__content {
-    min-height: 100vh;
+    min-height: calc(100vh - 76px);
+    min-height: calc(100dvh - 76px);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     padding: 20px;
   }
 
-  /* ── Side-by-side presentation for larger screens with sufficient height ── */
-  @media (min-width: 769px) and (min-height: 650px) {
-    body.page--gallery-detail {
-      height: 100vh;
-      overflow: hidden;
-    }
-
+  /* ── Side-by-side presentation on landscape tablets (1024px+) and desktop ── */
+  @media (min-width: 1024px) and (min-height: 650px) {
     .page--gallery-detail .page__content {
-      flex: 1;
-      height: auto;
-      min-height: 0;
-      overflow: hidden;
-      padding: 30px;
+      padding: 24px 30px 32px;
     }
   }
 }

@@ -36,12 +36,12 @@ noMarkdownWrapper: true
 {% for tab in tabs %}
   <div
     id="{{ tab.id }}"
-    class="gallery-grid gallery-grid--{{ tab.key }} hidden opacity-0 transition-opacity duration-150 ease-default flex-row
-      justify-between items-start pt-[20px] gap-[20px] [&.is-visible]:flex [&.is-visible]:opacity-100 max-md:gap-[20px]
-      max-md:flex-col max-[519px]:max-md:flex min-[520px]:max-md:[&.is-visible]:grid min-[520px]:max-md:grid-cols-2
-      min-[520px]:max-md:gap-4">
+    class="gallery-grid gallery-grid--{{ tab.key }} hidden opacity-0 transition-opacity duration-150 ease-default flex-col
+      justify-between items-start pt-[20px] gap-5 [&.is-visible]:flex [&.is-visible]:opacity-100
+      min-[520px]:max-lg:[&.is-visible]:grid min-[520px]:max-lg:grid-cols-2 min-[520px]:max-lg:gap-4
+      lg:flex-row lg:gap-5">
     {% for col in [0, 1, 2] %}
-      <div class="gallery-grid__column flex flex-col w-[32.5%] items-center gap-[20px] contain-layout max-md:contents
+      <div class="gallery-grid__column flex flex-col items-center gap-5 contain-layout max-lg:contents lg:flex-1 lg:min-w-0
           [&_picture]:block [&_picture]:w-full [&_img]:block [&_img]:w-full [&_img]:object-cover [&_img]:translate-z-0
           [&_img]:backface-hidden">
         {% for img in gallery[tab.key] %}

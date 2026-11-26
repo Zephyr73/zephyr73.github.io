@@ -97,6 +97,7 @@
 
   .window--floating .window-titlebar {
     cursor: move;
+    touch-action: none;
   }
 
   .window-titlebar-icon {
@@ -233,6 +234,7 @@
   .window-resize-se {
     position: absolute;
     z-index: 10;
+    touch-action: none;
   }
 
   .window-resize-e {
@@ -305,5 +307,32 @@
 
   .window--floating {
     animation: win-open 120ms ease-out;
+  }
+
+  /* Coarse-pointer touch hit targets for > 768px tablets & touch laptops */
+  @media (pointer: coarse) {
+    .window-titlebar {
+      height: 42px;
+      padding: 0 10px;
+    }
+
+    .window-btn {
+      min-width: 34px;
+      height: 28px;
+      font-size: 10px;
+    }
+
+    .window-resize-e {
+      width: 12px;
+    }
+
+    .window-resize-s {
+      height: 12px;
+    }
+
+    .window-resize-se {
+      width: 18px;
+      height: 18px;
+    }
   }
 }

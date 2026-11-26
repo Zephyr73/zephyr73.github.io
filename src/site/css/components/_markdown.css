@@ -9,8 +9,126 @@
     display: block;
   }
 
+  /* Compact collapsible TOC on mobile & tablet (< 1280px landscape) */
   .markdown-toc {
-    display: none !important;
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto 1.5rem;
+    background-color: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    box-sizing: border-box;
+  }
+
+  .markdown-toc__header {
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--clr-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.6rem 0.9rem;
+  }
+
+  .toc-header__prefix {
+    color: var(--clr-accent);
+    font-weight: bold;
+  }
+
+  .markdown-toc__toggle {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid var(--clr-border);
+    color: var(--clr-text-muted);
+    font-family: var(--font-code);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    min-height: 30px;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .markdown-toc__toggle:hover {
+    color: var(--clr-accent);
+    border-color: var(--clr-accent);
+  }
+
+  .markdown-toc__nav {
+    display: none;
+    border-top: 1px solid var(--clr-border);
+    padding: 0.5rem 0.75rem 0.75rem;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  .markdown-toc.is-open .markdown-toc__nav {
+    display: block;
+  }
+
+  .markdown-toc__list {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .markdown-toc__item {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .markdown-toc__item::marker {
+    content: none !important;
+  }
+
+  .markdown-toc__link {
+    display: block;
+    font-family: var(--font-regular);
+    font-size: 0.775rem;
+    line-height: 1.45;
+    color: var(--clr-text-muted);
+    text-decoration: none !important;
+    padding: 6px 8px 6px 10px;
+    border-left: 2px solid transparent;
+    border-radius: 0;
+    transition: all 0.15s ease;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .markdown-toc__link:hover {
+    color: var(--clr-body-text) !important;
+    background-color: var(--clr-surface-2);
+    border-left-color: var(--clr-border-hover);
+  }
+
+  .markdown-toc__link.active {
+    color: var(--clr-accent) !important;
+    font-weight: 700;
+    border-left-color: var(--clr-accent);
+    background-color: var(--clr-surface-2);
+  }
+
+  .markdown-toc__item--h3 .markdown-toc__link {
+    padding-left: 20px;
+    font-size: 0.725rem;
+    color: var(--clr-text-subtle);
+  }
+
+  .markdown-toc__item--h3 .markdown-toc__link:hover {
+    color: var(--clr-body-text) !important;
   }
 
   .markdown-content {
@@ -50,6 +168,9 @@
       justify-self: end;
       width: 100%;
       max-width: 260px;
+      margin: 0;
+      background-color: transparent;
+      border: none;
       position: sticky;
       top: 92px;
       max-height: calc(100vh - 120px);
@@ -62,6 +183,26 @@
       scrollbar-color: var(--clr-border-hover) transparent;
     }
 
+    .markdown-toc__header {
+      font-family: var(--font-regular);
+      font-size: 0.675rem;
+      padding: 0 0 0.5rem 0;
+      margin-bottom: 0.85rem;
+      border-bottom: 1px solid var(--clr-border);
+    }
+
+    .markdown-toc__toggle {
+      display: none;
+    }
+
+    .markdown-toc__nav {
+      display: block;
+      border-top: none;
+      padding: 0;
+      max-height: none;
+      overflow: visible;
+    }
+
     .markdown-content {
       grid-column: 2;
       max-width: 700px;
@@ -69,81 +210,13 @@
       margin: 0 auto;
     }
 
-    .markdown-toc__header {
-      font-family: var(--font-regular);
-      font-size: 0.675rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--clr-text-muted);
-      margin-bottom: 0.85rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--clr-border);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .toc-header__prefix {
-      color: var(--clr-accent);
-      font-weight: bold;
-    }
-
-    .markdown-toc__list {
-      list-style: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .markdown-toc__item {
-      margin: 0 !important;
-      padding: 0 !important;
-      list-style: none !important;
-    }
-
-    .markdown-toc__item::marker {
-      content: none !important;
-    }
-
     .markdown-toc__link {
-      display: block;
-      font-family: var(--font-regular);
-      font-size: 0.775rem;
-      line-height: 1.45;
-      color: var(--clr-text-muted);
-      text-decoration: none !important;
       padding: 5px 8px 5px 10px;
-      border-left: 2px solid transparent;
-      border-radius: 0;
-      transition: all 0.15s ease;
-      white-space: normal;
-      word-break: break-word;
     }
 
-    .markdown-toc__link:hover {
-      color: var(--clr-body-text) !important;
-      background-color: var(--clr-surface);
-      border-left-color: var(--clr-border-hover);
-    }
-
+    .markdown-toc__link:hover,
     .markdown-toc__link.active {
-      color: var(--clr-accent) !important;
-      font-weight: 700;
-      border-left-color: var(--clr-accent);
       background-color: var(--clr-surface);
-    }
-
-    .markdown-toc__item--h3 .markdown-toc__link {
-      padding-left: 20px;
-      font-size: 0.725rem;
-      color: var(--clr-text-subtle);
-    }
-
-    .markdown-toc__item--h3 .markdown-toc__link:hover {
-      color: var(--clr-body-text) !important;
     }
   }
 
@@ -553,7 +626,7 @@
   }
 
   /* ── Mobile Markdown Refinements ───────────────────────────────────────── */
-  @media (max-width: 768px) {
+  @media (max-width: 767.98px) {
     .markdown-content h1 {
       font-size: clamp(1.6rem, 5.5vw, 2.15rem);
       margin-bottom: 1rem;

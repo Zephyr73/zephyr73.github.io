@@ -94,9 +94,9 @@ export function initDesktop({ openApp }) {
     let startX = 0;
     let startY = 0;
 
-    modeDesktop.addEventListener('mousedown', (e) => {
-      // Only left click
-      if (e.button !== 0) return;
+    modeDesktop.addEventListener('pointerdown', (e) => {
+      // Only left click for mouse
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
 
       // Do not start selection if clicking inside interactive elements
       if (
@@ -116,6 +116,7 @@ export function initDesktop({ openApp }) {
 
       deselectAll();
 
+      const pointerId = e.pointerId;
       const rect = modeDesktop.getBoundingClientRect();
       startX = e.clientX - rect.left;
       startY = e.clientY - rect.top;
@@ -128,8 +129,8 @@ export function initDesktop({ openApp }) {
       marquee.style.height = '0px';
       modeDesktop.appendChild(marquee);
 
-      const onMouseMove = (moveEvt) => {
-        if (!marquee) return;
+      const onPointerMove = (moveEvt) => {
+        if (!marquee || moveEvt.pointerId !== pointerId) return;
         const currentRect = modeDesktop.getBoundingClientRect();
         const curX = moveEvt.clientX - currentRect.left;
         const curY = moveEvt.clientY - currentRect.top;
@@ -163,17 +164,20 @@ export function initDesktop({ openApp }) {
         });
       };
 
-      const onMouseUp = () => {
+      const onPointerUp = (upEvt) => {
+        if (upEvt.pointerId !== pointerId) return;
         if (marquee) {
           marquee.remove();
           marquee = null;
         }
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('pointermove', onPointerMove);
+        document.removeEventListener('pointerup', onPointerUp);
+        document.removeEventListener('pointercancel', onPointerUp);
       };
 
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+      document.addEventListener('pointercancel', onPointerUp);
     });
   }
 
@@ -181,13 +185,18 @@ export function initDesktop({ openApp }) {
   const uptimeEl = document.getElementById('notif-uptime');
   if (uptimeEl) {
     const startTime = performance.now();
-    setInterval(() => {
+    const renderUptime = () => {
+      if (document.hidden) return;
       const elapsedSec = Math.floor((performance.now() - startTime) / 1000);
       const hrs = String(Math.floor(elapsedSec / 3600)).padStart(2, '0');
       const mins = String(Math.floor((elapsedSec % 3600) / 60)).padStart(2, '0');
       const secs = String(elapsedSec % 60).padStart(2, '0');
       uptimeEl.textContent = `UP: ${hrs}:${mins}:${secs}`;
-    }, 1000);
+    };
+    setInterval(renderUptime, 1000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) renderUptime();
+    });
   }
 }
 

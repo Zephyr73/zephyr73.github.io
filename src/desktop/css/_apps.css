@@ -1057,4 +1057,22 @@
     min-width: 80px;
     text-align: center;
   }
+
+  @media (pointer: coarse) {
+    .browser-nav-btn,
+    .fileexp-nav-btn {
+      width: 32px;
+      height: 32px;
+    }
+
+    .gallery-action-btn {
+      min-height: 32px;
+      padding: 4px 12px;
+    }
+
+    .gallery-nav-btn {
+      min-height: 36px;
+      padding: 6px 18px;
+    }
+  }
 }

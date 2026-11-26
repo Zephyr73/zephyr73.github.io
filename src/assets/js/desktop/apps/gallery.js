@@ -17,7 +17,7 @@ export function createGalleryApp(filePath, fileTitle) {
       .replace(/^-+|-+$/g, '');
   }
 
-  // Get candidate public URLs from virtual path (largest first)
+  // Get candidate public URLs ordered adaptively for the current screen width
   function getCandidateSrcs(vPath) {
     if (vPath && vPath.startsWith('/gallery/')) {
       const rel = vPath.slice('/gallery/'.length);
@@ -28,7 +28,14 @@ export function createGalleryApp(filePath, fileTitle) {
         const lastDot = filename.lastIndexOf('.');
         const rawBase = lastDot > -1 ? filename.slice(0, lastDot) : filename;
         const base = `/assets/img/gallery/${subdir}/${sanitizeSlug(rawBase)}`;
-        return [`${base}-1800.webp`, `${base}-1200.webp`, `${base}-800.webp`, `${base}-400.webp`];
+        const targetPx = window.innerWidth * Math.min(window.devicePixelRatio || 1, 2);
+        const widths =
+          targetPx <= 850
+            ? ['800', '1200', '400', '1800']
+            : targetPx <= 1300
+              ? ['1200', '800', '1800', '400']
+              : ['1800', '1200', '800', '400'];
+        return widths.map((w) => `${base}-${w}.webp`);
       }
     }
     return [vPath];

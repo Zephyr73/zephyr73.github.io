@@ -829,6 +829,27 @@ function initMarkdownToc() {
     return uniqueSlug;
   }
 
+  const tocToggle = tocAside.querySelector('.markdown-toc__toggle');
+  const tocToggleLabel = tocAside.querySelector('.markdown-toc__toggle-label');
+  const tocToggleIcon = tocAside.querySelector('.markdown-toc__toggle-icon');
+
+  function setTocOpen(isOpen) {
+    tocAside.classList.toggle('is-open', isOpen);
+    if (tocToggle) {
+      tocToggle.setAttribute('aria-expanded', String(isOpen));
+    }
+    if (tocToggleLabel) {
+      tocToggleLabel.textContent = isOpen ? 'collapse' : 'expand';
+    }
+    if (tocToggleIcon) {
+      tocToggleIcon.textContent = isOpen ? '−' : '+';
+    }
+  }
+
+  tocToggle?.addEventListener('click', () => {
+    setTocOpen(!tocAside.classList.contains('is-open'));
+  });
+
   const tocLinks = [];
 
   headings.forEach((heading) => {
@@ -859,6 +880,9 @@ function initMarkdownToc() {
       history.pushState(null, '', `#${id}`);
       tocLinks.forEach(({ link }) => link.classList.remove('active'));
       a.classList.add('active');
+      if (tocAside.classList.contains('is-open')) {
+        setTocOpen(false);
+      }
     });
 
     li.appendChild(a);

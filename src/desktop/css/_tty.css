@@ -318,6 +318,13 @@
     cursor: col-resize;
     transition: background var(--t-fast);
     flex-shrink: 0;
+    touch-action: none;
+  }
+
+  @media (pointer: coarse) {
+    .pane-resize-handle {
+      width: 10px;
+    }
   }
 
   .pane-resize-handle:hover,

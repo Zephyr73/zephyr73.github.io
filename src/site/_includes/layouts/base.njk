@@ -164,8 +164,18 @@
             <div class="markdown-toc__inner">
               <div class="markdown-toc__header">
                 <span class="toc-header__prefix text-accent">&gt;</span> contents
+                <button
+                  type="button"
+                  class="markdown-toc__toggle"
+                  aria-expanded="false"
+                  aria-controls="markdown-toc-nav"
+                  aria-label="Toggle table of contents"
+                >
+                  <span class="markdown-toc__toggle-label">expand</span>
+                  <span class="markdown-toc__toggle-icon" aria-hidden="true">+</span>
+                </button>
               </div>
-              <nav class="markdown-toc__nav">
+              <nav class="markdown-toc__nav" id="markdown-toc-nav">
                 <ul class="markdown-toc__list"></ul>
               </nav>
             </div>

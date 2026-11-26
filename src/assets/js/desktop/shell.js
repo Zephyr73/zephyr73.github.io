@@ -19,6 +19,7 @@ let windowIdCounter = 0;
 const openWindows = new Map(); // id → { el, state, appName, title }
 let topZ = 200;
 let activeSplitWindowId = null; // tracks the currently focused split window
+let _updateStatusCenter = null;
 /* ─────────────────────────────────────────────────────────────
    SOUND ENGINE (Web Audio API — procedural, no files needed)
 ───────────────────────────────────────────────────────────── */
@@ -502,6 +503,7 @@ function _buildWindow(id, appEl, title, filePath, state) {
   win.addEventListener('touchstart', () => focusWindow(id), { capture: true, passive: true });
   win.addEventListener('focusin', () => focusWindow(id), true);
   tbar.addEventListener('dblclick', (e) => {
+    if (window.innerWidth <= 768) return;
     if (e.target.closest('.window-btn')) return;
     if (win.classList.contains('window--floating')) {
       maximizeWindow(id);
@@ -564,6 +566,7 @@ function _openSplit(id, appEl, title, filePath) {
   const win = _buildWindow(id, appEl, title, filePath, 'split');
 
   // Set up splitPane visibility & initial width if this is the first pane being opened
+  splitPane.classList.remove('mobile-hidden');
   _insertSplitWindow(win);
   openWindows.set(id, {
     el: win,
@@ -717,6 +720,7 @@ function _cleanupSplitTree(parentEl) {
 export function popUp(id, { markTtyFloating = true } = {}) {
   const info = openWindows.get(id);
   if (!info || info.state !== 'split') return;
+  if (currentMode === 'tty' && window.innerWidth <= 768) return;
 
   const winEl = info.el;
   const parentEl = winEl.parentElement;
@@ -931,6 +935,7 @@ export function closeWindow(id) {
   }
   openWindows.delete(id);
   _removeAppTab(id);
+  _updateStatusCenter?.();
 
   // Auto-focus next visible window if any exist
   if (openWindows.size > 0) {
@@ -977,6 +982,7 @@ export function focusWindow(id) {
     info.el.style.zIndex = ++topZ;
   } else if (info.state === 'split') {
     activeSplitWindowId = id;
+    splitPane.classList.remove('mobile-hidden');
   }
 
   info.el.classList.add('focused');
@@ -988,19 +994,23 @@ export function focusWindow(id) {
 ───────────────────────────────────────────────────────────── */
 function _makeDraggable(win, handle) {
   let startX, startY, origLeft, origTop;
-  handle.addEventListener('mousedown', (e) => {
+  handle.addEventListener('pointerdown', (e) => {
+    if (window.innerWidth <= 768) return; // all apps open full screen without dragging on mobile
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     if (!win.classList.contains('window--floating')) return; // don't drag split windows
     if (e.target.closest('.window-btn')) return; // don't drag on button clicks
     if (win.dataset.maximized === '1') return; // don't drag if maximized
     e.preventDefault();
+    const pointerId = e.pointerId;
     document.body.classList.add('resize-active');
     startX = e.clientX;
     startY = e.clientY;
     origLeft = parseInt(win.style.left) || 0;
     origTop = parseInt(win.style.top) || 0;
-    function onMove(e) {
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
+    function onMove(moveEvt) {
+      if (moveEvt.pointerId !== pointerId) return;
+      const dx = moveEvt.clientX - startX;
+      const dy = moveEvt.clientY - startY;
       const envW = floatCont.clientWidth || window.innerWidth;
       const envH = floatCont.clientHeight || window.innerHeight - 42;
       const maxL = Math.max(0, envW - 80);
@@ -1008,21 +1018,27 @@ function _makeDraggable(win, handle) {
       win.style.left = `${Math.max(0, Math.min(maxL, origLeft + dx))}px`;
       win.style.top = `${Math.max(0, Math.min(maxT, origTop + dy))}px`;
     }
-    function onUp() {
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
+    function onUp(upEvt) {
+      if (upEvt.pointerId !== pointerId) return;
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+      document.removeEventListener('pointercancel', onUp);
       document.body.classList.remove('resize-active');
     }
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup', onUp);
+    document.addEventListener('pointercancel', onUp);
   });
 }
 function _makeResizeHandle(win, handle, dir) {
-  handle.addEventListener('mousedown', (e) => {
+  handle.addEventListener('pointerdown', (e) => {
+    if (window.innerWidth <= 768) return; // no resizing on mobile
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     if (!win.classList.contains('window--floating')) return; // don't resize split windows
     if (win.dataset.maximized === '1') return; // don't resize if maximized
     e.preventDefault();
     e.stopPropagation();
+    const pointerId = e.pointerId;
     document.body.classList.add('resize-active');
     const startX = e.clientX;
     const startY = e.clientY;
@@ -1032,9 +1048,10 @@ function _makeResizeHandle(win, handle, dir) {
     const origT = parseInt(win.style.top) || 0;
     const envW = floatCont.clientWidth || window.innerWidth;
     const envH = floatCont.clientHeight || window.innerHeight - 42;
-    function onMove(e) {
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
+    function onMove(moveEvt) {
+      if (moveEvt.pointerId !== pointerId) return;
+      const dx = moveEvt.clientX - startX;
+      const dy = moveEvt.clientY - startY;
       if (dir === 'e' || dir === 'se') {
         const maxW = Math.max(300, envW - origL);
         win.style.width = `${Math.min(maxW, Math.max(300, origW + dx))}px`;
@@ -1044,13 +1061,16 @@ function _makeResizeHandle(win, handle, dir) {
         win.style.height = `${Math.min(maxH, Math.max(200, origH + dy))}px`;
       }
     }
-    function onUp() {
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
+    function onUp(upEvt) {
+      if (upEvt.pointerId !== pointerId) return;
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+      document.removeEventListener('pointercancel', onUp);
       document.body.classList.remove('resize-active');
     }
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup', onUp);
+    document.addEventListener('pointercancel', onUp);
   });
 }
 /* ─────────────────────────────────────────────────────────────
@@ -1096,6 +1116,7 @@ function _addAppTab(id, title) {
     }
   });
   activeApps.appendChild(tab);
+  _updateStatusCenter?.();
 }
 function _removeAppTab(id) {
   document.getElementById(`apptab-${id}`)?.remove();
@@ -1104,9 +1125,13 @@ function _removeAppTab(id) {
    MODE SWITCHING
 ───────────────────────────────────────────────────────────── */
 function switchMode(mode) {
-  // Minimize open apps on mobile when switching to desktop or tty shell mode
-  // We do this at the start so that if an app is open, clicking the current active tab still minimizes it
+  // Minimize floating apps & toggle split viewer visibility when tapping tabs on mobile
   if (window.innerWidth <= 768) {
+    if (mode === 'tty' && currentMode === 'tty' && splitPane.classList.contains('visible')) {
+      splitPane.classList.toggle('mobile-hidden');
+    } else if (mode === 'desktop') {
+      splitPane.classList.remove('mobile-hidden');
+    }
     for (const [id, info] of openWindows.entries()) {
       if (info.state === 'floating') {
         const isMinimized = info.el.classList.contains('window--minimized');
@@ -1149,6 +1174,7 @@ function switchMode(mode) {
       }
     }
   }
+  _updateStatusCenter?.();
 }
 /* ─────────────────────────────────────────────────────────────
    CRT TOGGLE
@@ -1214,7 +1240,11 @@ function initStyleMenu() {
   styleToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     playSound('click');
+    const isOpening = styleMenu.classList.contains('hidden');
     styleMenu.classList.toggle('hidden');
+    if (isOpening) {
+      document.getElementById('calendar-menu')?.classList.add('hidden');
+    }
   });
 
   // Click outside to dismiss menu
@@ -1333,6 +1363,7 @@ function initCalendar() {
     const isHidden = calendarMenu.classList.contains('hidden');
     calendarMenu.classList.toggle('hidden');
     if (isHidden) {
+      styleMenu?.classList.add('hidden');
       renderCalendar();
     }
   });
@@ -1398,13 +1429,15 @@ function initStatusCenterTicker() {
   const centerEl = document.getElementById('statusbar-center');
   if (!centerEl) return;
 
-  const updateStatus = () => {
+  _updateStatusCenter = () => {
     const modeLabel = currentMode === 'tty' ? 'shell' : 'desktop';
     const winCount = openWindows.size;
     centerEl.innerHTML = `<span class="statusbar-ticker">~/tasrif/desktop • ${modeLabel} • ${winCount} window${winCount === 1 ? '' : 's'}</span>`;
   };
-  updateStatus();
-  setInterval(updateStatus, 1000);
+  _updateStatusCenter();
+  setInterval(() => {
+    if (!document.hidden) _updateStatusCenter();
+  }, 1000);
 }
 /* ─────────────────────────────────────────────────────────────
    PANE RESIZE (nav pane drag handle)
@@ -1415,38 +1448,48 @@ function initPaneResize() {
   const ttyMode = document.getElementById('mode-tty');
   if (!navPane || !navHandle) return;
   let dragging = false;
-  navHandle.addEventListener('mousedown', (e) => {
+  let navPointerId = null;
+  navHandle.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     dragging = true;
+    navPointerId = e.pointerId;
     navHandle.classList.add('dragging');
     document.body.classList.add('resize-active');
     e.preventDefault();
   });
-  document.addEventListener('mousemove', (e) => {
-    if (!dragging) return;
+  document.addEventListener('pointermove', (e) => {
+    if (!dragging || e.pointerId !== navPointerId) return;
     const rect = ttyMode.getBoundingClientRect();
     const newW = Math.max(140, Math.min(400, e.clientX - rect.left));
     navPane.style.width = `${newW}px`;
     document.documentElement.style.setProperty('--nav-pane-w', `${newW}px`);
   });
-  document.addEventListener('mouseup', () => {
+  const endNavDrag = (e) => {
+    if (!dragging || e.pointerId !== navPointerId) return;
     dragging = false;
+    navPointerId = null;
     navHandle.classList.remove('dragging');
     document.body.classList.remove('resize-active');
-  });
+  };
+  document.addEventListener('pointerup', endNavDrag);
+  document.addEventListener('pointercancel', endNavDrag);
   // Split pane resize handle — use rAF to prevent layout thrash
   const splitHandle = document.getElementById('resize-split');
   let splitDragging = false;
+  let splitPointerId = null;
   let splitRafId = null;
   let lastSplitClientX = 0;
-  splitHandle?.addEventListener('mousedown', (e) => {
+  splitHandle?.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     splitDragging = true;
+    splitPointerId = e.pointerId;
     splitHandle.classList.add('dragging');
     document.body.classList.add('resize-active');
     splitPane.style.willChange = 'width';
     e.preventDefault();
   });
-  document.addEventListener('mousemove', (e) => {
-    if (!splitDragging) return;
+  document.addEventListener('pointermove', (e) => {
+    if (!splitDragging || e.pointerId !== splitPointerId) return;
     lastSplitClientX = e.clientX;
     if (splitRafId) return; // already scheduled
     splitRafId = requestAnimationFrame(() => {
@@ -1462,13 +1505,16 @@ function initPaneResize() {
       splitPane.style.flex = 'none';
     });
   });
-  document.addEventListener('mouseup', () => {
-    if (!splitDragging) return;
+  const endSplitDrag = (e) => {
+    if (!splitDragging || e.pointerId !== splitPointerId) return;
     splitDragging = false;
+    splitPointerId = null;
     splitHandle?.classList.remove('dragging');
     document.body.classList.remove('resize-active');
     splitPane.style.willChange = '';
-  });
+  };
+  document.addEventListener('pointerup', endSplitDrag);
+  document.addEventListener('pointercancel', endSplitDrag);
 }
 /* ─────────────────────────────────────────────────────────────
    FLOATING TERMINAL (for desktop mode console icon)
@@ -1578,7 +1624,12 @@ function initKeyboard() {
       toggleCRT();
     }
     // Alt+F = Toggle float/tile on focused window in Shell mode
-    if (e.altKey && e.key.toLowerCase() === 'f' && currentMode === 'tty') {
+    if (
+      e.altKey &&
+      e.key.toLowerCase() === 'f' &&
+      currentMode === 'tty' &&
+      window.innerWidth > 768
+    ) {
       const focusedEl = document.querySelector('.window.focused');
       const fId = focusedEl ? parseInt(focusedEl.dataset.windowId, 10) : null;
       if (fId && openWindows.has(fId)) {
@@ -1608,9 +1659,16 @@ function initKeyboard() {
       const nextIdx = curIdx === -1 ? 0 : (curIdx + delta + ids.length) % ids.length;
       focusWindow(ids[nextIdx]);
     }
-    // Escape = focus console input in TTY
-    if (e.key === 'Escape' && currentMode === 'tty') {
-      document.getElementById('console-input')?.focus();
+    // Escape = close open tray popups first, otherwise focus console input in TTY
+    if (e.key === 'Escape') {
+      const calMenu = document.getElementById('calendar-menu');
+      const closedStyle = styleMenu && !styleMenu.classList.contains('hidden');
+      const closedCal = calMenu && !calMenu.classList.contains('hidden');
+      if (closedStyle) styleMenu.classList.add('hidden');
+      if (closedCal) calMenu.classList.add('hidden');
+      if (!closedStyle && !closedCal && currentMode === 'tty') {
+        document.getElementById('console-input')?.focus();
+      }
     }
   });
 }
@@ -1780,12 +1838,23 @@ document.addEventListener('DOMContentLoaded', () => {
       handleTabKeydown(e);
     }
   });
-  // Clock, stats & center ticker
+  // Clock, stats & center ticker (paused while tab is backgrounded)
   updateClock();
   updateStats();
   initStatusCenterTicker();
-  setInterval(updateClock, 1000);
-  setInterval(updateStats, 2500);
+  setInterval(() => {
+    if (!document.hidden) updateClock();
+  }, 1000);
+  setInterval(() => {
+    if (!document.hidden) updateStats();
+  }, 2500);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      updateClock();
+      updateStats();
+      _updateStatusCenter?.();
+    }
+  });
   // Pane resize handles
   initPaneResize();
   // Keyboard shortcuts

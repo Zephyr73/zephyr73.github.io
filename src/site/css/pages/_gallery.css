@@ -2,7 +2,7 @@
 
 @layer components {
   /* ── Full-width gallery layout on large screens ──────────────────────── */
-  @media (min-width: 769px) {
+  @media (min-width: 768px) {
     body.page--gallery-detail .page__content {
       max-width: calc(100vw - 10%);
     }

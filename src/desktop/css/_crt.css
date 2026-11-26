@@ -45,11 +45,18 @@
       crt-glitch 24s infinite;
   }
 
-  body.crt-active * {
+  body.crt-active .desktop-icon__label,
+  body.crt-active .desktop-notification,
+  body.crt-active .console-output,
+  body.crt-active .console-input-row,
+  body.crt-active .nav-pane__header,
+  body.crt-active .nav-pane__tree,
+  body.crt-active .nav-pane__footer,
+  body.crt-active .md-rendered,
+  body.crt-active .boot-screen {
     text-shadow:
       0 0 2px var(--cp-green-glow),
-      0 0 6px var(--cp-green-glow),
-      0 0 12px var(--cp-green-glow);
+      0 0 6px var(--cp-green-glow);
   }
 
   body.crt-active .window-titlebar,

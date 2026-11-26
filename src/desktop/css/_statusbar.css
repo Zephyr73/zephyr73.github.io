@@ -345,11 +345,13 @@
   /* Calendar Menu */
   .calendar-menu {
     position: absolute;
-    bottom: 46px;
-    right: 12px;
+    bottom: var(--status-bar-h);
+    right: 0;
     width: 250px;
     background: var(--cp-panel);
     border: 1px solid var(--cp-border);
+    border-right: none;
+    border-bottom: none;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
     z-index: 1000;
     padding: 12px;

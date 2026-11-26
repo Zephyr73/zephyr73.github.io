@@ -2,6 +2,10 @@
 
 @layer components {
   @media (max-width: 768px) {
+    .desktop-notification {
+      display: none !important;
+    }
+
     .tty-nav-pane {
       display: flex !important;
       position: fixed !important;
@@ -11,13 +15,26 @@
       width: 280px !important;
       z-index: 1500 !important;
       transform: translateX(-100%);
-      transition: transform var(--t-med) ease;
+      visibility: hidden;
+      pointer-events: none;
+      transition:
+        transform var(--t-med) ease,
+        visibility 0s linear var(--t-med);
       background: var(--cp-bg-2) !important;
       border-right: 1px solid var(--cp-border) !important;
     }
 
     #mode-tty.nav-pane-open .tty-nav-pane {
       transform: translateX(0) !important;
+      visibility: visible;
+      pointer-events: auto;
+      transition:
+        transform var(--t-med) ease,
+        visibility 0s linear 0s;
+    }
+
+    .pane-resize-handle {
+      display: none !important;
     }
 
     .console-nav-toggle {
@@ -25,7 +42,7 @@
       background: var(--cp-bg-3);
       border: 1px solid var(--cp-border-2);
       color: var(--cp-green);
-      padding: 3px 8px;
+      padding: 4px 10px;
       font-size: 10px;
       font-weight: bold;
       letter-spacing: 0.05em;
@@ -63,30 +80,44 @@
       top: 0 !important;
       width: 100% !important;
       height: calc(100% - var(--status-bar-h)) !important;
-      transform: none !important;
       box-shadow: none !important;
       border: none !important;
       border-bottom: 1px solid var(--cp-border-2) !important;
     }
+
+    .window--floating:not(.window--minimized) {
+      transform: none !important;
+    }
+
+    .window--floating .window-titlebar {
+      cursor: default !important;
+    }
+
     .window-resize-e,
     .window-resize-s,
     .window-resize-se,
     .window-btn--minimize,
     .window-btn--maximize,
-    .window-btn--popup,
-    .window-btn--popin {
+    .window .window-btn--popup,
+    .window .window-btn--popin,
+    #mode-tty .window--floating .window-btn--popin,
+    .window--split .window-btn--popup,
+    .window--split .window-btn--popin {
       display: none !important;
     }
+
     .window-titlebar {
       height: 40px !important;
       padding: 0 10px !important;
     }
+
     .window-btn--close {
-      min-width: 36px !important;
-      height: 24px !important;
+      min-width: 44px !important;
+      height: 28px !important;
       font-size: 11px !important;
       border: 1px solid var(--cp-border-2) !important;
     }
+
     .tty-split-pane.visible {
       position: fixed !important;
       left: 0 !important;
@@ -96,60 +127,98 @@
       z-index: 150 !important;
       border: none !important;
     }
+
+    .tty-split-pane.visible.mobile-hidden {
+      display: none !important;
+    }
+
+    .tty-split-pane.visible .split-container {
+      display: contents !important;
+    }
+
+    .tty-split-pane.visible .window--split {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .tty-split-pane.visible .window--split:not(.focused) {
+      display: none !important;
+    }
+
+    /* Taskbar: scroll only desktop/shell/windows on the left; keep right tray static */
+    .statusbar-center {
+      display: none !important;
+    }
+
+    .statusbar-tray {
+      flex-shrink: 0 !important;
+    }
+
+    .statusbar-tray .tray-item:not(.style-btn):not(.tray-site-btn) {
+      display: none !important;
+    }
+
+    .tray-clock {
+      min-width: 70px !important;
+      padding: 0 8px !important;
+    }
+
+    .tray-clock .clock-date {
+      display: none !important;
+    }
+
+    .statusbar-left-scroll {
+      flex: 1 1 0% !important;
+      min-width: 0 !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+      scrollbar-width: none;
+    }
+
+    .statusbar-left-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .statusbar-active-apps {
+      flex: none !important;
+      overflow: visible !important;
+    }
   }
 
   @media (max-width: 600px) {
     .desktop-notification {
       display: none !important;
     }
+
     .desktop-icons {
       padding: 16px 10px !important;
       width: 100px !important;
     }
+
     .desktop-icon {
       width: 80px !important;
       padding: 6px 4px !important;
     }
+
     .desktop-icon__img {
       width: 36px !important;
       height: 36px !important;
     }
+
     .desktop-icon__img svg {
       width: 30px !important;
       height: 30px !important;
     }
-    .statusbar-center {
-      display: none !important;
-    }
-    .statusbar-tray .tray-item:not(.style-btn):not(.tray-site-btn) {
-      display: none !important;
-    }
-    .tray-clock {
-      min-width: 70px !important;
-      padding: 0 8px !important;
-    }
-    .tray-clock .clock-date {
-      display: none !important;
-    }
+
     .statusbar-tab {
       padding: 0 8px !important;
     }
+
     .statusbar-app-tab {
       padding: 0 8px !important;
       max-width: 120px !important;
-    }
-    .statusbar-left-scroll {
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      min-width: 0 !important;
-    }
-    .statusbar-left-scroll::-webkit-scrollbar {
-      display: none;
-    }
-    .statusbar-active-apps {
-      flex: none !important;
     }
 
     .console-banner-art {
@@ -201,16 +270,40 @@
       align-items: stretch !important;
       gap: 6px !important;
     }
+
     .gallery-header-actions {
       justify-content: space-between !important;
       flex-wrap: wrap !important;
       gap: 4px !important;
     }
+
     .gallery-action-btn {
       flex: 1 !important;
       justify-content: center !important;
       padding: 4px 6px !important;
       font-size: 9px !important;
+    }
+
+    /* Compact Web Engine toolbars on mobile */
+    .browser-tabbar,
+    .browser-menubar {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+    }
+    .browser-tabbar::-webkit-scrollbar,
+    .browser-menubar::-webkit-scrollbar {
+      display: none;
+    }
+    .browser-urlbar {
+      min-width: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .browser-lock-icon,
+    .browser-connect-btn {
+      display: none !important;
     }
   }
 }
