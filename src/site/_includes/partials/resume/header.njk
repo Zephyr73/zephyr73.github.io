@@ -8,10 +8,10 @@
       </picture>
     </div>
 
-    <div class="resume-links flex flex-col gap-2 max-md:grid max-md:grid-cols-2 max-[440px]:grid-cols-1">
+    <div class="resume-links flex flex-col gap-2 max-md:grid max-md:grid-cols-2 max-[359px]:grid-cols-1">
       {% if profile.email %}
       <button
-        class="resume-btn resume-contact__copy flex items-center justify-start overflow-hidden group/copy gap-2 py-2 px-3 bg-surface border border-border text-body-text font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] box-border hover:border-accent hover:text-accent hover:bg-surface-2"
+        class="resume-btn resume-contact__copy flex items-center justify-start overflow-hidden group/copy gap-2 py-2 px-3 bg-surface border border-border text-body-text font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] max-md:min-h-[44px] max-md:col-span-2 max-[359px]:col-span-1 box-border hover:border-accent hover:text-accent hover:bg-surface-2"
         data-copy="{{ profile.email }}"
         type="button"
         aria-label="Copy email {{ profile.email }}"
@@ -54,7 +54,7 @@
         href="{{ link.url }}"
         target="_blank"
         rel="noopener noreferrer"
-        class="resume-btn flex items-center gap-2 py-2 px-3 bg-surface border border-border text-body-text font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] box-border hover:border-accent hover:text-accent hover:bg-surface-2"
+        class="resume-btn flex items-center gap-2 py-2 px-3 bg-surface border border-border text-body-text font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] max-md:min-h-[44px] box-border hover:border-accent hover:text-accent hover:bg-surface-2"
       >
         {% if link.icon == 'github' %}
         <svg
@@ -108,7 +108,7 @@
         href="/assets/resume.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        class="resume-btn resume-btn--pdf flex items-center gap-2 py-2 px-3 bg-surface border border-border text-accent font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] box-border hover:border-accent hover:bg-surface-2"
+        class="resume-btn resume-btn--pdf flex items-center gap-2 py-2 px-3 bg-surface border border-border text-accent font-regular text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] max-md:min-h-[44px] box-border hover:border-accent hover:bg-surface-2"
       >
         <svg
           width="14"

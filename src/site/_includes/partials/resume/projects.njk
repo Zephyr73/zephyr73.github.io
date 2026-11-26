@@ -10,11 +10,11 @@
   <div class="resume-projects-list flex flex-col border-t border-border print:border-none print:gap-[5pt]">
     {% for proj in projects %}
     <div class="resume-project-item border-b border-border py-5 px-3 -mx-3 transition-colors duration-150 ease-default hover:bg-surface/70 max-[600px]:px-2 max-[600px]:-mx-2 print:bg-transparent print:border-none print:p-0 print:mx-0 print:break-inside-avoid">
-      <div class="project-item-top flex justify-between items-baseline flex-wrap gap-2 mb-2 print:mb-[1pt]">
-        <h3 class="project-item-name m-0 font-heading text-[1.12rem] font-bold max-[600px]:text-[1.02rem] print:text-[10pt] print:m-0 [&>a]:text-body-text [&>a]:no-underline [&>a]:transition-colors [&>a]:duration-150 [&>a]:ease-default hover:[&>a]:text-accent print:[&>a]:text-[#000000]">
-          <span class="font-code text-accent mr-1.5 print:hidden" aria-hidden="true">&gt;</span>{% if proj.url %}<a href="{{ proj.url }}">{{ proj.title | safe }}</a>{% else %}{{ proj.title | safe }}{% endif %}
+      <div class="project-item-top flex justify-between items-baseline gap-3 mb-2 print:mb-[1pt]">
+        <h3 class="project-item-name m-0 flex-1 min-w-0 flex items-baseline gap-1.5 font-heading text-[1.12rem] font-bold max-[600px]:text-[1.02rem] print:block print:text-[10pt] print:m-0 [&>a]:text-body-text [&>a]:no-underline [&>a]:transition-colors [&>a]:duration-150 [&>a]:ease-default hover:[&>a]:text-accent print:[&>a]:text-[#000000]">
+          <span class="font-code text-accent shrink-0 print:hidden" aria-hidden="true">&gt;</span>{% if proj.url %}<a href="{{ proj.url }}" class="min-w-0">{{ proj.title | safe }}</a>{% else %}<span class="min-w-0">{{ proj.title | safe }}</span>{% endif %}
         </h3>
-        <span class="project-item-date font-code text-[0.74rem] text-text-subtle print:text-[8pt] print:text-[#444444]">{{ proj.date | safe }}</span>
+        <span class="project-item-date shrink-0 whitespace-nowrap font-code text-[0.74rem] text-text-subtle print:text-[8pt] print:text-[#444444]">{{ proj.date | safe }}</span>
       </div>
       {% set resolvedTags = proj.tags %}
       {% for colProj in collections.project %}

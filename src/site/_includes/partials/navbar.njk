@@ -18,7 +18,7 @@
         <span>tasrif</span>
       </a>
       {% if img and img.category and img.filename %}
-        <span class="text-text-subtle mx-[1px] select-none shrink-0" aria-hidden="true">/</span>
+        <span class="text-text-subtle mx-[1px] select-none shrink-0 max-sm:hidden" aria-hidden="true">/</span>
         <a href="/gallery/" class="text-text-muted font-normal no-underline transition-colors duration-150 ease-default hover:text-accent shrink-0 max-sm:hidden">gallery</a>
         <span class="text-text-subtle mx-[1px] select-none shrink-0 max-sm:hidden" aria-hidden="true">/</span>
         <a href="/gallery/#{{ 'ai-container' if img.category == 'ai' else img.category }}" class="text-text-muted font-normal no-underline transition-colors duration-150 ease-default hover:text-accent shrink-0 max-sm:hidden">{{ img.category }}</a>
@@ -92,7 +92,7 @@
         <span>Desktop OS</span>
       </a>
       <button
-        class="site-nav__mode-toggle inline-flex items-center justify-center w-[32px] h-[32px] bg-surface border border-border
+        class="site-nav__mode-toggle inline-flex items-center justify-center w-[32px] h-[32px] max-md:w-[44px] max-md:h-[44px] bg-surface border border-border
           cursor-pointer text-text-muted transition-colors duration-150 ease-default p-0 box-border rounded-none shrink-0
           hover:border-accent hover:text-accent hover:bg-surface-2"
         type="button"
