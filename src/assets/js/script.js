@@ -656,12 +656,16 @@ function ditherMarkdownImg(img) {
 }
 
 function initMarkdownDither() {
+  if (document.body.classList.contains('no-markdown-dither')) {
+    return;
+  }
   const imgs = document.querySelectorAll('.markdown-content img');
   if (!imgs.length) {
     return;
   }
   imgs.forEach((img) => {
-    if (img.dataset.ditherInit) {
+    const src = img.getAttribute('src') || '';
+    if (img.dataset.ditherInit || /\.gif(\?|#|$)/i.test(src)) {
       return;
     }
     img.dataset.ditherInit = 'true';
