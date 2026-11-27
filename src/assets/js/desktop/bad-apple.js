@@ -574,7 +574,7 @@ export async function startBadApple({ terminalSession, getAudioContext }) {
   };
 
   activeSession = sessionHandle;
-  terminalSession.write('playing bad-apple (Ctrl+C to stop)...', 'dim');
+  terminalSession.write('playing bad-apple (tap screen or Ctrl+C to stop)...', 'dim');
 
   let data;
   try {

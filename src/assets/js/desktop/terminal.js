@@ -103,13 +103,25 @@ window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
   },
 };
 
-function createBadAppleElement(frameText) {
+function createBadAppleElement(frameText, isActive = false) {
   const wrap = document.createElement('div');
   wrap.className = 'console-line bad-apple-line';
 
   const screen = document.createElement('pre');
-  screen.className = 'bad-apple-screen';
+  screen.className = `bad-apple-screen${isActive ? ' bad-apple-screen--active' : ''}`;
   screen.textContent = frameText || '';
+  if (isActive) {
+    screen.title = 'Tap or press Ctrl+C to stop';
+  }
+
+  screen.addEventListener('click', (e) => {
+    if (!screen.classList.contains('bad-apple-screen--active')) return;
+    if (window.getSelection()?.toString()) return;
+    if (interruptTerminalProcess()) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
 
   wrap.appendChild(screen);
   return { wrap, screen };
@@ -123,6 +135,7 @@ function createBadAppleElement(frameText) {
  */
 export function mountTerminalOutput(outputEl, { inputRow = null, inputEl = null } = {}) {
   let liveScreen = null;
+  const defaultPlaceholder = inputEl ? inputEl.placeholder : 'type a command...';
 
   const setForegroundRunning = (running) => {
     if (inputRow) {
@@ -130,9 +143,27 @@ export function mountTerminalOutput(outputEl, { inputRow = null, inputEl = null 
     }
     if (inputEl) {
       inputEl.readOnly = running;
-      if (!running) inputEl.focus();
+      if (running) {
+        inputEl.placeholder = 'tap or press Ctrl+C to stop';
+      } else {
+        inputEl.placeholder = defaultPlaceholder;
+        inputEl.focus();
+      }
     }
   };
+
+  const onInputRowClick = (e) => {
+    if (inputEl && inputEl.readOnly) {
+      if (interruptTerminalProcess()) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+  };
+
+  if (inputRow) {
+    inputRow.addEventListener('click', onInputRowClick);
+  }
 
   const appendLine = (text, type) => {
     const div = document.createElement('div');
@@ -151,7 +182,7 @@ export function mountTerminalOutput(outputEl, { inputRow = null, inputEl = null 
     let hasActive = false;
     window.__TERMINAL_SESSION__.buffer.forEach((entry) => {
       if (entry.type === 'bad-apple') {
-        const els = createBadAppleElement(entry.frameText);
+        const els = createBadAppleElement(entry.frameText, Boolean(entry.active));
         outputEl.appendChild(els.wrap);
         if (entry.active) {
           liveScreen = els.screen;
@@ -167,7 +198,7 @@ export function mountTerminalOutput(outputEl, { inputRow = null, inputEl = null 
 
   renderBuffer();
 
-  return window.__TERMINAL_SESSION__.subscribe((event) => {
+  const unsubSession = window.__TERMINAL_SESSION__.subscribe((event) => {
     if (event.type === 'clear') {
       outputEl.innerHTML = '';
       liveScreen = null;
@@ -176,7 +207,7 @@ export function mountTerminalOutput(outputEl, { inputRow = null, inputEl = null 
       appendLine(event.text, event.lineType);
       outputEl.scrollTop = outputEl.scrollHeight;
     } else if (event.type === 'bad-apple-start') {
-      const els = createBadAppleElement(event.frameText);
+      const els = createBadAppleElement(event.frameText, true);
       liveScreen = els.screen;
       outputEl.appendChild(els.wrap);
       setForegroundRunning(true);
@@ -187,11 +218,20 @@ export function mountTerminalOutput(outputEl, { inputRow = null, inputEl = null 
       if (event.frameText) {
         liveScreen.textContent = event.frameText;
       }
+      liveScreen.classList.remove('bad-apple-screen--active');
+      liveScreen.removeAttribute('title');
       liveScreen = null;
       setForegroundRunning(false);
       outputEl.scrollTop = outputEl.scrollHeight;
     }
   });
+
+  return () => {
+    unsubSession();
+    if (inputRow) {
+      inputRow.removeEventListener('click', onInputRowClick);
+    }
+  };
 }
 
 /**

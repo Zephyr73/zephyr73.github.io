@@ -507,11 +507,25 @@
     text-shadow: 0 0 6px var(--cp-green-glow);
   }
 
+  .bad-apple-screen--active {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .console-input-row--running {
+    cursor: pointer;
+  }
+
   .console-input-row--running .console-prompt-label {
     display: none;
   }
 
+  .console-input-row--running .console-input {
+    cursor: pointer;
+  }
+
   .console-input-row--running .console-input::placeholder {
-    color: transparent;
+    color: var(--cp-dim);
+    font-style: italic;
   }
 }
