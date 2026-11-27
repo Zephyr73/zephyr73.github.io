@@ -3,12 +3,24 @@ const hamTrigger = document.querySelector('.site-nav__hamburger');
 const drawer = document.querySelector('.site-nav__drawer');
 
 if (hamTrigger && drawer) {
-  function closeDrawer() {
+  drawer.inert = true;
+
+  function getDrawerFocusable() {
+    return Array.from(
+      drawer.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+    ).filter((el) => getComputedStyle(el).display !== 'none');
+  }
+
+  function closeDrawer(restoreFocus = false) {
     hamTrigger.classList.remove('active');
     hamTrigger.setAttribute('aria-expanded', 'false');
     drawer.classList.remove('active');
+    drawer.inert = true;
     document.documentElement.classList.remove('no-scroll');
     document.body.classList.remove('no-scroll');
+    if (restoreFocus) {
+      hamTrigger.focus();
+    }
   }
 
   hamTrigger.addEventListener('click', () => {
@@ -16,6 +28,7 @@ if (hamTrigger && drawer) {
     hamTrigger.classList.toggle('active', isOpening);
     hamTrigger.setAttribute('aria-expanded', String(isOpening));
     drawer.classList.toggle('active', isOpening);
+    drawer.inert = !isOpening;
     document.documentElement.classList.toggle('no-scroll', isOpening);
     document.body.classList.toggle('no-scroll', isOpening);
 
@@ -23,6 +36,10 @@ if (hamTrigger && drawer) {
       drawer.querySelectorAll('a[href]').forEach((link) => {
         prefetchHref(link.href);
       });
+      const firstFocusable = getDrawerFocusable()[0];
+      if (firstFocusable) {
+        requestAnimationFrame(() => firstFocusable.focus());
+      }
     }
   });
 
@@ -32,16 +49,31 @@ if (hamTrigger && drawer) {
     link.addEventListener('click', () => {
       const href = link.getAttribute('href') || '';
       if (href.startsWith('#') || link.target === '_blank') {
-        closeDrawer();
+        closeDrawer(false);
       }
     });
   });
 
-  // Close drawer and theme menu on Escape key
+  // Trap Tab inside open drawer and close drawer / theme menu on Escape key
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab' && drawer.classList.contains('active')) {
+      const focusable = [hamTrigger, ...getDrawerFocusable()];
+      if (focusable.length > 0) {
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
     if (e.key === 'Escape') {
       if (drawer.classList.contains('active')) {
-        closeDrawer();
+        closeDrawer(true);
       }
       if (themeMenu && themeMenu.style.display === 'block') {
         themeMenu.style.display = 'none';
@@ -173,6 +205,11 @@ function _applyThemeDOM(themeKey, modeKey, fromDesktop = false) {
 
   updateThemeUI(currentMode);
 
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) {
+    themeMeta.setAttribute('content', currentMode === 'light' ? '#f4f1ea' : '#101110');
+  }
+
   // Update theme toggle UI if present
   if (themeMenu) {
     themeMenu.style.display = 'none';
@@ -258,7 +295,9 @@ modeOptions.forEach((option) => {
     applyTheme(null, m);
     if (option.classList.contains('drawer-mode-btn') && hamTrigger && drawer) {
       hamTrigger.classList.remove('active');
+      hamTrigger.setAttribute('aria-expanded', 'false');
       drawer.classList.remove('active');
+      drawer.inert = true;
       document.documentElement.classList.remove('no-scroll');
       document.body.classList.remove('no-scroll');
     }
@@ -340,7 +379,10 @@ function initGallery() {
   // Pure DOM swap — used on initial load and instant fallbacks.
   function swapSections(name, updateHash = false) {
     buttons.forEach((btn) => {
-      btn.classList.toggle('is-active', btn.textContent.trim() === name);
+      const isActive = btn.textContent.trim() === name;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-selected', String(isActive));
+      btn.setAttribute('tabindex', isActive ? '0' : '-1');
     });
 
     const target = containers[name];
@@ -350,6 +392,7 @@ function initGallery() {
       }
       const visible = el === target;
       el.classList.toggle('is-visible', visible);
+      el.setAttribute('aria-hidden', String(!visible));
       el.style.display = visible ? '' : 'none';
       el.style.opacity = visible ? '1' : '0';
     });
@@ -376,7 +419,10 @@ function initGallery() {
     isAnimating = true;
 
     buttons.forEach((btn) => {
-      btn.classList.toggle('is-active', btn.textContent.trim() === name);
+      const isActive = btn.textContent.trim() === name;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-selected', String(isActive));
+      btn.setAttribute('tabindex', isActive ? '0' : '-1');
     });
 
     if (updateHash) {
@@ -390,10 +436,12 @@ function initGallery() {
       if (newEl) {
         newEl.style.display = '';
         newEl.classList.add('is-visible');
+        newEl.setAttribute('aria-hidden', 'false');
         newEl.style.opacity = '1';
       }
       if (oldEl && oldEl !== newEl) {
         oldEl.classList.remove('is-visible');
+        oldEl.setAttribute('aria-hidden', 'true');
         oldEl.style.display = 'none';
         oldEl.style.opacity = '0';
       }
@@ -406,12 +454,14 @@ function initGallery() {
 
       setTimeout(() => {
         oldEl.classList.remove('is-visible');
+        oldEl.setAttribute('aria-hidden', 'true');
         oldEl.style.display = 'none';
 
         if (newEl) {
           newEl.style.display = '';
           void newEl.offsetHeight;
           newEl.classList.add('is-visible');
+          newEl.setAttribute('aria-hidden', 'false');
           newEl.style.opacity = '1';
         }
 
@@ -424,6 +474,7 @@ function initGallery() {
         newEl.style.display = '';
         void newEl.offsetHeight;
         newEl.classList.add('is-visible');
+        newEl.setAttribute('aria-hidden', 'false');
         newEl.style.opacity = '1';
       }
       isAnimating = false;
@@ -439,10 +490,24 @@ function initGallery() {
     show(targetSection, false);
   });
 
-  buttons.forEach((button) => {
+  const buttonList = Array.from(buttons);
+  buttonList.forEach((button, idx) => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       show(button.textContent.trim(), true);
+    });
+    button.addEventListener('keydown', (e) => {
+      let targetIdx = null;
+      if (e.key === 'ArrowRight') targetIdx = (idx + 1) % buttonList.length;
+      else if (e.key === 'ArrowLeft') targetIdx = (idx - 1 + buttonList.length) % buttonList.length;
+      else if (e.key === 'Home') targetIdx = 0;
+      else if (e.key === 'End') targetIdx = buttonList.length - 1;
+      if (targetIdx !== null) {
+        e.preventDefault();
+        const nextBtn = buttonList[targetIdx];
+        nextBtn.focus();
+        show(nextBtn.textContent.trim(), true);
+      }
     });
   });
 }
@@ -1262,7 +1327,7 @@ if (document.readyState === 'loading') {
   }
 })();
 
-// Markdown reading polish: code block copy buttons & heading anchor links
+// Markdown reading polish: code block copy buttons, table scroll wrappers & heading anchors
 (() => {
   const md = document.querySelector('.markdown-content');
   if (!md) {
@@ -1284,26 +1349,53 @@ if (document.readyState === 'loading') {
 
     const bar = document.createElement('div');
     bar.className = 'code-block-bar';
-    bar.innerHTML = `<span>${lang}</span>`;
+    const langLabel = document.createElement('span');
+    langLabel.textContent = lang;
+    bar.appendChild(langLabel);
 
     const copyBtn = document.createElement('button');
     copyBtn.type = 'button';
     copyBtn.className = 'code-copy-btn';
     copyBtn.textContent = 'copy';
+    copyBtn.setAttribute('aria-label', `Copy ${lang} code block`);
     copyBtn.addEventListener('click', () => {
       const text = (code ? code.textContent : pre.textContent) || '';
-      navigator.clipboard?.writeText(text).then(() => {
-        copyBtn.textContent = 'copied';
-        setTimeout(() => {
-          copyBtn.textContent = 'copy';
-        }, 1500);
-      });
+      copyToClipboard(text)
+        .then(() => {
+          copyBtn.textContent = 'copied!';
+          copyBtn.classList.add('is-copied');
+          clearTimeout(copyBtn._revertTimer);
+          copyBtn._revertTimer = setTimeout(() => {
+            copyBtn.textContent = 'copy';
+            copyBtn.classList.remove('is-copied');
+          }, 1500);
+        })
+        .catch(() => {
+          copyBtn.textContent = 'failed';
+          clearTimeout(copyBtn._revertTimer);
+          copyBtn._revertTimer = setTimeout(() => {
+            copyBtn.textContent = 'copy';
+          }, 1500);
+        });
     });
 
     bar.appendChild(copyBtn);
     pre.parentNode.insertBefore(wrap, pre);
     wrap.appendChild(bar);
     wrap.appendChild(pre);
+  });
+
+  md.querySelectorAll('table').forEach((table) => {
+    if (table.parentElement && table.parentElement.classList.contains('table-wrap')) {
+      return;
+    }
+    const wrap = document.createElement('div');
+    wrap.className = 'table-wrap';
+    wrap.setAttribute('tabindex', '0');
+    wrap.setAttribute('role', 'region');
+    wrap.setAttribute('aria-label', 'Scrollable data table');
+    table.parentNode.insertBefore(wrap, table);
+    wrap.appendChild(table);
   });
 
   md.querySelectorAll('h2[id], h3[id]').forEach((heading) => {

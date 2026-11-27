@@ -18,21 +18,21 @@
               max-[600px]:gap-1">
             <div>
               <h3 class="timeline-degree font-heading text-[1.15rem] font-bold text-body-text m-0 mb-1 max-[600px]:text-[1.05rem]">{{ item.degree | safe }}</h3>
-              <div class="timeline-institution font-regular text-[0.825rem] text-text-muted">{{ item.institution | safe }}</div>
+              <div class="timeline-institution font-sans text-[0.9rem] text-text-muted">{{ item.institution | safe }}</div>
             </div>
-            <div class="timeline-date font-regular text-[0.775rem] text-text-muted bg-surface py-[3px] px-2 border border-border
+            <div class="timeline-date font-code tabular-nums text-[0.775rem] text-text-muted bg-surface py-[3px] px-2 border border-border
               whitespace-nowrap">{{ item.date | safe }}</div>
           </div>
           {% if item.badges %}
             <div class="timeline-badges flex flex-wrap gap-[6px] my-[0.6rem]">
               {% for badge in item.badges %}
-                <span class="badge font-regular text-[0.725rem] py-[2px] px-[7px] bg-surface border border-border text-text-muted{% if
+                <span class="badge font-code text-[0.725rem] py-[2px] px-[7px] bg-surface border border-border text-text-muted{% if
                   badge.accent %} border-accent/40 text-accent bg-accent-subtle font-medium{% endif %}">{{ badge.text | safe }}</span>
               {% endfor %}
             </div>
           {% endif %}
           {% if item.desc %}
-            <p class="timeline-desc font-regular text-[0.875rem] leading-[1.65] text-text-muted m-0 mt-2 max-[600px]:text-[0.825rem]">{{ item.desc | safe }}</p>
+            <p class="timeline-desc font-sans text-[0.92rem] leading-[1.65] text-text-muted m-0 mt-2 max-[600px]:text-[0.88rem]">{{ item.desc | safe }}</p>
           {% endif %}
         </div>
       </div>

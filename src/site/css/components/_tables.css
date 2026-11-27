@@ -1,12 +1,13 @@
 /* Component: Tables
-   Borderless horizontal-rule style to match the minimal monospace aesthetic. */
+   Borderless horizontal-rule style with crisp tabular figures. */
 
 @layer components {
   table {
     width: 100%;
     border-collapse: collapse;
-    font-family: var(--font-regular);
-    font-size: 14px;
+    font-family: var(--font-sans);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9rem;
     margin: 1.5rem 0;
   }
 
@@ -19,10 +20,10 @@
   }
 
   th {
-    font-family: var(--font-bold);
-    font-weight: normal;
-    font-size: 11px;
-    letter-spacing: 0.05em;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     background-color: var(--clr-container-bg);
     color: var(--clr-body-text);

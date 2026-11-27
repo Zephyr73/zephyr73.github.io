@@ -188,7 +188,7 @@
     --clr-body-text: #1b1a17;
     --clr-bold-text: #11100e;
     --clr-text-muted: #5c5950;
-    --clr-text-subtle: #858074;
+    --clr-text-subtle: #676359;
 
     --clr-surface: #eae6dc;
     --clr-surface-2: #e0dbd0;
@@ -201,13 +201,13 @@
     --clr-hamburger-bg: #1b1a17;
     --clr-off-screen-menu-txt: #1b1a17;
 
-    --clr-accent: #b45309;
-    --clr-accent-dim: #92400e;
-    --clr-accent-glow: rgba(180, 83, 9, 0.14);
-    --clr-accent-subtle: rgba(180, 83, 9, 0.08);
-    --clr-accent-muted: #d97706;
+    --clr-accent: #9e4706;
+    --clr-accent-dim: #7c3604;
+    --clr-accent-glow: rgba(158, 71, 6, 0.14);
+    --clr-accent-subtle: rgba(158, 71, 6, 0.08);
+    --clr-accent-muted: #b45309;
     --clr-accent-2: #1d4ed8;
-    --clr-link-visited: #b45309;
+    --clr-link-visited: #9e4706;
     --clr-accent-text: #f3f0e8;
 
     --clr-code-bg: #eae6dc;
@@ -344,5 +344,27 @@
     box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.08),
       0 2px 6px rgba(0, 0, 0, 0.04);
+  }
+
+  @media print {
+    :root,
+    .amber-terminal,
+    .light,
+    .light.amber-terminal {
+      --clr-body-bg: #ffffff;
+      --clr-body-text: #111111;
+      --clr-bold-text: #000000;
+      --clr-text-muted: #444444;
+      --clr-text-subtle: #555555;
+      --clr-surface: #ffffff;
+      --clr-surface-2: #f7f7f7;
+      --clr-border: #cccccc;
+      --clr-border-hover: #999999;
+      --clr-accent: #7c3504;
+      --clr-accent-2: #111111;
+      --clr-inline-code-bg: #f4f4f4;
+      --clr-inline-code-text: #111111;
+      --clr-code-text: #111111;
+    }
   }
 }

@@ -189,6 +189,8 @@ export default async function () {
         slug,
         category,
         filename: file,
+        width: meta.width,
+        height: meta.height,
         thumbUrl,
         webpUrl,
         srcsetWebp,

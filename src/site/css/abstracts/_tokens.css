@@ -8,7 +8,7 @@
     --clr-body-bg: #101110;
     --clr-body-text: #e5e3dc;
     --clr-text-muted: #92988e;
-    --clr-text-subtle: #5f665c;
+    --clr-text-subtle: #7d857a;
 
     --clr-surface: #161816;
     --clr-surface-2: #1d201d;
@@ -32,12 +32,13 @@
     --clr-accent-text: #101110;
     --clr-bold-text: #f3f1eb;
 
-    /* Typography — Local Monospace + Editorial Prose System */
-    --font-heading: 'Iosevka Webfont Bold', 'Iosevka Webfont', 'JetBrains Mono Bold', monospace;
-    --font-prose: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-regular: 'JetBrains Mono', monospace;
-    --font-bold: 'JetBrains Mono Bold', monospace;
-    --font-code: 'JetBrains Mono', monospace;
+    /* Typography — Iosevka Ecosystem (Headings, UI Sans, Typewriter Slab) + JetBrains Mono */
+    --font-heading: 'Iosevka Webfont Bold', 'Iosevka Aile', 'JetBrains Mono', monospace;
+    --font-sans: 'Iosevka Aile', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-prose: 'Iosevka Etoile', Georgia, 'Times New Roman', serif;
+    --font-code: 'JetBrains Mono', ui-monospace, monospace;
+    --font-regular: var(--font-sans);
+    --font-bold: var(--font-sans);
     --type-label-tracking: 0.1em;
 
     /* Syntax Highlighting */

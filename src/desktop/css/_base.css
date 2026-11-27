@@ -49,6 +49,11 @@
     color: inherit;
   }
 
+  :where(button, a, select, [tabindex]):focus-visible {
+    outline: 1px solid var(--cp-green);
+    outline-offset: -1px;
+  }
+
   input,
   textarea {
     font-family: var(--font-mono);

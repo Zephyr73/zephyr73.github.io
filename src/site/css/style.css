@@ -32,6 +32,8 @@
    Values forward-reference the runtime theme vars so utilities follow the
    active Basic Site theme. */
 @theme {
+  --font-sans: var(--font-sans);
+  --font-prose: var(--font-prose);
   --font-regular: var(--font-regular);
   --font-heading: var(--font-heading);
   --font-bold: var(--font-bold);

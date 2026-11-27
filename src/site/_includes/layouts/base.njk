@@ -1,231 +1,210 @@
 {% set pageAccent = "amber-terminal" %}
 <!doctype html>
 <html lang="en" data-static-accent="{{ pageAccent }}">
-  <head>
-    <link rel="icon" type="image/jpeg" href="/assets/img/favicon.jpg" />
-    <link
-      rel="preload"
-      href="/assets/fonts/iosevka-ss08-bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/JetBrainsMono-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/JetBrainsMono-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self';">
-    {% if description %}<meta name="description" content="{{ description }}" />{% endif %}
-
-    <title>{{ title | default("Tasrif — IT, DevOps & Cybersecurity Portfolio") }}</title>
-
-    <!-- Open Graph / Twitter Meta Tags -->
-    <meta property="og:title" content="{{ title | default('Tasrif — IT, DevOps & Cybersecurity Portfolio') }}" />
-    {% if description %}<meta property="og:description" content="{{ description }}" />{% endif %}
-    <meta property="og:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://tasrif.dev{{ page.url }}" />
-    
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="{{ title | default('Tasrif — IT, DevOps & Cybersecurity Portfolio') }}" />
-    {% if description %}<meta name="twitter:description" content="{{ description }}" />{% endif %}
-    <meta name="twitter:image" content="https://tasrif.dev/assets/img/og-image.jpg" />
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Tasrif",
-      "url": "https://tasrif.dev",
-      "jobTitle": "IT / DevOps Engineer",
-      "sameAs": [
-        "https://github.com/Zephyr73"
-      ]
-    }
-    </script>
-
-    <!-- Prevent scroll jitter on reload & restore saved theme before CSS loads to prevent FOUC -->
-    <script>
-      if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-      }
-      (function () {
-        var isEmbedded = window.self !== window.top;
-        var mode;
-        var accent;
-
-        if (isEmbedded) {
-          mode = sessionStorage.getItem('site-embedded-mode') || 'dark';
-          accent =
-            sessionStorage.getItem('site-embedded-accent') ||
-            localStorage.getItem('desktop-theme') ||
-            'green';
-        } else {
-          mode = localStorage.getItem('site-mode') || 'dark';
-          accent = document.documentElement.getAttribute('data-static-accent') || 'white';
-        }
-
-        var classes = [];
-        if (mode === 'light') {
-          classes.push('light');
-        }
-        if (accent) {
-          classes.push(accent);
-        }
-        if (isEmbedded) {
-          classes.push('is-embedded');
-        }
-        
-        // Stateful Navbar Transition Logic
-        // Guard against speculative prerendering: the inline script runs at prerender
-        // time, which would write the wrong 'wasGallery' value into sessionStorage
-        // before the user actually navigates — causing the animation to skip on
-        // activation. Only commit the sessionStorage write when we're not prerendering.
-        var isGallery = window.location.pathname.indexOf('/gallery') !== -1;
-        var wasGallery = sessionStorage.getItem('site-was-gallery') === 'true';
-        if (!document.prerendering) {
-          sessionStorage.setItem('site-was-gallery', isGallery);
-        } else {
-          // Deferred write: update sessionStorage once this prerendered page activates
-          document.addEventListener('prerenderingchange', function() {
-            sessionStorage.setItem('site-was-gallery', isGallery);
-          }, { once: true });
-        }
-        
-        if (isGallery && !wasGallery) {
-          classes.push('nav-starting-narrow');
-        } else if (!isGallery && wasGallery) {
-          classes.push('nav-starting-wide');
-        }
-        
-        document.documentElement.className = classes.join(' ');
-      })();
-    </script>
-
-    <!-- Speculative Prerendering: Chromium instantly activates pre-rendered pages -->
-    <script type="speculationrules">
-      {
-        "prerender": [
-          {
-            "source": "document",
-            "where": {
-              "and": [
-                { "href_matches": "/*" },
-                { "not": { "href_matches": "/desktop/*" } },
-                { "not": { "href_matches": "/*#*" } }
-              ]
-            },
-            "eagerness": "moderate"
-          }
-        ]
-      }
-    </script>
-
-    {% if '/gallery/' not in page.url %}
-    <!-- Gallery image preload manifest (build-time, consumed by script.js) -->
-    <script>
-      window.__GALLERY_PRELOAD__ = {{ galleryPreload | dump | safe }};
-    </script>
-    {% endif %}
-
-    <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
-  </head>
-
-  <!-- DYNAMIC BODY CLASSES: Allows you to style specific pages differently -->
-  <body class="page {{ bodyClass }}" data-page="{{ pageId }}">
-
-    <!-- MOBILE DRAWER -->
-    {% include "partials/drawer.njk" %}
-
-    <!-- MAIN NAVIGATION -->
-    {% include "partials/navbar.njk" %}
-
-    <!-- CONTENT INJECTION POINT -->
-    <main class="page__content">
-      {% if noMarkdownWrapper %}
-        {{ content | safe }}
-      {% else %}
-        <!-- This wrapper ensures markdown styles apply to blog/project content with wide-screen TOC -->
-        <div class="markdown-layout">
-          <aside class="markdown-toc" aria-label="Table of contents">
-            <div class="markdown-toc__inner">
-              <div class="markdown-toc__header">
-                <span class="toc-header__prefix text-accent">&gt;</span> contents
-                <button
-                  type="button"
-                  class="markdown-toc__toggle"
-                  aria-expanded="false"
-                  aria-controls="markdown-toc-nav"
-                  aria-label="Toggle table of contents"
-                >
-                  <span class="markdown-toc__toggle-label">expand</span>
-                  <span class="markdown-toc__toggle-icon" aria-hidden="true">+</span>
-                </button>
-              </div>
-              <nav class="markdown-toc__nav" id="markdown-toc-nav">
-                <ul class="markdown-toc__list"></ul>
-              </nav>
-            </div>
-          </aside>
-          <div class="markdown-content">
-            {% if date or category or repo or (skills and skills.length > 0) %}
-              <div class="mb-7 bg-surface dither-surface border border-border px-3.5 py-2.5 flex flex-col gap-2 font-code text-[0.76rem] text-text-muted">
-                <div class="flex items-center justify-between flex-wrap gap-3">
-                  <div class="flex items-center flex-wrap gap-4">
-                    {% if category %}<span>{{ category | safe }}</span>{% endif %}
-                    {% if date %}<span class="text-text-subtle">{{ date | formatDate }}</span>{% endif %}
-                    <span class="text-text-subtle">~{{ content | readingTime }}</span>
-                  </div>
-                  {% if repo %}<a href="{{ repo }}" target="_blank" rel="noopener noreferrer" class="text-accent-2 no-underline hover:underline">github ↗</a>{% endif %}
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+        <meta name="theme-color" content="#101110"/>
+        <meta name="color-scheme" content="dark light"/>
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, noai, noimageai"/>
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex"/>
+        <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex"/>
+        <meta name="tdm-reservation" content="1"/>
+        <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg"/>
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png"/>
+        <link rel="manifest" href="/site.webmanifest"/>
+        {% set isArticlePage = (not noMarkdownWrapper) and (('/blog/' in (page.url or '')) or ('/projects/' in (page.url or ''))) %}
+        <link rel="preload" href="/assets/fonts/iosevka-ss08-bold.woff2" as="font" type="font/woff2" crossorigin/>
+        <link rel="preload" href="/assets/fonts/IosevkaAile-Regular.woff2" as="font" type="font/woff2" crossorigin/>
+        <link rel="preload" href="/assets/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin/>
+        {% if isArticlePage %}
+            <link rel="preload" href="/assets/fonts/IosevkaEtoile-Regular.woff2" as="font" type="font/woff2" crossorigin/>
+        {% endif %}
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; style-src 'self' 'unsafe-inline';
+                font-src 'self';">
+        {% if description %}<meta name="description" content="{{ description }}"/>{% endif %}
+        {% set resolvedTitle = title | default("Tasrif — Backend & Systems Portfolio") %}
+        {% set resolvedOgImage = "https://tasrif.dev" + (ogImage | default("/assets/img/og-image.jpg")) %}
+        {% set resolvedOgImageAlt = ogImageAlt | default("Tasrif — Backend & Systems Portfolio preview") %}
+        <title>{{ resolvedTitle }}</title>
+        <!-- Open Graph / Twitter Meta Tags -->
+        <meta property="og:site_name" content="Tasrif"/>
+        <meta property="og:title" content="{{ resolvedTitle }}"/>
+        {% if description %}<meta property="og:description" content="{{ description }}"/>{% endif %}
+        <meta property="og:image" content="{{ resolvedOgImage }}"/>
+        <meta property="og:image:alt" content="{{ resolvedOgImageAlt }}"/>
+        <meta property="og:type" content="{{ 'article' if isArticlePage else 'website' }}"/>
+        {% if page.url %}<meta property="og:url" content="https://tasrif.dev{{ page.url }}"/>{% endif %}
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="{{ resolvedTitle }}"/>
+        {% if description %}<meta name="twitter:description" content="{{ description }}"/>{% endif %}
+        <meta name="twitter:image" content="{{ resolvedOgImage }}"/>
+        <meta
+        name="twitter:image:alt" content="{{ resolvedOgImageAlt }}"/>
+        <!-- Prevent scroll jitter on reload & restore saved theme before CSS loads to prevent FOUC -->
+        <script>
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            (function () {
+                var isEmbedded = window.self !== window.top;
+                var mode;
+                var accent;
+                if (isEmbedded) {
+                    mode = sessionStorage.getItem('site-embedded-mode') || 'dark';
+                    accent = sessionStorage.getItem('site-embedded-accent') || localStorage.getItem('desktop-theme') || 'green';
+                } else {
+                    mode = localStorage.getItem('site-mode') || 'dark';
+                    accent = document.documentElement.getAttribute('data-static-accent') || 'white';
+                }
+                var classes = [];
+                if (mode === 'light') {
+                    classes.push('light');
+                }
+                if (accent) {
+                    classes.push(accent);
+                }
+                if (isEmbedded) {
+                    classes.push('is-embedded');
+                }
+                // Stateful Navbar Transition Logic Guard against speculative prerendering: the inline script runs at prerender time,
+                // which would write the wrong 'wasGallery' value into sessionStorage before the user actually navigates — causing the
+                // animation to skip on activation. Only commit the sessionStorage write when we're not prerendering.
+                var isGallery = window
+                    .location
+                    .pathname
+                    .indexOf('/gallery') !== -1;
+                var wasGallery = sessionStorage.getItem('site-was-gallery') === 'true';
+                if (!document.prerendering) {
+                    sessionStorage.setItem('site-was-gallery', isGallery);
+                } else { // Deferred write: update sessionStorage once this prerendered page activates
+                    document.addEventListener('prerenderingchange', function () {
+                        sessionStorage.setItem('site-was-gallery', isGallery);
+                    }, {once: true});
+                }
+                if (isGallery && ! wasGallery) {
+                    classes.push('nav-starting-narrow');
+                } else if (! isGallery && wasGallery) {
+                    classes.push('nav-starting-wide');
+                }
+                document.documentElement.className = classes.join(' ');
+                var themeMeta = document.querySelector('meta[name="theme-color"]');
+                if (themeMeta) {
+                    themeMeta.setAttribute(
+                        'content', mode === 'light'
+                        ? '#f4f1ea'
+                        : '#101110');
+                }
+            })();
+        </script>
+        <!-- Speculative Prerendering: Chromium instantly activates pre-rendered pages -->
+        <script type="speculationrules">
+            { "prerender": [ { "source": "document", "where": { "and": [ { "href_matches": "/*" }, { "not": { "href_matches":
+            "/desktop/*" } }, { "not": { "href_matches": "/*#*" } } ] }, "eagerness": "moderate" } ] }
+        </script>
+        {% if '/gallery/' not in page.url %}
+            <!-- Gallery image preload manifest (build-time, consumed by script.js) -->
+            <script>
+                window.__GALLERY_PRELOAD__ = {{ galleryPreload | dump | safe }};
+            </script>
+        {% endif %}
+        <link href="/assets/css/style.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <!-- DYNAMIC BODY CLASSES: Allows you to style specific pages differently -->
+    <body class="page {{ bodyClass }}" data-page="{{ pageId }}">
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        <!-- MOBILE DRAWER -->
+        {% include "partials/drawer.njk" %}
+        <!-- MAIN NAVIGATION -->
+        {% include "partials/navbar.njk" %}
+        <!-- CONTENT INJECTION POINT -->
+        <main id="main-content" tabindex="-1" class="page__content focus:outline-none">
+            {% if noMarkdownWrapper %}
+                {{ content | safe }}
+            {% else %}
+                <!-- This wrapper ensures markdown styles apply to blog/project content with wide-screen TOC -->
+                <div class="markdown-layout">
+                    <aside class="markdown-toc" aria-label="Table of contents">
+                        <div class="markdown-toc__inner">
+                            <div class="markdown-toc__header">
+                                <span class="toc-header__prefix text-accent">&gt;</span>
+                                contents
+                                <button
+                                    type="button"
+                                    class="markdown-toc__toggle"
+                                    aria-expanded="false"
+                                    aria-controls="markdown-toc-nav"
+                                    aria-label="Toggle table of contents">
+                                    <span class="markdown-toc__toggle-label">expand</span>
+                                    <span class="markdown-toc__toggle-icon" aria-hidden="true">+</span>
+                                </button>
+                            </div>
+                            <nav class="markdown-toc__nav" id="markdown-toc-nav">
+                                <ul class="markdown-toc__list"></ul>
+                            </nav>
+                        </div>
+                    </aside>
+                    <div class="markdown-content">
+                        {% if date or category or repo or (skills and skills.length > 0) %}
+                            <div class="mb-7 bg-surface dither-surface border border-border px-3.5 py-2.5 flex flex-col gap-2 font-code text-[0.76rem]
+                                    text-text-muted">
+                                <div class="flex items-center justify-between flex-wrap gap-3">
+                                    <div class="flex items-center flex-wrap gap-4">
+                                        {% if category %}
+                                            <span>{{ category | safe }}</span>
+                                        {% endif %}
+                                        {% if date %}
+                                            <span class="text-text-subtle">{{ date | formatDate }}</span>
+                                        {% endif %}
+                                        <span class="text-text-subtle">~{{ content | readingTime }}</span>
+                                    </div>
+                                    {% if repo %}
+                                        <a href="{{ repo }}" target="_blank" rel="noopener noreferrer" class="text-accent-2 no-underline hover:underline">github ↗</a>
+                                    {% endif %}
+                                </div>
+                                {% if skills and skills.length > 0 %}
+                                    <div class="flex flex-wrap gap-x-3 gap-y-1 pt-1.5 border-t border-border/60">
+                                        {% for s in skills %}
+                                            <a
+                                                href="/projects/?skill={{ s | skillSlug }}"
+                                                class="text-text-muted no-underline hover:text-accent transition-colors duration-150">
+                                                <span class="text-accent/70">#</span>
+                                                {{ s | skillLabel }}</a>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        {{ content | safe }}
+                        {% if '/projects/' in page.url %}
+                            <div class="mt-10 font-code text-[0.8rem]">
+                                <a href="/projects/" class="no-underline text-text-muted hover:text-accent">← back to projects</a>
+                            </div>
+                        {% elif '/blog/' in page.url %}
+                            <div class="mt-10 font-code text-[0.8rem]">
+                                <a href="/blog/" class="no-underline text-text-muted hover:text-accent">← back to blog</a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-                {% if skills and skills.length > 0 %}
-                  <div class="flex flex-wrap gap-x-3 gap-y-1 pt-1.5 border-t border-border/60">
-                    {% for s in skills %}
-                      <a href="/projects/?skill={{ s | skillSlug }}" class="text-text-muted no-underline hover:text-accent transition-colors duration-150"><span class="text-accent/70">#</span>{{ s | skillLabel }}</a>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </div>
             {% endif %}
-            {{ content | safe }}
-            {% if '/projects/' in page.url %}
-              <div class="mt-12 pt-6 border-t border-border font-code text-[0.8rem]">
-                <a href="/projects/" class="no-underline text-text-muted hover:text-accent">← back to projects</a>
-              </div>
-            {% elif '/blog/' in page.url %}
-              <div class="mt-12 pt-6 border-t border-border font-code text-[0.8rem]">
-                <a href="/blog/" class="no-underline text-text-muted hover:text-accent">← back to blog</a>
-              </div>
-            {% endif %}
-          </div>
-        </div>
-      {% endif %}
-    </main>
-
-    <!-- FOOTER -->
-    {% include "partials/footer.njk" %}
-
-    <script src="/assets/js/script.js"></script>
-    <script>
-      // Trigger the navbar width animation instantly after first paint
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          document.documentElement.classList.remove('nav-starting-narrow', 'nav-starting-wide');
-        });
-      });
-    </script>
-  </body>
+        </main>
+        <!-- FOOTER -->
+        {% include "partials/footer.njk" %}
+        <script src="/assets/js/script.js"></script>
+        <script>
+            // Trigger the navbar width animation instantly after first paint
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    document
+                        .documentElement
+                        .classList
+                        .remove('nav-starting-narrow', 'nav-starting-wide');
+                });
+            });
+        </script>
+    </body>
 </html>

@@ -196,7 +196,7 @@ export function createBrowserApp(initialPath = '/', initialTitle = 'Phosphor') {
               const isTargetBlank = anchor.getAttribute('target') === '_blank';
               if (isExternal || isTargetBlank) {
                 e.preventDefault();
-                window.open(href, '_blank');
+                window.open(href, '_blank', 'noopener,noreferrer');
               }
             }
           }
@@ -237,7 +237,7 @@ export function createBrowserApp(initialPath = '/', initialTitle = 'Phosphor') {
     if (activeIframe) {
       const isExternal = url.startsWith('http://') || url.startsWith('https://');
       if (isExternal) {
-        window.open(url, '_blank');
+        window.open(url, '_blank', 'noopener,noreferrer');
         return;
       }
       activeIframe.src = url;

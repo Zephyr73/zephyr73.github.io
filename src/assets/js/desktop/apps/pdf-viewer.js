@@ -300,7 +300,7 @@ export function createPdfApp(filePath) {
 
   printBtn.addEventListener('click', () => {
     // Open the PDF path in a new window and call print
-    const w = window.open(filePath, '_blank');
+    const w = window.open(filePath, '_blank', 'noopener,noreferrer');
     w?.addEventListener('load', () => {
       w.print();
     });
