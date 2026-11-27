@@ -4,7 +4,7 @@
  */
 import { initDesktop } from './desktop.js';
 import { initNavPane, applyTheme } from './navigation-pane.js';
-import { initTerminal } from './terminal.js';
+import { initTerminal, mountTerminalOutput, handleTerminalInputCtrlC } from './terminal.js';
 import { createBrowserApp } from './apps/browser.js';
 import { createFileExpApp } from './apps/file-explorer.js';
 import { createMarkdownApp } from './apps/markdown-viewer.js';
@@ -1242,8 +1242,10 @@ function initStyleMenu() {
     playSound('click');
     const isOpening = styleMenu.classList.contains('hidden');
     styleMenu.classList.toggle('hidden');
+    styleToggle.setAttribute('aria-expanded', String(isOpening));
     if (isOpening) {
       document.getElementById('calendar-menu')?.classList.add('hidden');
+      document.getElementById('tray-clock')?.setAttribute('aria-expanded', 'false');
     }
   });
 
@@ -1255,6 +1257,15 @@ function initStyleMenu() {
       e.target !== styleToggle
     ) {
       styleMenu.classList.add('hidden');
+      styleToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !styleMenu.classList.contains('hidden')) {
+      styleMenu.classList.add('hidden');
+      styleToggle.setAttribute('aria-expanded', 'false');
+      styleToggle.focus();
     }
   });
 
@@ -1362,8 +1373,10 @@ function initCalendar() {
     playSound('click');
     const isHidden = calendarMenu.classList.contains('hidden');
     calendarMenu.classList.toggle('hidden');
+    trayClock.setAttribute('aria-expanded', String(isHidden));
     if (isHidden) {
       styleMenu?.classList.add('hidden');
+      document.getElementById('style-toggle')?.setAttribute('aria-expanded', 'false');
       renderCalendar();
     }
   });
@@ -1375,6 +1388,15 @@ function initCalendar() {
       !trayClock.contains(e.target)
     ) {
       calendarMenu.classList.add('hidden');
+      trayClock.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !calendarMenu.classList.contains('hidden')) {
+      calendarMenu.classList.add('hidden');
+      trayClock.setAttribute('aria-expanded', 'false');
+      trayClock.focus();
     }
   });
 }
@@ -1525,53 +1547,29 @@ function createTerminalFloatApp() {
   const out = document.createElement('div');
   out.style.cssText =
     'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);user-select:text;';
-  // Initial draw from buffer
-  const renderBuffer = () => {
-    out.innerHTML = '';
-    window.__TERMINAL_SESSION__.buffer.forEach((event) => {
-      const div = document.createElement('div');
-      div.className = `console-line ${event.type}`;
-      if (/<[a-z][\s\S]*>/i.test(event.text)) {
-        div.innerHTML = event.text;
-      } else {
-        div.textContent = event.text;
-      }
-      out.appendChild(div);
-    });
-    out.scrollTop = out.scrollHeight;
-  };
-  renderBuffer();
   const row = document.createElement('div');
+  row.className = 'console-input-row';
   row.style.cssText =
     'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
   const prompt = document.createElement('span');
+  prompt.className = 'console-prompt-label';
   prompt.style.cssText = 'color:var(--cp-green);font-size:12px;white-space:nowrap;';
   const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
   prompt.textContent = `guest@phosphor:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
   const inp = document.createElement('input');
+  inp.className = 'console-input';
   inp.style.cssText =
     'flex:1;background:transparent;border:none;color:var(--cp-white);font-family:var(--font-mono);font-size:12px;outline:none;';
   inp.placeholder = 'type a command...';
-  let histIdx = -1;
-  // Subscribe to changes
-  const unsubscribe = window.__TERMINAL_SESSION__.subscribe((event) => {
-    if (event.type === 'clear') {
-      out.innerHTML = '';
-    } else if (event.type === 'write') {
-      const div = document.createElement('div');
-      div.className = `console-line ${event.lineType}`;
-      if (/<[a-z][\s\S]*>/i.test(event.text)) {
-        div.innerHTML = event.text;
-      } else {
-        div.textContent = event.text;
-      }
-      out.appendChild(div);
-      out.scrollTop = out.scrollHeight;
-    }
-  });
   // Attach cleanup to DOM node
-  el.cleanup = unsubscribe;
+  el.cleanup = mountTerminalOutput(out, { inputRow: row, inputEl: inp });
+  let histIdx = -1;
   inp.addEventListener('keydown', async (e) => {
+    if (handleTerminalInputCtrlC(e, inp)) {
+      const updatedCwd = window.__TERMINAL_SESSION__.cwd || '/';
+      prompt.textContent = `guest@phosphor:${updatedCwd === '/' ? '~' : '~' + updatedCwd}$ `;
+      return;
+    }
     if (e.key === 'Enter') {
       const cmd = inp.value.trim();
       inp.value = '';
@@ -1581,8 +1579,8 @@ function createTerminalFloatApp() {
       // Run unified execution on shared session
       await window.__TERMINAL_SESSION__.execute(cmd);
       // Update prompt label in case directory changed
-      const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
-      prompt.textContent = `guest@phosphor:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
+      const updatedCwd = window.__TERMINAL_SESSION__.cwd || '/';
+      prompt.textContent = `guest@phosphor:${updatedCwd === '/' ? '~' : '~' + updatedCwd}$ `;
       out.scrollTop = out.scrollHeight;
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -1865,7 +1863,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize sub-systems
   initDesktop({ openApp });
   initNavPane({ openApp });
-  initTerminal({ openApp });
+  initTerminal({ openApp, getAudioContext: _getAudioCtx });
 });
 // Expose openApp and playSound globally so apps can open other apps and play sounds
 window.playSound = playSound;

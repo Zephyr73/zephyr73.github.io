@@ -3,9 +3,38 @@
  */
 
 import { ls, cd, pwd, resolvePath, getFileContent, getNodeByPath } from './filesystem.js';
+import { startBadApple, stopBadApple, isBadAppleRunning } from './bad-apple.js';
 
 let historyIndex = -1;
 let openAppCallback = null;
+let getAudioContextCallback = null;
+let matrixInterval = null;
+let globalInterruptInstalled = false;
+
+function stopMatrix(interrupted = false) {
+  if (matrixInterval === null) return false;
+  clearInterval(matrixInterval);
+  matrixInterval = null;
+  if (interrupted) {
+    window.__TERMINAL_SESSION__.write('^C', 'dim');
+    window.__TERMINAL_SESSION__.write('// MATRIX STREAM INTERRUPTED //', 'dim');
+  }
+  return true;
+}
+
+/**
+ * Sends SIGINT (Ctrl+C) to any active terminal foreground process.
+ * @returns {boolean} True if a running process was stopped
+ */
+export function interruptTerminalProcess() {
+  if (isBadAppleRunning()) {
+    return stopBadApple('interrupted');
+  }
+  if (matrixInterval !== null) {
+    return stopMatrix(true);
+  }
+  return false;
+}
 
 // Shared Terminal Session Model
 window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
@@ -21,7 +50,32 @@ window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
     this.buffer.push({ text, type });
     this.subscribers.forEach((cb) => cb({ type: 'write', text, lineType: type }));
   },
+  emit(event) {
+    if (event.type === 'bad-apple-start') {
+      this.buffer.push({
+        type: 'bad-apple',
+        frameText: event.frameText,
+        active: true,
+      });
+    } else if (event.type === 'bad-apple-frame' || event.type === 'bad-apple-end') {
+      for (let i = this.buffer.length - 1; i >= 0; i--) {
+        if (this.buffer[i].type === 'bad-apple') {
+          this.buffer[i].frameText = event.frameText;
+          if (event.type === 'bad-apple-end') {
+            this.buffer[i].active = false;
+            this.buffer[i].reason = event.reason;
+          }
+          break;
+        }
+      }
+    }
+    this.subscribers.forEach((cb) => cb(event));
+  },
   clear() {
+    if (isBadAppleRunning()) {
+      stopBadApple('aborted');
+    }
+    stopMatrix(false);
     this.buffer = [];
     this.subscribers.forEach((cb) => cb({ type: 'clear' }));
   },
@@ -49,6 +103,128 @@ window.__TERMINAL_SESSION__ = window.__TERMINAL_SESSION__ || {
   },
 };
 
+function createBadAppleElement(frameText) {
+  const wrap = document.createElement('div');
+  wrap.className = 'console-line bad-apple-line';
+
+  const screen = document.createElement('pre');
+  screen.className = 'bad-apple-screen';
+  screen.textContent = frameText || '';
+
+  wrap.appendChild(screen);
+  return { wrap, screen };
+}
+
+/**
+ * Mounts a live terminal output element to the shared session buffer & stream.
+ * @param {HTMLElement} outputEl
+ * @param {{ inputRow?: HTMLElement|null, inputEl?: HTMLInputElement|null }} [controls]
+ * @returns {() => void} Unsubscribe cleanup function
+ */
+export function mountTerminalOutput(outputEl, { inputRow = null, inputEl = null } = {}) {
+  let liveScreen = null;
+
+  const setForegroundRunning = (running) => {
+    if (inputRow) {
+      inputRow.classList.toggle('console-input-row--running', running);
+    }
+    if (inputEl) {
+      inputEl.readOnly = running;
+      if (!running) inputEl.focus();
+    }
+  };
+
+  const appendLine = (text, type) => {
+    const div = document.createElement('div');
+    div.className = `console-line ${type}`;
+    if (/<[a-z][\s\S]*>/i.test(text)) {
+      div.innerHTML = text;
+    } else {
+      div.textContent = text;
+    }
+    outputEl.appendChild(div);
+  };
+
+  const renderBuffer = () => {
+    outputEl.innerHTML = '';
+    liveScreen = null;
+    let hasActive = false;
+    window.__TERMINAL_SESSION__.buffer.forEach((entry) => {
+      if (entry.type === 'bad-apple') {
+        const els = createBadAppleElement(entry.frameText);
+        outputEl.appendChild(els.wrap);
+        if (entry.active) {
+          liveScreen = els.screen;
+          hasActive = true;
+        }
+      } else {
+        appendLine(entry.text, entry.type);
+      }
+    });
+    setForegroundRunning(hasActive);
+    outputEl.scrollTop = outputEl.scrollHeight;
+  };
+
+  renderBuffer();
+
+  return window.__TERMINAL_SESSION__.subscribe((event) => {
+    if (event.type === 'clear') {
+      outputEl.innerHTML = '';
+      liveScreen = null;
+      setForegroundRunning(false);
+    } else if (event.type === 'write') {
+      appendLine(event.text, event.lineType);
+      outputEl.scrollTop = outputEl.scrollHeight;
+    } else if (event.type === 'bad-apple-start') {
+      const els = createBadAppleElement(event.frameText);
+      liveScreen = els.screen;
+      outputEl.appendChild(els.wrap);
+      setForegroundRunning(true);
+      outputEl.scrollTop = outputEl.scrollHeight;
+    } else if (event.type === 'bad-apple-frame' && liveScreen) {
+      liveScreen.textContent = event.frameText;
+    } else if (event.type === 'bad-apple-end' && liveScreen) {
+      if (event.frameText) {
+        liveScreen.textContent = event.frameText;
+      }
+      liveScreen = null;
+      setForegroundRunning(false);
+      outputEl.scrollTop = outputEl.scrollHeight;
+    }
+  });
+}
+
+/**
+ * Handles Ctrl+C inside any terminal <input> element.
+ * @param {KeyboardEvent} e
+ * @param {HTMLInputElement} inputEl
+ * @returns {boolean} True if handled
+ */
+export function handleTerminalInputCtrlC(e, inputEl) {
+  if (!e.ctrlKey || e.metaKey || e.altKey || e.key.toLowerCase() !== 'c') {
+    return false;
+  }
+
+  // Allow copying selected text when no foreground process is running
+  const hasSelection = Boolean(window.getSelection()?.toString());
+  if (interruptTerminalProcess()) {
+    e.preventDefault();
+    inputEl.value = '';
+    return true;
+  }
+
+  if (hasSelection) {
+    return false;
+  }
+
+  e.preventDefault();
+  const currentCwd = pwd();
+  const promptText = `guest@phosphor:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
+  window.__TERMINAL_SESSION__.write(`${promptText}${inputEl.value}^C`, 'prompt');
+  inputEl.value = '';
+  return true;
+}
+
 const BANNER = `
 <div class="console-banner">
 <span class="console-banner-art">██████╗ ██╗  ██╗ ██████╗ ███████╗██████╗ ██╗  ██╗ ██████╗ ██████╗ 
@@ -62,11 +238,13 @@ Welcome to PHOSPHOR_SHELL.
 Type 'help' to list available commands.</span>
 </div>`;
 
-export function initTerminal({ openApp }) {
+export function initTerminal({ openApp, getAudioContext }) {
   openAppCallback = openApp;
+  getAudioContextCallback = getAudioContext || null;
 
   const consoleOutput = document.getElementById('console-output');
   const consoleInput = document.getElementById('console-input');
+  const consoleInputRow = consoleInput?.closest('.console-input-row') || null;
   const consolePane = document.getElementById('tty-console');
   const promptLabel = document.getElementById('console-prompt-label');
 
@@ -77,40 +255,21 @@ export function initTerminal({ openApp }) {
     window.__TERMINAL_SESSION__.write(BANNER, 'banner');
   }
 
-  // Initial draw from buffer
-  const renderBuffer = () => {
-    consoleOutput.innerHTML = '';
-    window.__TERMINAL_SESSION__.buffer.forEach((event) => {
-      const div = document.createElement('div');
-      div.className = `console-line ${event.type}`;
-      if (/<[a-z][\s\S]*>/i.test(event.text)) {
-        div.innerHTML = event.text;
-      } else {
-        div.textContent = event.text;
-      }
-      consoleOutput.appendChild(div);
-    });
-    consoleOutput.scrollTop = consoleOutput.scrollHeight;
-  };
-  renderBuffer();
+  mountTerminalOutput(consoleOutput, { inputRow: consoleInputRow, inputEl: consoleInput });
   updatePromptLabel(promptLabel);
 
-  // Subscribe to changes
-  window.__TERMINAL_SESSION__.subscribe((event) => {
-    if (event.type === 'clear') {
-      consoleOutput.innerHTML = '';
-    } else if (event.type === 'write') {
-      const div = document.createElement('div');
-      div.className = `console-line ${event.lineType}`;
-      if (/<[a-z][\s\S]*>/i.test(event.text)) {
-        div.innerHTML = event.text;
-      } else {
-        div.textContent = event.text;
+  // Global Ctrl+C fallback so user can stop playback even if input isn't focused
+  if (!globalInterruptInstalled) {
+    globalInterruptInstalled = true;
+    document.addEventListener('keydown', (e) => {
+      if (!e.ctrlKey || e.metaKey || e.altKey || e.key.toLowerCase() !== 'c') return;
+      if (e.target && e.target.tagName === 'INPUT') return;
+      if (window.getSelection()?.toString()) return;
+      if (interruptTerminalProcess()) {
+        e.preventDefault();
       }
-      consoleOutput.appendChild(div);
-      consoleOutput.scrollTop = consoleOutput.scrollHeight;
-    }
-  });
+    });
+  }
 
   // Focus input when clicking console
   consolePane?.addEventListener('click', (e) => {
@@ -126,8 +285,13 @@ export function initTerminal({ openApp }) {
     document.getElementById('mode-tty')?.classList.toggle('nav-pane-open');
   });
 
-  // Event handler for Enter/Arrow keys/Tab
+  // Event handler for Enter/Arrow keys/Tab/Ctrl+C
   consoleInput.addEventListener('keydown', async (e) => {
+    if (handleTerminalInputCtrlC(e, consoleInput)) {
+      updatePromptLabel(promptLabel);
+      return;
+    }
+
     if (e.key === 'Enter') {
       const commandLine = consoleInput.value.trim();
       consoleInput.value = '';
@@ -264,6 +428,7 @@ Available commands:
   <span style="color:var(--cp-amber)">clear</span>        - Clear terminal logs
   <span style="color:var(--cp-amber)">neofetch</span>     - Show hardware & system configuration summary
   <span style="color:var(--cp-amber)">matrix</span>       - Digital matrix stream simulation
+  <span style="color:var(--cp-amber)">bad-apple</span>    - Play Bad Apple!! ASCII video with 8-bit audio
   <span style="color:var(--cp-amber)">tree [path]</span>  - Draw file system directory tree structure
   <span style="color:var(--cp-amber)">echo &lt;text&gt;</span>  - Echo input text back to console
   <span style="color:var(--cp-amber)">whoami</span>       - Display logged in system role
@@ -368,13 +533,14 @@ Available commands:
       return 'Launching phosphor Web Engine browser...';
 
     case 'matrix': {
+      stopMatrix(false);
       window.__TERMINAL_SESSION__.write(
-        'INITIALIZING MATRIX RAIN STREAM... [CTRL+C / KEY TO STOP]',
+        'INITIALIZING MATRIX RAIN STREAM... [CTRL+C TO STOP]',
         'info',
       );
       const chars = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
       let linesPrinted = 0;
-      const interval = setInterval(() => {
+      matrixInterval = setInterval(() => {
         let stream = '';
         for (let i = 0; i < 48; i++) {
           const char = chars[Math.floor(Math.random() * chars.length)];
@@ -386,10 +552,18 @@ Available commands:
         window.__TERMINAL_SESSION__.write(stream, 'output');
         linesPrinted++;
         if (linesPrinted >= 25) {
-          clearInterval(interval);
+          stopMatrix(false);
           window.__TERMINAL_SESSION__.write('// MATRIX STREAM COMPLETE //', 'dim');
         }
       }, 80);
+      return '';
+    }
+
+    case 'bad-apple': {
+      startBadApple({
+        terminalSession: window.__TERMINAL_SESSION__,
+        getAudioContext: getAudioContextCallback,
+      });
       return '';
     }
 

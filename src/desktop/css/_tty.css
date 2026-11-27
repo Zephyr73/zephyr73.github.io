@@ -487,4 +487,31 @@
   .split-container--column {
     flex-direction: column;
   }
+
+  /* Bad Apple!! inline TTY stream */
+  .bad-apple-line {
+    container-type: inline-size;
+    white-space: normal;
+    word-break: normal;
+    margin: 4px 0;
+  }
+
+  .bad-apple-screen {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: min(14px, 2.22cqi);
+    line-height: 1.08;
+    letter-spacing: 0;
+    white-space: pre;
+    color: var(--cp-white);
+    text-shadow: 0 0 6px var(--cp-green-glow);
+  }
+
+  .console-input-row--running .console-prompt-label {
+    display: none;
+  }
+
+  .console-input-row--running .console-input::placeholder {
+    color: transparent;
+  }
 }
