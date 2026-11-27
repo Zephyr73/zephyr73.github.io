@@ -256,19 +256,21 @@
     margin-top: 3rem;
     margin-bottom: 1rem;
     padding-bottom: 0.45rem;
+    padding-left: 1.15em;
     border-bottom: 1px solid var(--clr-border);
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    flex-wrap: wrap;
+    position: relative;
   }
 
   .markdown-content h2::before {
     content: '>';
+    position: absolute;
+    left: 0;
+    top: 0.08em;
     color: var(--clr-accent);
     font-family: var(--font-code);
     font-size: 0.85em;
     font-weight: 700;
+    line-height: 1.25;
   }
 
   .markdown-content h2 a,

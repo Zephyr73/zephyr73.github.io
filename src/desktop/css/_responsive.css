@@ -291,10 +291,12 @@
       overflow-y: hidden;
       scrollbar-width: none;
     }
+
     .browser-tabbar::-webkit-scrollbar,
     .browser-menubar::-webkit-scrollbar {
       display: none;
     }
+
     .browser-urlbar {
       min-width: 0;
     }
