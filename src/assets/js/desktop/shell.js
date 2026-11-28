@@ -4,7 +4,7 @@
  */
 import { initDesktop } from './desktop.js';
 import { initNavPane, applyTheme } from './navigation-pane.js';
-import { initTerminal, mountTerminalOutput, handleTerminalInputCtrlC } from './terminal.js';
+import { initTerminal, mountTerminal, focusActiveTerminal } from './terminal.js';
 import { createBrowserApp } from './apps/browser.js';
 import { createFileExpApp } from './apps/file-explorer.js';
 import { createMarkdownApp } from './apps/markdown-viewer.js';
@@ -1543,63 +1543,14 @@ function initPaneResize() {
 ───────────────────────────────────────────────────────────── */
 function createTerminalFloatApp() {
   const el = document.createElement('div');
-  el.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;';
-  const out = document.createElement('div');
-  out.style.cssText =
-    'flex:1;overflow-y:auto;padding:10px 14px;font-size:12px;line-height:1.7;font-family:var(--font-mono);background:var(--cp-bg);color:var(--cp-white);user-select:text;';
-  const row = document.createElement('div');
-  row.className = 'console-input-row';
-  row.style.cssText =
-    'display:flex;align-items:center;padding:6px 14px;border-top:1px solid var(--cp-border);background:var(--cp-panel);gap:8px;';
-  const prompt = document.createElement('span');
-  prompt.className = 'console-prompt-label';
-  prompt.style.cssText = 'color:var(--cp-green);font-size:12px;white-space:nowrap;';
-  const currentCwd = window.__TERMINAL_SESSION__.cwd || '/';
-  prompt.textContent = `guest@phosphor:${currentCwd === '/' ? '~' : '~' + currentCwd}$ `;
-  const inp = document.createElement('input');
-  inp.className = 'console-input';
-  inp.style.cssText =
-    'flex:1;background:transparent;border:none;color:var(--cp-white);font-family:var(--font-mono);font-size:12px;outline:none;';
-  inp.placeholder = 'type a command...';
-  // Attach cleanup to DOM node
-  el.cleanup = mountTerminalOutput(out, { inputRow: row, inputEl: inp });
-  let histIdx = -1;
-  inp.addEventListener('keydown', async (e) => {
-    if (handleTerminalInputCtrlC(e, inp)) {
-      const updatedCwd = window.__TERMINAL_SESSION__.cwd || '/';
-      prompt.textContent = `guest@phosphor:${updatedCwd === '/' ? '~' : '~' + updatedCwd}$ `;
-      return;
-    }
-    if (e.key === 'Enter') {
-      const cmd = inp.value.trim();
-      inp.value = '';
-      if (!cmd) return;
-
-      histIdx = -1;
-      // Run unified execution on shared session
-      await window.__TERMINAL_SESSION__.execute(cmd);
-      // Update prompt label in case directory changed
-      const updatedCwd = window.__TERMINAL_SESSION__.cwd || '/';
-      prompt.textContent = `guest@phosphor:${updatedCwd === '/' ? '~' : '~' + updatedCwd}$ `;
-      out.scrollTop = out.scrollHeight;
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      const history = window.__TERMINAL_SESSION__.history;
-      if (history.length > 0) {
-        histIdx = Math.min(histIdx + 1, history.length - 1);
-        inp.value = history[histIdx] || '';
-      }
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      histIdx = Math.max(histIdx - 1, -1);
-      inp.value = histIdx < 0 ? '' : window.__TERMINAL_SESSION__.history[histIdx];
-    }
+  el.className = 'term-mount term-mount--float';
+  el.cleanup = mountTerminal(el, {
+    onExit: () => {
+      const winEl = el.closest('.window');
+      const winId = winEl ? parseInt(winEl.dataset.windowId, 10) : null;
+      if (winId) closeWindow(winId);
+    },
   });
-  row.appendChild(prompt);
-  row.appendChild(inp);
-  el.appendChild(out);
-  el.appendChild(row);
-  setTimeout(() => inp.focus(), 100);
   return el;
 }
 /* ─────────────────────────────────────────────────────────────
@@ -1665,7 +1616,7 @@ function initKeyboard() {
       if (closedStyle) styleMenu.classList.add('hidden');
       if (closedCal) calMenu.classList.add('hidden');
       if (!closedStyle && !closedCal && currentMode === 'tty') {
-        document.getElementById('console-input')?.focus();
+        focusActiveTerminal();
       }
     }
   });

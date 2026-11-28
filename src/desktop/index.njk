@@ -188,28 +188,16 @@ eleventyExcludeFromCollections: true
                 <!-- Center: Console/Terminal -->
                 <div class="tty-console-pane" id="tty-console">
                     <div class="console-header">
-                        <div class="console-header-title">
-                            Terminal: tasrif@os:~/
+                        <div class="console-header-title" id="console-header-title">
+                            <span class="console-header-user">tasrif@os</span>:<span class="console-header-cwd">~</span>
+                            <span class="console-header-proc" id="console-header-proc">bash</span>
                         </div>
-                        <button type="button" class="console-nav-toggle" id="console-nav-toggle" aria-label="Toggle Files Pane">⬡ FILES</button>
+                        <div class="console-header-right">
+                            <span class="console-header-dims" id="console-header-dims" aria-hidden="true">80×24</span>
+                            <button type="button" class="console-nav-toggle" id="console-nav-toggle" aria-label="Toggle Files Pane">⬡ FILES</button>
+                        </div>
                     </div>
-                    <div
-                        class="console-output" id="console-output" aria-live="polite" role="log"><!-- Terminal output populated by terminal.js -->
-                    </div>
-                    <div class="console-input-row">
-                        <span class="console-prompt-label" id="console-prompt-label">tasrif@os:~$
-                        </span>
-                        <input
-                            class="console-input"
-                            id="console-input"
-                            type="text"
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="off"
-                            spellcheck="false"
-                            aria-label="Terminal input"
-                            placeholder="type instructions (e.g. 'help', 'neofetch')..."/>
-                    </div>
+                    <div class="term-mount" id="console-terminal-mount"></div>
                 </div>
                 <!-- Resize handle 2 -->
                 <div

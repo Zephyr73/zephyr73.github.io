@@ -47,8 +47,7 @@
 
   body.crt-active .desktop-icon__label,
   body.crt-active .desktop-notification,
-  body.crt-active .console-output,
-  body.crt-active .console-input-row,
+  body.crt-active .term-viewport,
   body.crt-active .nav-pane__header,
   body.crt-active .nav-pane__tree,
   body.crt-active .nav-pane__footer,

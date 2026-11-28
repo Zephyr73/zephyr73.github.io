@@ -221,47 +221,22 @@
       max-width: 120px !important;
     }
 
-    .console-banner-art {
-      font-size: 1.3vw !important;
-      line-height: 1.1 !important;
-      margin-bottom: 6px;
-    }
-
-    .console-banner-text {
-      font-size: 15px !important;
-      line-height: 1.6 !important;
+    .console-header-dims {
+      display: none !important;
     }
 
     .neofetch-output {
-      font-size: 2.6vw !important;
-      gap: 10px !important;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .neofetch-output span[style*='white-space:pre'],
-    .neofetch-output pre {
-      font-size: 2.6vw !important;
-    }
-
-    .neofetch-output div {
-      font-size: 2.8vw !important;
-    }
-
-    .console-output {
+    .term-viewport {
       overflow-x: hidden !important;
-      padding: 8px 10px !important;
-      font-size: 15px !important;
+      padding: 10px !important;
+      font-size: 13px !important;
     }
 
-    .console-input-row {
-      padding: 4px 10px !important;
-      gap: 6px !important;
-    }
-
-    .console-prompt-label {
-      font-size: 15px !important;
-    }
-
-    .console-input {
+    .term-hidden-input {
       font-size: 16px !important;
     }
 
