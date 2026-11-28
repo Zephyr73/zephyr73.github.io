@@ -292,12 +292,12 @@ export default function (eleventyConfig) {
     [63, 31, 55, 23, 61, 29, 53, 21],
   ];
 
-  // 4-stop warm terminal charcoal -> phosphor amber -> off-white palette
+  // 4-stop neutral grayscale palette (tinted dynamically to --clr-accent in CSS)
   const DITHER_PALETTE = [
     [16, 17, 16],
-    [68, 54, 30],
-    [158, 122, 54],
-    [229, 227, 220],
+    [72, 74, 72],
+    [152, 154, 150],
+    [229, 228, 224],
   ];
 
   eleventyConfig.addNunjucksAsyncShortcode(
@@ -305,7 +305,7 @@ export default function (eleventyConfig) {
     async function (srcPath, alt, width = 240, height = 152) {
       const baseName = sanitizeSlug(path.basename(srcPath, path.extname(srcPath)));
       const outDir = './_site/assets/img/dither';
-      const outFile = `${baseName}-${width}x${height}-bayer8.png`;
+      const outFile = `${baseName}-${width}x${height}-bayer8-v2.png`;
       const fullOut = path.join(outDir, outFile);
       const url = `/assets/img/dither/${outFile}`;
       const imgTag = `<img src="${url}" alt="${alt || ''}" width="${width}" height="${height}" loading="lazy" decoding="async" class="w-full h-full object-cover block [image-rendering:pixelated]" />`;

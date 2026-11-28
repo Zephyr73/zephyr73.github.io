@@ -19,9 +19,9 @@ noMarkdownWrapper: true
     <!-- Compact terminal spec block -->
     <dl class="bg-surface dither-surface border border-border p-4 m-0 mb-7 grid grid-cols-[110px_1fr] gap-y-2 gap-x-4
             text-[0.82rem] font-code max-[520px]:grid-cols-1 max-[520px]:gap-y-1">
-        <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center">focus</dt>
+        <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-baseline">focus</dt>
         <dd class="m-0 text-body-text">{{ hero.spec.focus }}</dd>
-        <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center max-[520px]:mt-2">stack</dt>
+        <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-baseline max-[520px]:mt-2">stack</dt>
         <dd class="m-0 flex flex-wrap gap-x-3 gap-y-1">
             {% for s in skillPool.top %}
                 <a
@@ -31,7 +31,7 @@ noMarkdownWrapper: true
                     {{ s.name }}</a>
             {% endfor %}
         </dd>
-        <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-center max-[520px]:mt-2">status</dt>
+        <dt class="text-text-subtle uppercase tracking-[0.06em] text-[0.72rem] self-baseline max-[520px]:mt-2">status</dt>
         <dd class="m-0 text-accent">{{ hero.spec.status }}</dd>
     </dl>
     <div class="hero-actions flex items-center flex-wrap gap-3 max-[480px]:flex-col max-[480px]:items-stretch">
@@ -124,7 +124,7 @@ noMarkdownWrapper: true
     <div class="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1">
         {% for card in galleryPreview %}
             <a href="{{ card.url }}" class="group bg-surface border border-border no-underline flex items-center gap-4 p-3 transition-colors duration-150 hover:border-accent">
-                <div class="w-[120px] h-[76px] shrink-0 border border-border overflow-hidden bg-surface-2">
+                <div class="dither-thumb w-[120px] h-[76px] shrink-0 border border-border overflow-hidden bg-surface-2">
                     {% ditherThumb card.img, card.alt, 120, 76 %}
                 </div>
                 <div class="min-w-0">

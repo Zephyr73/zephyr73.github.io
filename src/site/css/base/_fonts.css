@@ -1,13 +1,13 @@
 /* Base: Font faces (served from /assets/fonts/)
-   Iosevka Ecosystem (SS08 Headings, Aile UI Sans, Etoile Typewriter Slab) + JetBrains Mono */
+   Iosevka Ecosystem (Standard Iosevka Headings, Aile UI Sans, Etoile Typewriter Slab) + JetBrains Mono */
 
 @layer base {
   @font-face {
-    font-family: 'Iosevka Webfont Bold';
+    font-family: 'Iosevka';
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url('/assets/fonts/iosevka-ss08-bold.woff2') format('woff2');
+    src: url('/assets/fonts/Iosevka-Bold.woff2') format('woff2');
   }
 
   @font-face {

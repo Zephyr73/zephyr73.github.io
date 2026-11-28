@@ -32,8 +32,8 @@
     --clr-accent-text: #101110;
     --clr-bold-text: #f3f1eb;
 
-    /* Typography — Iosevka Ecosystem (Headings, UI Sans, Typewriter Slab) + JetBrains Mono */
-    --font-heading: 'Iosevka Webfont Bold', 'Iosevka Aile', 'JetBrains Mono', monospace;
+    /* Typography — Iosevka Ecosystem (Standard Headings, UI Sans, Typewriter Slab) + JetBrains Mono */
+    --font-heading: 'Iosevka', 'Iosevka Aile', 'JetBrains Mono', monospace;
     --font-sans: 'Iosevka Aile', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-prose: 'Iosevka Etoile', Georgia, 'Times New Roman', serif;
     --font-code: 'JetBrains Mono', ui-monospace, monospace;

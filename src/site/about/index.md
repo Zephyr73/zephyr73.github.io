@@ -14,13 +14,13 @@ profile:
   location: 'New York, NY'
   email: contact@tasrif.dev
   socials:
-    - label: 'GitHub ↗'
+    - label: 'GitHub'
       url: https://github.com/zephyr73
       icon: github
-    - label: 'LinkedIn ↗'
+    - label: 'LinkedIn'
       url: https://www.linkedin.com/in/yaseen-aar-rahman/
       icon: linkedin
-    - label: 'Twitter / X ↗'
+    - label: 'Twitter / X'
       url: https://twitter.com/Zephyr73_
       icon: twitter
   summary: >
@@ -164,6 +164,4 @@ education:
       Chemistry, and English Language.
 ---
 
-Beyond software engineering, I actively photography with a Sony A6700, post-processing RAW compositions in Adobe Lightroom. I also experiment with
-latent diffusion models and local machine learning pipelines, testing ControlNet
-architectures and custom inference workflows.
+Beyond tinkering with computers, I like to spend my time learning Photography, reading/watching anime/manga.

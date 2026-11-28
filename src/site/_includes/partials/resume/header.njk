@@ -11,7 +11,7 @@
         </div>
         <div class="resume-links flex flex-col gap-2 max-md:grid max-md:grid-cols-2 max-[359px]:grid-cols-1">
             {% if profile.email %}
-                <button class="resume-btn resume-contact__copy flex items-center justify-start overflow-hidden group/copy gap-2 py-2 px-3 bg-surface border border-border text-body-text font-code text-[0.8rem] no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] max-md:min-h-[44px] max-md:col-span-2 max-[359px]:col-span-1 box-border hover:border-accent hover:text-accent hover:bg-surface-2" data-copy="{{ profile.email }}" type="button" aria-label="Copy email {{ profile.email }}" title="Copy email: {{ profile.email }}">
+                <button class="resume-btn resume-contact__copy flex items-center justify-start overflow-hidden group/copy gap-2 py-2 px-3 bg-surface border border-border text-body-text font-sans text-[0.82rem] font-medium no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] max-md:min-h-[44px] max-md:col-span-2 max-[359px]:col-span-1 box-border hover:border-accent hover:text-accent hover:bg-surface-2" data-copy="{{ profile.email }}" type="button" aria-label="Copy email {{ profile.email }}" title="Copy email: {{ profile.email }}">
                     <svg
                         class="mail-icon shrink-0 text-accent"
                         width="14"
@@ -25,7 +25,7 @@
                         <rect x="2" y="4" width="20" height="16"/>
                         <path d="M22 6L12 13L2 6"/>
                     </svg>
-                    <span class="btn-text text-[0.76rem] tracking-[-0.01em] whitespace-nowrap overflow-hidden text-ellipsis">{{ profile.email }}</span>
+                    <span class="btn-text leading-none [text-box:trim-both_cap_alphabetic] whitespace-nowrap overflow-hidden text-ellipsis">{{ profile.email }}</span>
                     <svg
                         class="copy-icon ml-auto shrink-0 text-text-muted transition-colors duration-150 ease-default
                             group-hover/copy:text-accent"
@@ -43,9 +43,10 @@
                 </button>
             {% endif %}
             {% for link in profile.socials %}
-                <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="resume-btn flex items-center gap-2 py-2 px-3 bg-surface border border-border text-body-text font-sans text-[0.85rem] font-medium no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] max-md:min-h-[44px] box-border hover:border-accent hover:text-accent hover:bg-surface-2">
+                <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="resume-btn group/link flex items-center gap-2 py-2 px-3 bg-surface border border-border text-body-text font-sans text-[0.82rem] font-medium no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left min-h-[38px] max-md:min-h-[44px] box-border hover:border-accent hover:text-accent hover:bg-surface-2">
                     {% if link.icon == 'github' %}
                         <svg
+                            class="shrink-0"
                             width="14"
                             height="14"
                             viewBox="0 0 24 24"
@@ -60,6 +61,7 @@
                         </svg>
                     {% elif link.icon == 'twitter' %}
                         <svg
+                            class="shrink-0"
                             width="14"
                             height="14"
                             viewBox="0 0 24 24"
@@ -73,6 +75,7 @@
                         </svg>
                     {% elif link.icon == 'linkedin' %}
                         <svg
+                            class="shrink-0"
                             width="14"
                             height="14"
                             viewBox="0 0 24 24"
@@ -86,7 +89,20 @@
                             <circle cx="4" cy="4" r="2"/>
                         </svg>
                     {% endif %}
-                    {{ link.label }}
+                    <span class="leading-none [text-box:trim-both_cap_alphabetic]">{{ link.label }}</span>
+                    <svg
+                        class="ml-auto shrink-0 text-text-muted transition-colors duration-150 ease-default group-hover/link:text-accent"
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="square"
+                        aria-hidden="true">
+                        <path d="M7 17L17 7"/>
+                        <path d="M8 7h9v9"/>
+                    </svg>
                 </a>
             {% endfor %}
             <a
@@ -94,9 +110,10 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="resume-btn resume-btn--pdf flex items-center gap-2 py-2 px-3 bg-surface border border-border text-accent
-                    font-sans text-[0.85rem] font-semibold no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left
+                    font-sans text-[0.82rem] font-semibold no-underline cursor-pointer transition-all duration-150 ease-default rounded-none text-left
                     min-h-[38px] max-md:min-h-[44px] box-border hover:border-accent hover:bg-surface-2">
                 <svg
+                    class="shrink-0"
                     width="14"
                     height="14"
                     viewBox="0 0 24 24"
@@ -109,7 +126,7 @@
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
                 </svg>
-                Download Resume
+                <span class="leading-none [text-box:trim-both_cap_alphabetic]">Download Resume</span>
             </a>
         </div>
     </div>

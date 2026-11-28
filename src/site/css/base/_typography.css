@@ -1,5 +1,5 @@
 /* Base: Global typography defaults.
-   Headings use Iosevka Webfont Bold; UI/chrome use Iosevka Aile; docs/blogs use Iosevka Etoile; code/CLI use JetBrains Mono. */
+   Headings use Iosevka; UI/chrome use Iosevka Aile; docs/blogs use Iosevka Etoile; code/CLI use JetBrains Mono. */
 
 @layer components {
   html {

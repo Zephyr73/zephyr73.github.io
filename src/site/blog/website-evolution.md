@@ -133,24 +133,12 @@ That same day added a taskbar calendar widget and `marked.js` in the Desktop Mar
 
 ## Era 5: Cyberspace Aesthetic, Bayer Dithering & Present Day (Nov 2026)
 
-### Sticking to One Palette, `cyberspace.online` & Automated Tooling (`701a42b` → `d98b6f0`)
+The current aesthetic is heavily inspired by [cyberspace.online](https://cyberspace.online), a small retro forum styled after 90s BBSes and terminals that uses dithered imagery everywhere. On **November 24–25, 2026** (`701a42b` → `d98b6f0` → `6dec425`), I locked the site to a cohesive dual-mode palette (`#101110` warm charcoal + `#e5a93c` phosphor amber in dark mode, paired with a warm cream sketchbook palette in light mode), added build-time 4-level 8×8 Bayer `ditherThumb` thumbnails that dynamically tint to the active accent color, a breadcrumb navbar (`~/tasrif/...`), and `g+h/p/b/g/a` keyboard chords.
 
-The current aesthetic is heavily inspired by [cyberspace.online](https://cyberspace.online), a small retro forum styled after 90s BBSes and terminals that uses dithered imagery everywhere. On **November 24, 2026** (`701a42b`, `67dee7e`), I finally forced myself to stick to a fixed color palette (`#101110` warm charcoal + `#e5a93c` phosphor amber), added build-time 4-level 8×8 Bayer `ditherThumb` thumbnails, a breadcrumb navbar (`~/tasrif/...`), and `g+h/p/b/g/a` keyboard chords.
+Alongside the visual lock-in, Desktop OS gained real boot telemetry (`3c7ed83`), `skillPool` (`1456bc2`) began automatically normalizing `skills:` frontmatter across `projects/*.md` into project cards, `/about/`, and filters, and `scripts/generate-resume-pdf.js` (`d98b6f0`) started building `/assets/resume.pdf` straight from `about/index.md`—paired with `IBM Plex Sans` prose, heading anchors, code-block copy buttons, and full Prism syntax highlighting. Working with Gemini 4 Hydrogen (`eeaece7`, `33fc19a`, `6dec425`), we also added a dot-matrix dithered hover scrim (`.gallery-item__overlay::before`) and single Q90 JPEG download generation, renamed `src/v2/` → `src/site/` and `src/v3/` → `src/desktop/`, replaced UI emojis with pixel-aligned inline SVGs, fixed Desktop OS window z-index stacking, and removed `src/v2-redirect.njk` and leftover assets.
 
-Alongside the visual lock-in, Desktop OS got real boot telemetry (`3c7ed83`), `skillPool` (`1456bc2`) began automatically normalizing `skills:` frontmatter across `projects/*.md` into project cards, `/about/`, and filters, and `scripts/generate-resume-pdf.js` (`d98b6f0`) started building `/assets/resume.pdf` straight from `about/index.md`—alongside `IBM Plex Sans` prose, heading anchors, and code-block copy buttons.
+![Homepage in dark and light mode at commit 6dec425](/assets/img/blog/website-evolution/20-2026-11-25-6dec425-home.png)
 
-![Phosphor-amber terminal homepage at commit d98b6f0](/assets/img/blog/website-evolution/18-2026-11-24-d98b6f0-amber-home.png)
+![About and resume page in dark and light mode](/assets/img/blog/website-evolution/20-2026-11-25-6dec425-about.png)
 
-![Automated skill pool matrix on About page at commit d98b6f0](/assets/img/blog/website-evolution/18-2026-11-24-d98b6f0-skill-pool.png)
-
-### Finishing Touches With Gemini 4 Hydrogen (`eeaece7` → `33fc19a` → `6dec425`)
-
-By **November 25** (`eeaece7`, `33fc19a`, `6dec425`), the current build came together with Gemini 4 Hydrogen, which finally nailed the exact look I'd been chasing the whole time. We added a dot-matrix dithered hover scrim (`.gallery-item__overlay::before`) and single Q90 JPEG download generation (`eeaece7`, `33fc19a`), renamed `src/v2/` → `src/site/` and `src/v3/` → `src/desktop/` (`6dec425`), switched UI icons to inline SVGs, fixed Desktop OS window z-index stacking, and removed `src/v2-redirect.njk` and leftover assets.
-
-![Dithered dot-matrix gallery hover overlay animation at commit 33fc19a](/assets/img/blog/website-evolution/19-2026-11-25-33fc19a-gallery-hover.gif)
-
-![Current main homepage at commit 6dec425](/assets/img/blog/website-evolution/20-2026-11-25-6dec425-home.png)
-
-![Current Gallery Image Viewer with EXIF metadata at commit 6dec425](/assets/img/blog/website-evolution/20-2026-11-25-6dec425-gallery-viewer.png)
-
-![Current PhosphorOS Desktop environment at commit 6dec425](/assets/img/blog/website-evolution/20-2026-11-25-6dec425-desktop.png)
+![Gallery page in dark and light mode](/assets/img/blog/website-evolution/20-2026-11-25-6dec425-gallery.png)
